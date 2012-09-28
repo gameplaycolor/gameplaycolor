@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html manifest="cache.manifest">
+<head>
+
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0"/>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <link rel="apple-touch-icon" href="iphon_tetris_icon.png"/>
+
+    <link rel="apple-touch-startup-image" href="images/Default.png" sizes="320x460" />
+    <link rel="apple-touch-startup-image" href="images/Default-568h@2x.png" sizes="640x1096">
+
+    <link rel="stylesheet" href="css/gameboy.css" type="text/css" media="screen, mobile" title="main" charset="utf-8">
+
+    <title>Game Boy</title>
+</head>
+<body>
+
+   <div id="screen-instructions" style="display: none">
+     Add to Home Screen
+   </div>
+   <div id="screen-console" style="display: none">
+     <div id="control-screen"></div>
+     <div id="control-dpad" class="sprite-pad-default"></div>
+     <div id="group-buttons">
+       <div id="control-a" class="button"></div>
+       <div id="control-b" class="button"></div>
+     </div>
+     <div id="group-options">
+       <div id="control-select" class="button-option"></div>
+       <div id="control-start" class="button-option"></div>
+     </div>
+     <div id="debug">DEBUG</div>
+   </div>
+
+   <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
+   <script type="text/javascript" src="js/app.js"></script>
+   <script type="text/javascript" src="js/control.js"></script>
+   <script type="text/javascript" src="js/gameboy.js"></script>
+</body>
+</html>

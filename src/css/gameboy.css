@@ -1,0 +1,207 @@
+body
+  {
+  padding: 0;
+  margin: 0;
+  -webkit-user-select: none;
+  background-color: #ccc;
+  }
+
+#control-screen
+  {
+  width: 320px;
+  height: 288px;
+  background-color: green;
+  position: absolute;
+  }
+
+.button
+  {
+  width: 60px;
+  height: 60px;
+  background-color: red;
+  }
+
+.button-option
+  {
+  width: 60px;
+  height: 40px;
+  background-color: gray;
+  }
+
+#group-buttons
+  {
+  position: absolute;
+  width: 128px;
+  height: 100px;
+  }
+
+#group-options
+  {
+  position: absolute;
+  width: 128px;
+  height: 40px;
+  }
+
+#control-a
+  {
+  position: absolute;
+  top: 0;
+  right: 0;
+  }
+
+#control-b
+  {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  }
+
+#control-select
+  {
+  position: absolute;
+  top: 0;
+  left: 0;
+  }
+
+#control-start
+  {
+  position: absolute;
+  top: 0;
+  right: 0;
+  }
+
+#control-dpad
+  {
+  width: 140px;
+  height: 140px;
+  position: absolute;
+  }
+
+.sprite-pad-default
+  {
+  background:url(../images/states.png) 0 0;
+  }
+
+.sprite-pad-up
+  {
+  background:url(../images/states.png) -140px 0;
+  }
+
+.sprite-pad-upright
+  {
+  background:url(../images/states.png) -280px 0;
+  }
+
+.sprite-pad-right
+  {
+  background:url(../images/states.png) -420px 0;
+  }
+
+.sprite-pad-downright
+  {
+  background:url(../images/states.png) -560px 0;
+  }
+
+.sprite-pad-down
+  {
+  background:url(../images/states.png) -700px 0;
+  }
+
+.sprite-pad-downleft
+  {
+  background:url(../images/states.png) -840px 0;
+  }
+
+.sprite-pad-left
+  {
+  background:url(../images/states.png) -980px 0;
+  }
+
+.sprite-pad-upleft
+  {
+  background:url(../images/states.png) -1120px 0;
+  }
+
+#debug
+  {
+  height: 20px;
+  width: 100px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: black;
+  color: white;
+  opacity: 0.7;
+  padding: 20px 0;
+  text-align: center;
+  }
+
+@media only screen and (min-width:568px) {
+
+  #group-options
+    {
+    top: 248px;
+    right: 0;
+    width: 124px;
+    }
+
+  #group-buttons
+    {
+    width: 124px;
+    top: 50px;
+    right: 0;
+    }
+
+  #control-dpad
+    {
+    top: 40px;
+    left: 0;
+    width: 124px;
+    height: 124px;
+    }
+
+  #control-screen
+    {
+    top: 0;
+    left: 124px;
+    }
+
+  #debug
+    {
+    width: 568px;
+    }
+
+}
+
+@media only screen and (max-width:320px) {
+
+  #group-options
+    {
+    top: 452px;
+    left: 96px;
+    }
+
+  #group-buttons
+    {
+    top: 316px;
+    right: 8px;
+    }
+
+  #control-dpad
+    {
+    top: 296px;
+    left: 8px;
+    }
+
+  #control-screen
+    {
+    top: 0;
+    left: 0;
+    }
+
+  #debug
+    {
+    width: 320px;
+    }
+
+}
