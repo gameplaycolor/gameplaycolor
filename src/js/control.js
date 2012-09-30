@@ -1,7 +1,10 @@
+
 (function($) {
 
-  App.Control = function () {
-      this.init();
+  App.Controls = {};
+
+  App.Control = function(identifier) {
+      this.init(identifier);
   };
 
   App.Control.Touch = {
@@ -24,27 +27,41 @@
 
   jQuery.extend(App.Control.prototype, {
 
-    init: function() {
+    init: function(identifier) {
       var self = this;
       var state = 
-      self.identifier = '#control-dpad';
+      self.identifier = identifier;
+
+      // Used for tracking the current touch interaction.
+      // We need to cache the touch position as we don't get valid coordinates in
+      // touchend so we map them back to our previous touch to make it easier to
+      // write more involved controls.
+      self.touch = { x: 0, y: 0 };
 
       self.element = $(self.identifier);
 
       document.querySelector(self.identifier).addEventListener('touchstart', function(e) {
         e.preventDefault();
-        self.onTouchEvent(App.Control.Touch.START, self.convert(e));
+        self.touch = self.convert(e);
+        self.onTouchEvent(App.Control.Touch.START, self.touch);
       }, false);
 
       document.querySelector(self.identifier).addEventListener('touchmove', function(e) {
         e.preventDefault();
-        self.onTouchEvent(App.Control.Touch.MOVE, self.convert(e));
+        self.touch = self.convert(e);
+        self.onTouchEvent(App.Control.Touch.MOVE, self.touch);
       }, false);
 
       document.querySelector(self.identifier).addEventListener('touchend', function(e) {
         e.preventDefault();
-        self.onTouchEvent(App.Control.Touch.END, self.convert(e));
+        self.onTouchEvent(App.Control.Touch.END, self.touch);
       }, false);
+
+      self.onCreate();
+
+    },
+
+    onCreate: function() {
 
     },
 
@@ -68,7 +85,6 @@
 
     onTouchEvent: function(state, position) {
       var self = this;
-      // App.Log("(" + state + ", " + position.x + ", " + position.y + ")");
 
       var width = self.element.height();
       var height = self.element.width();

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html manifest="cache.manifest">
 <head>
@@ -17,26 +18,41 @@
 </head>
 <body>
 
-   <div id="screen-instructions" style="display: none">
-     Add to Home Screen
-   </div>
-   <div id="screen-console" style="display: none">
-     <div id="control-screen"></div>
-     <div id="control-dpad" class="sprite-pad-default"></div>
-     <div id="group-buttons">
-       <div id="control-a" class="button"></div>
-       <div id="control-b" class="button"></div>
-     </div>
-     <div id="group-options">
-       <div id="control-select" class="button-option"></div>
-       <div id="control-start" class="button-option"></div>
-     </div>
-     <div id="debug">DEBUG</div>
-   </div>
+  <div id="screen-instructions" style="display: none">
+    Add to Home Screen
+  </div>
+  <div id="screen-console" style="display: none">
+    <div id="control-screen"></div>
+    <div id="control-dpad" class="sprite-pad-default"></div>
+    <div id="group-buttons">
+      <div id="control-a" class="button"></div>
+      <div id="control-b" class="button"></div>
+    </div>
+    <div id="group-options">
+      <div id="control-select" class="button-option"></div>
+      <div id="control-start" class="button-option"></div>
+    </div>
+    <div id="control-games"></div>
+    <div id="debug">DEBUG</div>
+  </div>
 
-   <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
-   <script type="text/javascript" src="js/app.js"></script>
-   <script type="text/javascript" src="js/control.js"></script>
-   <script type="text/javascript" src="js/gameboy.js"></script>
+  <div id="screen-games">
+    <div class="title">
+      <h3>Games</h3>
+      <div id="control-done">Done</div>
+    </div>
+    <div id="control-game-list">
+      <input type="text" name="fname">
+    </div>
+  </div>
+
+  <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
+  <script type="text/javascript" src="js/app.js"></script>
+  <script type="text/javascript" src="js/control.js"></script>
+  <script type="text/javascript" src="js/button.js"></script>
+  <script type="text/javascript" src="js/screen.js"></script>
+  <script type="text/javascript" src="js/games.js"></script>
+  <script type="text/javascript" src="js/gameboy.js"></script>
+
 </body>
 </html>

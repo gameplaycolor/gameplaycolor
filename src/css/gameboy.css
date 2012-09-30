@@ -136,6 +136,46 @@ body
   text-align: center;
   }
 
+#screen-games
+  {
+  background-color: white;
+  height: 100px;
+  width: 100px;
+  position: absolute;
+  left: 0;
+  }
+
+#control-done
+  {
+  width: 42px;
+  height: 28px;
+  background-color: orange;
+  position: absolute;
+  }
+
+.title
+  {
+  background-color: red;
+  position: absolute;
+  top: 0;
+  left: 0;
+  text-align: center;
+  }
+
+#control-games
+  {
+  background-color: red;
+  position: absolute;
+  width: 42px;
+  height: 42px;
+  }
+
+#control-game-list
+  {
+  height: 300px;
+  overflow: scroll;
+  }
+
 @media only screen and (min-width:568px) {
 
   #group-options
@@ -171,6 +211,33 @@ body
     width: 568px;
     }
 
+  #screen-games
+    {
+    height: 300px;
+    width: 598px;
+    top: 300px;
+    }
+
+  .title
+    {
+    height: 32px;
+    width: 598px;
+    }
+
+  #control-done
+    {
+    top: 0;
+    right: 0;
+    width: 200px;
+    height: 28px;
+    }
+
+  #control-games
+    {
+    left: 8px;
+    top: 250px;
+    }
+
 }
 
 @media only screen and (max-width:320px) {
@@ -202,6 +269,33 @@ body
   #debug
     {
     width: 320px;
+    }
+
+  #screen-games
+    {
+    height: 587px;
+    width: 320px;
+    top: 578px;
+    }
+
+  .title
+    {
+    height: 44px;
+    width: 320px;
+    }
+
+  #control-done
+    {
+    top: 8px;
+    right: 8px;
+    width: 60px;
+    height: 28px;
+    }
+
+  #control-games
+    {
+    right: 8px;
+    top: 498px;
     }
 
 }
