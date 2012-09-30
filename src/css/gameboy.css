@@ -4,6 +4,7 @@ body
   margin: 0;
   -webkit-user-select: none;
   background-color: #ccc;
+  font: 15px Geneva, Arial, Helvetica, sans-serif; 
   }
 
 #control-screen
@@ -149,17 +150,25 @@ body
   {
   width: 42px;
   height: 28px;
-  background-color: orange;
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#707070), to(#1C1C1C));
   position: absolute;
+  border-radius: 4px;
+  border: 1px solid black;
   }
 
 .title
   {
-  background-color: red;
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#4A4A4A), to(#000000));
   position: absolute;
   top: 0;
   left: 0;
   text-align: center;
+  color: white;
+  }
+
+.title h3
+  {
+  margin-top: 11px;
   }
 
 #control-games
@@ -170,10 +179,34 @@ body
   height: 42px;
   }
 
-#control-game-list
+#control-games-scroll
   {
+  position: absolute;
+  top: 44px;
+  left: 0;
   height: 300px;
-  overflow: scroll;
+  width: 320px;
+  }
+
+#control-games-list
+  {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 320px;
+  }
+
+.table
+  {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  }
+
+.table li
+  {
+  height: 88px;
+  border-bottom: 1px solid #ccc;
   }
 
 @media only screen and (min-width:568px) {

@@ -4,7 +4,7 @@
   App.Controls = {};
 
   App.Control = function(identifier) {
-      this.init(identifier);
+    this.init(identifier);
   };
 
   App.Control.Touch = {

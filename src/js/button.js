@@ -2,8 +2,8 @@
 (function($) {
 
   App.Controls.Button = function(identifier, onPress) {
-      this.init(identifier);
-      this.onPress = onPress;
+    this.init(identifier);
+    this.onPress = onPress;
   };
 
   App.Controls.Button.State = {

@@ -4,7 +4,7 @@
   App.Screens = {};
 
   App.Screen = function(identifier) {
-      this.init(identifier);
+    this.init(identifier);
   };
 
   jQuery.extend(

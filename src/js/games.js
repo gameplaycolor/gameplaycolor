@@ -15,6 +15,8 @@
         self.dismiss();
       });
 
+      self.list = new App.Controls.Scroll('#control-games-scroll', '#control-games-list');
+
     }
 
   });
