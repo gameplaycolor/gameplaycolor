@@ -15,6 +15,8 @@
 
     presentModal: function() {
       var self = this;
+      self.element.css('top', self.height());
+      self.element.show();
       self.element.animate({
           top: '0'
       });
@@ -24,6 +26,8 @@
       var self = this;
       self.element.animate({
         top: self.height()
+      }, 300, function() {
+        self.element.hide();
       });
     }
 
