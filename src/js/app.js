@@ -22,8 +22,9 @@
       self.gamesScreen = new App.Screens.Games('#screen-games');
 
       self.a = new App.Controls.Button('#control-a', function() {
-        gb_OnKeyDown_Event(Gameboy.Key.B);
-        gb_OnKeyUp_Event(Gameboy.Key.B);
+        // gb_OnKeyDown_Event(Gameboy.Key.B);
+        // gb_OnKeyUp_Event(Gameboy.Key.B);
+        gb_Run();
       });
 
       self.b = new App.Controls.Button('#control-b', function() {
@@ -42,6 +43,7 @@
       });
 
       self.games = new App.Controls.Button('#control-games', function() {
+        gb_Pause();
         self.gamesScreen.presentModal();
       });
 
