@@ -11,7 +11,7 @@ body
   {
   width: 320px;
   height: 288px;
-  background-color: green;
+  background-color: #EFFDE1;
   position: absolute;
   }
 
@@ -146,14 +146,27 @@ body
   left: 0;
   }
 
+.title-button
+  {
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#707070), to(#1C1C1C));
+  border-radius: 4px;
+  border: 1px solid black;
+  }
+
 #control-done
   {
   width: 42px;
   height: 28px;
-  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#707070), to(#1C1C1C));
   position: absolute;
-  border-radius: 4px;
-  border: 1px solid black;
+  }
+
+#control-add
+  {
+  width: 42px;
+  height: 28px;
+  position: absolute;
+  top: 6px;
+  left: 6px;
   }
 
 .title
@@ -164,6 +177,7 @@ body
   left: 0;
   text-align: center;
   color: white;
+  z-index: 20;
   }
 
 .title h3
@@ -319,8 +333,8 @@ body
 
   #control-done
     {
-    top: 8px;
-    right: 8px;
+    top: 6px;
+    right: 6px;
     width: 60px;
     height: 28px;
     }

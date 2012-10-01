@@ -14,6 +14,12 @@
       self.done = new App.Controls.Button('#control-done', function() {
         self.dismiss();
       });
+      self.add = new App.Controls.Button('#control-add', function() {
+        var url = prompt("Enter a URL", "");
+        $.get(url, function(data) {
+          alert('Load was performed.');
+        });
+      });
 
       self.list = new App.Controls.Scroll('#control-games-scroll', '#control-games-list');
 
