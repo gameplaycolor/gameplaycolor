@@ -1,0 +1,43 @@
+body { font-family:'Sans Serif','Trebuchet MS'; font-size:13px; margin:0px;
+  padding:8px 0px 8px 8px; background:#fff; } 
+table { font-family:'Bitstream Vera Sans Mono','Lucida Console','droid_monospace',monospace; font-size:9pt;
+ line-height:15px; border-collapse:collapse; text-align:left; margin:0px; }
+thead { background:#d8d8d8; text-align:center; }
+th { font-family:sans-serif; padding:2px 0px 4px 0px; font-size:10pt;}
+th, td { border:1px solid #000; }
+hr { border:none;border-bottom:1px solid #000;margin:1px 0px;}
+canvas { padding:1px; border:1px solid #888; margin:2px; }
+.L { text-align:left; }
+.R { text-align:right; }
+.C { text-align:center; }
+.U { text-decoration:underline; }
+.FL { float:left; }
+.MT { margin-top:12px; }
+.MR { margin-right:12px; }
+.MB { margin-bottom:12px; }
+.CP { cursor:pointer; }
+.BK { color:#B00; background:#FBB; }
+.IB { display:inline-block; }
+.CLR { clear:both; }
+.CB80 { color:#B80; }
+.C888 { color:#888; }
+.BTN { text-align:center;cursor:pointer;font-size:10px;font-weight:bold;
+  border:1px solid #888;background:#eee;
+  padding:1px 3px;margin:2px;}
+.BTN:hover { background:#f8f8f8; color:#777; }
+.SCROLLBAR { padding:0px; width:12px;}
+.SCROLLBAR > .BACKGROUND { float:left; background:#d8d8d8; width:12px; }
+.SCROLLBAR > .BACKGROUND > .DRAG { position:relative; left:0px; top:0px;
+  background:#eee; height:50px;
+  cursor:pointer; width:8px; margin:1px;
+  border:1px solid #888; }
+#STATUS { font-size:10px; font-family:sans-serif;}
+#DEBUGGER { height:0px; overflow:hidden; padding:1px;}
+a, label { cursor:pointer; color:#88C; text-decoration:none;}
+a:hover, label:hover { color:#AAF; text-decoration:underline;}
+#HEADER { font-family:sans-serif; font-size:10px; }
+#HEADER h1 { font-family:georgia; font-size:45px; padding:0px;margin:0px; }
+#FOOTER { margin-top:10px; }
+#LCD { margin:3px; padding:2px; image-rendering:-webkit-optimizeSpeed; }
+.NFO { border:1px solid #AAA; border-radius:6px; display:inline-block;
+  padding:8px 16px; font-size:12px; font-weight:bold; background: #EEE; }

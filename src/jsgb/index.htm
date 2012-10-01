@@ -1,0 +1,134 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<title>JSGB v.0.02: a JavaScript Nintendo GameBoy Emulator and Debugger</title>
+<!--
+
+ JSGB v0.02 - a JavaScript Nintendo GameBoy Emulator
+ Copyright (C) 2009 Pedro Ladaria <Sonic1980 at Gmail dot com>
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License
+ version 2 as published by the Free Software Foundation.
+ The full license is available at http://www.gnu.org/licenses/gpl.html
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU General Public License for more details.
+
+-->
+<script src="toolbox.js" type="application/x-javascript"></script>
+<script src="scrollbar.js" type="application/x-javascript"></script>
+<script src="jsgb.cpu.js" type="application/x-javascript"></script>
+<script src="jsgb.memory.js" type="application/x-javascript"></script>
+<script src="jsgb.rom.js" type="application/x-javascript"></script>
+<script src="jsgb.interrupts.js" type="application/x-javascript"></script>
+<script src="jsgb.input.js" type="application/x-javascript"></script>
+<script src="jsgb.lcd.js" type="application/x-javascript"></script>
+<script src="jsgb.timers.js" type="application/x-javascript"></script>
+<script src="jsgb.debugger.js" type="application/x-javascript"></script>
+<script src="jsgb.gameboy.js" type="application/x-javascript"></script>
+<link href="jsgb.styles.css" rel="stylesheet" type="text/css" />
+<link rel="shortcut icon" href="favicon.gif" />
+</head>
+<body>
+
+<div class="C">
+
+<div id="HEADER">
+<h1>JSGB</h1>  
+[ v.0.2 ]<br/>a JavaScript GameBoy Emulator<br/>by Pedro Ladaria
+</div>
+
+<canvas id="LCD" width="160" height="144"></canvas>
+
+<div id="STATUS">Pause</div>
+
+<div id="DEBUG">&nbsp;</div>
+
+<select id="CARTRIDGE" rows="1" onchange="gb_Insert_Cartridge(this.value,true);">
+<option value="mc-mrder.gb">PD mc-mrder</option>
+<option value="20y.gb">PD 20y</option>
+<option value="Ls.gb">PD Ls</option>
+<option value="Bc.gb">PD Bc</option>
+<option value="wario_walking.gb">PD wario_walking</option>
+<option value="q-tsu.gb">PD q-tsu</option>
+</select><br/>
+
+<input id="BR" type="button" value="Run"   onfocus="this.blur();" onclick="gb_Run();"/>
+<input id="BP" type="button" value="Pause" onfocus="this.blur();" disabled onclick="gb_Pause();"/>
+<input id="BS" type="button" value="Step"  onfocus="this.blur();" onclick="gb_Step();"/>
+<input id="BS" type="button" value="Reset"  onfocus="this.blur();" onclick="gb_Insert_Cartridge($('CARTRIDGE').value,true);"/>
+<input id="BX" type="button" value="Size x2" onfocus="this.blur();" onclick="gb_Resize_LCD();"/>
+<br/>
+
+<input id="TOGGLE_DEBUGGER" type="checkbox" onclick="gb_Toggle_Debugger(this.checked);" />
+<label for="TOGGLE_DEBUGGER">debugger</label> | <a href="changelog.htm">changelog</a> | <a href="credits.htm">credits</a>
+</div>
+
+<div id="DEBUGGER">
+</div>
+
+<div id="FOOTER" class="CLR C">
+<div class="IB L">
+<strong>X</strong>: Button A<br/>
+<strong>Z</strong>: Button B<br/>
+<strong>A</strong>: Start<br/>
+<strong>S</strong>: Select<br/>
+<strong>&larr; &uarr; &rarr; &darr;</strong>
+</div>
+<br/>
+<br/>
+<div class="NFO">Recommended browser: Chrome/Chromium 4+<br/>
+Other browsers are slow or don't work at all!</div>
+</div>
+
+<script type="application/x-javascript">
+
+var gbSeconds = 0;
+var gbFrames  = 0;
+
+function gb_Resize_LCD() {
+  if ($('BX').value=='Size x2') {
+    $('BX').value='Size x3';
+    $('LCD').style.width='320px';
+    $('LCD').style.height='288px';
+  }
+  else if ($('BX').value=='Size x3') {
+    $('BX').value='Size x1';
+    $('LCD').style.width='480px';
+    $('LCD').style.height='432px';
+  }
+  else {
+    $('BX').value='Size x2';
+    $('LCD').style.width='160px';
+    $('LCD').style.height='144px';
+  }
+}
+
+function gb_Show_Fps() {
+  gbFrames+=gbFPS;
+  gbSeconds++;
+  $('STATUS').innerHTML = 
+    'Running: '+gbFPS+' '+
+    'fps - Average: '+(gbFrames/gbSeconds).toFixed(2)+' - '+
+    'Bank switches/s: '+gbBankSwitchCount;
+  gbFPS=0;
+  gbBankSwitchCount=0;
+}
+
+function gb_Toggle_Debugger(show) {
+  $('DEBUGGER').style.height=(show)?'auto':'0px';
+}
+
+window.onload = function() {
+  gb_Insert_Cartridge($('CARTRIDGE').value, false);
+  gb_Toggle_Debugger($('TOGGLE_DEBUGGER').checked);
+}
+
+</script>
+
+</body>
+</html>
