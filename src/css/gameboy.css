@@ -7,26 +7,40 @@ body
   font: 15px Geneva, Arial, Helvetica, sans-serif; 
   }
 
-#control-screen
+#LCD
   {
   width: 320px;
   height: 288px;
   background-color: #EFFDE1;
   position: absolute;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  image-rendering: -webkit-optimize-contrast;
   }
 
 .button
   {
   width: 60px;
   height: 60px;
-  background-color: red;
+  background: url(../images/button.png) 0 0;
+  }
+
+.button.pressed
+  {
+  background: url(../images/button.png) -60px 0;
   }
 
 .button-option
   {
   width: 60px;
   height: 40px;
-  background-color: gray;
+  background: url(../images/select.png) 0 0;
+  }
+
+.button-option.pressed
+  {
+  background: url(../images/select.png) -60px 0;
   }
 
 #group-buttons
@@ -80,7 +94,7 @@ body
 
 .sprite-pad-default
   {
-  background:url(../images/states.png) 0 0;
+  background: url(../images/states.png) 0 0;
   }
 
 .sprite-pad-up
@@ -247,7 +261,7 @@ body
     height: 124px;
     }
 
-  #control-screen
+  #LCD
     {
     top: 0;
     left: 124px;
@@ -291,8 +305,8 @@ body
 
   #group-options
     {
-    top: 452px;
-    left: 96px;
+    top: 462px;
+    left: 90px;
     }
 
   #group-buttons

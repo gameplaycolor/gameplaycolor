@@ -22,24 +22,30 @@
       self.gamesScreen = new App.Screens.Games('#screen-games');
 
       self.a = new App.Controls.Button('#control-a', function() {
-        App.Log("Button A")
+        gb_OnKeyDown_Event(Gameboy.Key.B);
+        gb_OnKeyUp_Event(Gameboy.Key.B);
       });
 
       self.b = new App.Controls.Button('#control-b', function() {
-        App.Log("Button B");
+        gb_OnKeyDown_Event(Gameboy.Key.B);
+        gb_OnKeyUp_Event(Gameboy.Key.B);
       });
 
       self.start = new App.Controls.Button('#control-start', function() {
-        App.Log("Start");
+        gb_OnKeyDown_Event(Gameboy.Key.START);
+        gb_OnKeyUp_Event(Gameboy.Key.START);
       });
 
       self.select = new App.Controls.Button('#control-select', function() {
-        App.Log("Select");
+        gb_OnKeyDown_Event(Gameboy.Key.SELECT);
+        gb_OnKeyUp_Event(Gameboy.Key.SELECT);
       });
 
       self.games = new App.Controls.Button('#control-games', function() {
         self.gamesScreen.presentModal();
       });
+
+      gb_Insert_Cartridge("kirby.gb", true);
 
     }
 

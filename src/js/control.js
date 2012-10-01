@@ -46,13 +46,30 @@
         self.onTouchEvent(App.Control.Touch.START, self.touch);
       }, false);
 
+      document.querySelector(self.identifier).addEventListener('mousedown', function(e) {
+        e.preventDefault();
+        self.touch = self.convert(e);
+        self.onTouchEvent(App.Control.Touch.START, self.touch);
+      }, false);
+
       document.querySelector(self.identifier).addEventListener('touchmove', function(e) {
         e.preventDefault();
         self.touch = self.convert(e);
         self.onTouchEvent(App.Control.Touch.MOVE, self.touch);
       }, false);
 
+      document.querySelector(self.identifier).addEventListener('mousemove', function(e) {
+        e.preventDefault();
+        self.touch = self.convert(e);
+        self.onTouchEvent(App.Control.Touch.MOVE, self.touch);
+      }, false);
+
       document.querySelector(self.identifier).addEventListener('touchend', function(e) {
+        e.preventDefault();
+        self.onTouchEvent(App.Control.Touch.END, self.touch);
+      }, false);
+
+      document.querySelector(self.identifier).addEventListener('mouseup', function(e) {
         e.preventDefault();
         self.onTouchEvent(App.Control.Touch.END, self.touch);
       }, false);
@@ -67,7 +84,9 @@
 
     convert: function(event) {
       var self = this;      
-      var touch = event.touches[0];
+      if (event.touches) {
+        var touch = event.touches[0];
+      }
       var offset = self.element.offset();
       return { 'x': event.pageX - offset.left ,
                'y': event.pageY - offset.top };

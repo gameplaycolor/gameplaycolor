@@ -26,6 +26,7 @@
 
       switch(state) {
         case App.Control.Touch.START:
+          self.element.toggleClass("pressed");
           break;
         case App.Control.Touch.MOVE:
           break;
@@ -36,6 +37,7 @@
               position.y < self.height()) {
             self.onPress();
           }
+          self.element.toggleClass("pressed");
           break;
       }
     },
