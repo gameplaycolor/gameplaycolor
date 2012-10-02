@@ -1,9 +1,9 @@
 
 (function($) {
 
-  App.Controls.Button = function(identifier, onPress) {
+  App.Controls.Button = function(identifier, actions) {
     this.init(identifier);
-    this.onPress = onPress;
+    this.actions = actions;
   };
 
   App.Controls.Button.State = {
@@ -27,6 +27,7 @@
       switch(state) {
         case App.Control.Touch.START:
           self.element.toggleClass("pressed");
+          self.touchDown();
           break;
         case App.Control.Touch.MOVE:
           break;
@@ -35,15 +36,41 @@
               position.x < self.width() &&
               position.y >= 0 &&
               position.y < self.height()) {
-            self.onPress();
+            self.touchUpInside();
+          } else {
+            self.touchUpOutside();
           }
+          self.touchUp();
           self.element.toggleClass("pressed");
           break;
       }
     },
 
-    onPress: function() {
-      App.Log("Press");
+    action: function(id) {
+      var self = this;
+      if (id in self.actions) {
+        self.actions[id]();
+      }
+    },
+
+    touchDown: function() {
+      var self = this;
+      self.action("touchDown");
+    },
+
+    touchUp: function() {
+      var self = this;
+      self.action("touchUp");      
+    },
+
+    touchUpInside: function() {
+      var self = this;
+      self.action("touchUpInside");
+    },
+
+    touchUpOutside: function() {
+      var self = this;
+      self.action("touchUpOutside");
     }
 
   });
