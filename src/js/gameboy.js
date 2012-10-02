@@ -30,3 +30,13 @@ $j(document).ready(function() {
 });
 
 function gb_Show_Fps() {}
+
+function gb_KeyDown(keycode) {
+  var e = { 'which': keycode, 'preventDefault': function() {} };
+  gb_OnKeyDown_Event(e);
+}
+
+function gb_KeyUp(keycode) {
+  var e = { 'which': keycode, 'preventDefault': function() {} };
+  gb_OnKeyUp_Event(e);
+}
