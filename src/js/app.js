@@ -19,7 +19,16 @@
       $("#screen-console").show();
 
       self.control = new App.Control('#control-dpad');
-      self.gamesScreen = new App.Screens.Games('#screen-games');
+      self.gamesScreen = new App.Screens.Games('#screen-games', {
+        'willShow': function() {
+          console.log("willShow")
+          gb_Pause();
+        },
+        'didHide': function() {
+          console.log("willHide");
+          gb_Run();
+        }
+      });
 
       self.a = new App.Controls.Button('#control-a', { 'touchDown' : function() {
         gb_KeyDown(Gameboy.Key.A);
@@ -46,7 +55,6 @@
       }});
 
       self.games = new App.Controls.Button('#control-games', { 'touchUpInside': function() {
-        gb_Pause();
         self.gamesScreen.presentModal();
       }});
 

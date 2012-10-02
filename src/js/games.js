@@ -1,8 +1,9 @@
 
 (function($) {
 
-  App.Screens.Games = function(identifier) {
-      this.init(identifier);
+  App.Screens.Games = function(identifier, events) {
+    this.init(identifier);
+    this.events = events;
   };
 
   jQuery.extend(
