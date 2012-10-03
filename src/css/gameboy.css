@@ -19,6 +19,11 @@ body
   image-rendering: -webkit-optimize-contrast;
   }
 
+#STATUS
+  {
+  display: none;
+  }
+
 .button
   {
   width: 60px;
