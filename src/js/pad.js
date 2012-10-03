@@ -33,16 +33,6 @@
       self.right = false;
     },
 
-    convert: function(event) {
-      var self = this;      
-      if (event.touches) {
-        var touch = event.touches[0];
-      }
-      var offset = self.element.offset();
-      return { 'x': event.pageX - offset.left ,
-               'y': event.pageY - offset.top };
-    },
-
     width: function() {
       var self = this;
       return self.element.width(); 
@@ -81,34 +71,23 @@
             posY = -1;
           }
 
-          App.Log("(" + posX + ", " + posY + ")");
-
           if (posX == -1 && posY == -1) {
-            App.Log("Up Left")
             self.setState(App.Control.State.UPLEFT);
           } else if (posX == 0 && posY == -1) {
-            App.Log("Up")
             self.setState(App.Control.State.UP);
           } else if (posX == 1 && posY == -1) {
-            App.Log("Up Right")
             self.setState(App.Control.State.UPRIGHT);
           } else if (posX == -1 && posY == 0) {
-            App.Log("Left")
             self.setState(App.Control.State.LEFT);
           } else if (posX == 0 && posY == 0) {
-            App.Log("Default")
             self.setState(App.Control.State.DEFAULT);
           } else if (posX == 1 && posY == 0) {
-            App.Log("Right")
             self.setState(App.Control.State.RIGHT);
           } else if (posX == -1 && posY == 1) {
-            App.Log("Down Left")
             self.setState(App.Control.State.DOWNLEFT);
           } else if (posX == 0 && posY == 1) {
-            App.Log("Down")
             self.setState(App.Control.State.DOWN);
           } else if (posX == 1 && posY == 1) {
-            App.Log("Down Right")
             self.setState(App.Control.State.DOWNRIGHT);
           }
 

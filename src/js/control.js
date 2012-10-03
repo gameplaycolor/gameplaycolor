@@ -84,10 +84,12 @@
 
     convert: function(event) {
       var self = this;      
+      var offset = self.element.offset();
       if (event.touches) {
         var touch = event.touches[0];
+        return { 'x': touch.pageX - offset.left ,
+                 'y': touch.pageY - offset.top };
       }
-      var offset = self.element.offset();
       return { 'x': event.pageX - offset.left ,
                'y': event.pageY - offset.top };
     },

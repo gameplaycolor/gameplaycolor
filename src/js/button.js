@@ -22,7 +22,6 @@
 
     onTouchEvent: function(state, position) {
       var self = this;
-      App.Log("(" + state + ", " + position.x + ", " + position.y + ")");
 
       switch(state) {
         case App.Control.Touch.START:
