@@ -79,7 +79,7 @@
     },
 
     onCreate: function() {
-
+      var self = this;
     },
 
     convert: function(event) {

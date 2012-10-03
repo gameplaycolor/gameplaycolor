@@ -18,7 +18,16 @@
       var self = this;
       $("#screen-console").show();
 
-      self.control = new App.Controls.Pad('#control-dpad');
+      self.control = new App.Controls.Pad('#control-dpad', {
+        'touchDownLeft'  : function() { gb_KeyDown(Gameboy.Key.LEFT); },
+        'touchUpLeft'    : function() { gb_KeyUp(Gameboy.Key.LEFT); },
+        'touchDownRight' : function() { gb_KeyDown(Gameboy.Key.RIGHT); },
+        'touchUpRight'   : function() { gb_KeyUp(Gameboy.Key.RIGHT); },
+        'touchDownUp'    : function() { gb_KeyDown(Gameboy.Key.UP); },
+        'touchUpUp'      : function() { gb_KeyUp(Gameboy.Key.UP); },
+        'touchDownDown'  : function() { gb_KeyDown(Gameboy.Key.DOWN); },
+        'touchUpDown'    : function() { gb_KeyUp(Gameboy.Key.DOWN); },
+      });
       self.gamesScreen = new App.Screens.Games('#screen-games', {
         'willShow': function() {
           console.log("willShow")

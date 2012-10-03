@@ -3,8 +3,9 @@
 
   App.Controls = {};
 
-  App.Controls.Pad = function(identifier) {
+  App.Controls.Pad = function(identifier, actions) {
     this.init(identifier);
+    this.actions = actions;
   };
 
   App.Controls.Pad.State = {
@@ -23,59 +24,13 @@
     App.Controls.Pad.prototype,
     App.Control.prototype, {
 
-    init: function(identifier) {
-      var self = this;
-      var state = 
-      self.identifier = identifier;
-
-      // Used for tracking the current touch interaction.
-      // We need to cache the touch position as we don't get valid coordinates in
-      // touchend so we map them back to our previous touch to make it easier to
-      // write more involved controls.
-      self.touch = { x: 0, y: 0 };
-
-      self.element = $(self.identifier);
-
-      document.querySelector(self.identifier).addEventListener('touchstart', function(e) {
-        e.preventDefault();
-        self.touch = self.convert(e);
-        self.onTouchEvent(App.Control.Touch.START, self.touch);
-      }, false);
-
-      document.querySelector(self.identifier).addEventListener('mousedown', function(e) {
-        e.preventDefault();
-        self.touch = self.convert(e);
-        self.onTouchEvent(App.Control.Touch.START, self.touch);
-      }, false);
-
-      document.querySelector(self.identifier).addEventListener('touchmove', function(e) {
-        e.preventDefault();
-        self.touch = self.convert(e);
-        self.onTouchEvent(App.Control.Touch.MOVE, self.touch);
-      }, false);
-
-      document.querySelector(self.identifier).addEventListener('mousemove', function(e) {
-        e.preventDefault();
-        self.touch = self.convert(e);
-        self.onTouchEvent(App.Control.Touch.MOVE, self.touch);
-      }, false);
-
-      document.querySelector(self.identifier).addEventListener('touchend', function(e) {
-        e.preventDefault();
-        self.onTouchEvent(App.Control.Touch.END, self.touch);
-      }, false);
-
-      document.querySelector(self.identifier).addEventListener('mouseup', function(e) {
-        e.preventDefault();
-        self.onTouchEvent(App.Control.Touch.END, self.touch);
-      }, false);
-
-      self.onCreate();
-
-    },
-
     onCreate: function() {
+      var self = this;
 
+      self.up    = false;
+      self.down  = false;
+      self.left  = false;
+      self.right = false;
     },
 
     convert: function(event) {
@@ -171,34 +126,125 @@
 
         switch (self.state) {
           case App.Controls.Pad.State.DEFAULT:
+            self.setUp(false);
+            self.setDown(false);
+            self.setLeft(false);
+            self.setRight(false);
             $(self.identifier).attr("class", "sprite-pad-default");
             break;
           case App.Controls.Pad.State.UP:
+            self.setUp(true);
+            self.setDown(false);
+            self.setLeft(false);
+            self.setRight(false);
             $(self.identifier).attr("class", "sprite-pad-up");
             break;
           case App.Controls.Pad.State.UPRIGHT:
+            self.setUp(true);
+            self.setDown(false);
+            self.setLeft(false);
+            self.setRight(true);
             $(self.identifier).attr("class", "sprite-pad-upright");
             break;
           case App.Controls.Pad.State.RIGHT:
+            self.setUp(false);
+            self.setDown(false);
+            self.setLeft(false);
+            self.setRight(true);
             $(self.identifier).attr("class", "sprite-pad-right");
             break;
           case App.Controls.Pad.State.DOWNRIGHT:
+            self.setUp(false);
+            self.setDown(true);
+            self.setLeft(false);
+            self.setRight(true);
             $(self.identifier).attr("class", "sprite-pad-downright");
             break;
           case App.Controls.Pad.State.DOWN:
+            self.setUp(false);
+            self.setDown(true);
+            self.setLeft(false);
+            self.setRight(false);
             $(self.identifier).attr("class", "sprite-pad-down");
             break;
           case App.Controls.Pad.State.DOWNLEFT:
+            self.setUp(false);
+            self.setDown(true);
+            self.setLeft(true);
+            self.setRight(false);
             $(self.identifier).attr("class", "sprite-pad-downleft");
             break;
           case App.Controls.Pad.State.LEFT:
+            self.setUp(false);
+            self.setDown(false);
+            self.setLeft(true);
+            self.setRight(false);
             $(self.identifier).attr("class", "sprite-pad-left");
             break;
           case App.Controls.Pad.State.UPLEFT:
+            self.setUp(true);
+            self.setDown(false);
+            self.setLeft(true);
+            self.setRight(false);
             $(self.identifier).attr("class", "sprite-pad-upleft");
             break;
         }
 
+      }
+    },
+
+    setUp: function(state) {
+      var self = this;
+      if (self.up !== state) {
+        self.up = state;
+        if (state) {
+          self.action("touchDownUp");
+        } else {
+          self.action("touchUpUp");
+        }
+      }
+    },
+
+    setDown: function(state) {
+      var self = this;
+      if (self.down !== state) {
+        self.down = state;
+        if (state) {
+          self.action("touchDownDown");
+        } else {
+          self.action("touchUpDown");
+        }
+      }
+    },
+
+    setLeft: function(state) {
+      var self = this;
+      if (self.left !== state) {
+        self.left = state;
+        if (state) {
+          self.action("touchDownLeft");
+        } else {
+          self.action("touchUpLeft");
+        }
+      }
+    },
+
+    setRight: function(state) {
+      var self = this;
+      if (self.right !== state) {
+        self.right = state;
+        if (state) {
+          self.action("touchDownRight");
+        } else {
+          self.action("touchUpRight");
+        }
+      }
+    },
+
+    action: function(id) {
+      var self = this;
+      if (id in self.actions) {
+        self.actions[id]();
       }
     }
 
