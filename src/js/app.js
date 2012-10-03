@@ -18,7 +18,7 @@
       var self = this;
       $("#screen-console").show();
 
-      self.control = new App.Control('#control-dpad');
+      self.control = new App.Controls.Pad('#control-dpad');
       self.gamesScreen = new App.Screens.Games('#screen-games', {
         'willShow': function() {
           console.log("willShow")
