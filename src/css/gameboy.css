@@ -52,7 +52,7 @@ body
   {
   position: absolute;
   width: 128px;
-  height: 100px;
+  height: 120px;
   }
 
 #group-options
@@ -254,16 +254,14 @@ body
   #group-buttons
     {
     width: 124px;
-    top: 50px;
+    top: 60px;
     right: 0;
     }
 
   #control-dpad
     {
-    top: 40px;
+    top: 60px;
     left: 0;
-    width: 124px;
-    height: 124px;
     }
 
   #LCD
@@ -316,7 +314,7 @@ body
 
   #group-buttons
     {
-    top: 316px;
+    top: 306px;
     right: 8px;
     }
 

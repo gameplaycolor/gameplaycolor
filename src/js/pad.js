@@ -53,19 +53,22 @@
         case App.Control.Touch.START:
         case App.Control.Touch.MOVE:
 
+          var upper = (width*2/3) + 10;
+          var lower = (width*1/3) - 10;
+
           var posX = 0;
-          if (position.x > (width*2/3)) {
+          if (position.x > upper) {
             posX = 1;
-          } else if (position.x > (width*1/3)) {
+          } else if (position.x > lower) {
             posX = 0;
           } else {
             posX = -1;
           }
 
           var posY = 0;
-          if (position.y > (height*2/3)) {
+          if (position.y > upper) {
             posY = 1;
-          } else if (position.y > (height*1/3)) {
+          } else if (position.y > lower) {
             posY = 0;
           } else {
             posY = -1;
