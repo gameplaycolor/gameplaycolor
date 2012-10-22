@@ -37,12 +37,18 @@ function handleAuthResult(authResult) {
     };
   }
   
+  // TODO Move this elsewhere.
   retrieveAllFiles(function(result) {
+  
+    var list = $('#files')
+  
     for (var i=0; i<result.length; i++) {
       console.log(result[i].title);
+      list.append('<li>' + result[i].title + '</li>');
       if (result[i].title == "example.txt") {
         console.log('found');
         downloadFile(result[i], function(data) {
+          $('#contents').html(data);
           console.log(data);
         });
       }
