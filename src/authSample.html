@@ -60,6 +60,7 @@
 			            if (authResult && !authResult.error) {
 			              authorizeButton.style.visibility = 'hidden';
 			              makeApiCall();
+			              makeDriveCall();
 			            } else {
 			              authorizeButton.style.visibility = '';
 			              authorizeButton.onclick = handleAuthClick;
@@ -78,16 +79,41 @@
 			                'userId': 'me'
 			              });
 			              request.execute(function(resp) {
-			    console.log(resp);
+            			    console.log(resp);
 			                var heading = document.createElement('h4');
 			                var image = document.createElement('img');
 			                image.src = resp.image.url;
 			                heading.appendChild(image);
 			                heading.appendChild(document.createTextNode(resp.displayName));
-
 			                document.getElementById('content').appendChild(heading);
 			              });
 			            });
+			          }
+			          
+			          function makeDriveCall() {
+                  gapi.client.load('drive', 'v2', function() {
+                    var request = gapi.client.drive.files.list ( {'maxResults': 5 } );
+/*
+                  var request = gapi.client.request({
+                          'path': '/drive/v2/files',
+                          'method': 'GET',
+                          'params': {'maxResults': '1'}
+                          });
+*/
+          
+                    request.execute(function(resp) {    
+                      console.log(resp)
+                      for (i=0; i<resp.items.length; i++) {
+                              var titulo = resp.items[i].title;
+                              var fechaUpd = resp.items[i].modifiedDate;
+                              var userUpd = resp.items[i].lastModifyingUserName;
+          
+                              var fileInfo = document.createElement('li');
+                              fileInfo.appendChild(document.createTextNode('TITLE: ' + titulo + ' - LAST MODIF: ' + fechaUpd + ' - BY: ' + userUpd ));                
+                              document.getElementById('content').appendChild(fileInfo);
+                      }
+                    });        
+                  });
 			          }
 			        </script>
 		        <script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
