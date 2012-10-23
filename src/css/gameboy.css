@@ -3,7 +3,7 @@ body
   padding: 0;
   margin: 0;
   -webkit-user-select: none;
-  background-color: #ccc;
+  background-color: black;
   font: 15px Geneva, Arial, Helvetica, sans-serif; 
   }
 
@@ -17,6 +17,8 @@ body
   padding: 0;
   border: 0;
   image-rendering: -webkit-optimize-contrast;
+  top: 0;
+  left: 124px;
   }
 
 #STATUS
@@ -155,14 +157,51 @@ body
   padding: 20px 0;
   text-align: center;
   }
-
+  
+#screen-console
+  {
+  background-color: #ccc;
+  }
+  
+#list-games
+  {
+  position: absolute;
+  top: 50px;
+  left: 30px;
+  height: 100px;
+  width: 260px;
+  margin: 0;
+  padding: 0;
+  background-color: red;
+  }
+  
+.game
+  {
+  background-color: yellow;
+  height: 120px;
+  width: 120px;
+  position: absolute;
+  }
+  
+#authorizeButton
+  {
+  position: absolute;
+  top: 100px;
+  left: 20px;
+  }
+  
 #screen-games
   {
-  background-color: white;
-  height: 100px;
-  width: 100px;
+  background-color: magenta;
+  }
+  
+.screen
+  {
   position: absolute;
+  top: 0;
   left: 0;
+  width: 568px;
+  height: 320px;
   }
 
 .title-button
@@ -181,9 +220,9 @@ body
 
 #control-add
   {
+  position: absolute;
   width: 42px;
   height: 28px;
-  position: absolute;
   top: 6px;
   left: 6px;
   }
@@ -206,8 +245,8 @@ body
 
 #control-games
   {
-  background-color: red;
   position: absolute;
+  background-color: red;
   width: 42px;
   height: 42px;
   }
@@ -241,8 +280,9 @@ body
   height: 88px;
   border-bottom: 1px solid #ccc;
   }
-
-@media only screen and (min-width:568px) {
+  
+  
+/* TODO Roll these back in. */
 
   #group-options
     {
@@ -264,22 +304,9 @@ body
     left: 0;
     }
 
-  #LCD
-    {
-    top: 0;
-    left: 124px;
-    }
-
   #debug
     {
     width: 568px;
-    }
-
-  #screen-games
-    {
-    height: 300px;
-    width: 598px;
-    top: 300px;
     }
 
   .title
@@ -302,9 +329,19 @@ body
     top: 250px;
     }
 
-}
-
 @media only screen and (max-width:320px) {
+
+  #LCD
+    {
+    top: 0;
+    left: 0;
+    }
+      
+  .screen
+    {
+    width: 320px;
+    height: 568px;
+    }
 
   #group-options
     {
@@ -335,13 +372,6 @@ body
     width: 320px;
     }
 
-  #screen-games
-    {
-    height: 587px;
-    width: 320px;
-    top: 578px;
-    }
-
   .title
     {
     height: 44px;
@@ -363,3 +393,4 @@ body
     }
 
 }
+

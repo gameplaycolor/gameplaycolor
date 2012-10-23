@@ -51,6 +51,41 @@ gbRAMBanks[4] = 16;
 
 var gbROMInfo = {};
 
+function gb_ROM_Load_Data(data) {
+  gbBankSwitchCount = 0;    
+  gbROM = [];
+  var i = 0;
+  var s=String(data);
+  i=s.length;
+  while (i--) gbROM[i]=s.charCodeAt(i)&0xff;
+  i=0x8000;
+  while (i--) gbMemory[i]=gbROM[i]; // copy 2 banks into memory
+
+  // ROM and RAM banks
+  gbROMInfo.ROMBanks = gbROMBanks[gbROM[0x148]];
+  gbROMInfo.RAMBanks = gbRAMBanks[gbROM[0x149]];
+  // ROM name
+  var s = gbROM.slice(0x0134,0x0143);
+  gbROMInfo.Name = '';
+  for (var i=0; i<16; i++) {
+    if (s[i]==0) break;
+    gbROMInfo.Name+=String.fromCharCode(s[i]);
+  }
+  // Cartridge type
+  gbROMInfo.CartridgeType = gbCartridgeType = gbROM[0x147];
+  // Set MEMR function
+  switch (gbROMInfo.CartridgeType) {
+  case _ROM_ONLY_:
+    MEMR = gb_Memory_Read_ROM_Only;
+    break;
+  case _ROM_MBC1_:
+    MEMR = gb_Memory_Read_MBC1_ROM; 
+    gbMBC1Mode = 0;
+    break;
+  }
+
+}
+
 function gb_ROM_Load(fileName) {
   gbBankSwitchCount = 0;    
   gbROM = [];

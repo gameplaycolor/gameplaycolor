@@ -22,7 +22,7 @@ $j(document).ready(function() {
 
   // Work out if we've been installed or not.
   // if (window.navigator.standalone) {
-    $j("#screen-console").show();
+/*     $j("#screen-console").show(); */
   // } else {
     // $("#screen-instructions").show();
   // }

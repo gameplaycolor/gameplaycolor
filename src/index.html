@@ -23,52 +23,38 @@
   <div id="screen-instructions" style="display: none">
     Add to Home Screen
   </div>
-  <div id="screen-console" style="display: none">
+  
+  <div id="screen-games" class="screen">
+    <div id="list-games"></div>
+    <input type="button" id="authorizeButton" style="display: none" value="Authorize" />
+  </div>
+
+  <div id="screen-console" class="screen">
     <canvas id="LCD" width="160" height="144"></canvas>
     <div id="control-dpad" class="sprite-pad-default"></div>
-    <div id="group-buttons">
-      <div id="control-a" class="button"></div>
-      <div id="control-b" class="button"></div>
-    </div>
     <div id="group-options">
       <div id="control-select" class="button-option"></div>
       <div id="control-start" class="button-option"></div>
     </div>
+    <div id="group-buttons">
+      <div id="control-a" class="button"></div>
+      <div id="control-b" class="button"></div>
+    </div>
     <div id="control-games"></div>
-    <div id="debug" style="display: none">DEBUG</div>
   </div>
 
-  <div id="screen-games" style="display: none">
-    <div class="title">
-      <h3>Games</h3>
-      <div id="control-done" class="title-button">Done</div>
-      <div id="control-add" class="title-button">+</div>
-    </div>
-    <div id="control-games-scroll">
-      <ul id="control-games-list" class="table">
-        <li>Game</li>
-        <li>Game</li>
-        <li>Game</li>
-        <li>Game</li>
-        <li>Game</li>
-        <li>Game</li>
-        <li>Game</li>
-        <li>Game</li>
-        <li>Game</li>
-        <li>Game</li>
-        <li>Game</li>
-      </ul>
-    </div>
-  </div>
+  <div id="debug" style="display: none">DEBUG</div>
+
+  
 
   <div id="STATUS"></div>
 
   <div id="DEBUG">&nbsp;</div>
     <div id="buttons" style="display:none;">
-      <input id="BR" type="button" value="Run"   onfocus="this.blur();" onclick="gb_Run();"/>
-      <input id="BP" type="button" value="Pause" onfocus="this.blur();" disabled onclick="gb_Pause();"/>
-      <input id="BS" type="button" value="Step"  onfocus="this.blur();" onclick="gb_Step();"/>
-      <input id="BS" type="button" value="Reset"  onfocus="this.blur();" onclick="gb_Insert_Cartridge($('CARTRIDGE').value,true);"/>
+      <input id="BR" type="button" value="Run"     onfocus="this.blur();" onclick="gb_Run();"/>
+      <input id="BP" type="button" value="Pause"   onfocus="this.blur();" disabled onclick="gb_Pause();"/>
+      <input id="BS" type="button" value="Step"    onfocus="this.blur();" onclick="gb_Step();"/>
+      <input id="BS" type="button" value="Reset"   onfocus="this.blur();" onclick="gb_Insert_Cartridge($('CARTRIDGE').value,true);"/>
       <input id="BX" type="button" value="Size x2" onfocus="this.blur();" onclick="gb_Resize_LCD();"/>
     <div>
   </div>
@@ -91,15 +77,16 @@
   <script src="jsgb/jsgb.debugger.js" type="application/x-javascript"></script>
   <script src="jsgb/jsgb.gameboy.js" type="application/x-javascript"></script>
 
-
   <script type="text/javascript" src="js/app.js"></script>
   <script type="text/javascript" src="js/control.js"></script>
   <script type="text/javascript" src="js/pad.js"></script>
   <script type="text/javascript" src="js/button.js"></script>
   <script type="text/javascript" src="js/screen.js"></script>
-  <script type="text/javascript" src="js/games.js"></script>
   <script type="text/javascript" src="js/scroll.js"></script>
   <script type="text/javascript" src="js/gameboy.js"></script>
+  
+  <script type="text/javascript" src="google.js"></script>
+  <script type="text/javascript" src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
 
 </body>
 </html>

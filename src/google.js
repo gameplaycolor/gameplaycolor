@@ -1,5 +1,6 @@
-var CLIENT_ID = '662240015525';
-var SCOPES = 'https://www.googleapis.com/auth/drive';
+
+CLIENT_ID = '662240015525';
+SCOPES = 'https://www.googleapis.com/auth/drive';
 
 /**
  * Called when the client library is loaded to start the auth flow.
@@ -36,24 +37,7 @@ function handleAuthResult(authResult) {
             handleAuthResult);
     };
   }
-  
-  // TODO Move this elsewhere.
-  retrieveAllFiles(function(result) {
-  
-    var list = $('#files')
-  
-    for (var i=0; i<result.length; i++) {
-      console.log(result[i].title);
-      list.append('<li>' + result[i].title + '</li>');
-      if (result[i].title == "example.txt") {
-        console.log('found');
-        downloadFile(result[i], function(data) {
-          $('#contents').html(data);
-          console.log(data);
-        });
-      }
-    }
-  });
+
 }
 
 
