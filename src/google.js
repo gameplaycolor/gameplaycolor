@@ -53,6 +53,7 @@ function downloadFile(file, callback) {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', file.downloadUrl);
     xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+    xhr.overrideMimeType('text/plain; charset=x-user-defined');
     xhr.onload = function() {
       callback(xhr.responseText);
     };
