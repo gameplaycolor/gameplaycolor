@@ -56,7 +56,6 @@ function gb_ROM_Load_Data(data) {
   gbROM = [];
   var i = 0;
   var s=String(data);
-  console.log(s);
   i=s.length;
   while (i--) gbROM[i]=s.charCodeAt(i)&0xff;
   i=0x8000;
@@ -97,7 +96,6 @@ function gb_ROM_Load(fileName) {
   req.send(null);
   if ((req.readyState==4)/*&&(req.status==200)*/) {
     var s=req.responseText;
-    console.log(s);
     i=s.length;
     while (i--) gbROM[i]=s.charCodeAt(i)&0xff;
     i=0x8000;

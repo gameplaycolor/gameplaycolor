@@ -53,15 +53,19 @@ body
 #group-buttons
   {
   position: absolute;
-  width: 128px;
   height: 120px;
+  width: 124px;
+  top: 60px;
+  right: 0;
   }
 
 #group-options
   {
   position: absolute;
-  width: 128px;
+  width: 124px;
   height: 40px;
+  top: 248px;
+  right: 0;
   }
 
 #control-a
@@ -94,9 +98,11 @@ body
 
 #control-dpad
   {
+  position: absolute;
   width: 140px;
   height: 140px;
-  position: absolute;
+  top: 60px;
+  left: 0;
   }
 
 .sprite-pad-default
@@ -156,6 +162,7 @@ body
   opacity: 0.7;
   padding: 20px 0;
   text-align: center;
+  width: 568px;
   }
   
 #screen-console
@@ -166,13 +173,12 @@ body
 #list-games
   {
   position: absolute;
-  top: 50px;
-  left: 30px;
-  height: 100px;
-  width: 260px;
+  top: 60px;
+  left: 25px;
+  height: 420px;
+  width: 1000px;
   margin: 0;
   padding: 0;
-  background-color: red;
   }
   
 .game
@@ -181,6 +187,7 @@ body
   height: 120px;
   width: 120px;
   position: absolute;
+  text-align: center;
   }
   
 #authorizeButton
@@ -192,7 +199,7 @@ body
   
 #screen-games
   {
-  background-color: magenta;
+  background-color: #666;
   }
   
 .screen
@@ -209,13 +216,17 @@ body
   background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#707070), to(#1C1C1C));
   border-radius: 4px;
   border: 1px solid black;
+  height: 32px;
+  width: 598px;
   }
 
 #control-done
   {
-  width: 42px;
-  height: 28px;
   position: absolute;
+  width: 200px;
+  height: 28px;
+  top: 0;
+  right: 0;
   }
 
 #control-add
@@ -249,6 +260,8 @@ body
   background-color: red;
   width: 42px;
   height: 42px;
+  left: 8px;
+  top: 250px;
   }
 
 #control-games-scroll
@@ -281,53 +294,6 @@ body
   border-bottom: 1px solid #ccc;
   }
   
-  
-/* TODO Roll these back in. */
-
-  #group-options
-    {
-    top: 248px;
-    right: 0;
-    width: 124px;
-    }
-
-  #group-buttons
-    {
-    width: 124px;
-    top: 60px;
-    right: 0;
-    }
-
-  #control-dpad
-    {
-    top: 60px;
-    left: 0;
-    }
-
-  #debug
-    {
-    width: 568px;
-    }
-
-  .title
-    {
-    height: 32px;
-    width: 598px;
-    }
-
-  #control-done
-    {
-    top: 0;
-    right: 0;
-    width: 200px;
-    height: 28px;
-    }
-
-  #control-games
-    {
-    left: 8px;
-    top: 250px;
-    }
 
 @media only screen and (max-width:320px) {
 
