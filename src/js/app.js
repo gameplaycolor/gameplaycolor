@@ -54,7 +54,10 @@
       }});
       
       self.list = new Array();
+      
+      self.console = new App.Console();
 
+/*
       self.games = new App.Controls.Button('#control-games', { 'touchUpInside': function() {
         $('#screen-console').animate({
           top: '-520'
@@ -76,9 +79,6 @@
           var MARGIN = 30;
           
           for (var i=0; i<result.length; i++) {
-/*             list.append('<div class="game">' + result[i].title + '</div>'); */
-
-            // self.list.append(result[i]);
 
             row = count % ROWS;
             col = Math.floor(count / ROWS);
@@ -111,8 +111,9 @@
         });
         
       }});
+*/
 
-      gb_Insert_Cartridge("kirby.gb", true);
+/*       gb_Insert_Cartridge("kirby.gb", true); */
 
     }
 
