@@ -220,24 +220,6 @@ body
   width: 598px;
   }
 
-#control-done
-  {
-  position: absolute;
-  width: 200px;
-  height: 28px;
-  top: 0;
-  right: 0;
-  }
-
-#control-add
-  {
-  position: absolute;
-  width: 42px;
-  height: 28px;
-  top: 6px;
-  left: 6px;
-  }
-
 .title
   {
   background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#4A4A4A), to(#000000));
@@ -342,14 +324,6 @@ body
     {
     height: 44px;
     width: 320px;
-    }
-
-  #control-done
-    {
-    top: 6px;
-    right: 6px;
-    width: 60px;
-    height: 28px;
     }
 
   #control-games
