@@ -35,7 +35,6 @@
 
         // Update the initial orientation and watch for changes.        
         self.orientationChange(function(orientation) {
-          console.log("Orientation changed: " + orientation);
           self.updateLayout();
         });
 
