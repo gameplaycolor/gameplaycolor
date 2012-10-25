@@ -11,14 +11,16 @@
     init: function() {
       var self = this;
       self.element = $('#screen-games');
+      self.empty = $('#screen-empty');
     },
     
     update: function() {
       var self = this;
+      self.empty.show();
       
-      // Populate the file list.
-      // TODO We should probably do some sort of 'sync' thing using local storage.
+      // Update the files.
       retrieveAllFiles(function(result) {
+        self.empty.hide();
         for (var i=0; i<result.length; i++) {
           console.log(result[i].title);
         }

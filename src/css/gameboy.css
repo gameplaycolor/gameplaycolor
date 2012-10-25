@@ -202,6 +202,18 @@ body
   background-color: #666;
   }
   
+#screen-empty
+  {
+  width: 568px;
+  height: 320px;
+  text-align: center;
+  }
+  
+#spinner
+  {
+  padding: 160px;
+  }
+  
 .screen
   {
   position: absolute;
@@ -330,6 +342,19 @@ body
     {
     right: 8px;
     top: 498px;
+    }
+    
+  #screen-empty
+    {
+    width: 320px;
+    height: 568px;
+    text-align: center;
+    }
+    
+  #spinner
+    {
+    padding-top: 280px;
+    padding: 
     }
 
 }

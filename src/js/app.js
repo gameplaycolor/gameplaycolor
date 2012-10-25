@@ -21,18 +21,8 @@
       self.games = new App.Games();
       self.console = new App.Console({
         'willHide': function() {
-          console.log('willHide');
-          // self.games.update();
-        },
-        'didHide': function() {
-          console.log('didHide');
-        },
-        'willShow': function() {
-          console.log('willShow');
-        },
-        'didShow': function() {
-          console.log('didShow');
-        },
+          self.games.update();
+        }
       });
 
 /*
