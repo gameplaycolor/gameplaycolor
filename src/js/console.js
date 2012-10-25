@@ -1,7 +1,7 @@
 (function($) {
 
-  App.Console = function() {
-    this.init();
+  App.Console = function(events) {
+    this.init(events);
   };
   
   App.Console.State = {
@@ -27,9 +27,10 @@
   jQuery.extend(
     App.Console.prototype, {
       
-      init: function() {
+      init: function(events) {
         var self = this;
-      
+        
+        self.events = events;
         self.element = $('#screen-console');
         self.state = App.Console.State.VISIBLE;
 
@@ -117,10 +118,19 @@
 
       },
       
+      event: function(id) {
+        var self = this;
+        if (id in self.events) {
+          self.events[id]();
+        }
+      },
+      
       hide: function() {
         var self = this;
         
         if (self.state != App.Console.State.HIDDEN) {
+        
+          self.event('willHide');
         
           // Determine which offset to animate to.
           var top = App.Console.Dimensions.HIDE_TOP_PORTRAIT
@@ -132,6 +142,7 @@
           self.element.animate({
             'top': top
           }, 300, function() {
+            self.event('didHide');
           });
           
         }
@@ -142,10 +153,14 @@
         var self = this;
         
         if (self.state != App.Console.State.VISIBLE) {
+        
+          self.event('willShow');
+        
           self.state = App.Console.State.VISIBLE;
           self.element.animate({
             'top': App.Console.Dimensions.SHOW_TOP
           }, 300, function() {
+            self.event('didShow');
           });
         }
       },
