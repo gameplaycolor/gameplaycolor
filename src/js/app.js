@@ -18,7 +18,7 @@
       var self = this;
 /*       $("#screen-console").show(); */
 
-      
+      self.games = new App.Games();
       self.console = new App.Console();
 
 /*
