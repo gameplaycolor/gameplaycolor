@@ -38,6 +38,46 @@
           self.updateLayout();
         });
 
+        // D-Pad.        
+        self.pad = new App.Controls.Pad('#control-dpad', {
+          'touchDownLeft'  : function() { gb_KeyDown(Gameboy.Key.LEFT); },
+          'touchUpLeft'    : function() { gb_KeyUp(Gameboy.Key.LEFT); },
+          'touchDownRight' : function() { gb_KeyDown(Gameboy.Key.RIGHT); },
+          'touchUpRight'   : function() { gb_KeyUp(Gameboy.Key.RIGHT); },
+          'touchDownUp'    : function() { gb_KeyDown(Gameboy.Key.UP); },
+          'touchUpUp'      : function() { gb_KeyUp(Gameboy.Key.UP); },
+          'touchDownDown'  : function() { gb_KeyDown(Gameboy.Key.DOWN); },
+          'touchUpDown'    : function() { gb_KeyUp(Gameboy.Key.DOWN); },
+        });
+        
+        // A.
+        self.a = new App.Controls.Button('#control-a', { 'touchDown' : function() {
+          gb_KeyDown(Gameboy.Key.A);
+        }, 'touchUp': function() {
+          gb_KeyUp(Gameboy.Key.A);
+        }});
+
+        // B.
+        self.b = new App.Controls.Button('#control-b', { 'touchDown' : function() {
+          gb_KeyDown(Gameboy.Key.B);
+        }, 'touchUp': function() {
+          gb_KeyUp(Gameboy.Key.B);
+        }});
+
+        // Start.
+        self.start = new App.Controls.Button('#control-start', { 'touchDown' : function() {
+          gb_KeyDown(Gameboy.Key.START);
+        }, 'touchUp': function() {
+          gb_KeyUp(Gameboy.Key.START);
+        }});
+
+        // Select.
+        self.select = new App.Controls.Button('#control-select', { 'touchDown' : function() {
+          gb_KeyDown(Gameboy.Key.SELECT);
+        }, 'touchUp': function() {
+          gb_KeyUp(Gameboy.Key.SELECT);
+        }});
+
         // Configure the actions for the game loading screen.
         self.games = new App.Controls.Button('#control-games', { 'touchUpInside': function() {
           self.toggle();

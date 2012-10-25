@@ -18,42 +18,6 @@
       var self = this;
 /*       $("#screen-console").show(); */
 
-      self.control = new App.Controls.Pad('#control-dpad', {
-        'touchDownLeft'  : function() { gb_KeyDown(Gameboy.Key.LEFT); },
-        'touchUpLeft'    : function() { gb_KeyUp(Gameboy.Key.LEFT); },
-        'touchDownRight' : function() { gb_KeyDown(Gameboy.Key.RIGHT); },
-        'touchUpRight'   : function() { gb_KeyUp(Gameboy.Key.RIGHT); },
-        'touchDownUp'    : function() { gb_KeyDown(Gameboy.Key.UP); },
-        'touchUpUp'      : function() { gb_KeyUp(Gameboy.Key.UP); },
-        'touchDownDown'  : function() { gb_KeyDown(Gameboy.Key.DOWN); },
-        'touchUpDown'    : function() { gb_KeyUp(Gameboy.Key.DOWN); },
-      });
-
-      self.a = new App.Controls.Button('#control-a', { 'touchDown' : function() {
-        gb_KeyDown(Gameboy.Key.A);
-      }, 'touchUp': function() {
-        gb_KeyUp(Gameboy.Key.A);
-      }});
-
-      self.b = new App.Controls.Button('#control-b', { 'touchDown' : function() {
-        gb_KeyDown(Gameboy.Key.B);
-      }, 'touchUp': function() {
-        gb_KeyUp(Gameboy.Key.B);
-      }});
-
-      self.start = new App.Controls.Button('#control-start', { 'touchDown' : function() {
-        gb_KeyDown(Gameboy.Key.START);
-      }, 'touchUp': function() {
-        gb_KeyUp(Gameboy.Key.START);
-      }});
-
-      self.select = new App.Controls.Button('#control-select', { 'touchDown' : function() {
-        gb_KeyDown(Gameboy.Key.SELECT);
-      }, 'touchUp': function() {
-        gb_KeyUp(Gameboy.Key.SELECT);
-      }});
-      
-      self.list = new Array();
       
       self.console = new App.Console();
 
