@@ -80,27 +80,34 @@
       hide: function() {
         var self = this;
         
-        // Determine which offset to animate to.
-        console.log('Orientation: ' + self.orientation);
-        var top = App.Console.Dimensions.HIDE_TOP_PORTRAIT
-        if (self.orientation == App.Console.Orientation.LANDSCAPE) {
-          top = App.Console.Dimensions.HIDE_TOP_LANDSCAPE;
+        if (self.state != App.Console.State.HIDDEN) {
+        
+          // Determine which offset to animate to.
+          var top = App.Console.Dimensions.HIDE_TOP_PORTRAIT
+          if (self.orientation == App.Console.Orientation.LANDSCAPE) {
+            top = App.Console.Dimensions.HIDE_TOP_LANDSCAPE;
+          }
+          
+          self.state = App.Console.State.HIDDEN;
+          self.element.animate({
+            'top': top
+          }, 300, function() {
+          });
+          
         }
         
-        self.state = App.Console.State.HIDDEN;
-        self.element.animate({
-          'top': top
-        }, 300, function() {
-        });
       },
       
       show: function() {
         var self = this;
-        self.state = App.Console.State.VISIBLE;
-        self.element.animate({
-          'top': App.Console.Dimensions.SHOW_TOP
-        }, 300, function() {
-        });
+        
+        if (self.state != App.Console.State.VISIBLE) {
+          self.state = App.Console.State.VISIBLE;
+          self.element.animate({
+            'top': App.Console.Dimensions.SHOW_TOP
+          }, 300, function() {
+          });
+        }
       },
       
       // Re-layout the console depending on its state.
