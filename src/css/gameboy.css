@@ -205,7 +205,7 @@ body
 #screen-empty
   {
   width: 568px;
-  height: 320px;
+  height: 300px;
   text-align: center;
   }
   
@@ -220,7 +220,7 @@ body
   top: 0;
   left: 0;
   width: 568px;
-  height: 320px;
+  height: 300px;
   }
 
 .title-button
@@ -264,7 +264,7 @@ body
   top: 44px;
   left: 0;
   height: 300px;
-  width: 320px;
+  width: 300px;
   }
 
 #control-games-list
@@ -272,7 +272,7 @@ body
   position: absolute;
   top: 0;
   left: 0;
-  width: 320px;
+  width: 300px;
   }
 
 .table
@@ -300,7 +300,7 @@ body
   .screen
     {
     width: 320px;
-    height: 568px;
+    height: 548px;
     }
 
   #group-options
@@ -347,7 +347,7 @@ body
   #screen-empty
     {
     width: 320px;
-    height: 568px;
+    height: 548px;
     text-align: center;
     }
     
