@@ -23,7 +23,17 @@
           return self.items[index].title;
         },
         'didSelectItemForRow': function(index) {
-          console.log('didSelectItemForRow: ' + self.items[index].title);
+          // TODO This needs to be more elegant.
+          // Do we want a progress indicator for this?
+          downloadFile(self.items[index], function(data) {
+            gb_Insert_Cartridge_Data(data, true);
+            gb_Run();
+            // TODO This should be shown using the correct API.
+            $('#screen-console').animate({
+              top: '0'
+            }, 300, function() {
+            });
+          });
         },
       };
       
@@ -35,6 +45,7 @@
       
       // Update the files.
       retrieveAllFiles(function(result) {
+        self.items = new Array();
         self.empty.hide();
         for (var i=0; i<result.length; i++) {
           self.items.push(result[i]);

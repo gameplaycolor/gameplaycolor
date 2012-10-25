@@ -173,19 +173,18 @@ body
 #list-games
   {
   position: absolute;
-  top: 60px;
-  left: 25px;
-  height: 420px;
-  width: 1000px;
+  top: 80px;
+  left: 74px;
+  height: 160px;
+  width: 420px;
   margin: 0;
   padding: 0;
+  overflow: hidden;
   }
   
 .game
   {
   background-color: yellow;
-  height: 120px;
-  width: 120px;
   position: absolute;
   text-align: center;
   }
@@ -354,8 +353,16 @@ body
   #spinner
     {
     padding-top: 280px;
-    padding: 
     }
+    
+  #list-games
+    {
+    top: 60px;
+    left: 25px;
+    height: 460px;
+    width: 270px;
+    }
+
 
 }
 
