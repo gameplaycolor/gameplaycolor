@@ -12,6 +12,21 @@
       var self = this;
       self.element = $('#screen-games');
       self.empty = $('#screen-empty');
+      self.grid = new App.Grid();
+      self.items = new Array();
+      
+      self.grid.dataSource = {
+        'count' : function() {
+           return self.items.length;
+         },
+        'titleForIndex': function(index) {
+          return self.items[index].title;
+        },
+        'didSelectItemForRow': function(index) {
+          console.log('didSelectItemForRow: ' + self.items[index].title);
+        },
+      };
+      
     },
     
     update: function() {
@@ -22,10 +37,11 @@
       retrieveAllFiles(function(result) {
         self.empty.hide();
         for (var i=0; i<result.length; i++) {
-          console.log(result[i].title);
+          self.items.push(result[i]);
         }
+        self.grid.reloadData();
       });
-      
+            
     },
 /*
         var list = $('#list-games')
