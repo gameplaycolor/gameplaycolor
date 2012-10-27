@@ -14,7 +14,14 @@
       self.empty = $('#screen-empty');
       self.grid = new App.Grid();
       self.items = new Array();
-      self.library = new App.Library();
+      self.library = new App.Library(function(data) {
+        gb_Insert_Cartridge_Data(data, true);
+        // TODO This is not the correct API.
+        $('#screen-console').animate({
+          top: '0'
+        }, 300, function() {
+        });
+      });
       self.grid.dataSource = self.library;
       
       // Next.
