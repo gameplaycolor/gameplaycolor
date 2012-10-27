@@ -17,9 +17,8 @@
       // Load the library.
       var library = localStorage.getItem('library');
       if (library) {
-        self.items = library;
-        self.cache = library;
-        self.callbacks.onUpdate();
+        self.items = jQuery.parseJSON(library);
+        self.cache = jQuery.parseJSON(library);
       }
       
     },
@@ -47,7 +46,7 @@
         downloadFile(file, function(data) {
           self.cache.push(file);
           localStorage.setItem(file.id, data);
-          localStorage.setItem('library', self.cache);
+          localStorage.setItem('library', JSON.stringify(self.cache));
           self.callbacks.onLoad(data);
         });
       
@@ -59,11 +58,13 @@
       
       // Update the files.
       retrieveAllFiles(function(result) {
-        self.items = new Array();
-        for (var i=0; i<result.length; i++) {
-          var file = result[i];
-          if (file.fileExtension == 'gb') {
-            self.items.push(file);
+        if (result) {
+          self.items = new Array();
+          for (var i=0; i<result.length; i++) {
+            var file = result[i];
+            if (file.fileExtension == 'gb') {
+              self.items.push(file);
+            }
           }
         }
         self.callbacks.onUpdate();

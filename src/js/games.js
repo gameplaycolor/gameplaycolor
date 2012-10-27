@@ -1,15 +1,16 @@
 
 (function($) {
 
-  App.Games = function() {
-    this.init();
+  App.Games = function(callback) {
+    this.init(callback);
   };
 
   jQuery.extend(
     App.Games.prototype, {
 
-    init: function() {
+    init: function(callback) {
       var self = this;
+      self.callback = callback;
       self.element = $('#screen-games');
       self.empty = $('#screen-empty');
       self.grid = new App.Grid();
@@ -21,11 +22,7 @@
         },
         'onLoad': function(data) {
           gb_Insert_Cartridge_Data(data, true);
-          // TODO This is not the correct API.
-          $('#screen-console').animate({
-            top: '0'
-          }, 300, function() {
-          });
+          self.callback();
         },
       });
       self.grid.dataSource = self.library;

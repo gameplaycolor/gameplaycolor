@@ -15,9 +15,10 @@
 
     init: function () {
       var self = this;
-/*       $("#screen-console").show(); */
 
-      self.games = new App.Games();
+      self.games = new App.Games(function() {
+        self.didLoad();
+      });
       self.console = new App.Console({
         'willHide': function() {
           gb_Pause();
@@ -28,9 +29,12 @@
         }
       });
 
-/*       gb_Insert_Cartridge("kirby.gb", true); */
-
-    }
+    },
+    
+    didLoad: function() {
+      var self = this;
+      self.console.toggle();
+    },
 
   });
 
