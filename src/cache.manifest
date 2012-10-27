@@ -1,6 +1,11 @@
 CACHE MANIFEST
 
-index.html
+# Version 19
+
+CACHE:
+
+offline.html
+
 css/gameboy.css
 
 js/jquery-1.8.2.min.js
@@ -25,12 +30,23 @@ js/control.js
 js/gameboy.js 
 js/games.js
 js/pad.js
-js/screen.js
-js/scroll.js
+js/grid.js
+js/console.js
+js/library.js
+js/dummy.js
 
+google.js
 
 images/states.png
 images/button.png
 images/select.png
+images/spinner.gif
 
-roms/kirby.gb
+NETWORK:
+
+index.html
+*
+
+FALLBACK:
+
+*.html /offline.html

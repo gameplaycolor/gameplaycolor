@@ -15,25 +15,51 @@
 
     init: function () {
       var self = this;
+      self.running = false;
 
       self.games = new App.Games(function() {
+        self.running == true;
         self.didLoad();
       });
       self.console = new App.Console({
         'willHide': function() {
-          gb_Pause();
+          if (self.running == true) {
+            gb_Pause();
+          }
           self.games.update();
         },
         'didShow': function() {
-          gb_Run();
+          if (self.running == true) {
+            gb_Run();
+          }
         }
       });
+      
+      self.checkForUpdate();
 
     },
     
     didLoad: function() {
       var self = this;
       self.console.toggle();
+    },
+    
+    checkForUpdate: function() {
+      var self = this;
+      if (window.applicationCache != undefined && window.applicationCache != null) {
+        window.applicationCache.addEventListener('updateready', function(event) {
+          self.updateApplication(event);
+        });
+      }
+    },
+
+    updateApplication: function(event) {
+      var self = this;
+      if (window.applicationCache.status != 4) return;
+        alert('Update Ready!');
+        window.applicationCache.removeEventListener('updateready', self.updateApplication);
+        window.applicationCache.swapCache();
+        window.location.reload();
     },
 
   });

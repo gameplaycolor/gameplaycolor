@@ -73,26 +73,30 @@ function downloadFile(file, callback) {
  * @param {Function} callback Function to call when the request is complete.
  */
 function retrieveAllFiles(callback) {
-  var retrievePageOfFiles = function(request, result) {
-    request.execute(function(resp) {
-      result = result.concat(resp.items);
-      var nextPageToken = resp.nextPageToken;
-      if (nextPageToken) {
-        request = gapi.client.request({
-          'path': '/drive/v2/files',
-          'method': 'GET',
-          'params': {'maxResults': '100', 'pageToken': nextPageToken}
-        });
-        retrievePageOfFiles(request, result);
-      } else {
-        callback(result);
-      }
+  try {
+    var retrievePageOfFiles = function(request, result) {
+      request.execute(function(resp) {
+        result = result.concat(resp.items);
+        var nextPageToken = resp.nextPageToken;
+        if (nextPageToken) {
+          request = gapi.client.request({
+            'path': '/drive/v2/files',
+            'method': 'GET',
+            'params': {'maxResults': '100', 'pageToken': nextPageToken}
+          });
+          retrievePageOfFiles(request, result);
+        } else {
+          callback(result);
+        }
+      });
+    }
+    var initialRequest = gapi.client.request({
+      'path': '/drive/v2/files',
+      'method': 'GET',
+      'params': {'maxResults': '100'}
     });
+    retrievePageOfFiles(initialRequest, []);
+  } catch (error) {
+    callback();
   }
-  var initialRequest = gapi.client.request({
-    'path': '/drive/v2/files',
-    'method': 'GET',
-    'params': {'maxResults': '100'}
-  });
-  retrievePageOfFiles(initialRequest, []);
 }
