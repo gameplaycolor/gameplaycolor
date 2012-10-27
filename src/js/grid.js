@@ -17,8 +17,11 @@
     init: function () {
       var self = this;
       self.element = $('#list-games');
+      self.content = $('#list-games-content');
       self.count = 0;
       self.rows = 0;
+      self.width = 0;
+      self.page = 0;
       self.dataSource = {
         'count' : function() { return 0; },
         'titleForIndex': function(index) { return ''; },
@@ -36,7 +39,7 @@
       var self = this;
       
       self.count = 0;
-      self.element.html("");
+      self.content.html("");
       for (var i=0; i<self.dataSource.count(); i++) {
         var title = self.dataSource.titleForIndex(i);
         self.add(i, title);
@@ -46,10 +49,14 @@
     updateLayout: function() {
       var self = this;
       
-      var rows = Math.floor(self.element.height() / (App.Grid.Cell.HEIGHT + App.Grid.MARGIN));
+      var rows = Math.floor((self.content.height() + App.Grid.MARGIN) / (App.Grid.Cell.HEIGHT + App.Grid.MARGIN));
+      var width =  Math.floor((self.element.width() + App.Grid.MARGIN) / (App.Grid.Cell.WIDTH + App.Grid.MARGIN));
       // Relayout if required.
-      if (rows != self.rows) {
+      if ((rows != self.rows) || (width != self.width)) {
         self.rows = rows;
+        self.width = width;
+        self.page = 0;
+        self.content.css('left', 0);
         self.reloadData();
       }
       
@@ -72,9 +79,32 @@
         self.dataSource.didSelectItemForRow(index);
       });
       
-      self.element.append(game);
+      self.content.append(game);
       self.count += 1;
       
+    },
+    
+    next: function() {
+      var self = this;
+      var max = Math.floor(self.count / (self.rows * self.width));
+      if (self.page < max) {        
+        self.page += 1;
+        self.content.animate({
+          'left': -1 * (self.page * self.width * (App.Grid.Cell.WIDTH + App.Grid.MARGIN))
+        }, 300, function() {
+        });
+      }
+    },
+    
+    previous: function() {
+      var self = this;
+      if (self.page > 0) {
+        self.page -= 1;
+        self.content.animate({
+          'left': -1 * (self.page * self.width * (App.Grid.Cell.WIDTH + App.Grid.MARGIN))
+        }, 300, function() {
+        });
+      }
     },
 
   });

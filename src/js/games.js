@@ -37,6 +37,20 @@
         },
       };
       
+      // Next.
+      self.next = new App.Controls.Button('#control-next', {
+        'touchUp': function() {
+          self.grid.next();
+        }
+      });
+      
+      // Previous.
+      self.previous = new App.Controls.Button('#control-previous', {
+        'touchUp': function() {
+          self.grid.previous();
+        }
+      });
+      
     },
     
     update: function() {

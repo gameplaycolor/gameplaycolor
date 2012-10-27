@@ -175,11 +175,41 @@ body
   position: absolute;
   top: 80px;
   left: 74px;
-  height: 160px;
+  height: 120px;
   width: 420px;
   margin: 0;
   padding: 0;
   overflow: hidden;
+  }
+  
+#list-games-content
+  {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 120px;
+  width: 2000px;
+  }
+  
+.navigation
+  {
+  height: 40px;
+  width: 100px;
+  background-color: purple;
+  }
+  
+#control-previous
+  {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  }
+  
+#control-next
+  {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
   }
   
 .game
@@ -359,10 +389,15 @@ body
     {
     top: 60px;
     left: 25px;
-    height: 460px;
+    height: 420px;
     width: 270px;
     }
-
+    
+  #list-games-content
+    {
+    height: 420px;
+    width: 2000px;
+    }
 
 }
 
