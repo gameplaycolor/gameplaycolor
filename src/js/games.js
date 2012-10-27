@@ -27,7 +27,6 @@
           // Do we want a progress indicator for this?
           downloadFile(self.items[index], function(data) {
             gb_Insert_Cartridge_Data(data, true);
-            gb_Run();
             // TODO This should be shown using the correct API.
             $('#screen-console').animate({
               top: '0'

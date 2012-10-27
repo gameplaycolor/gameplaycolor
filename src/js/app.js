@@ -20,7 +20,11 @@
       self.games = new App.Games();
       self.console = new App.Console({
         'willHide': function() {
+          gb_Pause();
           self.games.update();
+        },
+        'didShow': function() {
+          gb_Run();
         }
       });
 
