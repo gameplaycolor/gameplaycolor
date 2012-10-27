@@ -1,52 +1,48 @@
 CACHE MANIFEST
 
-# Version 19
+# Version 27
 
 CACHE:
 
-offline.html
+/index.html
 
-css/gameboy.css
+/css/gameboy.css
 
-js/jquery-1.8.2.min.js
-js/jquery.base64.min.js
+/js/jquery-1.8.2.min.js
+/js/jquery.base64.min.js
 
-jsgb/toolbox.js
-jsgb/scrollbar.js
+/jsgb/toolbox.js
+/jsgb/scrollbar.js
 
-jsgb/jsgb.cpu.js
-jsgb/jsgb.rom.js
-jsgb/jsgb.memory.js
-jsgb/jsgb.interrupts.js
-jsgb/jsgb.input.js
-jsgb/jsgb.lcd.js
-jsgb/jsgb.timers.js
-jsgb/jsgb.debugger.js
-jsgb/jsgb.gameboy.js
+/jsgb/jsgb.cpu.js
+/jsgb/jsgb.rom.js
+/jsgb/jsgb.memory.js
+/jsgb/jsgb.interrupts.js
+/jsgb/jsgb.input.js
+/jsgb/jsgb.lcd.js
+/jsgb/jsgb.timers.js
+/jsgb/jsgb.debugger.js
+/jsgb/jsgb.gameboy.js
 
-js/app.js
-js/button.js
-js/control.js
-js/gameboy.js 
-js/games.js
-js/pad.js
-js/grid.js
-js/console.js
-js/library.js
-js/dummy.js
+/js/app.js
+/js/button.js
+/js/control.js
+/js/gameboy.js 
+/js/games.js
+/js/pad.js
+/js/grid.js
+/js/console.js
+/js/library.js
+/js/dummy.js
 
-google.js
+/google.js
 
-images/states.png
-images/button.png
-images/select.png
-images/spinner.gif
+/images/states.png
+/images/button.png
+/images/select.png
+/images/spinner.gif
 
 NETWORK:
 
-index.html
 *
 
-FALLBACK:
-
-*.html /offline.html
