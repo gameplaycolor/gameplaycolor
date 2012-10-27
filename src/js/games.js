@@ -14,13 +14,19 @@
       self.empty = $('#screen-empty');
       self.grid = new App.Grid();
       self.items = new Array();
-      self.library = new App.Library(function(data) {
-        gb_Insert_Cartridge_Data(data, true);
-        // TODO This is not the correct API.
-        $('#screen-console').animate({
-          top: '0'
-        }, 300, function() {
-        });
+      self.library = new App.Library({
+        'onUpdate': function() {
+          self.grid.reloadData();
+          self.empty.hide();
+        },
+        'onLoad': function(data) {
+          gb_Insert_Cartridge_Data(data, true);
+          // TODO This is not the correct API.
+          $('#screen-console').animate({
+            top: '0'
+          }, 300, function() {
+          });
+        },
       });
       self.grid.dataSource = self.library;
       
@@ -45,10 +51,7 @@
       
       // Update the library.
       self.empty.show();
-      self.library.update(function() {
-        self.grid.reloadData();
-        self.empty.hide();
-      });
+      self.library.update();
                   
     },
 

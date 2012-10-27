@@ -1,24 +1,25 @@
 
 (function($) {
 
-  App.Library = function(callback) {
-    this.init(callback);
+  App.Library = function(callbacks) {
+    this.init(callbacks);
   };
 
   jQuery.extend(
     App.Library.prototype, {
 
-    init: function(callback) {
+    init: function(callbacks) {
       var self = this;
       self.items = new Array();
       self.cache = new Array();
-      self.callback = callback;
+      self.callbacks = callbacks;
       
       // Load the library.
       var library = localStorage.getItem('library');
       if (library) {
         self.items = library;
         self.cache = library;
+        self.callbacks.onUpdate();
       }
       
     },
@@ -41,19 +42,19 @@
       // Only attempt to download the file if it hasn't already been cached.
       var data = localStorage.getItem(file.id);
       if (data) {
-        self.callback(data);
+        self.callbacks.onLoad(data);
       } else {
         downloadFile(file, function(data) {
           self.cache.push(file);
           localStorage.setItem(file.id, data);
           localStorage.setItem('library', self.cache);
-          self.callback(data);
+          self.callbacks.onLoad(data);
         });
       
       }      
     },
     
-    update: function(callback) {
+    update: function() {
       var self = this;
       
       // Update the files.
@@ -65,7 +66,7 @@
             self.items.push(file);
           }
         }
-        callback();
+        self.callbacks.onUpdate();
       });
             
     },
