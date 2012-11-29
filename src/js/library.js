@@ -62,7 +62,7 @@
           self.items = new Array();
           for (var i=0; i<result.length; i++) {
             var file = result[i];
-            if (file.fileExtension == 'gb') {
+            if (file.fileExtension === 'gb') {
               self.items.push(file);
             }
           }

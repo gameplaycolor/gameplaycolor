@@ -60,9 +60,10 @@
 
         // B.
         self.b = new App.Controls.Button('#control-b', { 'touchDown' : function() {
-          gb_KeyDown(Gameboy.Key.B);
+          // gb_KeyDown(Gameboy.Key.B);
         }, 'touchUp': function() {
-          gb_KeyUp(Gameboy.Key.B);
+          // gb_KeyUp(Gameboy.Key.B);
+          self.save();
         }});
 
         // Start.
@@ -74,9 +75,10 @@
 
         // Select.
         self.select = new App.Controls.Button('#control-select', { 'touchDown' : function() {
-          gb_KeyDown(Gameboy.Key.SELECT);
+          // gb_KeyDown(Gameboy.Key.SELECT);
         }, 'touchUp': function() {
-          gb_KeyUp(Gameboy.Key.SELECT);
+          // gb_KeyUp(Gameboy.Key.SELECT);
+          self.load();
         }});
 
         // Configure the actions for the game loading screen.
@@ -87,6 +89,35 @@
           self.toggle();
         });
         
+      },
+      
+      save: function() {
+        var self = this;
+        var state = JSON.stringify({
+          gbMemory: gbMemory,
+          gbFrameBuffer: gbFrameBuffer,
+          gbTileData: gbTileData,
+          // gbBackgroundData: gbBackgroundData
+        });
+        localStorage.setItem('state', state);
+      },
+      
+      load: function() {
+        var self = this;
+        var stateJSON = localStorage.getItem('state');
+        if (stateJSON) {
+          var state = jQuery.parseJSON(stateJSON);
+          alert(state)
+          
+          gb_Pause();
+          gbMemory = state.gbMemory;
+          gbFrameBuffer = state.gbFrameBuffer;
+          gbTileData = state.gbTileData;
+          // gbBackgroundData = state.gbBackgroundData;
+          gb_Framebuffer_to_LCD();
+          gb_Run();
+          
+        }
       },
       
       orientationChange: function(callback) {
