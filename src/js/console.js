@@ -97,27 +97,29 @@
           gbMemory: gbMemory,
           gbFrameBuffer: gbFrameBuffer,
           gbTileData: gbTileData,
-          // gbBackgroundData: gbBackgroundData
+          gbBackgroundData: gbBackgroundData
         });
-        localStorage.setItem('state', state);
+        window.app.store.setProperty(App.Store.Property.STATE, state);
       },
       
       load: function() {
         var self = this;
-        var stateJSON = localStorage.getItem('state');
-        if (stateJSON) {
-          var state = jQuery.parseJSON(stateJSON);
-          alert(state)
-          
-          gb_Pause();
-          gbMemory = state.gbMemory;
-          gbFrameBuffer = state.gbFrameBuffer;
-          gbTileData = state.gbTileData;
-          // gbBackgroundData = state.gbBackgroundData;
-          gb_Framebuffer_to_LCD();
-          gb_Run();
-          
-        }
+        window.app.store.property(App.Store.Property.STATE, function(stateJSON) {
+          if (stateJSON) {
+            var state = jQuery.parseJSON(stateJSON);
+            alert(state)
+            
+            gb_Pause();
+            gbMemory = state.gbMemory;
+            gbFrameBuffer = state.gbFrameBuffer;
+            gbTileData = state.gbTileData;
+            gbBackgroundData = state.gbBackgroundData;
+            gb_Framebuffer_to_LCD();
+            gb_Run();
+            
+          }
+        });
+        
       },
       
       orientationChange: function(callback) {

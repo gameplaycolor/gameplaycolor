@@ -25,6 +25,7 @@ CACHE:
 /jsgb/jsgb.gameboy.js
 
 /js/app.js
+/js/store.js
 /js/button.js
 /js/control.js
 /js/gameboy.js 

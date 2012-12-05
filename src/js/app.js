@@ -16,6 +16,7 @@
     init: function () {
       var self = this;
       self.running = false;
+      self.store = new App.Store();
 
       self.games = new App.Games(function() {
         self.running == true;
