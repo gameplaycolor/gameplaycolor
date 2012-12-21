@@ -6,7 +6,8 @@
   };
   
   App.Store.Property = {
-    STATE: 0
+    STATE: 0,
+    GAME:  1
   };
   
   jQuery.extend(App.Store.prototype, {

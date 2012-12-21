@@ -1,7 +1,7 @@
 (function($) {
 
-  App.Console = function(events) {
-    this.init(events);
+  App.Console = function(events, store) {
+    this.init(events, store);
   };
   
   App.Console.State = {
@@ -27,10 +27,11 @@
   jQuery.extend(
     App.Console.prototype, {
       
-      init: function(events) {
+      init: function(events, store) {
         var self = this;
         
         self.events = events;
+        self.store = store;
         self.element = $('#screen-console');
         self.state = App.Console.State.VISIBLE;
 
@@ -60,10 +61,9 @@
 
         // B.
         self.b = new App.Controls.Button('#control-b', { 'touchDown' : function() {
-          // gb_KeyDown(Gameboy.Key.B);
+          gb_KeyDown(Gameboy.Key.B);
         }, 'touchUp': function() {
-          // gb_KeyUp(Gameboy.Key.B);
-          self.save();
+          gb_KeyUp(Gameboy.Key.B);
         }});
 
         // Start.
@@ -75,10 +75,9 @@
 
         // Select.
         self.select = new App.Controls.Button('#control-select', { 'touchDown' : function() {
-          // gb_KeyDown(Gameboy.Key.SELECT);
+          gb_KeyDown(Gameboy.Key.SELECT);
         }, 'touchUp': function() {
-          // gb_KeyUp(Gameboy.Key.SELECT);
-          self.load();
+          gb_KeyUp(Gameboy.Key.SELECT);
         }});
 
         // Configure the actions for the game loading screen.
@@ -89,6 +88,22 @@
           self.toggle();
         });
         
+        self.saver = new Worker('js/saver.js');
+        self.saver.onmessage = function(message) {
+          console.log(message);
+        };
+        self.load();
+        
+      },
+      
+      scheduleSave: function() {
+        var self = this;
+        setTimeout(function() {
+          console.log("Save");
+          self.save();
+          self.scheduleSave();
+          // self.saver.postMessage([gbMemory, gbFrameBuffer, gbTileData, gbBackgroundData]);
+        }, 10000);      
       },
       
       save: function() {
@@ -99,26 +114,38 @@
           gbTileData: gbTileData,
           gbBackgroundData: gbBackgroundData
         });
-        window.app.store.setProperty(App.Store.Property.STATE, state);
+        self.store.setProperty(App.Store.Property.STATE, state);
       },
       
       load: function() {
         var self = this;
-        window.app.store.property(App.Store.Property.STATE, function(stateJSON) {
-          if (stateJSON) {
-            var state = jQuery.parseJSON(stateJSON);
-            alert(state)
-            
-            gb_Pause();
-            gbMemory = state.gbMemory;
-            gbFrameBuffer = state.gbFrameBuffer;
-            gbTileData = state.gbTileData;
-            gbBackgroundData = state.gbBackgroundData;
-            gb_Framebuffer_to_LCD();
-            gb_Run();
-            
-          }
-        });
+        
+        self.store.property(App.Store.Property.GAME, function(filename) {
+        
+          if (filename !== undefined) {
+            var data = localStorage.getItem(filename);
+            if (data) {
+              gb_Insert_Cartridge_Data(data, true);
+              setTimeout(function() {
+                self.store.property(App.Store.Property.STATE, function(stateJSON) {
+                  if (stateJSON !== undefined) {
+                      var state = jQuery.parseJSON(stateJSON);
+                      gb_Pause();
+                      gbMemory = state.gbMemory;
+                      gbFrameBuffer = state.gbFrameBuffer;
+                      gbTileData = state.gbTileData;
+                      gbBackgroundData = state.gbBackgroundData;
+                      gb_Framebuffer_to_LCD();
+                      gb_Run();
+                      self.scheduleSave();
+                    }
+                  });
+                }, 5000);
+              }
+            } else {
+              self.scheduleSave();
+            } 
+          });
         
       },
       

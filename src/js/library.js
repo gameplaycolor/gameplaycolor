@@ -38,6 +38,10 @@
       var self = this;
       var file = self.items[index];
       
+      // Store the name of the file we're playing.
+      // TODO This is very much the wrong place to do this.
+      window.app.store.setProperty(App.Store.Property.GAME, file.id);
+      
       // Only attempt to download the file if it hasn't already been cached.
       var data = localStorage.getItem(file.id);
       if (data) {

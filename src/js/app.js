@@ -34,7 +34,7 @@
             gb_Run();
           }
         }
-      });
+      }, self.store);
       
       self.checkForUpdate();
       
