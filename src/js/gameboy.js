@@ -49,21 +49,6 @@ Gameboy.Key = {
   RIGHT: 39,
 };
 
-document.addEventListener('touchmove', function(e) {
-  e.preventDefault();
-}, false);
-
-$j(document).ready(function() {
-
-  // Work out if we've been installed or not.
-  // if (window.navigator.standalone) {
-/*     $j("#screen-console").show(); */
-  // } else {
-    // $("#screen-instructions").show();
-  // }
-
-});
-
 function gb_Show_Fps() {}
 
 function gb_KeyDown(keycode) {

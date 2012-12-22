@@ -19,6 +19,22 @@
       self.store = new App.Store();
       self.gameBoy = App.GameBoy.getInstance();
 
+      // Prevent touchmove events.
+      document.addEventListener('touchmove', function(e) {
+        e.preventDefault();
+      }, false);
+
+      // TODO Don't show the console on anythign but an iPhone.
+      $j(document).ready(function() {
+        // Work out if we've been installed or not.
+        // if (window.navigator.standalone) {
+      /*     $j("#screen-console").show(); */
+        // } else {
+          // $("#screen-instructions").show();
+        // }
+      });
+
+
       self.games = new App.Games(function() {
         self.running == true;
         self.didLoad();
