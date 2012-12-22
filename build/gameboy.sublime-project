@@ -1,0 +1,21 @@
+{
+	"folders":
+	[
+		{
+			"path": ".."
+		}
+	],
+  "build_systems":
+  [
+    {
+      "name": "Zyloid Beta",
+      "cmd": ["/bin/bash", "deploy-beta.sh"],
+      "working_dir": "${project_path}"
+    },
+    {
+      "name": "Zyloid Release",
+      "cmd": ["/bin/bash", "deploy.sh"],
+      "working_dir": "${project_path}"
+    }
+  ]
+}
