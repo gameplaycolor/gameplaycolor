@@ -17,6 +17,7 @@
       var self = this;
       self.running = false;
       self.store = new App.Store();
+      self.gameBoy = App.GameBoy.getInstance();
 
       self.games = new App.Games(function() {
         self.running == true;
@@ -25,13 +26,13 @@
       self.console = new App.Console({
         'willHide': function() {
           if (self.running == true) {
-            gb_Pause();
+            self.gameBoy.pause();
           }
           self.games.update();
         },
         'didShow': function() {
           if (self.running == true) {
-            gb_Run();
+            self.gameBoy.run();
           }
         }
       }, self.store);

@@ -18,15 +18,16 @@
         
     init: function() {
       var self = this;
-      self.state = App.Drive.State.UNINITIALIZED;
-      self.queue = [];
+    },
 
-      // TODO This shouldn't live here.
-      var authButton = document.getElementById('authorizeButton');
-      authButton.onclick = function() {
-        self.authorize(false);
-      };
+    pause: function() {
+      var self = this;
+      gb_Pause();
+    },
 
+    run: function() {
+      var self = this;
+      gb_Run();
     },
 
   });
