@@ -150,6 +150,17 @@ body
   background:url(../images/states.png) -1120px 0;
   }
 
+#button-done
+  {
+  position: absolute;
+  bottom: 7px;
+  right: 6px;
+  height: 30px;
+  width: 60px;
+  text-align: center;
+  background-color: magenta;
+  }
+
 #debug
   {
   height: 20px;

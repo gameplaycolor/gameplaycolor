@@ -17,7 +17,7 @@
   App.Console.Dimensions = {
   
     SHOW_TOP:            0,
-    HIDE_TOP_PORTRAIT:  -520,
+    HIDE_TOP_PORTRAIT:  -504,
     HIDE_TOP_LANDSCAPE: -280,
     
     DEVICE_WIDTH: 320,
