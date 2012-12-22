@@ -109,8 +109,6 @@
         }
       },
 
-
-
       loadComplete: function() {
         var self = this;
         setTimeout(function() {
