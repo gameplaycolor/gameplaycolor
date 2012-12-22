@@ -81,9 +81,6 @@
         }});
 
         // Configure the actions for the game loading screen.
-        self.games = new App.Controls.Button('#control-games', { 'touchUpInside': function() {
-          self.toggle();
-        }});
         $('#LCD').click(function() {
           self.toggle();
         });
