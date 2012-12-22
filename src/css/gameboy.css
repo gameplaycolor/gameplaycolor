@@ -277,16 +277,6 @@ body
   margin-top: 11px;
   }
 
-#control-games
-  {
-  position: absolute;
-  background-color: red;
-  width: 42px;
-  height: 42px;
-  left: 8px;
-  top: 250px;
-  }
-
 #control-games-scroll
   {
   position: absolute;
