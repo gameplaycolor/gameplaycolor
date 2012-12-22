@@ -1,4 +1,40 @@
 
+(function($) {
+
+  App.GameBoy = function() {
+    this.init();
+  };
+
+  App.GameBoy.instance = undefined;
+
+  App.GameBoy.getInstance = function() {
+    if (App.GameBoy.instance === undefined) {
+      App.GameBoy.instance = new App.GameBoy();
+    }
+    return App.GameBoy.instance;
+  };
+
+  jQuery.extend(App.GameBoy.prototype, {
+        
+    init: function() {
+      var self = this;
+      self.state = App.Drive.State.UNINITIALIZED;
+      self.queue = [];
+
+      // TODO This shouldn't live here.
+      var authButton = document.getElementById('authorizeButton');
+      authButton.onclick = function() {
+        self.authorize(false);
+      };
+
+    },
+
+  });
+
+})(jQuery);
+
+
+
 Gameboy = {};
 
 Gameboy.Key = {
