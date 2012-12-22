@@ -18,9 +18,6 @@
       self.running = false;
       self.store = new App.Store();
 
-      // Initialize Google Drive
-      App.Drive.getInstance().update();
-
       self.games = new App.Games(function() {
         self.running == true;
         self.didLoad();

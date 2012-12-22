@@ -59,9 +59,9 @@
     
     update: function() {
       var self = this;
-      
+
       // Update the files.
-      retrieveAllFiles(function(result) {
+      App.Drive.getInstance().files(function(result) {
         if (result) {
           self.items = new Array();
           for (var i=0; i<result.length; i++) {
