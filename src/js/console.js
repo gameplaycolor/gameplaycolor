@@ -82,8 +82,13 @@
 
         // Configure the actions for the game loading screen.
         $('#LCD').click(function() {
-          self.toggle();
+          self.hide();
         });
+
+        // Dismiss button.
+        self.done = new App.Controls.Button('#button-done', { 'touchUp': function() {
+          self.show();
+        }});
         
         self.saver = new Worker('js/saver.js');
         self.saver.onmessage = function(message) {
@@ -201,6 +206,7 @@
           }, 300, function() {
             self.event('didHide');
           });
+          self.done.fadeIn();
           
         }
         
@@ -219,6 +225,7 @@
           }, 300, function() {
             self.event('didShow');
           });
+          self.done.fadeOut();
         }
       },
       
@@ -233,18 +240,6 @@
           } else {
             self.element.css('top', App.Console.Dimensions.HIDE_TOP_LANDSCAPE);        
           }
-        }
-      },
-      
-      toggle: function() {
-        var self = this;
-        switch (self.state) {
-        case App.Console.State.VISIBLE:
-          self.hide();
-          break;
-        case App.Console.State.HIDDEN:
-          self.show();
-          break;
         }
       },
 

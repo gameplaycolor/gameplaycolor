@@ -104,7 +104,19 @@
       return self.element.height();
     },
 
-    onTouchEvent: function(state, position) {}
+    onTouchEvent: function(state, position) {
+      var self = this;
+    },
+
+    fadeIn: function() {
+      var self = this;
+      self.element.fadeIn();
+    },
+
+    fadeOut: function() {
+      var self = this;
+      self.element.fadeOut();
+    },
 
   });
 

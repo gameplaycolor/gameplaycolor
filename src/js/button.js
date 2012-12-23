@@ -70,7 +70,7 @@
     touchUpOutside: function() {
       var self = this;
       self.action("touchUpOutside");
-    }
+    },
 
   });
 
