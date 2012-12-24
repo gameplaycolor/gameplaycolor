@@ -1,6 +1,6 @@
 CACHE MANIFEST
 
-# Version 48
+# Version 49
 
 CACHE:
 
@@ -35,6 +35,7 @@ CACHE:
 /js/console.js
 /js/library.js
 /js/dummy.js
+/js/touchlistener.js
 
 /google.js
 

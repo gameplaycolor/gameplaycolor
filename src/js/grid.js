@@ -16,7 +16,8 @@
 
     init: function () {
       var self = this;
-      self.element = $('#list-games');
+      self.identifier = '#list-games';
+      self.element = $(self.identifier);
       self.content = $('#list-games-content');
       self.count = 0;
       self.rows = 0;
@@ -27,6 +28,7 @@
         'titleForIndex': function(index) { return ''; },
         'didSelectItemForRow': function(index) {},
       };
+      self.touchListener = new App.TouchListener(self.identifier, self);
       
       self.updateLayout();
       $(window).resize(function() {
@@ -105,6 +107,19 @@
         }, 300, function() {
         });
       }
+    },
+
+    onTouchEvent: function(state, position) {
+      var self = this;
+      console.log(position);
+
+      if (state === App.Control.Touch.START) {
+      } else if (state === App.Control.Touch.MOVE) {
+        self.content.offset({ left:position.x, top: 0});
+      } else if (state === App.Control.Touch.END) {
+
+      }
+
     },
 
   });
