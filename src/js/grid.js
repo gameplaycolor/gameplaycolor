@@ -29,6 +29,7 @@
         'didSelectItemForRow': function(index) {},
       };
       self.touchListener = new App.TouchListener(self.identifier, self);
+      self.scrolling = false;
       
       self.updateLayout();
       $(window).resize(function() {
@@ -89,35 +90,73 @@
     next: function() {
       var self = this;
       var max = Math.floor(self.count / (self.rows * self.width));
-      if (self.page < max) {        
-        self.page += 1;
-        self.content.animate({
-          'left': -1 * (self.page * self.width * (App.Grid.Cell.WIDTH + App.Grid.MARGIN))
-        }, 300, function() {
-        });
+      if (self.page < max) {  
+        self.setPage(self.page += 1);
       }
     },
     
     previous: function() {
       var self = this;
       if (self.page > 0) {
-        self.page -= 1;
-        self.content.animate({
-          'left': -1 * (self.page * self.width * (App.Grid.Cell.WIDTH + App.Grid.MARGIN))
-        }, 300, function() {
-        });
+        self.setPage(self.page -= 1);
       }
+    },
+
+    setPage: function(page) {
+      var self = this;
+      self.page = page;
+      self.content.animate({
+        'left': -1 * (self.page * self.pageWidth())
+      }, 300, function() {
+      });
+    },
+
+    pageWidth: function() {
+      var self = this;
+      return self.width * (App.Grid.Cell.WIDTH + App.Grid.MARGIN)
     },
 
     onTouchEvent: function(state, position) {
       var self = this;
-      console.log(position);
+
+      // TODO Don't break on multiple touches.
 
       if (state === App.Control.Touch.START) {
-      } else if (state === App.Control.Touch.MOVE) {
-        self.content.offset({ left:position.x, top: 0});
-      } else if (state === App.Control.Touch.END) {
 
+        self.offset = self.content.offset();
+        self.touchStart = position;
+        self.scrolling = true;
+
+      } else if (state === App.Control.Touch.MOVE) {
+        if (self.scrolling) {
+
+          // Updae the position.
+          var left = position.x - self.touchStart.x
+          self.content.offset({
+            'left': self.offset.left + left,
+            'top': self.offset.top
+          });
+
+        }
+      } else if (state === App.Control.Touch.END) {
+        if (self.scrolling) {
+
+          // Update the position.
+          var left = position.x - self.touchStart.x
+          self.content.offset({
+            'left': self.offset.left + left,
+            'top': self.offset.top
+          });
+
+          // Snap to a page.
+          var offset = self.content.offset().left - (self.pageWidth() / 2);
+          var p = Math.floor(-1 * offset / self.pageWidth());
+          self.setPage(p);
+          console.log("Page: " + p);
+
+          // Finish scrolling.
+          self.scrolling = false;
+        }
       }
 
     },

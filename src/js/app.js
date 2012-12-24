@@ -54,14 +54,12 @@
       }, self.store);
       
       self.checkForUpdate();
-      
-
 
     },
     
     didLoad: function() {
       var self = this;
-      self.console.toggle();
+      self.console.show();
     },
     
     checkForUpdate: function() {

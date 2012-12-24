@@ -56,7 +56,7 @@
     },
 
     convert: function(event) {
-      var self = this;      
+      var self = this;
       var offset = self.element.offset();
       if (event.touches) {
         var touch = event.touches[0];
