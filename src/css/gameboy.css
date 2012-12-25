@@ -201,6 +201,38 @@ body
   height: 120px;
   width: 2000px;
   }
+
+#list-games-page-control
+  {
+  position: absolute;
+  bottom: 10px;
+  left: 110px;
+  height: 20px;
+  width: 80px;
+  background-color: black;
+  padding: 10px;
+  display: -webkit-box;
+  display: box;
+  -webkit-box-orient: horizontal;
+  box-orient: horizontal;
+  -webkit-box-pack: center;
+  box-pack: center;
+  }
+
+.page
+  {
+  width: 6px;
+  height: 6px;
+  background-color: white;
+  border-radius: 50%;
+  opacity: 0.5;
+  margin: 8px;
+  }
+
+.page.active
+  {
+  opacity: 1.000000;
+  }
   
 .navigation
   {
