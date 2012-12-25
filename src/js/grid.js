@@ -12,6 +12,8 @@
     HEIGHT: 120,
   };
 
+  App.Grid.MOVE_THRESHOLD = 10;
+
   jQuery.extend(App.Grid.prototype, {
 
     init: function () {
@@ -22,6 +24,7 @@
       self.count = 0;
       self.rows = 0;
       self.width = 0;
+      self.pageWidth = 0;
       self.page = 0;
       self.dataSource = {
         'count' : function() { return 0; },
@@ -29,6 +32,8 @@
         'didSelectItemForRow': function(index) {},
       };
       self.touchListener = new App.TouchListener(self.identifier, self);
+      self.touchStart = { x: 0, y: 0};
+      self.touchDidMove = false;
       self.scrolling = false;
       
       self.updateLayout();
@@ -58,6 +63,7 @@
       if ((rows != self.rows) || (width != self.width)) {
         self.rows = rows;
         self.width = width;
+        self.pageWidth = self.width * (App.Grid.Cell.WIDTH + App.Grid.MARGIN);
         self.page = 0;
         self.content.css('left', 0);
         self.reloadData();
@@ -78,13 +84,37 @@
       game.css('height', App.Grid.Cell.HEIGHT);
       game.css('width', App.Grid.Cell.WIDTH);
       
-      game.click(function() {
-        self.dataSource.didSelectItemForRow(index);
-      });
-      
       self.content.append(game);
       self.count += 1;
       
+    },
+
+    // Convert a position in container coordinates to content coordinates.
+    contentPosition: function(position) {
+      var self = this;
+      var contentPosition = {
+        x: position.x + (self.pageWidth * self.page),
+        y: position.y
+      };
+      return contentPosition;
+    },
+
+    // Determine with which item a touch position intersects.
+    // undefined if the touch does not intersect an item.
+    itemForPosition: function(position) {
+      var self = this;
+
+      // Work out which item it is.
+      var contentPosition = self.contentPosition(position);
+      var x = Math.floor(contentPosition.x / (App.Grid.Cell.WIDTH + App.Grid.MARGIN));
+      var y = Math.floor(contentPosition.y / (App.Grid.Cell.HEIGHT + App.Grid.MARGIN));
+
+      // TODO Take into account the dead space of the margins.
+
+      var index = (x * self.rows) + y;
+
+      self.dataSource.didSelectItemForRow(index);
+
     },
     
     next: function() {
@@ -106,14 +136,37 @@
       var self = this;
       self.page = page;
       self.content.animate({
-        'left': -1 * (self.page * self.pageWidth())
+        'left': -1 * (self.page * self.pageWidth)
       }, 300, function() {
       });
     },
 
-    pageWidth: function() {
+    // Returns the distance between two points.
+    distance: function(a, b) {
       var self = this;
-      return self.width * (App.Grid.Cell.WIDTH + App.Grid.MARGIN)
+      var x = a.x - b.x;
+      var y = a.y - b.y;
+      return Math.sqrt(x*x + y*y);
+    },
+
+    // Returns the horizontal distance between two points.
+    distanceX: function(a, b) {
+      var self = this;
+      return Math.abs(a.x - b.x);
+    },
+
+    // Returns the vertical distance between two points.
+    distanceY: function(a, b) {
+      var self = this;
+      return Math.abs(a.y - b.y);
+    },
+
+    // Returns true if the touch event represents a move from the
+    // original touchStart position.
+    touchIsMove: function(position) {
+      var self = this;
+      var distance = self.distanceX(self.touchStart, position);
+      return (distance >= App.Grid.MOVE_THRESHOLD);
     },
 
     onTouchEvent: function(state, position) {
@@ -125,12 +178,16 @@
 
         self.offset = self.content.offset();
         self.touchStart = position;
+        self.touchDidMove = false;
         self.scrolling = true;
 
       } else if (state === App.Control.Touch.MOVE) {
         if (self.scrolling) {
 
-          // Updae the position.
+          // Update the move status.
+          self.touchDidMove = self.touchDidMove | self.touchIsMove(position);
+
+          // Update the position.
           var left = position.x - self.touchStart.x
           self.content.offset({
             'left': self.offset.left + left,
@@ -141,6 +198,9 @@
       } else if (state === App.Control.Touch.END) {
         if (self.scrolling) {
 
+          // Update the move status.
+          self.touchDidMove = self.touchDidMove | self.touchIsMove(position);
+
           // Update the position.
           var left = position.x - self.touchStart.x
           self.content.offset({
@@ -148,13 +208,21 @@
             'top': self.offset.top
           });
 
-          // Snap to a page.
-          var offset = self.content.offset().left - (self.pageWidth() / 2);
-          var p = Math.floor(-1 * offset / self.pageWidth());
-          self.setPage(p);
-          console.log("Page: " + p);
+          if (self.touchDidMove) {
+
+            // Snap to a page.
+            var offset = self.content.offset().left - (self.pageWidth / 2);
+            var p = Math.floor(-1 * offset / self.pageWidth);
+            self.setPage(p);
+
+          } else {
+
+            self.item = self.itemForPosition(position);
+
+          }
 
           // Finish scrolling.
+          // TODO Consider if this is the right place.
           self.scrolling = false;
         }
       }
