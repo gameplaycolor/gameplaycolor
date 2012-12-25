@@ -34,7 +34,7 @@
       self.touchListener = new App.TouchListener(self.identifier, self);
       self.touchStart = { x: 0, y: 0};
       self.touchDidMove = false;
-      self.scrolling = false;
+      self.touchCount = 0;
       
       self.updateLayout();
       $(window).resize(function() {
@@ -116,29 +116,45 @@
       self.dataSource.didSelectItemForRow(index);
 
     },
+
+    minPage: function() {
+      var self = this;
+      return 0;
+    },
+
+    maxPage: function() {
+      var self = this;
+      var max = Math.floor(self.count / (self.rows * self.width));
+      return max;
+    },
     
     next: function() {
       var self = this;
-      var max = Math.floor(self.count / (self.rows * self.width));
-      if (self.page < max) {  
+      if (self.page < self.maxPage()) {  
         self.setPage(self.page += 1);
       }
     },
     
     previous: function() {
       var self = this;
-      if (self.page > 0) {
+      if (self.page > self.minPage()) {
         self.setPage(self.page -= 1);
       }
+    },
+
+    // Animate transition to a given page.
+    animate: function(page) {
+      var self = this;
+      self.content.animate({
+        'left': -1 * (page * self.pageWidth)
+      }, 300, function() {
+      });
     },
 
     setPage: function(page) {
       var self = this;
       self.page = page;
-      self.content.animate({
-        'left': -1 * (self.page * self.pageWidth)
-      }, 300, function() {
-      });
+      self.animate(self.page);
     },
 
     // Returns the distance between two points.
@@ -179,24 +195,27 @@
         self.offset = self.content.offset();
         self.touchStart = position;
         self.touchDidMove = false;
-        self.scrolling = true;
+        self.touchCount = 1;
 
       } else if (state === App.Control.Touch.MOVE) {
-        if (self.scrolling) {
+        if (self.touchCount > 0) {
 
           // Update the move status.
           self.touchDidMove = self.touchDidMove | self.touchIsMove(position);
+          if (self.touchDidMove) {
 
-          // Update the position.
-          var left = position.x - self.touchStart.x
-          self.content.offset({
-            'left': self.offset.left + left,
-            'top': self.offset.top
-          });
+            // Update the position.
+            var left = position.x - self.touchStart.x
+            self.content.offset({
+              'left': self.offset.left + left,
+              'top': self.offset.top
+            });
+
+          }
 
         }
       } else if (state === App.Control.Touch.END) {
-        if (self.scrolling) {
+        if (self.touchCount > 0) {
 
           // Update the move status.
           self.touchDidMove = self.touchDidMove | self.touchIsMove(position);
@@ -213,7 +232,14 @@
             // Snap to a page.
             var offset = self.content.offset().left - (self.pageWidth / 2);
             var p = Math.floor(-1 * offset / self.pageWidth);
-            self.setPage(p);
+
+            if (p < self.minPage() || p > self.maxPage()) {
+              self.animate(self.page);
+            } else {
+              self.setPage(p);
+            }
+
+            // TODO Support 'flick' gestures.
 
           } else {
 
@@ -221,9 +247,7 @@
 
           }
 
-          // Finish scrolling.
-          // TODO Consider if this is the right place.
-          self.scrolling = false;
+          self.touchCount = 0;
         }
       }
 
