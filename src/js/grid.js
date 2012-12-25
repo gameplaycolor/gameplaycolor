@@ -13,6 +13,7 @@
   };
 
   App.Grid.MOVE_THRESHOLD = 10;
+  App.Grid.SCROLL_BIAS = 40;
 
   jQuery.extend(App.Grid.prototype, {
 
@@ -168,20 +169,20 @@
     // Returns the horizontal distance between two points.
     distanceX: function(a, b) {
       var self = this;
-      return Math.abs(a.x - b.x);
+      return b.x - a.x;
     },
 
     // Returns the vertical distance between two points.
     distanceY: function(a, b) {
       var self = this;
-      return Math.abs(a.y - b.y);
+      return b.y - a.y;
     },
 
     // Returns true if the touch event represents a move from the
     // original touchStart position.
     touchIsMove: function(position) {
       var self = this;
-      var distance = self.distanceX(self.touchStart, position);
+      var distance = Math.abs(self.distanceX(self.touchStart, position));
       return (distance >= App.Grid.MOVE_THRESHOLD);
     },
 
@@ -229,14 +230,23 @@
 
           if (self.touchDidMove) {
 
-            // Snap to a page.
-            var offset = self.content.offset().left - (self.pageWidth / 2);
-            var p = Math.floor(-1 * offset / self.pageWidth);
+            // Work out if we are moving forwards or backwards.
+            var page = self.page;
+            var distance = self.distanceX(self.touchStart, position);
+            if (Math.abs(distance) > ((self.pageWidth / 2) - App.Grid.SCROLL_BIAS)) {
+              if (distance > 0) {
+                page = page - 1;
+              } else {
+                page = page + 1;
+              }
+            }
 
-            if (p < self.minPage() || p > self.maxPage()) {
+            if (page == self.page ||
+                page < self.minPage() ||
+                page > self.maxPage()) {
               self.animate(self.page);
             } else {
-              self.setPage(p);
+              self.setPage(page);
             }
 
             // TODO Support 'flick' gestures.
