@@ -89,6 +89,11 @@
       var self = this;
       self.pageControl.html("");
       self.pageItems = [];
+
+      if (self.count == 0) {
+        return;
+      }
+
       for (var i=self.minPage(); i<=self.maxPage(); i++) {
         var item = $('<div class="page">');
         self.pageControl.append(item);
@@ -98,6 +103,11 @@
 
     updatePageItems: function() {
       var self = this;
+
+      if (self.count == 0) {
+        return;
+      }
+
       for (var i=self.minPage(); i<=self.maxPage(); i++) {
         var item = self.pageItems[i];
         if (i === self.page) {
@@ -233,10 +243,10 @@
       var left = distance;
       if (self.page == self.minPage() &&
           left > 0) {
-        left = distance / 2;
+        left = distance / 3;
       } else if (self.page == self.maxPage() &&
                  left < 0) {
-        left = distance / 2;
+        left = distance / 3;
       }
 
       // Update the position.
