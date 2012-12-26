@@ -9,11 +9,17 @@
   
   App.Grid.Cell = {
     WIDTH:  120,
-    HEIGHT: 120,
+    HEIGHT: 120
   };
 
   App.Grid.MOVE_THRESHOLD = 10;
   App.Grid.SCROLL_BIAS = 40;
+
+  App.Grid.Margin = {
+    TOP: 25,
+    LEFT: 25,
+    RIGHT: 25
+  }
 
   jQuery.extend(App.Grid.prototype, {
 
@@ -77,7 +83,7 @@
       if ((rows != self.rows) || (width != self.width)) {
         self.rows = rows;
         self.width = width;
-        self.pageWidth = self.width * (App.Grid.Cell.WIDTH + App.Grid.MARGIN);
+        self.pageWidth = (self.width * (App.Grid.Cell.WIDTH + App.Grid.MARGIN)) + App.Grid.Margin.LEFT + App.Grid.Margin.RIGHT;
         self.page = 0;
         self.content.css('left', 0);
         self.reloadData();
@@ -123,11 +129,15 @@
       
       var row = self.count % self.rows;
       var col = Math.floor(self.count / self.rows);
+
+      var itemsPerPage = self.width * self.rows;
+
+      var page = Math.floor(self.count / itemsPerPage);
       
       var game = $('<div class="game">');
-      game.html(title)
-      game.css('top', (App.Grid.Cell.HEIGHT + App.Grid.MARGIN) * row);
-      game.css('left', (App.Grid.Cell.WIDTH + App.Grid.MARGIN) * col);
+      game.html(title);
+      game.css('top', App.Grid.Margin.TOP + ((App.Grid.Cell.HEIGHT + App.Grid.MARGIN) * row));
+      game.css('left', App.Grid.Margin.LEFT + ((App.Grid.Margin.LEFT + App.Grid.Margin.RIGHT) * page) + ((App.Grid.Cell.WIDTH + App.Grid.MARGIN) * col));
       game.css('height', App.Grid.Cell.HEIGHT);
       game.css('width', App.Grid.Cell.WIDTH);
       
@@ -154,7 +164,7 @@
       // Work out which item it is.
       var contentPosition = self.contentPosition(position);
       var x = Math.floor(contentPosition.x / (App.Grid.Cell.WIDTH + App.Grid.MARGIN));
-      var y = Math.floor(contentPosition.y / (App.Grid.Cell.HEIGHT + App.Grid.MARGIN));
+      var y = Math.floor((contentPosition.y - App.Grid.Margin.TOP) / (App.Grid.Cell.HEIGHT + App.Grid.MARGIN));
 
       var index = (x * self.rows) + y;
       if (index < self.count) {
