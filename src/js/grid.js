@@ -142,11 +142,10 @@
       var x = Math.floor(contentPosition.x / (App.Grid.Cell.WIDTH + App.Grid.MARGIN));
       var y = Math.floor(contentPosition.y / (App.Grid.Cell.HEIGHT + App.Grid.MARGIN));
 
-      // TODO Take into account the dead space of the margins.
-
       var index = (x * self.rows) + y;
-
-      self.dataSource.didSelectItemForRow(index);
+      if (index < self.count) {
+        self.dataSource.didSelectItemForRow(index);  
+      }
 
     },
 
