@@ -43,6 +43,9 @@
       self.touchStartTimestamp = 0;
       self.touchDidMove = false;
       self.touchCount = 0;
+
+      self.gestureRecognizer = new App.GestureRecognizer();
+      self.touchListener.addRecognizer(self.gestureRecognizer);
       
       self.updateLayout();
       $(window).resize(function() {
@@ -276,7 +279,21 @@
               }
             }
 
-            if (page == self.page ||
+            // If the user has not made a large enough movement to change the page,
+            // check to see if we've matched a swipe gesture before giving up and
+            // resetting back to the current the page.
+            if (page === self.page) {
+              if (self.gestureRecognizer.state === App.GestureRecognizer.State.RECOGNIZED) {
+                if (self.gestureRecognizer.direction === App.GestureRecognizer.Direction.RIGHT) {
+                  page = page - 1;
+                } else if (self.gestureRecognizer.direction === App.GestureRecognizer.Direction.LEFT) {
+                  page = page + 1;
+                }
+              }
+            }
+
+            // Animate back to the current page or move to the new page.
+            if (page === self.page ||
                 page < self.minPage() ||
                 page > self.maxPage()) {
               self.animate(self.page);
@@ -284,7 +301,8 @@
               self.setPage(page);
             }
 
-            // TODO Support 'flick' gestures.
+            // Reset the gesture recognizer.
+            self.gestureRecognizer.reset();
 
           } else {
 

@@ -12,6 +12,7 @@
       self.identifier = identifier;
       self.delegate = delegate;
       self.element = $(self.identifier);
+      self.recognizers = [];
 
       // Used for tracking the current touch interaction.
       // We need to cache the touch position as we don't get valid coordinates in
@@ -22,37 +23,46 @@
       document.querySelector(self.identifier).addEventListener('touchstart', function(e) {
         e.preventDefault();
         self.touch = self.convert(e);
-        self.delegate.onTouchEvent(App.Control.Touch.START, self.touch, e.timeStamp);
+        self.onTouchEvent(App.Control.Touch.START, self.touch, e.timeStamp);
       }, false);
 
       document.querySelector(self.identifier).addEventListener('mousedown', function(e) {
         e.preventDefault();
         self.touch = self.convert(e);
-        self.delegate.onTouchEvent(App.Control.Touch.START, self.touch, e.timeStamp);
+        self.onTouchEvent(App.Control.Touch.START, self.touch, e.timeStamp);
       }, false);
 
       document.querySelector(self.identifier).addEventListener('touchmove', function(e) {
         e.preventDefault();
         self.touch = self.convert(e);
-        self.delegate.onTouchEvent(App.Control.Touch.MOVE, self.touch, e.timeStamp);
+        self.onTouchEvent(App.Control.Touch.MOVE, self.touch, e.timeStamp);
       }, false);
 
       document.querySelector(self.identifier).addEventListener('mousemove', function(e) {
         e.preventDefault();
         self.touch = self.convert(e);
-        self.delegate.onTouchEvent(App.Control.Touch.MOVE, self.touch, e.timeStamp);
+        self.onTouchEvent(App.Control.Touch.MOVE, self.touch, e.timeStamp);
       }, false);
 
       document.querySelector(self.identifier).addEventListener('touchend', function(e) {
         e.preventDefault();
-        self.delegate.onTouchEvent(App.Control.Touch.END, self.touch, e.timeStamp);
+        self.onTouchEvent(App.Control.Touch.END, self.touch, e.timeStamp);
       }, false);
 
       document.querySelector(self.identifier).addEventListener('mouseup', function(e) {
         e.preventDefault();
-        self.delegate.onTouchEvent(App.Control.Touch.END, self.touch, e.timeStamp);
+        self.onTouchEvent(App.Control.Touch.END, self.touch, e.timeStamp);
       }, false);
 
+    },
+
+    onTouchEvent: function(state, position, timestamp) {
+      var self = this;
+      for (var i=0; i<self.recognizers.length; i++) {
+        var recognizer = self.recognizers[i];
+        self.recognizers[i].onTouchEvent(state, position, timestamp);
+      }
+      self.delegate.onTouchEvent(state, position, timestamp);
     },
 
     convert: function(event) {
@@ -65,6 +75,11 @@
       }
       return { 'x': event.pageX - offset.left ,
                'y': event.pageY - offset.top };
+    },
+
+    addRecognizer: function(recognizer) {
+      var self = this;
+      self.recognizers.push(recognizer);
     },
     
   });

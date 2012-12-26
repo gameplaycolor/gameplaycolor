@@ -36,6 +36,7 @@ CACHE:
 /js/library.js
 /js/dummy.js
 /js/touchlistener.js
+/js/gesturerecognizer.js
 
 /google.js
 
