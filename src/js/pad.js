@@ -43,7 +43,7 @@
       return self.element.height();
     },
 
-    onTouchEvent: function(state, position) {
+    onTouchEvent: function(state, position, timestamp) {
       var self = this;
 
       var width = self.element.height();

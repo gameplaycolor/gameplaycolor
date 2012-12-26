@@ -40,6 +40,7 @@
 
       self.touchListener = new App.TouchListener(self.identifier, self);
       self.touchStart = { x: 0, y: 0};
+      self.touchStartTimestamp = 0;
       self.touchDidMove = false;
       self.touchCount = 0;
       
@@ -220,7 +221,7 @@
       return (distance >= App.Grid.MOVE_THRESHOLD);
     },
 
-    onTouchEvent: function(state, position) {
+    onTouchEvent: function(state, position, timestamp) {
       var self = this;
 
       // TODO Don't break on multiple touches.

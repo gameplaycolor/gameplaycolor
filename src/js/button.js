@@ -20,7 +20,7 @@
       self.state = App.Controls.Button.State.UP;
     },
 
-    onTouchEvent: function(state, position) {
+    onTouchEvent: function(state, position, timestamp) {
       var self = this;
 
       switch(state) {

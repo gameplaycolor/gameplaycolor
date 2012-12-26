@@ -22,35 +22,35 @@
       document.querySelector(self.identifier).addEventListener('touchstart', function(e) {
         e.preventDefault();
         self.touch = self.convert(e);
-        self.delegate.onTouchEvent(App.Control.Touch.START, self.touch);
+        self.delegate.onTouchEvent(App.Control.Touch.START, self.touch, e.timeStamp);
       }, false);
 
       document.querySelector(self.identifier).addEventListener('mousedown', function(e) {
         e.preventDefault();
         self.touch = self.convert(e);
-        self.delegate.onTouchEvent(App.Control.Touch.START, self.touch);
+        self.delegate.onTouchEvent(App.Control.Touch.START, self.touch, e.timeStamp);
       }, false);
 
       document.querySelector(self.identifier).addEventListener('touchmove', function(e) {
         e.preventDefault();
         self.touch = self.convert(e);
-        self.delegate.onTouchEvent(App.Control.Touch.MOVE, self.touch);
+        self.delegate.onTouchEvent(App.Control.Touch.MOVE, self.touch, e.timeStamp);
       }, false);
 
       document.querySelector(self.identifier).addEventListener('mousemove', function(e) {
         e.preventDefault();
         self.touch = self.convert(e);
-        self.delegate.onTouchEvent(App.Control.Touch.MOVE, self.touch);
+        self.delegate.onTouchEvent(App.Control.Touch.MOVE, self.touch, e.timeStamp);
       }, false);
 
       document.querySelector(self.identifier).addEventListener('touchend', function(e) {
         e.preventDefault();
-        self.delegate.onTouchEvent(App.Control.Touch.END, self.touch);
+        self.delegate.onTouchEvent(App.Control.Touch.END, self.touch, e.timeStamp);
       }, false);
 
       document.querySelector(self.identifier).addEventListener('mouseup', function(e) {
         e.preventDefault();
-        self.delegate.onTouchEvent(App.Control.Touch.END, self.touch);
+        self.delegate.onTouchEvent(App.Control.Touch.END, self.touch, e.timeStamp);
       }, false);
 
     },
