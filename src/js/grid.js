@@ -239,10 +239,10 @@
       var left = distance;
       if (self.page == self.minPage() &&
           left > 0) {
-        left = distance / 3;
+        left = distance / 2;
       } else if (self.page == self.maxPage() &&
                  left < 0) {
-        left = distance / 3;
+        left = distance / 2;
       }
 
       // Update the position.
