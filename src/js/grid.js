@@ -22,16 +22,22 @@
       self.identifier = '#list-games';
       self.element = $(self.identifier);
       self.content = $('#list-games-content');
+
+      self.pageControl = $('#list-games-page-control');
+      self.pageItems = [];
+
       self.count = 0;
       self.rows = 0;
       self.width = 0;
       self.pageWidth = 0;
       self.page = 0;
+
       self.dataSource = {
         'count' : function() { return 0; },
         'titleForIndex': function(index) { return ''; },
         'didSelectItemForRow': function(index) {},
       };
+
       self.touchListener = new App.TouchListener(self.identifier, self);
       self.touchStart = { x: 0, y: 0};
       self.touchDidMove = false;
@@ -53,6 +59,9 @@
         var title = self.dataSource.titleForIndex(i);
         self.add(i, title);
       }
+
+      self.updatePageControl();
+      self.updatePageItems();
     },
     
     updateLayout: function() {
@@ -70,6 +79,29 @@
         self.reloadData();
       }
       
+    },
+
+    updatePageControl: function() {
+      var self = this;
+      self.pageControl.html("");
+      self.pageItems = [];
+      for (var i=self.minPage(); i<=self.maxPage(); i++) {
+        var item = $('<div class="page">');
+        self.pageControl.append(item);
+        self.pageItems.push(item);
+      }
+    },
+
+    updatePageItems: function() {
+      var self = this;
+      for (var i=self.minPage(); i<=self.maxPage(); i++) {
+        var item = self.pageItems[i];
+        if (i === self.page) {
+          item.addClass("active");
+        } else {
+          item.removeClass("active");
+        }
+      }
     },
     
     add: function(index, title) {
@@ -149,13 +181,16 @@
       self.content.animate({
         'left': -1 * (page * self.pageWidth)
       }, 300, function() {
+        self.updatePageItems();
       });
     },
 
     setPage: function(page) {
       var self = this;
-      self.page = page;
-      self.animate(self.page);
+      if (self.page !== page) {
+        self.page = page;
+        self.animate(self.page);
+      }
     },
 
     // Returns the distance between two points.
