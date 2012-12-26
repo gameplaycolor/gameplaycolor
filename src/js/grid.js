@@ -174,20 +174,6 @@
       return max;
     },
     
-    next: function() {
-      var self = this;
-      if (self.page < self.maxPage()) {  
-        self.setPage(self.page += 1);
-      }
-    },
-    
-    previous: function() {
-      var self = this;
-      if (self.page > self.minPage()) {
-        self.setPage(self.page -= 1);
-      }
-    },
-
     // Animate transition to a given page.
     animate: function(page) {
       var self = this;
