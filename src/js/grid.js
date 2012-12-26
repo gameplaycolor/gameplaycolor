@@ -224,6 +224,29 @@
       return (distance >= App.Grid.MOVE_THRESHOLD);
     },
 
+    updateContentPosition: function(position) {
+      var self = this;
+
+      var distance = position.x - self.touchStart.x;
+
+      // Scale the offset if necessary.
+      var left = distance;
+      if (self.page == self.minPage() &&
+          left > 0) {
+        left = distance / 2;
+      } else if (self.page == self.maxPage() &&
+                 left < 0) {
+        left = distance / 2;
+      }
+
+      // Update the position.
+      self.content.offset({
+        'left': self.offset.left + left,
+        'top': self.offset.top
+      });
+
+    },
+
     onTouchEvent: function(state, position, timestamp) {
       var self = this;
 
@@ -242,14 +265,7 @@
           // Update the move status.
           self.touchDidMove = self.touchDidMove | self.touchIsMove(position);
           if (self.touchDidMove) {
-
-            // Update the position.
-            var left = position.x - self.touchStart.x
-            self.content.offset({
-              'left': self.offset.left + left,
-              'top': self.offset.top
-            });
-
+            self.updateContentPosition(position);
           }
 
         }
@@ -259,14 +275,9 @@
           // Update the move status.
           self.touchDidMove = self.touchDidMove | self.touchIsMove(position);
 
-          // Update the position.
-          var left = position.x - self.touchStart.x
-          self.content.offset({
-            'left': self.offset.left + left,
-            'top': self.offset.top
-          });
-
           if (self.touchDidMove) {
+            // Update the position.
+            self.updateContentPosition(position);
 
             // Work out if we are moving forwards or backwards.
             var page = self.page;
