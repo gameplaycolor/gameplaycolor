@@ -81,10 +81,10 @@
           gb_KeyUp(Gameboy.Key.SELECT);
         }});
 
-        // Configure the actions for the game loading screen.
-        $('#LCD').click(function() {
+        // Tapping the screen shows the game picker.
+        self.screen = new App.Controls.Button('#LCD', { 'touchUp': function() {
           self.hide();
-        });
+        }});
 
         // Dismiss button.
         self.done = new App.Controls.Button('#button-done', { 'touchUp': function() {
