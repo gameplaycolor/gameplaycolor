@@ -29,7 +29,6 @@
 
     onTouchEvent: function(state, position, timestamp) {
       var self = this;
-      // TODO Handle multi-touch.
 
       if (state === App.Control.Touch.START) {
         // Record the initial touch details.
@@ -68,8 +67,6 @@
       self.touchStartPosition = { x: 0, y: 0 }
       self.touchStartTimestamp = 0;
     },
-
-    // TODO Work out when we need to reset our state.
 
     setState: function(state) {
       var self = this;

@@ -265,8 +265,6 @@
     onTouchEvent: function(state, position, timestamp) {
       var self = this;
 
-      // TODO Don't break on multiple touches.
-
       if (state === App.Control.Touch.START) {
 
         self.offset = self.content.offset();
