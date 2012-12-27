@@ -13,6 +13,7 @@
 7. Work out why saving is corrupted on larger files
 8. Walk through for the initial log in to google drive
 9. Icon
+10. Make the game picker alphabetically ordered
 
 ### Release
 
@@ -20,3 +21,7 @@
 2. Landscape support
 3. Previews for games with graphics
 4. Show the files available locally as soon as the game window is opened
+
+### Future
+
+1. Audio
