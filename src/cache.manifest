@@ -1,6 +1,6 @@
 CACHE MANIFEST
 
-# Version 71
+# Version 75
 
 CACHE:
 
@@ -48,6 +48,18 @@ CACHE:
 /images/background_2x.png
 /images/cartridge.png
 /images/cartridge_2x.png
+/images/console.png
+/images/console_2x.png
+/images/labels.png
+/images/labels_2x.png
+/images/button.png
+/images/button_2x.png
+/images/pad.png
+/images/pad_2x.png
+/images/labels_options.png
+/images/labels_options_2x.png
+/images/option.png
+/images/option_2x.png
 
 NETWORK:
 

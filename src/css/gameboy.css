@@ -28,33 +28,32 @@ body
 
 .button
   {
-  width: 60px;
-  height: 60px;
-  background: url(../images/button.png) 0 0;
+  width: 63px;
+  height: 62px;
+  background-size: 63px 62px;
   }
 
 .button.pressed
   {
-  background: url(../images/button.png) -60px 0;
   }
 
 .button-option
   {
-  width: 60px;
-  height: 40px;
-  background: url(../images/select.png) 0 0;
+  width: 42px;
+  height: 31px;
+  background-size: 42px 31px;
   }
 
 .button-option.pressed
   {
-  background: url(../images/select.png) -60px 0;
   }
 
 #group-buttons
   {
   position: absolute;
-  height: 120px;
-  width: 124px;
+  height: 115px;
+  width: 132px;
+  background-size: 132px 115px;
   top: 60px;
   right: 0;
   }
@@ -62,92 +61,49 @@ body
 #group-options
   {
   position: absolute;
-  width: 124px;
-  height: 40px;
+  width: 125px;
+  height: 50px;
   top: 248px;
   right: 0;
+  background-size: 125px 50px;
   }
 
 #control-a
   {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 5px;
+  right: 3px;
   }
 
 #control-b
   {
   position: absolute;
-  bottom: 0;
-  left: 0;
+  bottom: 9px;
+  left: 3px;
   }
 
 #control-select
   {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 5px;
+  left: 5px;
   }
 
 #control-start
   {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 5px;
+  right: 7px;
   }
 
 #control-dpad
   {
   position: absolute;
-  width: 140px;
-  height: 140px;
+  width: 128px;
+  height: 128px;
+  background-size: 128px 128px;
   top: 60px;
   left: 0;
-  }
-
-.sprite-pad-default
-  {
-  background: url(../images/states.png) 0 0;
-  }
-
-.sprite-pad-up
-  {
-  background:url(../images/states.png) -140px 0;
-  }
-
-.sprite-pad-upright
-  {
-  background:url(../images/states.png) -280px 0;
-  }
-
-.sprite-pad-right
-  {
-  background:url(../images/states.png) -420px 0;
-  }
-
-.sprite-pad-downright
-  {
-  background:url(../images/states.png) -560px 0;
-  }
-
-.sprite-pad-down
-  {
-  background:url(../images/states.png) -700px 0;
-  }
-
-.sprite-pad-downleft
-  {
-  background:url(../images/states.png) -840px 0;
-  }
-
-.sprite-pad-left
-  {
-  background:url(../images/states.png) -980px 0;
-  }
-
-.sprite-pad-upleft
-  {
-  background:url(../images/states.png) -1120px 0;
   }
 
 #button-done
@@ -179,6 +135,8 @@ body
 #screen-console
   {
   background-color: #ccc;
+  background-size: 320px 260px;
+  background-position: right bottom;
   }
   
 #list-games
@@ -191,7 +149,7 @@ body
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-size: 320px 519px;
+  background-size: 320px 568px;
   }
   
 #list-games-content
@@ -349,6 +307,26 @@ body
   
   .game { background-image: url(../images/cartridge.png); }
 
+  #screen-console { background-image: url(../images/console.png); }
+
+  #group-buttons { background-image: url(../images/labels.png); }
+  .button { background-image: url(../images/button.png); }
+  .button.pressed { background-image: url(../images/button.png); }
+
+  #control-dpad.sprite-pad-default   { background-image: url(../images/pad.png); }
+  #control-dpad.sprite-pad-up        { background-image: url(../images/pad.png); }
+  #control-dpad.sprite-pad-upright   { background-image: url(../images/pad.png); }
+  #control-dpad.sprite-pad-right     { background-image: url(../images/pad.png); }
+  #control-dpad.sprite-pad-downright { background-image: url(../images/pad.png); }
+  #control-dpad.sprite-pad-down      { background-image: url(../images/pad.png); }
+  #control-dpad.sprite-pad-downleft  { background-image: url(../images/pad.png); }
+  #control-dpad.sprite-pad-left      { background-image: url(../images/pad.png); }
+  #control-dpad.sprite-pad-upleft    { background-image: url(../images/pad.png); }
+
+  #group-options { background-image: url(../images/labels_options.png); }
+  .button-option { background-image: url(../images/option_2x.png); }
+  .button-option.pressed { background-image: url(../images/option_2x.png); }
+
 }
 
 @media only screen and (-webkit-device-pixel-ratio:2) {
@@ -356,6 +334,26 @@ body
   #list-games { background-image: url(../images/background_2x.png); }
 
   .game { background-image: url(../images/cartridge_2x.png); }
+
+  #screen-console { background-image: url(../images/console_2x.png); }
+
+  #group-buttons { background-image: url(../images/labels_2x.png); }
+  .button { background-image: url(../images/button_2x.png); }
+  .button.pressed { background-image: url(../images/button_2x.png); }
+
+  #control-dpad.sprite-pad-default   { background-image: url(../images/pad_2x.png); }
+  #control-dpad.sprite-pad-up        { background-image: url(../images/pad_2x.png); }
+  #control-dpad.sprite-pad-upright   { background-image: url(../images/pad_2x.png); }
+  #control-dpad.sprite-pad-right     { background-image: url(../images/pad_2x.png); }
+  #control-dpad.sprite-pad-downright { background-image: url(../images/pad_2x.png); }
+  #control-dpad.sprite-pad-down      { background-image: url(../images/pad_2x.png); }
+  #control-dpad.sprite-pad-downleft  { background-image: url(../images/pad_2x.png); }
+  #control-dpad.sprite-pad-left      { background-image: url(../images/pad_2x.png); }
+  #control-dpad.sprite-pad-upleft    { background-image: url(../images/pad_2x.png); }
+
+  #group-options { background-image: url(../images/labels_options_2x.png); }
+  .button-option { background-image: url(../images/option_2x.png); }
+  .button-option.pressed { background-image: url(../images/option_2x.png); }
 
 } 
 
