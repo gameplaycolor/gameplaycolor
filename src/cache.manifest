@@ -1,6 +1,6 @@
 CACHE MANIFEST
 
-# Version 79
+# Version 81
 
 CACHE:
 
@@ -60,6 +60,8 @@ CACHE:
 /images/labels_options_2x.png
 /images/option.png
 /images/option_2x.png
+/images/title.png
+/images/title_2x.png
 
 NETWORK:
 

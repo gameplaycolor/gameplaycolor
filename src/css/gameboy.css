@@ -109,7 +109,7 @@ body
 #button-done
   {
   position: absolute;
-  bottom: 7px;
+  top: 7px;
   right: 6px;
   height: 30px;
   width: 60px;
@@ -137,6 +137,16 @@ body
   background-color: #ccc;
   background-size: 320px 260px;
   background-position: right bottom;
+  }
+
+#title-bar
+  {
+  position: absolute;
+  width: 320px;
+  height: 57px;
+  left: 0;
+  top: 504px;
+  background-size: 320px 57px;
   }
   
 #list-games
@@ -308,6 +318,7 @@ body
   .game { background-image: url(../images/cartridge.png); }
 
   #screen-console { background-image: url(../images/console.png); }
+  #title-bar { background-image: url(../images/title.png); }
 
   #group-buttons { background-image: url(../images/labels.png); }
   .button { background-image: url(../images/button.png); }
@@ -336,6 +347,7 @@ body
   .game { background-image: url(../images/cartridge_2x.png); }
 
   #screen-console { background-image: url(../images/console_2x.png); }
+  #title-bar { background-image: url(../images/title_2x.png); }
 
   #group-buttons { background-image: url(../images/labels_2x.png); }
   .button { background-image: url(../images/button_2x.png); }

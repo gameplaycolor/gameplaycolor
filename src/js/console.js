@@ -33,6 +33,7 @@
         self.events = events;
         self.store = store;
         self.element = $('#screen-console');
+        self.titleBar = $('#title-bar');
         self.state = App.Console.State.VISIBLE;
 
         // Update the initial orientation and watch for changes.        
@@ -206,7 +207,7 @@
           }, 300, function() {
             self.event('didHide');
           });
-          self.done.fadeIn();
+          self.titleBar.fadeIn();
           
         }
         
@@ -225,7 +226,7 @@
           }, 300, function() {
             self.event('didShow');
           });
-          self.done.fadeOut();
+          self.titleBar.fadeOut();
         }
       },
       
