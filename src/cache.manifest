@@ -1,6 +1,6 @@
 CACHE MANIFEST
 
-# Version 59
+# Version 71
 
 CACHE:
 
@@ -44,6 +44,10 @@ CACHE:
 /images/button.png
 /images/select.png
 /images/spinner.gif
+/images/background.png
+/images/background_2x.png
+/images/cartridge.png
+/images/cartridge_2x.png
 
 NETWORK:
 

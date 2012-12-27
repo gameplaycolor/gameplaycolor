@@ -191,6 +191,7 @@ body
   margin: 0;
   padding: 0;
   overflow: hidden;
+  background-size: 320px 519px;
   }
   
 #list-games-content
@@ -234,9 +235,24 @@ body
   
 .game
   {
-  background-color: yellow;
   position: absolute;
   text-align: center;
+  background-size: 126px 141px;
+  background-position: center;
+  background-repeat: no-repeat; 
+  }
+
+.game-title
+  {
+  font-family: 'Comic Sans MS', 'Marker Felt', sans-serif;
+  background-color: #bbb;
+  width: 85px;
+  height: 74px;
+  border-radius: 2px;
+  word-wrap: break-word;
+  position: absolute;
+  top: 40px;
+  left: 27px;
   }
   
 #authorizeButton
@@ -326,7 +342,22 @@ body
   height: 88px;
   border-bottom: 1px solid #ccc;
   }
+
+@media only screen and (-webkit-device-pixel-ratio:1) {
+
+  #list-games { background-image: url(../images/background.png); }
   
+  .game { background-image: url(../images/cartridge.png); }
+
+}
+
+@media only screen and (-webkit-device-pixel-ratio:2) {
+
+  #list-games { background-image: url(../images/background_2x.png); }
+
+  .game { background-image: url(../images/cartridge_2x.png); }
+
+} 
 
 @media only screen and (max-width:320px) {
 
@@ -400,7 +431,7 @@ body
     top: 44px;
     left: 0px;
     height: 504px;
-    width: 320px;
+    width: 320px;    
     }
     
   #list-games-content

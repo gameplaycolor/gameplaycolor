@@ -5,20 +5,20 @@
     this.init();
   };
   
-  App.Grid.MARGIN = 30;
+  App.Grid.MARGIN = 10;
   
   App.Grid.Cell = {
-    WIDTH:  120,
-    HEIGHT: 120
+    WIDTH:  140,
+    HEIGHT: 140
   };
 
   App.Grid.MOVE_THRESHOLD = 10;
   App.Grid.SCROLL_BIAS = 40;
 
   App.Grid.Margin = {
-    TOP: 25,
-    LEFT: 25,
-    RIGHT: 25
+    TOP: 20,
+    LEFT: 15,
+    RIGHT: 15
   }
 
   jQuery.extend(App.Grid.prototype, {
@@ -76,9 +76,15 @@
     
     updateLayout: function() {
       var self = this;
+
+      var cellHeight = App.Grid.Cell.HEIGHT + App.Grid.MARGIN;
+      var cellWidth = App.Grid.Cell.WIDTH + App.Grid.MARGIN;
+
+      var controlWidth = self.element.width() + App.Grid.MARGIN;
+      var controlHeight = self.element.height() + App.Grid.MARGIN;
       
-      var rows = Math.floor((self.content.height() + App.Grid.MARGIN) / (App.Grid.Cell.HEIGHT + App.Grid.MARGIN));
-      var width =  Math.floor((self.element.width() + App.Grid.MARGIN) / (App.Grid.Cell.WIDTH + App.Grid.MARGIN));
+      var rows = Math.floor(controlHeight / cellHeight);
+      var width =  Math.floor(controlWidth / cellWidth);
       // Relayout if required.
       if ((rows != self.rows) || (width != self.width)) {
         self.rows = rows;
@@ -135,11 +141,14 @@
       var page = Math.floor(self.count / itemsPerPage);
       
       var game = $('<div class="game">');
-      game.html(title);
       game.css('top', App.Grid.Margin.TOP + ((App.Grid.Cell.HEIGHT + App.Grid.MARGIN) * row));
       game.css('left', App.Grid.Margin.LEFT + ((App.Grid.Margin.LEFT + App.Grid.Margin.RIGHT) * page) + ((App.Grid.Cell.WIDTH + App.Grid.MARGIN) * col));
       game.css('height', App.Grid.Cell.HEIGHT);
       game.css('width', App.Grid.Cell.WIDTH);
+
+      var gameTitle = $('<div class="game-title">');
+      gameTitle.html(title);
+      game.append(gameTitle);
       
       self.content.append(game);
       self.count += 1;

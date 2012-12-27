@@ -31,7 +31,7 @@
     titleForIndex: function(index) {
       var self = this;
       var file = self.items[index];
-      return file.title;
+      return file.title.slice(0, -3);
     },
     
     didSelectItemForRow: function(index) {
