@@ -30,6 +30,23 @@
       gb_Run();
     },
 
+    keyDown: function(keycode) {
+      var self = this;
+      var e = { 'which': keycode, 'preventDefault': function() {} };
+      gb_OnKeyDown_Event(e);
+    },
+
+    keyUp: function(keycode) {
+      var self = this;
+      var e = { 'which': keycode, 'preventDefault': function() {} };
+      gb_OnKeyUp_Event(e);
+    },
+
+    insertCartridge: function(data) {
+      var self = this;
+      gb_Insert_Cartridge_Data(data, true);
+    },
+
   });
 
 })(jQuery);

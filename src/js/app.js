@@ -39,7 +39,7 @@
         self.running == true;
         self.didLoad();
       });
-      self.console = new App.Console({
+      self.console = new App.Console(self.gameBoy, {
         'willHide': function() {
           if (self.running == true) {
             self.gameBoy.pause();

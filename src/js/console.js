@@ -1,7 +1,7 @@
 (function($) {
 
-  App.Console = function(events, store) {
-    this.init(events, store);
+  App.Console = function(gameBoy, events, store) {
+    this.init(gameBoy, events, store);
   };
   
   App.Console.State = {
@@ -27,9 +27,10 @@
   jQuery.extend(
     App.Console.prototype, {
       
-      init: function(events, store) {
+      init: function(gameBoy, events, store) {
         var self = this;
         
+        self.gameBoy = gameBoy;
         self.events = events;
         self.store = store;
         self.element = $('#screen-console');
@@ -43,42 +44,42 @@
 
         // D-Pad.        
         self.pad = new App.Controls.Pad('#control-dpad', {
-          'touchDownLeft'  : function() { gb_KeyDown(Gameboy.Key.LEFT); },
-          'touchUpLeft'    : function() { gb_KeyUp(Gameboy.Key.LEFT); },
-          'touchDownRight' : function() { gb_KeyDown(Gameboy.Key.RIGHT); },
-          'touchUpRight'   : function() { gb_KeyUp(Gameboy.Key.RIGHT); },
-          'touchDownUp'    : function() { gb_KeyDown(Gameboy.Key.UP); },
-          'touchUpUp'      : function() { gb_KeyUp(Gameboy.Key.UP); },
-          'touchDownDown'  : function() { gb_KeyDown(Gameboy.Key.DOWN); },
-          'touchUpDown'    : function() { gb_KeyUp(Gameboy.Key.DOWN); },
+          'touchDownLeft'  : function() { self.gameBoy.keyDown(Gameboy.Key.LEFT); },
+          'touchUpLeft'    : function() { self.gameBoy.keyUp(Gameboy.Key.LEFT); },
+          'touchDownRight' : function() { self.gameBoy.keyDown(Gameboy.Key.RIGHT); },
+          'touchUpRight'   : function() { self.gameBoy.keyUp(Gameboy.Key.RIGHT); },
+          'touchDownUp'    : function() { self.gameBoy.keyDown(Gameboy.Key.UP); },
+          'touchUpUp'      : function() { self.gameBoy.keyUp(Gameboy.Key.UP); },
+          'touchDownDown'  : function() { self.gameBoy.keyDown(Gameboy.Key.DOWN); },
+          'touchUpDown'    : function() { self.gameBoy.keyUp(Gameboy.Key.DOWN); },
         });
         
         // A.
         self.a = new App.Controls.Button('#control-a', { 'touchDown' : function() {
-          gb_KeyDown(Gameboy.Key.A);
+          self.gameBoy.keyDown(Gameboy.Key.A);
         }, 'touchUp': function() {
-          gb_KeyUp(Gameboy.Key.A);
+          self.gameBoy.keyUp(Gameboy.Key.A);
         }});
 
         // B.
         self.b = new App.Controls.Button('#control-b', { 'touchDown' : function() {
-          gb_KeyDown(Gameboy.Key.B);
+          self.gameBoy.keyDown(Gameboy.Key.B);
         }, 'touchUp': function() {
-          gb_KeyUp(Gameboy.Key.B);
+          self.gameBoy.keyUp(Gameboy.Key.B);
         }});
 
         // Start.
         self.start = new App.Controls.Button('#control-start', { 'touchDown' : function() {
-          gb_KeyDown(Gameboy.Key.START);
+          self.gameBoy.keyDown(Gameboy.Key.START);
         }, 'touchUp': function() {
-          gb_KeyUp(Gameboy.Key.START);
+          self.gameBoy.keyUp(Gameboy.Key.START);
         }});
 
         // Select.
         self.select = new App.Controls.Button('#control-select', { 'touchDown' : function() {
-          gb_KeyDown(Gameboy.Key.SELECT);
+          self.gameBoy.keyDown(Gameboy.Key.SELECT);
         }, 'touchUp': function() {
-          gb_KeyUp(Gameboy.Key.SELECT);
+          self.gameBoy.keyUp(Gameboy.Key.SELECT);
         }});
 
         // Tapping the screen shows the game picker.
@@ -128,18 +129,20 @@
           if (filename !== undefined) {
             var data = localStorage.getItem(filename);
             if (data) {
-              gb_Insert_Cartridge_Data(data, true);
+              self.gameBoy.insertCartridge(data);
               setTimeout(function() {
                 self.store.property(App.Store.Property.STATE, function(stateJSON) {
                   if (stateJSON !== undefined) {
                       var state = jQuery.parseJSON(stateJSON);
-                      gb_Pause();
+                      // TODO Move this into a more suitable location.
+                      // Perhaps into GameBoy itself.
+                      self.gameBoy.pause();
                       gbMemory = state.gbMemory;
                       gbFrameBuffer = state.gbFrameBuffer;
                       gbTileData = state.gbTileData;
                       gbBackgroundData = state.gbBackgroundData;
                       gb_Framebuffer_to_LCD();
-                      gb_Run();
+                      self.gameBoy.run();
                       self.scheduleSave();
                     }
                   });
