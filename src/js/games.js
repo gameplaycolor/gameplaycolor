@@ -26,6 +26,7 @@
         },
       });
       self.grid.dataSource = self.library;
+      self.grid.reloadData();
     },
     
     update: function() {

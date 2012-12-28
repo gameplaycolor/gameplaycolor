@@ -13,7 +13,10 @@
 7. Work out why saving is corrupted on larger files
 8. Walk through for the initial log in to google drive
 9. Icon
-10. Make the game picker alphabetically ordered
+10. Fix the extension filtering code
+11. Delete files which have been removed from Google Drive
+12. Ignore files in the Trash
+13. Introduce a 'state' to the library so we know when it's loading, etc.
 
 ### Release
 

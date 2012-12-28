@@ -19,8 +19,18 @@
       if (library) {
         self.items = jQuery.parseJSON(library);
         self.cache = jQuery.parseJSON(library);
+        console.log(self.items);
       }
+
+      self.sort();
       
+    },
+
+    sort: function() {
+      var self = this;
+      self.items.sort(function(a, b) {
+        return a['title'].toLowerCase() > b['title'].toLowerCase() ? 1 : -1;
+      });
     },
     
     count: function() {
@@ -70,6 +80,7 @@
               self.items.push(file);
             }
           }
+          self.sort();
         }
         self.callbacks.onUpdate();
       });
