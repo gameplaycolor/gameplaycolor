@@ -5,14 +5,39 @@
     this.init(callbacks);
   };
 
+  App.Library.State = {
+    UNINITIALIZED: 0,
+    LOADING: 1,
+    UNAUTHORIZED: 2,
+    UPDATING: 3,
+    READY: 4
+  };
+
   jQuery.extend(
     App.Library.prototype, {
 
     init: function(callbacks) {
       var self = this;
-      self.items = new Array();
-      self.cache = new Array();
+      self.state = App.Library.State.UNINITIALIZED;
+      self.items = [];
+      self.cache = [];
       self.callbacks = callbacks;
+
+      // We use a separate flag to track updates internally as
+      // we need to be able to schedule updates in many different states
+      // due to the asynchronous nature of the update.
+      self.updatePending = false;
+
+      // Handle Google Drive state changes to update our state.
+      App.Drive.getInstance().onStateChange(function(state) {
+        if (state === App.Drive.State.UNAUTHORIZED) {
+          self.setState(App.Library.State.UNAUTHORIZED);
+        } else if (state === App.Drive.State.READY) {
+          self.setState(App.Library.State.READY);
+        } else {
+          self.setState(App.Library.State.LOADING);
+        }
+      });
       
       // Load the library.
       var library = localStorage.getItem('library');
@@ -24,6 +49,14 @@
 
       self.sort();
       
+    },
+
+    setState: function(state) {
+      var self = this;
+      if (self.state !== state) {
+        self.state = state;
+        console.log("Library State: " + self.state);
+      }
     },
 
     sort: function() {
@@ -64,28 +97,48 @@
           self.callbacks.onLoad(data);
         });
       
-      }      
+      }
     },
     
     update: function() {
       var self = this;
+      // Only schedule a new update if we're not already updating.
+      if (self.updatePending === false) {
+        App.Drive.getInstance().files({
+          'onStart': function() {
+            self.setState(App.Library.State.UPDATING);
+          },
+          'onSuccess': function(files) {
+            self.updateCallback(files);
+          },
+          'onError': function(error) {
+            // TODO Handle the error.
+            console.log("Error: " + error);
+            self.setState(App.Library.State.READY);
+          }
+        });
+      }
+    },
+
+    updateCallback: function(files) {
+      var self = this;
+
+      // Reset the update flag.
+      self.updatePending = false;
 
       // Update the files.
-      App.Drive.getInstance().files(function(result) {
-        if (result) {
-          self.items = new Array();
-          for (var i=0; i<result.length; i++) {
-            var file = result[i];
-            if (file.fileExtension === 'gb') {
-              self.items.push(file);
-            }
-          }
-          self.sort();
+      self.items = [];
+      for (var i=0; i<files.length; i++) {
+        var file = files[i];
+        if (file.fileExtension === 'gb') {
+          self.items.push(file);
         }
-        self.callbacks.onUpdate();
-      });
-            
-    },
+      }
+      self.sort();
+
+      self.setState(App.Library.State.READY);
+      self.callbacks.onUpdate();
+    }
 
   });
 

@@ -31,9 +31,12 @@
     
     update: function() {
       var self = this;
+
+      // TODO Show the empty screen more sensibly
+      // and also support a loading screen.
+      // self.empty.show();
       
       // Update the library.
-      self.empty.show();
       self.library.update();
                   
     },

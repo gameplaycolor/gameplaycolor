@@ -28,6 +28,7 @@
         var self = this;
         self.state = App.Drive.State.UNINITIALIZED;
         self.queue = [];
+        self.stateChangeCallbacks = [];
 
         // TODO This shouldn't live here.
         var authButton = document.getElementById('authorizeButton');
@@ -35,13 +36,24 @@
           self.authorize(false);
         };
 
+      },
 
+      onStateChange: function(callback) {
+        var self = this;
+        self.stateChangeCallbacks.push(callback);
       },
 
       setState: function(state) {
         var self = this;
-        console.log("state: " + state);
-        self.state = state;
+        if (self.state != state) {
+          self.state = state;
+
+          // Fire the state change callbacks.
+          for (var i = 0; i < self.stateChangeCallbacks.length; i++) {
+            var callback = self.stateChangeCallbacks[i];
+            callback(state);
+          }
+        }
       },
 
       // Progresses the state machine through the various
@@ -165,9 +177,11 @@
        *
        * @param {Function} callback Function to call when the request is complete.
        */
-      files: function(callback) {
+      files: function(operation) {
         var self = this;
         self.run(function() {
+
+          operation.onStart();
 
           try {
             var retrievePageOfFiles = function(request, result) {
@@ -182,7 +196,7 @@
                   });
                   retrievePageOfFiles(request, result);
                 } else {
-                  callback(result);
+                  operation.onSuccess(result);
                 }
               });
             }
@@ -193,7 +207,7 @@
             });
             retrievePageOfFiles(initialRequest, []);
           } catch (error) {
-            callback();
+            operation.onError(error);
           }
 
         })
