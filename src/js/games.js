@@ -14,20 +14,27 @@
       self.library = library;
       self.callback = callback;
       self.element = $('#screen-games');
-      self.empty = $('#screen-empty');
+      self.authorize = new App.Controls.Button('#screen-authorize', {
+        'touchUp': function() {
+          self.library.authorize();
+        }
+      });
       self.title = $('#title-bar-label');
       self.grid = new App.Grid();
       self.items = [];
 
+      self.title.html('Games');
+
       self.library.onStateChange(function(state) {
         if (state === App.Library.State.LOADING) {
-          self.title.html('Loading...');
+          self.authorize.fadeOut();
         } else if (state === App.Library.State.UNAUTHORIZED) {
-          self.title.html('Unauthorized');
+          self.authorize.fadeIn();
         } else if (state === App.Library.State.UPDATING) {
-          self.title.html('Updating...');
+          self.authorize.fadeOut();
+          // TODO Show some text on the screen if it's empty.
         } else {
-          self.title.html('Games');
+          self.authorize.fadeOut();
           self.grid.reloadData();
         }
       });
@@ -54,7 +61,6 @@
 
       // TODO Show the empty screen more sensibly
       // and also support a loading screen.
-      // self.empty.show();
       
       // Update the library.
       self.library.update();

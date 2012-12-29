@@ -167,14 +167,19 @@ body
 #list-games
   {
   position: absolute;
-  top: 80px;
-  left: 74px;
-  height: 120px;
-  width: 420px;
   margin: 0;
   padding: 0;
   overflow: hidden;
   background-size: 320px 568px;
+  }
+
+.content
+  {
+  position: absolute;
+  top: 80px;
+  left: 74px;
+  height: 120px;
+  width: 420px;
   }
   
 #list-games-content
@@ -237,31 +242,69 @@ body
   top: 40px;
   left: 27px;
   }
-  
-#authorizeButton
-  {
-  position: absolute;
-  top: 100px;
-  left: 20px;
-  }
-  
+    
 #screen-games
   {
   background-color: #666;
   }
-  
-#screen-empty
+
+#screen-authorize
   {
-  width: 568px;
-  height: 300px;
+  }
+
+#screen-authorize h1
+  {
+  padding-top: 0;
+  margin-top: 0;
+  }
+
+#screen-authorize-panel
+  {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  background-color: #fff;
+  width: 220px;
+  height: 390px;
+  padding: 20px;
+  font-size: 14px;
+  }
+
+.actions
+  {
   text-align: center;
+  margin: 30px;
   }
-  
-#spinner
+
+.google-button-blue
   {
-  padding: 100px;
+  border: 1px solid #3079ED;
+  color: white;
+  text-shadow: 0 1px rgba(0, 0, 0, 0.1);
+  background-color: #4D90FE;
+  background-image: -webkit-gradient(linear,left top,left bottom,from(#4d90fe  ),to(#4787ed  ));
+  background-image: -webkit-linear-gradient(top,#4d90fe  ,#4787ed  );
+  background-image: -moz-linear-gradient(top,#4d90fe  ,#4787ed  );
+  background-image: -ms-linear-gradient(top,#4d90fe  ,#4787ed  );
+  background-image: -o-linear-gradient(top,#4d90fe  ,#4787ed  );
+  background-image: linear-gradient(top,#4d90fe  ,#4787ed  );
+  padding: 8px;
   }
-  
+
+.google-button-blue:hover
+  {
+  border: 1px solid #2F5BB7;
+  color: white;
+  text-shadow: 0 1px rgba(0, 0, 0, 0.3);
+  background-color: #357AE8;
+  background-image: -webkit-gradient(linear,left top,left bottom,from(#4d90fe  ),to(#357ae8  ));
+  background-image: -webkit-linear-gradient(top,#4d90fe  ,#357ae8  );
+  background-image: -moz-linear-gradient(top,#4d90fe  ,#357ae8  );
+  background-image: -ms-linear-gradient(top,#4d90fe  ,#357ae8  );
+  background-image: -o-linear-gradient(top,#4d90fe  ,#357ae8  );
+  background-image: linear-gradient(top,#4d90fe  ,#357ae8  );
+  }
+
 .screen
   {
   position: absolute;
@@ -445,24 +488,17 @@ body
     top: 498px;
     }
     
-  #screen-empty
-    {
-    width: 320px;
-    height: 548px;
-    text-align: center;
-    }
-    
   #spinner
     {
     padding-top: 280px;
     }
     
-  #list-games
+  .content
     {
     top: 44px;
     left: 0px;
     height: 504px;
-    width: 320px;    
+    width: 320px;
     }
     
   #list-games-content

@@ -24,13 +24,23 @@
   </div>
   
   <div id="screen-games" class="screen">
-    <div id="list-games">
+    <div id="list-games" class="content">
       <div id="list-games-content"></div>
       <div id="list-games-page-control"></div>
     </div>
-    <input type="button" id="authorizeButton" style="display: none" value="Authorize" />
-    <div id="screen-empty">
-      <img id="spinner" src="images/spinner.gif" />
+    <div id="screen-authorize" class="content" style="display: none">
+      <div id="screen-authorize-panel">
+        <h1>Google Drive</h1>
+        <p>
+          Sign into your Google Account to access Game Boy ROMs stored in Google Drive.
+        </p>
+        <p>
+          <em>Files with the .gb extension will be treated as Game Boy ROMs.</em>
+        </p>
+        <div class="actions">
+          <a id="button-authorize" class="google-button-blue" />Sign in</a>
+        </div>
+      </div>
     </div>
   </div>
 

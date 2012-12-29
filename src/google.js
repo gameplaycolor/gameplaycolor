@@ -29,13 +29,6 @@
         self.state = App.Drive.State.UNINITIALIZED;
         self.queue = [];
         self.stateChangeCallbacks = [];
-
-        // TODO This shouldn't live here.
-        var authButton = document.getElementById('authorizeButton');
-        authButton.onclick = function() {
-          self.authorize(false);
-        };
-
       },
 
       onStateChange: function(callback) {
@@ -129,16 +122,6 @@
         }, 0);
       },
 
-      showButton: function(show) {
-        var self = this;
-        var authButton = document.getElementById('authorizeButton');
-        if (show) {
-          authButton.style.display = 'block';
-        } else {
-          authButton.style.display = 'none';
-        }
-      },
-
       authorize: function(immediate) {
         var self = this;
         gapi.auth.authorize(
@@ -158,14 +141,12 @@
         if (authResult && !authResult.error) {
 
           // Access token has been successfully retrieved, requests can be sent to the API.
-          self.showButton(false);
           self.setState(App.Drive.State.READY);
           self.processQueue();
 
         } else {
 
           // No access token could be retrieved, show the button to start the authorization flow.
-          self.showButton(true);
           self.setState(App.Drive.State.UNAUTHORIZED);
 
         }

@@ -22,6 +22,7 @@
       self.items = [];
       self.cache = [];
       self.stateChangeCallbacks = [];
+      self.drive = App.Drive.getInstance();
 
       // We use a separate flag to track updates internally as
       // we need to be able to schedule updates in many different states
@@ -29,7 +30,7 @@
       self.updatePending = false;
 
       // Handle Google Drive state changes to update our state.
-      App.Drive.getInstance().onStateChange(function(state) {
+      self.drive.onStateChange(function(state) {
         if (state === App.Drive.State.UNAUTHORIZED) {
           self.setState(App.Library.State.UNAUTHORIZED);
         } else if (state === App.Drive.State.READY) {
@@ -49,6 +50,11 @@
 
       self.sort();
       
+    },
+
+    authorize: function() {
+      var self = this;
+      self.drive.authorize(false);
     },
 
     onStateChange: function(callback) {
@@ -99,7 +105,7 @@
       var self = this;
       // Only schedule a new update if we're not already updating.
       if (self.updatePending === false) {
-        App.Drive.getInstance().files({
+        self.drive.files({
           'onStart': function() {
             self.setState(App.Library.State.UPDATING);
           },
