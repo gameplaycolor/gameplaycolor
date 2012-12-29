@@ -17,6 +17,9 @@
 11. Delete files which have been removed from Google Drive
 12. Ignore files in the Trash
 13. Introduce a 'state' to the library so we know when it's loading, etc.
+14. Handle a failure to load the google drive SDK
+15. Update the details of the items in the cache
+16. Should we always show all items in the cache but only let users select downloaded ones when offline?
 
 ### Release
 
