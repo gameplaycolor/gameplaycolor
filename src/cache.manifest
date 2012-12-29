@@ -1,6 +1,6 @@
 CACHE MANIFEST
 
-# Version 90
+# Version 95
 
 CACHE:
 
@@ -66,6 +66,10 @@ CACHE:
 /images/loading_2x.png
 /images/idle.png
 /images/idle_2x.png
+/images/done.png
+/images/done_2x.png
+/images/done_pressed.png
+/images/done_pressed_2x.png
 
 NETWORK:
 

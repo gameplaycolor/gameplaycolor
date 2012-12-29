@@ -116,12 +116,12 @@ body
 #button-done
   {
   position: absolute;
-  top: 7px;
+  top: 8px;
   right: 6px;
+  width: 61px;
   height: 30px;
-  width: 60px;
   text-align: center;
-  background-color: magenta;
+  background-size: 61px 30px;
   }
 
 #debug
@@ -158,9 +158,12 @@ body
 
 #title-bar-label
   {
+  padding: 0;
+  margin: 0;
   text-align: center;
   text-shadow: 0 1px white;
-  padding-top: 12px;
+  padding-top: 10px;
+  font-size: 20px;
   font-weight: bold;
   }
  
@@ -375,6 +378,9 @@ body
   #LCD-idle { background: url(../images/idle.png); }
 
   #list-games { background-image: url(../images/background.png); }
+
+  #button-done { background-image: url(../images/done.png); }
+  #button-done.pressed { background-image: url(../images/done_pressed.png); }
   
   .game { background-image: url(../images/cartridge.png); }
 
@@ -407,6 +413,9 @@ body
   #LCD-idle { background: url(../images/idle_2x.png); }
 
   #list-games { background-image: url(../images/background_2x.png); }
+
+  #button-done { background-image: url(../images/done_2x.png); }
+  #button-done.pressed { background-image: url(../images/done_pressed_2x.png); }
 
   .game { background-image: url(../images/cartridge_2x.png); }
 

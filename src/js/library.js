@@ -66,7 +66,6 @@
       var self = this;
       if (self.state !== state) {
         self.state = state;
-        console.log("Library State: " + self.state);
 
         // Fire the state change callbacks.
         for (var i = 0; i < self.stateChangeCallbacks.length; i++) {
