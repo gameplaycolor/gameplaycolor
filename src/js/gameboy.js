@@ -47,7 +47,10 @@
 
     run: function() {
       var self = this;
-      gb_Run();
+      // Do not attempt to run unless we have been in the running state.
+      if (self.state === App.GameBoy.State.RUNNING) {
+        gb_Run();
+      }
     },
 
     keyDown: function(keycode) {
