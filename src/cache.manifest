@@ -62,6 +62,10 @@ CACHE:
 /images/option_2x.png
 /images/title.png
 /images/title_2x.png
+/images/loading.png
+/images/loading_2x.png
+/images/idle.png
+/images/idle_2x.png
 
 NETWORK:
 

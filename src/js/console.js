@@ -83,7 +83,7 @@
         }});
 
         // Tapping the screen shows the game picker.
-        self.screen = new App.Controls.Button('#LCD', { 'touchUp': function() {
+        self.screen = new App.Controls.Button('#display', { 'touchUp': function() {
           self.hide();
         }});
 

@@ -9,16 +9,22 @@ body
 
 #LCD
   {
+  }
+
+#display
+  {
+  position: absolute;
+  top: 0;
+  left: 124px;
+  }
+
+.display
+  {
   width: 320px;
   height: 288px;
   background-color: #EFFDE1;
   position: absolute;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  image-rendering: -webkit-optimize-contrast;
-  top: 0;
-  left: 124px;
+  background-size: 160px 144px;
   }
 
 #STATUS
@@ -321,6 +327,9 @@ body
 
 @media only screen and (-webkit-device-pixel-ratio:1) {
 
+  #LCD-loading { background: url(../images/loading_2x.png); }
+  #LCD-idle { background: url(../images/idle.png); }
+
   #list-games { background-image: url(../images/background.png); }
   
   .game { background-image: url(../images/cartridge.png); }
@@ -349,6 +358,9 @@ body
 }
 
 @media only screen and (-webkit-device-pixel-ratio:2) {
+
+  #LCD-loading { background: url(../images/loading_2x.png); }
+  #LCD-idle { background: url(../images/idle_2x.png); }
 
   #list-games { background-image: url(../images/background_2x.png); }
 
@@ -379,10 +391,10 @@ body
 
 @media only screen and (max-width:320px) {
 
-  #LCD
+  #display
     {
     top: 0;
-    left: 0;
+    left: 0;    
     }
       
   .screen

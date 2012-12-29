@@ -7,6 +7,13 @@
 
   App.GameBoy.instance = undefined;
 
+  App.GameBoy.State = {
+    IDLE: 0,
+    LOADING: 1,
+    RUNNING: 2,
+    ERROR: 3,
+  };
+
   App.GameBoy.getInstance = function() {
     if (App.GameBoy.instance === undefined) {
       App.GameBoy.instance = new App.GameBoy();
@@ -18,6 +25,7 @@
         
     init: function() {
       var self = this;
+      self.state = App.GameBoy.State.IDLE;
     },
 
     pause: function() {
