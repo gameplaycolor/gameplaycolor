@@ -22,6 +22,7 @@
       self.items = [];
       self.cache = [];
       self.callbacks = callbacks;
+      self.stateChangeCallbacks = [];
 
       // We use a separate flag to track updates internally as
       // we need to be able to schedule updates in many different states
@@ -51,11 +52,23 @@
       
     },
 
+    onStateChange: function(callback) {
+      var self = this;
+      self.stateChangeCallbacks.push(callback);
+    },
+
     setState: function(state) {
       var self = this;
       if (self.state !== state) {
         self.state = state;
         console.log("Library State: " + self.state);
+
+        // Fire the state change callbacks.
+        for (var i = 0; i < self.stateChangeCallbacks.length; i++) {
+          var callback = self.stateChangeCallbacks[i];
+          callback(state);
+        }
+
       }
     },
 

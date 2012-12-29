@@ -148,7 +148,15 @@ body
   top: 504px;
   background-size: 320px 57px;
   }
-  
+
+#title-bar-label
+  {
+  text-align: center;
+  text-shadow: 0 1px white;
+  padding-top: 12px;
+  font-weight: bold;
+  }
+ 
 #list-games
   {
   position: absolute;

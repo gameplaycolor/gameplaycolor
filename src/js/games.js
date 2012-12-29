@@ -13,8 +13,9 @@
       self.callback = callback;
       self.element = $('#screen-games');
       self.empty = $('#screen-empty');
+      self.title = $('#title-bar-label');
       self.grid = new App.Grid();
-      self.items = new Array();
+      self.items = [];
       self.library = new App.Library({
         'onUpdate': function() {
           self.grid.reloadData();
@@ -23,10 +24,24 @@
         'onLoad': function(data) {
           gb_Insert_Cartridge_Data(data, true);
           self.callback();
-        },
+        }
       });
+
+      self.library.onStateChange(function(state) {
+        if (state === App.Library.State.LOADING) {
+          self.title.html('Loading...');
+        } else if (state === App.Library.State.UNAUTHORIZED) {
+          self.title.html('Unauthorized');
+        } else if (state === App.Library.State.UPDATING) {
+          self.title.html('Updating...');
+        } else {
+          self.title.html('Games');
+        }
+      });
+
       self.grid.dataSource = self.library;
       self.grid.reloadData();
+
     },
     
     update: function() {
