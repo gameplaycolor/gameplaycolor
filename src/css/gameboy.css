@@ -9,6 +9,7 @@ body
 
 #LCD
   {
+  image-rendering: -webkit-optimize-contrast;
   }
 
 #display
@@ -24,7 +25,7 @@ body
   height: 288px;
   background-color: #EFFDE1;
   position: absolute;
-  background-size: 160px 144px;
+  background-size: 320px 288px;
   }
 
 #STATUS
