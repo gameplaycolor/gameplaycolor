@@ -33,11 +33,8 @@
           // $("#screen-instructions").show();
         // }
       });
-
-
+      
       self.games = new App.Games(self.gameBoy, self.library, function(identifier) {
-        // TODO Is it better if we don't start loading the game until
-        // after we've been shown?
         self.console.show();
         self.gameBoy.load(identifier);
       });

@@ -52,7 +52,6 @@
       var identifier = self.library.identifierForIndex(index);
 
       // Callback to say we're done.
-      // TODO Refactor the way this is set.
       self.callback(identifier);
     },
     

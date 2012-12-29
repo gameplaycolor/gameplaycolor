@@ -120,8 +120,7 @@
             self.updateCallback(files);
           },
           'onError': function(error) {
-            // TODO Handle the error.
-            console.log("Error: " + error);
+            // Ignore the error.
             self.setState(App.Library.State.READY);
           }
         });
