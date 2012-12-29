@@ -35,19 +35,20 @@
       });
 
 
-      self.games = new App.Games(function() {
-        self.running == true;
+      // TODO This callback seems unnecessary.
+      self.games = new App.Games(self.gameBoy, function() {
+        self.running = true;
         self.didLoad();
       });
       self.console = new App.Console(self.gameBoy, {
         'willHide': function() {
-          if (self.running == true) {
+          if (self.running === true) {
             self.gameBoy.pause();
           }
           self.games.update();
         },
         'didShow': function() {
-          if (self.running == true) {
+          if (self.running === true) {
             self.gameBoy.run();
           }
         }
@@ -64,7 +65,7 @@
     
     checkForUpdate: function() {
       var self = this;
-      if (window.applicationCache != undefined && window.applicationCache != null) {
+      if (window.applicationCache !== undefined && window.applicationCache !== null) {
         window.applicationCache.addEventListener('updateready', function(event) {
           self.updateApplication(event);
         });
@@ -78,7 +79,7 @@
         window.applicationCache.removeEventListener('updateready', self.updateApplication);
         window.applicationCache.swapCache();
         window.location.reload();
-    },
+    }
 
   });
 

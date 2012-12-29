@@ -20,7 +20,7 @@
     HIDE_TOP_PORTRAIT:  -504,
     HIDE_TOP_LANDSCAPE: -280,
     
-    DEVICE_WIDTH: 320,
+    DEVICE_WIDTH: 320
     
   };
 
@@ -33,16 +33,33 @@
         self.gameBoy = gameBoy;
         self.events = events;
         self.store = store;
+        self.state = App.Console.State.VISIBLE;
         self.element = $('#screen-console');
         self.titleBar = $('#title-bar');
-        self.state = App.Console.State.VISIBLE;
+        self.displayIdle = $('#LCD-idle');
+        self.displayLoading = $('#LCD-loading');
 
-        // Update the initial orientation and watch for changes.        
+        // Update the initial orientation and watch for changes.
         self.orientationChange(function(orientation) {
           self.updateLayout();
         });
 
-        // D-Pad.        
+        self.gameBoy.onStateChange(function(state) {
+          if (state === App.GameBoy.State.IDLE) {
+            self.displayIdle.show();
+            self.displayLoading.hide();
+          } else if (state === App.GameBoy.State.LOADING) {
+            self.displayLoading.show();
+            self.displayIdle.hide();
+          } else if (state === App.GameBoy.State.RUNNING) {
+            self.displayLoading.hide();
+            self.displayIdle.hide();
+          } else if (state === App.GameBoy.State.ERROR) {
+            // TODO Show the error.
+          }
+        });
+
+        // D-Pad.
         self.pad = new App.Controls.Pad('#control-dpad', {
           'touchDownLeft'  : function() { self.gameBoy.keyDown(Gameboy.Key.LEFT); },
           'touchUpLeft'    : function() { self.gameBoy.keyUp(Gameboy.Key.LEFT); },
@@ -51,7 +68,7 @@
           'touchDownUp'    : function() { self.gameBoy.keyDown(Gameboy.Key.UP); },
           'touchUpUp'      : function() { self.gameBoy.keyUp(Gameboy.Key.UP); },
           'touchDownDown'  : function() { self.gameBoy.keyDown(Gameboy.Key.DOWN); },
-          'touchUpDown'    : function() { self.gameBoy.keyUp(Gameboy.Key.DOWN); },
+          'touchUpDown'    : function() { self.gameBoy.keyUp(Gameboy.Key.DOWN); }
         });
         
         // A.

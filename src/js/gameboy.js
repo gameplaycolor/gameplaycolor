@@ -26,6 +26,25 @@
     init: function() {
       var self = this;
       self.state = App.GameBoy.State.IDLE;
+      self.stateChangeCallbacks = [];
+    },
+
+    onStateChange: function(callback) {
+      var self = this;
+      self.stateChangeCallbacks.push(callback);
+    },    
+
+    setState: function(state) {
+      var self = this;
+      if (self.state !== state) {
+        self.state = state;
+
+        // Fire the state change callbacks.
+        for (var i = 0; i < self.stateChangeCallbacks.length; i++) {
+          var callback = self.stateChangeCallbacks[i];
+          callback(state);
+        }
+      }
     },
 
     pause: function() {
@@ -53,7 +72,8 @@
     insertCartridge: function(data) {
       var self = this;
       gb_Insert_Cartridge_Data(data, true);
-    },
+      self.setState(App.GameBoy.State.RUNNING);
+    }
 
   });
 

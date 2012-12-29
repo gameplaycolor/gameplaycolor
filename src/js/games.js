@@ -1,15 +1,16 @@
 
 (function($) {
 
-  App.Games = function(callback) {
-    this.init(callback);
+  App.Games = function(gameBoy, callback) {
+    this.init(gameBoy, callback);
   };
 
   jQuery.extend(
     App.Games.prototype, {
 
-    init: function(callback) {
+    init: function(gameBoy, callback) {
       var self = this;
+      self.gameBoy = gameBoy;
       self.callback = callback;
       self.element = $('#screen-games');
       self.empty = $('#screen-empty');
@@ -22,8 +23,7 @@
           self.empty.hide();
         },
         'onLoad': function(data) {
-          gb_Insert_Cartridge_Data(data, true);
-          self.callback();
+          self.onLoad(data);
         }
       });
 
@@ -42,6 +42,12 @@
       self.grid.dataSource = self.library;
       self.grid.reloadData();
 
+    },
+
+    onLoad: function(data) {
+      var self = this;
+      self.gameBoy.insertCartridge(data);
+      self.callback();
     },
     
     update: function() {
