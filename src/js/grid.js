@@ -40,8 +40,11 @@
 
       self.dataSource = {
         'count' : function() { return 0; },
-        'titleForIndex': function(index) { return ''; },
-        'didSelectItemForRow': function(index) {},
+        'titleForIndex': function(index) { return ''; }
+      };
+
+      self.delegate = {
+        'didSelectItemForRow': function(index) {}
       };
 
       self.touchListener = new App.TouchListener(self.identifier, self);
@@ -177,7 +180,7 @@
 
       var index = (x * self.rows) + y;
       if (index < self.count) {
-        self.dataSource.didSelectItemForRow(index);  
+        self.delegate.didSelectItemForRow(index);  
       }
 
     },

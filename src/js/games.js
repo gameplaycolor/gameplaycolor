@@ -40,6 +40,7 @@
       });
 
       self.grid.dataSource = self.library;
+      self.grid.delegate = self.library;
       self.grid.reloadData();
 
     },
