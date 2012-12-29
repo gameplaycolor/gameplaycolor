@@ -328,7 +328,7 @@ body
 
 @media only screen and (-webkit-device-pixel-ratio:1) {
 
-  #LCD-loading { background: url(../images/loading_2x.png); }
+  #LCD-loading { background: url(../images/loading.png); }
   #LCD-idle { background: url(../images/idle.png); }
 
   #list-games { background-image: url(../images/background.png); }
