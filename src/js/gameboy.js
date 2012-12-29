@@ -1,11 +1,9 @@
 
 (function($) {
 
-  App.GameBoy = function() {
-    this.init();
+  App.GameBoy = function(store, library) {
+    this.init(store, library);
   };
-
-  App.GameBoy.instance = undefined;
 
   App.GameBoy.State = {
     IDLE: 0,
@@ -14,17 +12,12 @@
     ERROR: 3,
   };
 
-  App.GameBoy.getInstance = function() {
-    if (App.GameBoy.instance === undefined) {
-      App.GameBoy.instance = new App.GameBoy();
-    }
-    return App.GameBoy.instance;
-  };
-
   jQuery.extend(App.GameBoy.prototype, {
         
-    init: function() {
+    init: function(store, library) {
       var self = this;
+      self.store = store;
+      self.library = library;
       self.state = App.GameBoy.State.IDLE;
       self.stateChangeCallbacks = [];
     },
@@ -32,7 +25,7 @@
     onStateChange: function(callback) {
       var self = this;
       self.stateChangeCallbacks.push(callback);
-    },    
+    },
 
     setState: function(state) {
       var self = this;
@@ -67,6 +60,22 @@
       var self = this;
       var e = { 'which': keycode, 'preventDefault': function() {} };
       gb_OnKeyUp_Event(e);
+    },
+
+    load: function(identifier) {
+      var self = this;
+
+      self.setState(App.GameBoy.State.LOADING);
+
+      // Store the name of the file we're playing.
+      window.app.store.setProperty(App.Store.Property.GAME, identifier);
+
+      // Fetch the file.
+      var file = self.library.fetch(identifier, function(data) {
+        self.insertCartridge(data);
+        self.setState(App.GameBoy.State.RUNNING);
+      });
+
     },
 
     insertCartridge: function(data) {

@@ -15,9 +15,9 @@
 
     init: function () {
       var self = this;
-      self.running = false;
       self.store = new App.Store();
-      self.gameBoy = App.GameBoy.getInstance();
+      self.library = new App.Library();
+      self.gameBoy = new App.GameBoy(self.store, self.library);
 
       // Prevent touchmove events.
       document.addEventListener('touchmove', function(e) {
@@ -35,34 +35,27 @@
       });
 
 
-      // TODO This callback seems unnecessary.
-      self.games = new App.Games(self.gameBoy, function() {
-        self.running = true;
-        self.didLoad();
+      self.games = new App.Games(self.gameBoy, self.library, function(identifier) {
+        // TODO Is it better if we don't start loading the game until
+        // after we've been shown?
+        self.console.show();
+        self.gameBoy.load(identifier);
       });
+
       self.console = new App.Console(self.gameBoy, {
         'willHide': function() {
-          if (self.running === true) {
-            self.gameBoy.pause();
-          }
+          self.gameBoy.pause();
           self.games.update();
         },
         'didShow': function() {
-          if (self.running === true) {
-            self.gameBoy.run();
-          }
+          self.gameBoy.run();
         }
       }, self.store);
       
       self.checkForUpdate();
 
     },
-    
-    didLoad: function() {
-      var self = this;
-      self.console.show();
-    },
-    
+        
     checkForUpdate: function() {
       var self = this;
       if (window.applicationCache !== undefined && window.applicationCache !== null) {

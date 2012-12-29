@@ -1,8 +1,8 @@
 
 (function($) {
 
-  App.Library = function(callbacks) {
-    this.init(callbacks);
+  App.Library = function() {
+    this.init();
   };
 
   App.Library.State = {
@@ -16,12 +16,11 @@
   jQuery.extend(
     App.Library.prototype, {
 
-    init: function(callbacks) {
+    init: function() {
       var self = this;
       self.state = App.Library.State.UNINITIALIZED;
       self.items = [];
       self.cache = [];
-      self.callbacks = callbacks;
       self.stateChangeCallbacks = [];
 
       // We use a separate flag to track updates internally as
@@ -89,28 +88,11 @@
       var file = self.items[index];
       return file.title.slice(0, -3);
     },
-    
-    didSelectItemForRow: function(index) {
+
+    identifierForIndex: function(index) {
       var self = this;
       var file = self.items[index];
-      
-      // Store the name of the file we're playing.
-      // TODO This is very much the wrong place to do this.
-      window.app.store.setProperty(App.Store.Property.GAME, file.id);
-      
-      // Only attempt to download the file if it hasn't already been cached.
-      var data = localStorage.getItem(file.id);
-      if (data) {
-        self.callbacks.onLoad(data);
-      } else {
-        downloadFile(file, function(data) {
-          self.cache.push(file);
-          localStorage.setItem(file.id, data);
-          localStorage.setItem('library', JSON.stringify(self.cache));
-          self.callbacks.onLoad(data);
-        });
-      
-      }
+      return file.id;
     },
     
     update: function() {
@@ -133,6 +115,35 @@
       }
     },
 
+    fileForIdentifier: function(identifier) {
+      var self = this;
+      for (var i = 0; i < self.items.length; i++) {
+        var file = self.items[i];
+        if (file.id === identifier) {
+          return file;
+        }
+      }
+      return undefined;
+    },
+
+    fetch: function(identifier, callback) {
+      var self = this;
+
+      // Only attempt to download the file if it hasn't already been cached.
+      var data = localStorage.getItem(identifier);
+      if (data) {
+        callback(data);
+      } else {
+        var file = self.fileForIdentifier(identifier);
+        downloadFile(file, function(data) {
+          self.cache.push(file);
+          localStorage.setItem(file.id, data);
+          localStorage.setItem('library', JSON.stringify(self.cache));
+          callback(data);
+        });
+      }
+    },
+
     updateCallback: function(files) {
       var self = this;
 
@@ -150,7 +161,6 @@
       self.sort();
 
       self.setState(App.Library.State.READY);
-      self.callbacks.onUpdate();
     }
 
   });
