@@ -91,7 +91,15 @@
     titleForIndex: function(index) {
       var self = this;
       var file = self.items[index];
-      return file.title.slice(0, -3);
+
+      // Very rudimentary mechanism to strip the file extension (Google Drive doesn't
+      // guarantee file extensions in the file title).
+      var title = file.title;
+      if (title.toLowerCase().indexOf(".gb") === (title.length - 3)) {
+        return title.slice(0, -3);
+      } else {
+        return title;
+      }
     },
 
     identifierForIndex: function(index) {
