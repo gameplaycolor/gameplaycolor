@@ -13,79 +13,87 @@
 
     <link rel="stylesheet" href="css/gameboy.css" type="text/css" media="screen, mobile" title="main" charset="utf-8">
 
-    <!-- <link href="jsgb/jsgb.styles.css" rel="stylesheet" type="text/css" /> -->
+    <link rel="apple-touch-icon-precomposed" href="images/icon_2x.png" />
 
     <title>Game Boy</title>
 </head>
 <body>
 
-  <div id="screen-instructions" style="display: none">
-    Add to Home Screen
+  <div id="instructions" style="display: none">
+    <div class="icon"></div>
+    <p id="instructions-iphone5" style="display: none">
+      Add to Home Screen
+    </p>
+    <p id="instructions-other" style="display: none">
+      <em>Game Boy is only supported on iPhone 5.</em>
+    </p>
   </div>
   
-  <div id="screen-games" class="screen">
-    <div id="list-games" class="content">
-      <div id="list-games-content"></div>
-      <div id="list-games-page-control"></div>
-    </div>
-    <div id="screen-authorize" class="content" style="display: none">
-      <div id="screen-authorize-panel">
-        <h1>Google Drive</h1>
-        <p>
-          Sign into your Google Account to access Game Boy ROMs stored in Google Drive.
-        </p>
-        <p>
-          <em>Files with the .gb extension will be treated as Game Boy ROMs.</em>
-        </p>
-        <p>
-          <em>Unfortunately it is currently necessary to relaunch the application after authenticating.</em>
-        </p>
-        <div class="actions">
-          <a id="button-authorize" class="google-button-blue" />Sign in</a>
+  <div id="gameboy" style="display: none">
+
+    <div id="screen-games" class="screen">
+      <div id="list-games" class="content">
+        <div id="list-games-content"></div>
+        <div id="list-games-page-control"></div>
+      </div>
+      <div id="screen-authorize" class="content" style="display: none">
+        <div id="screen-authorize-panel">
+          <h1>Google Drive</h1>
+          <p>
+            Sign into your Google Account to access Game Boy ROMs stored in Google Drive.
+          </p>
+          <p>
+            <em>Files with the .gb extension will be treated as Game Boy ROMs.</em>
+          </p>
+          <p>
+            <em>Unfortunately it is currently necessary to relaunch the application after authenticating.</em>
+          </p>
+          <div class="actions">
+            <a id="button-authorize" class="google-button-blue" />Sign in</a>
+          </div>
         </div>
       </div>
     </div>
+
+    <div id="screen-console" class="screen">
+
+      <div id="display" class="display">
+        <canvas id="LCD" class="display" width="160" height="144"></canvas>
+        <div id="LCD-idle" class="display"></div>
+        <div id="LCD-loading" class="display" style="display: none"></div>
+      </div>
+
+      <div id="control-dpad" class="sprite-pad-default"></div>
+      <div id="group-options">
+        <div id="control-select" class="button-option"></div>
+        <div id="control-start" class="button-option"></div>
+      </div>
+      <div id="group-buttons">
+        <div id="control-a" class="button"></div>
+        <div id="control-b" class="button"></div>
+      </div>
+      <div id="title-bar" style="display: none">
+        <div id="title-bar-label"></div>
+        <div id="button-done"></div>
+      </div>
+    </div>
+
+    <div id="debug" style="display: none">DEBUG</div>
+
+    <div id="STATUS"></div>
+
+    <div id="DEBUG">&nbsp;</div>
+      <div id="buttons" style="display:none;">
+        <input id="BR" type="button" value="Run"     onfocus="this.blur();" onclick="gb_Run();"/>
+        <input id="BP" type="button" value="Pause"   onfocus="this.blur();" disabled onclick="gb_Pause();"/>
+        <input id="BS" type="button" value="Step"    onfocus="this.blur();" onclick="gb_Step();"/>
+        <input id="BS" type="button" value="Reset"   onfocus="this.blur();" onclick="gb_Insert_Cartridge($('CARTRIDGE').value,true);"/>
+        <input id="BX" type="button" value="Size x2" onfocus="this.blur();" onclick="gb_Resize_LCD();"/>
+      <div>
+    </div>
+    <div id="DEBUGGER"></div>
+
   </div>
-
-  <div id="screen-console" class="screen">
-
-    <div id="display" class="display">
-      <canvas id="LCD" class="display" width="160" height="144"></canvas>
-      <div id="LCD-idle" class="display"></div>
-      <div id="LCD-loading" class="display" style="display: none"></div>
-    </div>
-
-    <div id="control-dpad" class="sprite-pad-default"></div>
-    <div id="group-options">
-      <div id="control-select" class="button-option"></div>
-      <div id="control-start" class="button-option"></div>
-    </div>
-    <div id="group-buttons">
-      <div id="control-a" class="button"></div>
-      <div id="control-b" class="button"></div>
-    </div>
-    <div id="title-bar" style="display: none">
-      <div id="title-bar-label"></div>
-      <div id="button-done"></div>
-    </div>
-  </div>
-
-  <div id="debug" style="display: none">DEBUG</div>
-
-  
-
-  <div id="STATUS"></div>
-
-  <div id="DEBUG">&nbsp;</div>
-    <div id="buttons" style="display:none;">
-      <input id="BR" type="button" value="Run"     onfocus="this.blur();" onclick="gb_Run();"/>
-      <input id="BP" type="button" value="Pause"   onfocus="this.blur();" disabled onclick="gb_Pause();"/>
-      <input id="BS" type="button" value="Step"    onfocus="this.blur();" onclick="gb_Step();"/>
-      <input id="BS" type="button" value="Reset"   onfocus="this.blur();" onclick="gb_Insert_Cartridge($('CARTRIDGE').value,true);"/>
-      <input id="BX" type="button" value="Size x2" onfocus="this.blur();" onclick="gb_Resize_LCD();"/>
-    <div>
-  </div>
-  <div id="DEBUGGER"></div>
 
   <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
   <script> var $j = jQuery.noConflict(); </script>
@@ -115,6 +123,7 @@
   <script type="text/javascript" src="js/store.js"></script>
   <script type="text/javascript" src="js/touchlistener.js"></script>
   <script type="text/javascript" src="js/gesturerecognizer.js"></script>
+  <script type="text/javascript" src="js/device.js"></script>
   
   <script type="text/javascript" src="google.js"></script>
 

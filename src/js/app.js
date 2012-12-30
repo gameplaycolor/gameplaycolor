@@ -23,16 +23,6 @@
       document.addEventListener('touchmove', function(e) {
         e.preventDefault();
       }, false);
-
-      // TODO Don't show the console on anythign but an iPhone.
-      $j(document).ready(function() {
-        // Work out if we've been installed or not.
-        // if (window.navigator.standalone) {
-      /*     $j("#screen-console").show(); */
-        // } else {
-          // $("#screen-instructions").show();
-        // }
-      });
       
       self.games = new App.Games(self.gameBoy, self.library, function(identifier) {
         self.console.show();
@@ -75,7 +65,23 @@
 
   // Create the application.
   $(document).ready(function() {
-    window.app = new App.Controller();
+
+    var device = new App.Device();
+
+    // Work out if we've been installed or not.
+    if (window.navigator.standalone &&
+        device.type === App.Device.Type.IPHONE_5) {
+      $("#gameboy").show();
+      window.app = new App.Controller();
+    } else {
+      $("#instructions").show();
+      if (device.type === App.Device.Type.IPHONE_5) {
+        $("#instructions-iphone5").show();
+      } else {
+        $("#instructions-other").show();
+      }
+    }
+
   });
 
 })(jQuery);

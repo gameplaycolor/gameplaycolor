@@ -102,14 +102,16 @@
 
     updatePageControl: function() {
       var self = this;
+      // return;
+
       self.pageControl.html("");
       self.pageItems = [];
 
-      if (self.count == 0) {
+      if (self.count === 0) {
         return;
       }
 
-      for (var i=self.minPage(); i<=self.maxPage(); i++) {
+      for (var i=self.minPage(); i <= self.maxPage(); i++) {
         var item = $('<div class="page">');
         self.pageControl.append(item);
         self.pageItems.push(item);
@@ -119,11 +121,11 @@
     updatePageItems: function() {
       var self = this;
 
-      if (self.count == 0) {
+      if (self.count === 0) {
         return;
       }
 
-      for (var i=self.minPage(); i<=self.maxPage(); i++) {
+      for (var i = 0; i < self.pageItems.length; i++) {
         var item = self.pageItems[i];
         if (i === self.page) {
           item.addClass("active");

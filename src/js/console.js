@@ -18,7 +18,7 @@
   
     SHOW_TOP:            0,
     HIDE_TOP_PORTRAIT:  -504,
-    HIDE_TOP_LANDSCAPE: -280,
+    HIDE_TOP_LANDSCAPE: -256,
     
     DEVICE_WIDTH: 320
     
@@ -167,7 +167,7 @@
               }
             } else {
               self.scheduleSave();
-            } 
+            }
           });
         
       },

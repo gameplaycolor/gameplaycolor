@@ -4,7 +4,8 @@ body
   margin: 0;
   -webkit-user-select: none;
   background-color: black;
-  font: 15px Geneva, Arial, Helvetica, sans-serif; 
+  font: 15px Geneva, Arial, Helvetica, sans-serif;
+  background-size: 320px 568px;
   }
 
 #LCD
@@ -149,10 +150,10 @@ body
 #title-bar
   {
   position: absolute;
-  width: 320px;
-  height: 57px;
   left: 0;
-  top: 504px;
+  top: 256px;
+  width: 568px;
+  height: 57px;
   background-size: 320px 57px;
   }
 
@@ -179,10 +180,10 @@ body
 .content
   {
   position: absolute;
-  top: 80px;
-  left: 74px;
-  height: 120px;
-  width: 420px;
+  top: 44px;
+  left: 0px;
+  height: 256px;
+  width: 568px;
   }
   
 #list-games-content
@@ -372,7 +373,28 @@ body
   border-bottom: 1px solid #ccc;
   }
 
+#instructions
+  {
+  color: white;
+  text-shadow: 0 1px #000;
+  padding: 40px;
+  text-align: center;
+  }
+
+.icon
+  {
+  width: 57px;
+  height: 57px;
+  margin: auto;
+  margin-bottom: 20px;
+  background-size: 57px 57px;
+  }
+
 @media only screen and (-webkit-device-pixel-ratio:1) {
+
+  body { background-image: url(../images/background.png); }
+
+  .icon { background-image: url(../images/icon.png); }
 
   #LCD-loading { background: url(../images/loading.png); }
   #LCD-idle { background: url(../images/idle.png); }
@@ -408,6 +430,10 @@ body
 }
 
 @media only screen and (-webkit-device-pixel-ratio:2) {
+
+  body { background-image: url(../images/background_2x.png); }
+
+  .icon { background-image: url(../images/icon_2x.png); }
 
   #LCD-loading { background: url(../images/loading_2x.png); }
   #LCD-idle { background: url(../images/idle_2x.png); }
@@ -495,6 +521,14 @@ body
     {
     right: 8px;
     top: 498px;
+    }
+
+  #title-bar
+    {
+    left: 0;
+    top: 504px;
+    width: 320px;
+    height: 57px;
     }
     
   #spinner
