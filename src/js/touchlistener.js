@@ -21,27 +21,19 @@
       self.touch = { x: 0, y: 0 };
 
       document.querySelector(self.identifier).addEventListener('touchstart', function(e) {
-        e.preventDefault();
-        self.touch = self.convert(e);
-        self.onTouchEvent(App.Control.Touch.START, self.touch, e.timeStamp);
+        self.dispatchEvent(App.Control.Touch.START, e);
       }, false);
 
       document.querySelector(self.identifier).addEventListener('mousedown', function(e) {
-        e.preventDefault();
-        self.touch = self.convert(e);
-        self.onTouchEvent(App.Control.Touch.START, self.touch, e.timeStamp);
+        self.dispatchEvent(App.Control.Touch.START, e);
       }, false);
 
       document.querySelector(self.identifier).addEventListener('touchmove', function(e) {
-        e.preventDefault();
-        self.touch = self.convert(e);
-        self.onTouchEvent(App.Control.Touch.MOVE, self.touch, e.timeStamp);
+        self.dispatchEvent(App.Control.Touch.MOVE, e);
       }, false);
 
       document.querySelector(self.identifier).addEventListener('mousemove', function(e) {
-        e.preventDefault();
-        self.touch = self.convert(e);
-        self.onTouchEvent(App.Control.Touch.MOVE, self.touch, e.timeStamp);
+        self.dispatchEvent(App.Control.Touch.MOVE, e);
       }, false);
 
       document.querySelector(self.identifier).addEventListener('touchend', function(e) {
@@ -50,6 +42,11 @@
       }, false);
 
       document.querySelector(self.identifier).addEventListener('mouseup', function(e) {
+        e.preventDefault();
+        self.onTouchEvent(App.Control.Touch.END, self.touch, e.timeStamp);
+      }, false);
+
+      document.querySelector(self.identifier).addEventListener('touchcancel', function(e) {
         e.preventDefault();
         self.onTouchEvent(App.Control.Touch.END, self.touch, e.timeStamp);
       }, false);
@@ -65,22 +62,41 @@
       self.delegate.onTouchEvent(state, position, timestamp);
     },
 
+    dispatchEvent: function(state, event) {
+      var self = this;
+      event.preventDefault();
+      var touchEvent = self.getEvent(event);
+      if (touchEvent !== undefined) {
+        self.touch = self.convert(touchEvent);
+        self.onTouchEvent(state, self.touch, event.timeStamp);
+      }
+    },
+
     convert: function(event) {
       var self = this;
       var offset = self.element.offset();
-      if (event.touches) {
-        var touch = event.touches[0];
-        return { 'x': touch.pageX - offset.left ,
-                 'y': touch.pageY - offset.top };
-      }
       return { 'x': event.pageX - offset.left ,
                'y': event.pageY - offset.top };
+    },
+
+    // Queries the touch/mouse event looking for an a suitable event within the
+    // target object.  Returns undefined if one cannot be found.
+    getEvent: function(event) {
+      var self = this;
+      if (event.touches) {
+        if (event.targetTouches && event.targetTouches.length > 0) {
+          return event.targetTouches[0];
+        }
+      } else {
+        return event;
+      }
+      return undefined;
     },
 
     addRecognizer: function(recognizer) {
       var self = this;
       self.recognizers.push(recognizer);
-    },
+    }
     
   });
 
