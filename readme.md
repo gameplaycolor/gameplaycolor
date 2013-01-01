@@ -8,11 +8,11 @@
 2. Ignore files in the Trash
 3. Update the details of the items in the cache
 4. Should we always show all items in the cache but only let users select downloaded ones when offline?
-5. Disable saving for the time being
-6. Show loading text when the game list is loading
-7. Show some hint text when the game list is empty
-8. Fix the grid view hit test
-9. Fix the off-by-one in the grid view paging calculations
+5. Show loading text when the game list is loading
+6. Show some hint text when the game list is empty
+
+7. Fix the grid view hit test
+8. Fix the off-by-one in the grid view paging calculations
 
 ### Gamma
 
