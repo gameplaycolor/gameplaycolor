@@ -45,7 +45,6 @@
       if (library) {
         self.items = jQuery.parseJSON(library);
         self.cache = jQuery.parseJSON(library);
-        console.log(self.items);
       }
 
       self.sort();

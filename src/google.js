@@ -15,6 +15,8 @@
 
   App.Drive.instance = undefined;
 
+  App.Drive.QUERY = "trashed = false and mimeType = 'application/octet-stream'";
+
   App.Drive.getInstance = function() {
     if (App.Drive.instance === undefined) {
       App.Drive.instance = new App.Drive();
@@ -130,7 +132,7 @@
             'scope': self.scopes,
             'immediate': immediate
           },
-          function(result) { self.handleAuthenticationResult(result) }
+          function(result) { self.handleAuthenticationResult(result); }
         );
       },
 
@@ -173,26 +175,33 @@
                   request = gapi.client.request({
                     'path': '/drive/v2/files',
                     'method': 'GET',
-                    'params': {'maxResults': '100', 'pageToken': nextPageToken}
+                    'params': {
+                      'maxResults': '100',
+                      'q': App.Drive.QUERY,
+                      'pageToken': nextPageToken
+                    }
                   });
                   retrievePageOfFiles(request, result);
                 } else {
                   operation.onSuccess(result);
                 }
               });
-            }
+            };
             var initialRequest = gapi.client.request({
               'path': '/drive/v2/files',
               'method': 'GET',
-              'params': {'maxResults': '100'}
+              'params': {
+                'maxResults': '100',
+                'q': App.Drive.QUERY
+              }
             });
             retrievePageOfFiles(initialRequest, []);
           } catch (error) {
             operation.onError(error);
           }
 
-        })
-      },
+        });
+      }
 
   });
 
