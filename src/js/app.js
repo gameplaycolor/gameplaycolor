@@ -7,14 +7,15 @@
     $("#debug").html(message)
   };
 
-  App.Controller = function () {
-      this.init();
+  App.Controller = function(device) {
+      this.init(device);
   };
 
   jQuery.extend(App.Controller.prototype, {
 
-    init: function () {
+    init: function (device) {
       var self = this;
+      self.device = device;
       self.store = new App.Store();
       self.library = new App.Library();
       self.gameBoy = new App.GameBoy(self.store, self.library);
@@ -29,7 +30,7 @@
         self.gameBoy.load(identifier);
       });
 
-      self.console = new App.Console(self.gameBoy, {
+      self.console = new App.Console(self.device, self.gameBoy, {
         'willHide': function() {
           self.gameBoy.pause();
           self.games.update();
@@ -68,11 +69,15 @@
 
     var device = new App.Device();
 
+    $("#gameboy").show();
+    window.app = new App.Controller(device);
+    return;
+
     // Work out if we've been installed or not.
     if (window.navigator.standalone &&
         device.type === App.Device.Type.IPHONE_5) {
       $("#gameboy").show();
-      window.app = new App.Controller();
+      window.app = new App.Controller(device);
     } else {
       $("#instructions").show();
       if (device.type === App.Device.Type.IPHONE_5) {

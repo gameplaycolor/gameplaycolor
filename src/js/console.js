@@ -1,7 +1,7 @@
 (function($) {
 
-  App.Console = function(gameBoy, events, store) {
-    this.init(gameBoy, events, store);
+  App.Console = function(device, gameBoy, events, store) {
+    this.init(device, gameBoy, events, store);
   };
   
   App.Console.State = {
@@ -27,9 +27,10 @@
   jQuery.extend(
     App.Console.prototype, {
       
-      init: function(gameBoy, events, store) {
+      init: function(device, gameBoy, events, store) {
         var self = this;
         
+        self.device = device;
         self.gameBoy = gameBoy;
         self.events = events;
         self.store = store;
@@ -40,7 +41,8 @@
         self.displayLoading = $('#LCD-loading');
 
         // Update the initial orientation and watch for changes.
-        self.orientationChange(function(orientation) {
+        self.updateLayout();
+        self.device.onOrientationChange(function(orientation) {
           self.updateLayout();
         });
 
@@ -172,35 +174,6 @@
         
       },
       
-      orientationChange: function(callback) {
-        var self = this;
-        
-        // Determine the initial orientation.
-        self.orientation = App.Console.Orientation.PORTRAIT;
-        if ($(window).width() > App.Console.Dimensions.DEVICE_WIDTH) {
-          self.orientation = App.Console.Orientation.LANDSCAPE;
-        }
-        
-        // Orientation events (via window size).
-        $(window).resize(function() {
-          var width = $(window).width();
-          var orientation = self.orientation;
-          if (width > App.Console.Dimensions.DEVICE_WIDTH) {
-            orientation = App.Console.Orientation.LANDSCAPE;
-          } else {
-            orientation = App.Console.Orientation.PORTRAIT;
-          }
-          
-          // Only execute the callback if the orientation has actually changed.
-          if (orientation != self.orientation) {
-            self.orientation = orientation;
-            callback(self.orientation);
-          }
-          
-        });
-
-      },
-      
       event: function(id) {
         var self = this;
         if (id in self.events) {
@@ -217,7 +190,7 @@
         
           // Determine which offset to animate to.
           var top = App.Console.Dimensions.HIDE_TOP_PORTRAIT
-          if (self.orientation == App.Console.Orientation.LANDSCAPE) {
+          if (self.device.orientation == App.Console.Orientation.LANDSCAPE) {
             top = App.Console.Dimensions.HIDE_TOP_LANDSCAPE;
           }
           
@@ -256,7 +229,7 @@
         // The layout only needs to be adjusted if we're currently in
         // the hidden state.
         if (self.state == App.Console.State.HIDDEN) {
-          if (self.orientation == App.Console.Orientation.PORTRAIT) {
+          if (self.device.orientation == App.Console.Orientation.PORTRAIT) {
             self.element.css('top', App.Console.Dimensions.HIDE_TOP_PORTRAIT);
           } else {
             self.element.css('top', App.Console.Dimensions.HIDE_TOP_LANDSCAPE);        

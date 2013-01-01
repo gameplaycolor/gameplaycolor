@@ -15,13 +15,17 @@
   };
 
   App.Device.Orientation = {
+    UNKNOWN:   -1,
     PORTRAIT:  0,
     LANDSCAPE: 1
   };
 
   App.Device.Dimensions = {
+
     IPHONE_5_HEIGHT: 444,
-    IPHONE_5_WIDTH:  568
+    IPHONE_5_WIDTH:  568,
+
+    DEVICE_WIDTH: 320
   };
 
   jQuery.extend(
@@ -31,15 +35,16 @@
       var self = this;
       self.type = App.Device.Type.UNKNOWN;
       self.retina = (window.devicePixelRatio > 1);
+      self.orientationChangeCallbacks = [];
 
       var width = $(window).width();
       var height = $(window).height();
 
-      if (height > width) {
-        self.orientation = App.Device.Orientation.PORTRAIT;
-      } else {
-        self.orientation = App.Device.Orientation.LANDSCAPE;
-      }
+      // Determine the initial orientation, then observe orientation
+      // events (via window size).
+      self.orientation = App.Device.Orientation.UNKNOWN;
+      self.updateOrientation(false);
+      self.observeOrientationChanges();
 
       var userAgent = navigator.userAgent;
       if (userAgent.indexOf("iPhone") !== -1) {
@@ -69,6 +74,47 @@
     type: function() {
       var self = this;
       return self.type;
+    },
+
+    onOrientationChange: function(callback) {
+      var self = this;
+      self.orientationChangeCallbacks.push(callback);
+    },
+
+    // Update the orientation.
+    // Observes will be notified if notify is true.
+    updateOrientation: function(notify) {
+      var self = this;
+
+      var width = $(window).width();
+
+      var orientation = self.orientation;
+      if (width > App.Device.Dimensions.DEVICE_WIDTH) {
+        orientation = App.Device.Orientation.LANDSCAPE;
+      } else {
+        orientation = App.Device.Orientation.PORTRAIT;
+      }
+      
+      // Only execute the callback if the orientation has actually changed.
+      if (orientation != self.orientation) {
+        self.orientation = orientation;
+
+        if (notify) {
+          for (var i = 0; i < self.orientationChangeCallbacks.length; i++) {
+            var callback = self.orientationChangeCallbacks[i];
+            callback(self.orientation);
+          }
+        }
+      }
+
+    },
+
+    observeOrientationChanges: function() {
+      var self = this;
+      $(window).resize(function() {
+        self.updateOrientation(true);
+      });
+
     }
 
   });
