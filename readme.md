@@ -4,18 +4,16 @@
 
 ### Beta
 
-1. Icon
-2. Initial walk-through for people adding the application
-3. Landscape support
-4. Fix the bug with the dpad
+1. Landscape support
+2. Fix the bug with the dpad
 
-4. Delete files which have been removed from Google Drive
-5. Ignore files in the Trash
-6. Update the details of the items in the cache
-7. Should we always show all items in the cache but only let users select downloaded ones when offline?
-8. Disable saving for the time being
-9. Show loading text when the game list is loading
-10. Show some hint text when the game list is empty
+3. Delete files which have been removed from Google Drive
+4. Ignore files in the Trash
+5. Update the details of the items in the cache
+6. Should we always show all items in the cache but only let users select downloaded ones when offline?
+7. Disable saving for the time being
+8. Show loading text when the game list is loading
+9. Show some hint text when the game list is empty
 
 ### Gamma
 

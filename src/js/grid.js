@@ -5,21 +5,27 @@
     this.init();
   };
   
-  App.Grid.MARGIN = 10;
-  
   App.Grid.Cell = {
     WIDTH:  140,
-    HEIGHT: 140
+    HEIGHT: 140,
+    MARGIN: 10
   };
 
   App.Grid.MOVE_THRESHOLD = 10;
   App.Grid.SCROLL_BIAS = 40;
 
   App.Grid.Margin = {
-    TOP: 20,
-    LEFT: 15,
-    RIGHT: 15
-  }
+    Portrait: {
+      TOP: 20,
+      LEFT: 15,
+      RIGHT: 15
+    },
+    Landscape: {
+      TOP: 20,
+      LEFT: 15,
+      RIGHT: 15
+    }
+  };
 
   jQuery.extend(App.Grid.prototype, {
 
@@ -62,6 +68,12 @@
       });
       
     },
+
+    // Return the margin for the current orientation.
+    margin: function() {
+      var self = this;
+      return App.Grid.Margin.Portrait;
+    },
     
     reloadData: function() {
       var self = this;
@@ -80,11 +92,11 @@
     updateLayout: function() {
       var self = this;
 
-      var cellHeight = App.Grid.Cell.HEIGHT + App.Grid.MARGIN;
-      var cellWidth = App.Grid.Cell.WIDTH + App.Grid.MARGIN;
+      var cellHeight = App.Grid.Cell.HEIGHT + App.Grid.Cell.MARGIN;
+      var cellWidth = App.Grid.Cell.WIDTH + App.Grid.Cell.MARGIN;
 
-      var controlWidth = self.element.width() + App.Grid.MARGIN;
-      var controlHeight = self.element.height() + App.Grid.MARGIN;
+      var controlWidth = self.element.width() + App.Grid.Cell.MARGIN;
+      var controlHeight = self.element.height() + App.Grid.Cell.MARGIN;
       
       var rows = Math.floor(controlHeight / cellHeight);
       var width =  Math.floor(controlWidth / cellWidth);
@@ -92,7 +104,7 @@
       if ((rows != self.rows) || (width != self.width)) {
         self.rows = rows;
         self.width = width;
-        self.pageWidth = (self.width * (App.Grid.Cell.WIDTH + App.Grid.MARGIN)) + App.Grid.Margin.LEFT + App.Grid.Margin.RIGHT;
+        self.pageWidth = (self.width * (App.Grid.Cell.WIDTH + App.Grid.Cell.MARGIN)) + self.margin().LEFT + self.margin().RIGHT;
         self.page = 0;
         self.content.css('left', 0);
         self.reloadData();
@@ -146,8 +158,8 @@
       var page = Math.floor(self.count / itemsPerPage);
       
       var game = $('<div class="game">');
-      game.css('top', App.Grid.Margin.TOP + ((App.Grid.Cell.HEIGHT + App.Grid.MARGIN) * row));
-      game.css('left', App.Grid.Margin.LEFT + ((App.Grid.Margin.LEFT + App.Grid.Margin.RIGHT) * page) + ((App.Grid.Cell.WIDTH + App.Grid.MARGIN) * col));
+      game.css('top', self.margin().TOP + ((App.Grid.Cell.HEIGHT + App.Grid.Cell.MARGIN) * row));
+      game.css('left', self.margin().LEFT + ((self.margin().LEFT + self.margin().RIGHT) * page) + ((App.Grid.Cell.WIDTH + App.Grid.Cell.MARGIN) * col));
       game.css('height', App.Grid.Cell.HEIGHT);
       game.css('width', App.Grid.Cell.WIDTH);
 
@@ -177,8 +189,8 @@
 
       // Work out which item it is.
       var contentPosition = self.contentPosition(position);
-      var x = Math.floor(contentPosition.x / (App.Grid.Cell.WIDTH + App.Grid.MARGIN));
-      var y = Math.floor((contentPosition.y - App.Grid.Margin.TOP) / (App.Grid.Cell.HEIGHT + App.Grid.MARGIN));
+      var x = Math.floor(contentPosition.x / (App.Grid.Cell.WIDTH + App.Grid.Cell.MARGIN));
+      var y = Math.floor((contentPosition.y - self.margin().TOP) / (App.Grid.Cell.HEIGHT + App.Grid.Cell.MARGIN));
 
       var index = (x * self.rows) + y;
       if (index < self.count) {
