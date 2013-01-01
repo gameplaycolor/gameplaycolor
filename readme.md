@@ -18,15 +18,16 @@
 
 ### Gamma
 
-2. Non-blocking saves
-3. Work out why saving is corrupted on larger files
+1. Previews for games with graphics
+2. Pressable buttons
+3. Audio
+
 
 ### Release
 
-1. Previews for games with graphics
-2. Pressable buttons
+1. Non-blocking saves
+2. Work out why saving is corrupted on larger files
 3. Recover from the google sign in white screen
 
 ### Future
 
-1. Audio
