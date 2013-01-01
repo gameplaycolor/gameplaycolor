@@ -1,6 +1,6 @@
 CACHE MANIFEST
 
-# Version 112
+# Version 115
 
 CACHE:
 
@@ -12,7 +12,7 @@ CACHE:
 /js/jquery.base64.min.js
 
 /jsgb/toolbox.js
-/jsgb/scrollbar.js
+/jsgb/scrollbar.js 
 
 /jsgb/jsgb.cpu.js
 /jsgb/jsgb.rom.js
