@@ -119,8 +119,7 @@
 
     updatePageControl: function() {
       var self = this;
-      // return;
-
+      
       self.pageControl.html("");
       self.pageItems = [];
 
