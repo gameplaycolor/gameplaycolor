@@ -25,7 +25,7 @@
         e.preventDefault();
       }, false);
       
-      self.games = new App.Games(self.gameBoy, self.library, function(identifier) {
+      self.games = new App.Games(self.device, self.gameBoy, self.library, function(identifier) {
         self.console.show();
         self.gameBoy.load(identifier);
       });

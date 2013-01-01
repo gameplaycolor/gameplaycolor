@@ -4,16 +4,17 @@
 
 ### Beta
 
-1. Landscape support
-2. Fix the bug with the dpad
+1. Fix the bug with the dpad
 
-3. Delete files which have been removed from Google Drive
-4. Ignore files in the Trash
-5. Update the details of the items in the cache
-6. Should we always show all items in the cache but only let users select downloaded ones when offline?
-7. Disable saving for the time being
-8. Show loading text when the game list is loading
-9. Show some hint text when the game list is empty
+2. Delete files which have been removed from Google Drive
+3. Ignore files in the Trash
+4. Update the details of the items in the cache
+5. Should we always show all items in the cache but only let users select downloaded ones when offline?
+6. Disable saving for the time being
+7. Show loading text when the game list is loading
+8. Show some hint text when the game list is empty
+9. Fix the grid view hit test
+10. Fix the off-by-one in the grid view paging calculations
 
 ### Gamma
 

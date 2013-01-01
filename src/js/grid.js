@@ -1,8 +1,8 @@
 
 (function($) {
 
-  App.Grid = function () {
-    this.init();
+  App.Grid = function(device) {
+    this.init(device);
   };
   
   App.Grid.Cell = {
@@ -21,16 +21,17 @@
       RIGHT: 15
     },
     Landscape: {
-      TOP: 20,
-      LEFT: 15,
-      RIGHT: 15
+      TOP: 40,
+      LEFT: 64,
+      RIGHT: 64
     }
   };
 
   jQuery.extend(App.Grid.prototype, {
 
-    init: function () {
+    init: function(device) {
       var self = this;
+      self.device = device;
       self.identifier = '#list-games';
       self.element = $(self.identifier);
       self.content = $('#list-games-content');
@@ -72,7 +73,11 @@
     // Return the margin for the current orientation.
     margin: function() {
       var self = this;
-      return App.Grid.Margin.Portrait;
+      if (self.device.orientation === App.Device.Orientation.PORTRAIT) {
+        return App.Grid.Margin.Portrait;
+      } else {
+        return App.Grid.Margin.Landscape;
+      }
     },
     
     reloadData: function() {

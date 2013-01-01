@@ -1,15 +1,16 @@
 
 (function($) {
 
-  App.Games = function(gameBoy, library, callback) {
-    this.init(gameBoy, library, callback);
+  App.Games = function(device, gameBoy, library, callback) {
+    this.init(device, gameBoy, library, callback);
   };
 
   jQuery.extend(
     App.Games.prototype, {
 
-    init: function(gameBoy, library, callback) {
+    init: function(device, gameBoy, library, callback) {
       var self = this;
+      self.device = device;
       self.gameBoy = gameBoy;
       self.library = library;
       self.callback = callback;
@@ -20,7 +21,7 @@
         }
       });
       self.title = $('#title-bar-label');
-      self.grid = new App.Grid();
+      self.grid = new App.Grid(device);
       self.items = [];
 
       self.title.html('Games');
