@@ -111,22 +111,24 @@
           self.show();
         }});
         
-        self.saver = new Worker('js/saver.js');
-        self.saver.onmessage = function(message) {
-          console.log(message);
-        };
-        self.load();
+        // self.saver = new Worker('js/saver.js');
+        // self.saver.onmessage = function(message) {
+        //   console.log(message);
+        // };
+        // self.load();
         
       },
       
       scheduleSave: function() {
         var self = this;
-        setTimeout(function() {
-          console.log("Save");
-          self.save();
-          self.scheduleSave();
-          // self.saver.postMessage([gbMemory, gbFrameBuffer, gbTileData, gbBackgroundData]);
-        }, 10000);      
+        if (App.Controller.SAVE === true) {
+          setTimeout(function() {
+            console.log("Save");
+            self.save();
+            self.scheduleSave();
+            // self.saver.postMessage([gbMemory, gbFrameBuffer, gbTileData, gbBackgroundData]);
+          }, 10000);
+        }
       },
       
       save: function() {
