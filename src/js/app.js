@@ -3,10 +3,6 @@
 
   App = {};
 
-  App.Log = function(message) {
-    $("#debug").html(message)
-  };
-
   App.Controller = function(device) {
       this.init(device);
   };
@@ -16,7 +12,7 @@
     init: function (device) {
       var self = this;
       self.device = device;
-      self.store = new App.Store();
+      self.store = new App.Store('gameboy');
       self.library = new App.Library();
       self.gameBoy = new App.GameBoy(self.store, self.library);
 
@@ -69,6 +65,7 @@
 
     var device = new App.Device();
 
+    // TODO Remove.
     $("#gameboy").show();
     window.app = new App.Controller(device);
     return;

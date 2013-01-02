@@ -13,6 +13,8 @@
     READY: 4
   };
 
+  App.Library.THUMBNAIL_TYPE = "jpg";
+
   jQuery.extend(
     App.Library.prototype, {
 
@@ -25,6 +27,7 @@
       self.changeCallbacks = [];
       self.stateChangeCallbacks = [];
       self.drive = App.Drive.getInstance();
+      self.thumbnailStore = new App.Store('thumbnails');
 
       // We use a separate flag to track updates internally as
       // we need to be able to schedule updates in many different states
@@ -131,9 +134,20 @@
       return self.thumbnailForIdentifier(identifier);
     },
 
+    // Returns the thumbnail for a given identifier.
+    // Triggers a fetch from the cache if the thumbnail is not present.
     thumbnailForIdentifier: function(identifier) {
       var self = this;
-      return self.thumbnails[identifier];
+      if (identifier in self.thumbnails) {
+        return self.thumbnails[identifier];
+      } else {
+        self.thumbnailStore.property(identifier, function(value) {
+          if (value !== undefined) {
+            self.thumbnails[identifier] = self.thumbnailDataUrl(value);
+            self.notifyChange();
+          }
+        });
+      }
     },
     
     update: function() {
@@ -184,31 +198,60 @@
       }
     },
 
-    updateCallback: function(files) {
+    // Converts a base64 encoded thumbnail image into a suitable URL.
+    thumbnailDataUrl: function(data) {
+      var self = this;
+      return "data:image/" + App.Library.THUMBNAIL_TYPE + ";base64," + data;
+    },
+
+    // Checks to see if there is a cached thumbnail.  If no thumbnail has been cached,
+    // one will be fetched from Google Drive if it's available.
+    // This implementation caches all thumbnails in memory.  It's possible that this will
+    // introduce performance issues, but it doesn't seem worthwhile loading everything lazily
+    // at this stage.
+    updateThumbnail: function(file) {
       var self = this;
 
+      var identifier = file.id;
+      var parent = file.parents[0].id;
+      var title = self.stripExtension(file.title) + "." + App.Library.THUMBNAIL_TYPE;
+
+      // Don't bother re-fetching a thumbnail if we've already cached it.
+      if (identifier in self.thumbnails) {
+        return;
+      }
+
+      // Check the cache.
+      self.thumbnailStore.property(identifier, function(value) {
+        if (value !== undefined) {
+          self.thumbnails[identifier] = self.thumbnailDataUrl(value);
+          self.notifyChange();
+        } else {
+          self.drive.file(parent, title, {
+            'onStart': function() {},
+            'onSuccess': function(file) {
+              if (file !== undefined) {
+                downloadFileBase64(file, function(data) {
+                  self.thumbnailStore.setProperty(identifier, data);
+                  self.thumbnails[identifier] = self.thumbnailDataUrl(data);
+                  self.notifyChange();
+                });
+              }
+            },
+            'onError': function(error) {}
+          });
+        }
+      });
+
+    },
+
+    updateCallback: function(files) {
+      var self = this;
+      var i;
+
       // Update the thumbnails.
-      self.thumbnails = {};
-      for (var i = 0; i < files.length; i++) {
-        var file = files[i];
-        var identifier = file.id;
-        var parent = file.parents[0].id;
-        var type = "jpg";
-        var title = self.stripExtension(file.title) + "." + type;
-
-        self.drive.file(parent, title, {
-          'onStart': function() {},
-          'onSuccess': function(id) { return function(file) {
-            if (file !== undefined) {
-              downloadFileBase64(file, function(data) {
-                self.thumbnails[id] = "data:image/" + type + ";base64," + data;
-                self.notifyChange();
-              });
-            }
-          }}(identifier),
-          'onError': function(error) {}
-        });
-
+      for (i = 0; i < files.length; i++) {
+        self.updateThumbnail(files[i]);
       }
 
       // Reset the update flag.
@@ -216,7 +259,7 @@
 
       // Update the files.
       self.items = [];
-      for (var i=0; i<files.length; i++) {
+      for (i = 0; i < files.length; i++) {
         var file = files[i];
         if (file.fileExtension === 'gb') {
           self.items.push(file);

@@ -9,11 +9,13 @@
 3. Should we always show all items in the cache but only let users select downloaded ones when ffline?
 4. Show loading text when the game list is loading
 5. Show some hint text when the game list is empty
-6. Cache game thumbnails
-7. Queue thumbnail downloads to reduce load
 
-8. Fix the grid view hit test
-9. Fix the off-by-one in the grid view paging calculations
+6. Fix the grid view hit test
+7. Fix the off-by-one in the grid view paging calculations
+
+8. Add Google Analytics
+
+9. Fix offline mode
 
 ### Release
 
