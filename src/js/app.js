@@ -7,6 +7,8 @@
       this.init(device);
   };
 
+  App.Controller.SAVE = false;
+
   jQuery.extend(App.Controller.prototype, {
 
     init: function (device) {
