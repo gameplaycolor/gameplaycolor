@@ -15,17 +15,14 @@
 8. Fix the grid view hit test
 9. Fix the off-by-one in the grid view paging calculations
 
-### Gamma
+### Release
 
 1. Pressable buttons
 2. Audio
 
-
-### Release
+### Future
 
 1. Non-blocking saves
 2. Work out why saving is corrupted on larger files
 3. Recover from the google sign in white screen
-
-### Future
 
