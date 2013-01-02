@@ -193,28 +193,17 @@
         var file = files[i];
         var identifier = file.id;
         var parent = file.parents[0].id;
-        var title = self.stripExtension(file.title) + ".jpg";
-        console.log(parent + " " + title);
+        var type = "jpg";
+        var title = self.stripExtension(file.title) + "." + type;
 
         self.drive.file(parent, title, {
           'onStart': function() {},
           'onSuccess': function(id) { return function(file) {
             if (file !== undefined) {
-              self.thumbnails[id] = file.webContentLink;
-              self.notifyChange();
-
-              // TODO Cache the thumbnails.
-              // var img = document.createElement('img');
-              // img.src = 'data:image/gif;base64,R0lGODlhEAAOALMAAOazToeHh0tLS/7LZv/0jvb29t/f3//Ub//ge8WSLf/rhf/3kdbW1mxsbP//mf///yH5BAAAAAAALAAAAAAQAA4AAARe8L1Ekyky67QZ1hLnjM5UUde0ECwLJoExKcppV0aCcGCmTIHEIUEqjgaORCMxIC6e0CcguWw6aFjsVMkkIr7g77ZKPJjPZqIyd7sJAgVGoEGv2xsBxqNgYPj/gAwXEQA7';
-              // img.src = file.webContentLink;
-              // img.width = '100';
-              // img.height = '100';
-              // document.body.appendChild(img);
-              // console.log(file);
-              // downloadFile(file, function(data) {
-              //   console.log(data);
-              // });
-              // window.btoa(xxx); ?
+              downloadFileBase64(file, function(data) {
+                self.thumbnails[id] = "data:image/" + type + ";base64," + data;
+                self.notifyChange();
+              });
             }
           }}(identifier),
           'onError': function(error) {}

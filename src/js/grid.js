@@ -173,7 +173,6 @@
       game.append(gameTitle);
 
       if (thumbnail !== undefined) {
-        console.log("Adding Thumbnail");
         var img = $('<img class="game-thumbnail">');
         img.attr("src", thumbnail);
         game.append(img);
