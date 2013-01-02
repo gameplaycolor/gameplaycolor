@@ -246,6 +246,18 @@ body
   top: 40px;
   left: 27px;
   }
+
+.game-thumbnail
+  {
+  position: absolute;
+  width: 85px;
+  height: 74px;
+  border-radius: 2px;
+  word-wrap: break-word;
+  position: absolute;
+  top: 40px;
+  left: 27px;
+  }
     
 #screen-games
   {

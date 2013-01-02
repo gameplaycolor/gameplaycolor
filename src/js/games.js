@@ -36,8 +36,13 @@
           // TODO Show some text on the screen if it's empty.
         } else {
           self.authorize.fadeOut();
+          // TODO Is this the correct place to do this now?
           self.grid.reloadData();
         }
+      });
+
+      self.library.onChange(function() {
+        self.grid.reloadData();
       });
 
       self.grid.dataSource = self.library;

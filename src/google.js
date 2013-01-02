@@ -155,6 +155,38 @@
 
       },
 
+      // Retrieve single file which matches a given filename in a specific parent container.
+      file: function(parent, title, operation) {
+        var self = this;
+        self.run(function() {
+          operation.onStart();
+
+          try {
+            var retrievePageOfFiles = function(request) {
+              request.execute(function(resp) {
+                if (resp.items.length > 0) {
+                  operation.onSuccess(resp.items[0]);
+                } else {
+                  operation.onSuccess(undefined);
+                }
+              });
+            };
+            var initialRequest = gapi.client.request({
+              'path': '/drive/v2/files',
+              'method': 'GET',
+              'params': {
+                'maxResults': '1',
+                'q': "trashed = false and '" + parent + "' in parents and title = '" + title + "'"
+              }
+            });
+            retrievePageOfFiles(initialRequest);
+          } catch (error) {
+            operation.onError(error);
+          }
+
+        });
+      },
+
       /**
        * Retrieve a list of File resources.
        *

@@ -87,7 +87,8 @@
       self.content.html("");
       for (var i=0; i<self.dataSource.count(); i++) {
         var title = self.dataSource.titleForIndex(i);
-        self.add(i, title);
+        var thumbnail = self.dataSource.thumbnailForIndex(i);
+        self.add(i, title, thumbnail);
       }
 
       self.updatePageControl();
@@ -151,7 +152,7 @@
       }
     },
     
-    add: function(index, title) {
+    add: function(index, title, thumbnail) {
       var self = this;
       
       var row = self.count % self.rows;
@@ -170,6 +171,13 @@
       var gameTitle = $('<div class="game-title">');
       gameTitle.html(title);
       game.append(gameTitle);
+
+      if (thumbnail !== undefined) {
+        console.log("Adding Thumbnail");
+        var img = $('<img class="game-thumbnail">');
+        img.attr("src", thumbnail);
+        game.append(img);
+      }
       
       self.content.append(game);
       self.count += 1;
@@ -198,7 +206,7 @@
 
       var index = (x * self.rows) + y;
       if (index < self.count) {
-        self.delegate.didSelectItemForRow(index);  
+        self.delegate.didSelectItemForRow(index);
       }
 
     },
