@@ -35,7 +35,7 @@
           self.authorize.fadeOut();
           if (self.library.count() < 1) {
             self.loading.fadeIn();
-          } 
+          }
         } else if (state === App.Library.State.UNAUTHORIZED) {
           window.tracker.track('games/unauthorized');
           self.empty.fadeOut();
@@ -47,7 +47,7 @@
           self.authorize.fadeOut();
           if (self.library.count() < 1) {
             self.loading.fadeIn();
-          } 
+          }
         } else {
           self.loading.fadeOut();
           self.authorize.fadeOut();
@@ -76,7 +76,7 @@
       if (window.navigator.onLine || self.library.availableOffline(index)) {
         window.tracker.track('load-rom');
         var identifier = self.library.identifierForIndex(index);
-        self.callback(identifier);        
+        self.callback(identifier);
       }
 
     },
