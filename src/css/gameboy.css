@@ -278,7 +278,7 @@ body
   color: white;
   text-shadow: 0 1px #000;
   text-align: center;
-  padding: 160px 40px;
+  padding: 80px 40px;
   }
 
 #screen-authorize
@@ -294,12 +294,12 @@ body
 #screen-authorize-panel
   {
   position: absolute;
-  top: 30px;
-  left: 30px;
-  background-color: #fff;
-  width: 220px;
-  height: 390px;
-  padding: 20px;
+  background-color: #fff;  
+  top: 20px;
+  left: 20px;
+  width: 508px;
+  height: 196px;
+  padding: 10px;
   font-size: 14px;
   }
 
@@ -583,6 +583,19 @@ body
     {
     height: 26px;
     width: 320px;
+    }
+
+  #screen-authorize-panel
+    {
+    top: 30px;
+    left: 30px;
+    width: 220px;
+    height: 390px;
+    }
+
+  .placeholder
+    {
+    padding: 160px 40px;
     }
 
 }

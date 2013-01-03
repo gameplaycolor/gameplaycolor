@@ -4,10 +4,10 @@
 
 ### Beta
 
-1. Landscape google drive sign-in
-2. Landscape empty notices.
+1. About/copyright notice
+2. Closure
 3. Pressable buttons
-4. Copyright notice
+4. Table not reloading following an update.
 
 ### Release
 
