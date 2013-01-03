@@ -300,6 +300,7 @@
       }
 
       self.setState(App.Library.State.READY);
+      self.notifyChange();
     }
 
   });
