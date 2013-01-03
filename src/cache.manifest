@@ -1,6 +1,6 @@
 CACHE MANIFEST
 
-# Version 124
+# Version 126
 
 CACHE:
 
@@ -37,6 +37,7 @@ CACHE:
 /js/dummy.js
 /js/touchlistener.js
 /js/gesturerecognizer.js
+/js/device.js
 
 /google.js
 
