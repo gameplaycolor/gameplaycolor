@@ -38,6 +38,7 @@
 
       self.pageControl = $('#list-games-page-control');
       self.pageItems = [];
+      self.items = [];
 
       self.count = 0;
       self.rows = 0;
@@ -84,6 +85,7 @@
       var self = this;
       
       self.count = 0;
+      self.items = [];
       self.content.html("");
       for (var i=0; i<self.dataSource.count(); i++) {
         var title = self.dataSource.titleForIndex(i);
@@ -162,12 +164,24 @@
       var itemsPerPage = self.width * self.rows;
 
       var page = Math.floor(self.count / itemsPerPage);
+
+      var x = self.margin().LEFT + ((self.margin().LEFT + self.margin().RIGHT) * page) + ((App.Grid.Cell.WIDTH + App.Grid.Cell.MARGIN) * col);
+      var y = self.margin().TOP + ((App.Grid.Cell.HEIGHT + App.Grid.Cell.MARGIN) * row);
+
+      var dimensions = {
+        'x1': x,
+        'y1': y,
+        'x2': x + App.Grid.Cell.WIDTH,
+        'y2': y + App.Grid.Cell.HEIGHT
+      };
       
       var game = $('<div class="game">');
-      game.css('top', self.margin().TOP + ((App.Grid.Cell.HEIGHT + App.Grid.Cell.MARGIN) * row));
-      game.css('left', self.margin().LEFT + ((self.margin().LEFT + self.margin().RIGHT) * page) + ((App.Grid.Cell.WIDTH + App.Grid.Cell.MARGIN) * col));
+      game.css('top', y);
+      game.css('left', x);
       game.css('height', App.Grid.Cell.HEIGHT);
       game.css('width', App.Grid.Cell.WIDTH);
+
+      self.items.push(dimensions);
 
       var gameTitle = $('<div class="game-title">');
       gameTitle.html(title);
@@ -204,16 +218,20 @@
     itemForPosition: function(position) {
       var self = this;
 
-      // Work out which item it is.
-      var contentPosition = self.contentPosition(position);
-      var x = Math.floor(contentPosition.x / (App.Grid.Cell.WIDTH + App.Grid.Cell.MARGIN));
-      var y = Math.floor((contentPosition.y - self.margin().TOP) / (App.Grid.Cell.HEIGHT + App.Grid.Cell.MARGIN));
+      var x = position.x + (self.page * self.pageWidth);
+      var y = position.y;
 
-      var index = (x * self.rows) + y;
-      if (index < self.count) {
-        self.delegate.didSelectItemForRow(index);
+      for (var i = 0; i < self.items.length; i++) {
+        var item = self.items[i];
+        if (x >= item.x1 &&
+            x < item.x2 &&
+            y >= item.y1 &&
+            y < item.y2) {
+          return i;
+        }
       }
 
+      return undefined;
     },
 
     minPage: function() {
@@ -364,7 +382,10 @@
 
           } else {
 
-            self.item = self.itemForPosition(position);
+            var index = self.itemForPosition(position);
+            if (index !== undefined) {
+              self.delegate.didSelectItemForRow(index);
+            }
 
           }
 
@@ -372,7 +393,7 @@
         }
       }
 
-    },
+    }
 
   });
 

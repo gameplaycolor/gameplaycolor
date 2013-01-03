@@ -5,8 +5,7 @@
 ### Beta
 
 1. Fix the off-by-one in the grid view paging calculations
-2. Fix the grid view hit test
-3. Add Google Analytics
+2. Add Google Analytics
 
 ### Release
 
