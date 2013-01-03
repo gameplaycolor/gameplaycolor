@@ -88,7 +88,8 @@
       for (var i=0; i<self.dataSource.count(); i++) {
         var title = self.dataSource.titleForIndex(i);
         var thumbnail = self.dataSource.thumbnailForIndex(i);
-        self.add(i, title, thumbnail);
+        var offline = self.dataSource.availableOffline(i);
+        self.add(i, title, thumbnail, offline);
       }
 
       self.updatePageControl();
@@ -152,7 +153,7 @@
       }
     },
     
-    add: function(index, title, thumbnail) {
+    add: function(index, title, thumbnail, offline) {
       var self = this;
       
       var row = self.count % self.rows;
@@ -176,6 +177,11 @@
         var img = $('<img class="game-thumbnail">');
         img.attr("src", thumbnail);
         game.append(img);
+      }
+
+      // Grey out ROMs which are only available online.
+      if (offline === false) {
+        game.css("opacity", "0.5");
       }
       
       self.content.append(game);

@@ -4,21 +4,17 @@
 
 ### Beta
 
-1. Should we always show all items in the cache but only let users select downloaded ones when ffline?
-2. Show loading text when the game list is loading
-3. Show some hint text when the game list is empty
-
-4. Fix the grid view hit test
-5. Fix the off-by-one in the grid view paging calculations
-
-6. Add Google Analytics
-
-7. Fix offline mode
+1. Show loading text when the game list is loading
+2. Show some hint text when the game list is empty
+3. Fix the grid view hit test
+4. Fix the off-by-one in the grid view paging calculations
+5. Add Google Analytics
+6. Fix offline mode
 
 ### Release
 
-1. Pressable buttons
-2. Audio
+1. Audio
+2. Pressable buttons
 
 ### Future
 

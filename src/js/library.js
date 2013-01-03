@@ -125,6 +125,16 @@
       }
     },
 
+    availableOffline: function(index) {
+      var self = this;
+      var identifier = self.identifierForIndex(index);
+      var data = localStorage.getItem(identifier);
+      if (data !== null) {
+        return true;
+      }
+      return false;
+    },
+
     identifierForIndex: function(index) {
       var self = this;
       var file = self.items[index];
@@ -194,6 +204,7 @@
         var file = self.fileForIdentifier(identifier);
         downloadFile(file, function(data) {
           localStorage.setItem(file.id, data);
+          self.notifyChange();
           callback(data);
         });
       }
