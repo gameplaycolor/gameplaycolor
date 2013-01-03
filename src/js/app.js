@@ -8,6 +8,7 @@
   };
 
   App.Controller.SAVE = false;
+  App.Controller.DEBUG = false;
 
   jQuery.extend(App.Controller.prototype, {
 
@@ -67,10 +68,12 @@
 
     var device = new App.Device();
 
-    // TODO Remove.
-    $("#gameboy").show();
-    window.app = new App.Controller(device);
-    return;
+    // Do not show the walkthrough if debugging.
+    if (App.Controller.DEBUG === true) {
+      $("#gameboy").show();
+      window.app = new App.Controller(device);
+      return;
+    }
 
     // Work out if we've been installed or not.
     if (window.navigator.standalone &&
