@@ -23,7 +23,6 @@
       self.state = App.Library.State.UNINITIALIZED;
       self.items = [];
       self.thumbnails = {};
-      self.cache = [];
       self.changeCallbacks = [];
       self.stateChangeCallbacks = [];
       self.drive = App.Drive.getInstance();
@@ -49,7 +48,6 @@
       var library = localStorage.getItem('library');
       if (library) {
         self.items = jQuery.parseJSON(library);
-        self.cache = jQuery.parseJSON(library);
       }
 
       self.sort();
@@ -98,6 +96,11 @@
       self.items.sort(function(a, b) {
         return a['title'].toLowerCase() > b['title'].toLowerCase() ? 1 : -1;
       });
+    },
+
+    save: function() {
+      var self = this;
+      localStorage.setItem('library', JSON.stringify(self.items));
     },
     
     count: function() {
@@ -190,12 +193,11 @@
       } else {
         var file = self.fileForIdentifier(identifier);
         downloadFile(file, function(data) {
-          self.cache.push(file);
           localStorage.setItem(file.id, data);
-          localStorage.setItem('library', JSON.stringify(self.cache));
           callback(data);
         });
       }
+
     },
 
     // Converts a base64 encoded thumbnail image into a suitable URL.
@@ -249,6 +251,13 @@
       var self = this;
       var i;
 
+      // Create an associative array of identifiers which are currently in the store.
+      var deletedIdentifiers = {};
+      for (i = 0; i < self.items.length; i++) {
+        var identifier = self.items[i].id;
+        deletedIdentifiers[identifier] = true;
+      }
+
       // Update the thumbnails.
       for (i = 0; i < files.length; i++) {
         self.updateThumbnail(files[i]);
@@ -262,10 +271,22 @@
       for (i = 0; i < files.length; i++) {
         var file = files[i];
         if (file.fileExtension === 'gb') {
+          // Cache the file.
           self.items.push(file);
+          // Remove the item from the list of deleted identifiers.
+          delete deletedIdentifiers[file.id];
         }
       }
       self.sort();
+      self.save();
+
+      // Clean up the deleted items.
+      for (var key in deletedIdentifiers) {
+        if (deletedIdentifiers.hasOwnProperty(key)) {
+          localStorage.removeItem(key);
+          self.thumbnailStore.deleteProperty(key);
+        }
+      }
 
       self.setState(App.Library.State.READY);
     }

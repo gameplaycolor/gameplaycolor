@@ -52,7 +52,9 @@
       var self = this;
       self.database.transaction(
         function(transaction) {
-          transaction.executeSql("INSERT OR REPLACE INTO properties (key, value) VALUES ('" + key + "', '" + value + "')");
+          transaction.executeSql(
+            "INSERT OR REPLACE INTO properties (key, value) VALUES ('" + key + "', '" + value + "')"
+          );
         }
       );
     },
@@ -69,6 +71,35 @@
             } else {
               callback(undefined);
             }
+          },
+          function(error) {
+            callback(undefined);
+          }
+        );
+      });
+    },
+
+    deleteProperty: function(key) {
+      var self = this;
+      self.database.transaction(function(tx) {
+        tx.executeSql(
+          "DELETE FROM properties WHERE key = '" + key + "'"
+        );
+      });
+    },
+
+    keys: function(callback) {
+      var self = this;
+      self.database.transaction(function(tx) {
+        tx.executeSql(
+          "SELECT key FROM properties",
+          [],
+          function(transaction, results) {
+            var rows = [];
+            for (var i = 0; i < results.rows.length; i++) {
+              rows.push(results.rows.item(i).key);
+            }
+            callback(rows);
           },
           function(error) {
             callback(undefined);
