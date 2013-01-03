@@ -40,6 +40,8 @@
         self.displayIdle = $('#LCD-idle');
         self.displayLoading = $('#LCD-loading');
 
+        window.tracker.track('console');
+
         // Update the initial orientation and watch for changes.
         self.updateLayout();
         self.device.onOrientationChange(function(orientation) {
@@ -102,6 +104,7 @@
 
         // Tapping the screen shows the game picker.
         self.screen = new App.Controls.Button('#display', { 'touchUp': function() {
+          window.tracker.track('games');
           self.hide();
         }});
 
@@ -109,11 +112,7 @@
         self.done = new App.Controls.Button('#button-done', { 'touchUp': function() {
           self.show();
         }});
-        
-        // self.saver = new Worker('js/saver.js');
-        // self.saver.onmessage = function(message) {
-        //   console.log(message);
-        // };
+
         self.load();
         
       },
@@ -125,7 +124,6 @@
             console.log("Save");
             self.save();
             self.scheduleSave();
-            // self.saver.postMessage([gbMemory, gbFrameBuffer, gbTileData, gbBackgroundData]);
           }, 10000);
         }
       },
@@ -209,6 +207,8 @@
         var self = this;
         
         if (self.state != App.Console.State.VISIBLE) {
+
+          window.tracker.track('console');
         
           self.event('willShow');
         

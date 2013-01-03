@@ -1,6 +1,6 @@
 CACHE MANIFEST
 
-# Version 130
+# Version 135
 
 CACHE:
 
@@ -38,6 +38,7 @@ CACHE:
 /js/touchlistener.js
 /js/gesturerecognizer.js
 /js/device.js
+/js/tracker.js
 
 /google.js
 

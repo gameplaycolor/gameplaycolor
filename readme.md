@@ -4,14 +4,14 @@
 
 ### Beta
 
-1. Fix the off-by-one in the grid view paging calculations
-2. Add Google Analytics
+1. Landscape google drive sign-in
+2. Landscape empty notices.
+3. Pressable buttons
+4. Copyright notice
 
 ### Release
 
-1. Pressable buttons
-2. Audio
-3. Copyright notice
+1. Audio
 
 ### Future
 

@@ -19,6 +19,7 @@
       self.loading = $('#screen-loading');
       self.authorize = new App.Controls.Button('#screen-authorize', {
         'touchUp': function() {
+          window.tracker.track('games/authorize');
           self.library.authorize();
         }
       });
@@ -36,10 +37,12 @@
             self.loading.fadeIn();
           } 
         } else if (state === App.Library.State.UNAUTHORIZED) {
+          window.tracker.track('games/unauthorized');
           self.empty.fadeOut();
           self.loading.fadeOut();
           self.authorize.fadeIn();
         } else if (state === App.Library.State.UPDATING) {
+          window.tracker.track('games/update');
           self.empty.fadeOut();
           self.authorize.fadeOut();
           if (self.library.count() < 1) {
@@ -68,6 +71,8 @@
 
     didSelectItemForRow: function(index) {
       var self = this;
+
+      window.tracker.track('load-rom');
 
       // Get the identifier of the ROM to load.
       var identifier = self.library.identifierForIndex(index);

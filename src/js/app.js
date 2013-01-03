@@ -67,6 +67,7 @@
   $(document).ready(function() {
 
     var device = new App.Device();
+    window.tracker = new App.Tracker();
 
     // Do not show the walkthrough if debugging.
     if (App.Controller.DEBUG === true) {
