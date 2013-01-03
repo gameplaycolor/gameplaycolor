@@ -1,77 +1,76 @@
 CACHE MANIFEST
 
-# Version 139
+# Version 140
 
 CACHE:
 
-/index.html
+index.html
 
-/css/gameboy.css
+css/gameboy.css
 
-/js/jquery-1.8.2.min.js
-/js/jquery.base64.min.js
+js/jquery-1.8.2.min.js
+js/jquery.base64.min.js
 
-/jsgb/toolbox.js
-/jsgb/scrollbar.js 
+jsgb/toolbox.js
+jsgb/scrollbar.js 
+jsgb/jsgb.cpu.js
+jsgb/jsgb.rom.js
+jsgb/jsgb.memory.js
+jsgb/jsgb.interrupts.js
+jsgb/jsgb.input.js
+jsgb/jsgb.lcd.js
+jsgb/jsgb.timers.js
+jsgb/jsgb.debugger.js
+jsgb/jsgb.gameboy.js
 
-/jsgb/jsgb.cpu.js
-/jsgb/jsgb.rom.js
-/jsgb/jsgb.memory.js
-/jsgb/jsgb.interrupts.js
-/jsgb/jsgb.input.js
-/jsgb/jsgb.lcd.js
-/jsgb/jsgb.timers.js
-/jsgb/jsgb.debugger.js
-/jsgb/jsgb.gameboy.js
+js/app.js
+js/store.js
+js/button.js
+js/control.js
+js/gameboy.js 
+js/games.js
+js/pad.js
+js/grid.js
+js/console.js
+js/library.js
+js/dummy.js
+js/touchlistener.js
+js/gesturerecognizer.js
+js/device.js
+js/tracker.js
 
-/js/app.js
-/js/store.js
-/js/button.js
-/js/control.js
-/js/gameboy.js 
-/js/games.js
-/js/pad.js
-/js/grid.js
-/js/console.js
-/js/library.js
-/js/dummy.js
-/js/touchlistener.js
-/js/gesturerecognizer.js
-/js/device.js
-/js/tracker.js
+google.js
 
-/google.js
-
-/images/states.png
-/images/button.png
-/images/select.png
-/images/spinner.gif
-/images/background.png
-/images/background_2x.png
-/images/cartridge.png
-/images/cartridge_2x.png
-/images/console.png
-/images/console_2x.png
-/images/labels.png
-/images/labels_2x.png
-/images/button.png
-/images/button_2x.png
-/images/pad.png
-/images/pad_2x.png
-/images/labels_options.png
-/images/labels_options_2x.png
-/images/option.png
-/images/option_2x.png
-/images/title.png
-/images/title_2x.png
-/images/loading.png
-/images/loading_2x.png
-/images/idle.png
-/images/idle_2x.png
-/images/done.png
-/images/done_2x.png
-/images/done_pressed.png
-/images/done_pressed_2x.png
+images/states.png
+images/button.png
+images/select.png
+images/spinner.gif
+images/background.png
+images/background_2x.png
+images/cartridge.png
+images/cartridge_2x.png
+images/console.png
+images/console_2x.png
+images/labels.png
+images/labels_2x.png
+images/button.png
+images/button_2x.png
+images/pad.png
+images/pad_2x.png
+images/labels_options.png
+images/labels_options_2x.png
+images/option.png
+images/option_2x.png
+images/title.png
+images/title_2x.png
+images/loading.png
+images/loading_2x.png
+images/idle.png
+images/idle_2x.png
+images/done.png
+images/done_2x.png
+images/done_pressed.png
+images/done_pressed_2x.png
 
 NETWORK:
 

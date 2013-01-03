@@ -3,6 +3,7 @@
 export TARGET="zyloid:~/sites/jbmorley/gameboy-beta"
 export ROOT=../src
 
+rsync -avPe ssh $ROOT/*.txt  $TARGET
 rsync -avPe ssh $ROOT/*.html $TARGET
 rsync -avPe ssh $ROOT/*.js   $TARGET
 rsync -avPe ssh $ROOT/js     $TARGET

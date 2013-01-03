@@ -437,6 +437,11 @@ body
   text-align: center;
   }
 
+.license
+  {
+  color: #666;
+  }
+
 @media only screen and (-webkit-device-pixel-ratio:1) {
 
   body { background-image: url(../images/background.png); }
