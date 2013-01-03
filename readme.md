@@ -4,17 +4,16 @@
 
 ### Beta
 
-1. Show loading text when the game list is loading
-2. Show some hint text when the game list is empty
-3. Fix the grid view hit test
-4. Fix the off-by-one in the grid view paging calculations
-5. Add Google Analytics
-6. Fix offline mode
+1. Fix the grid view hit test
+2. Fix the off-by-one in the grid view paging calculations
+3. Add Google Analytics
+4. Review the TODOs
+5. Restore the workflow
 
 ### Release
 
-1. Audio
-2. Pressable buttons
+1. Pressable buttons
+2. Audio
 
 ### Future
 

@@ -15,6 +15,8 @@
       self.library = library;
       self.callback = callback;
       self.element = $('#screen-games');
+      self.empty = $('#screen-empty');
+      self.loading = $('#screen-loading');
       self.authorize = new App.Controls.Button('#screen-authorize', {
         'touchUp': function() {
           self.library.authorize();
@@ -28,14 +30,30 @@
 
       self.library.onStateChange(function(state) {
         if (state === App.Library.State.LOADING) {
+          self.empty.fadeOut();
           self.authorize.fadeOut();
+          if (self.library.count() < 1) {
+            self.loading.fadeIn();
+          } 
         } else if (state === App.Library.State.UNAUTHORIZED) {
+          self.empty.fadeOut();
+          self.loading.fadeOut();
           self.authorize.fadeIn();
         } else if (state === App.Library.State.UPDATING) {
+          self.empty.fadeOut();
           self.authorize.fadeOut();
-          // TODO Show some text on the screen if it's empty.
+          if (self.library.count() < 1) {
+            self.loading.fadeIn();
+          } 
         } else {
+          self.loading.fadeOut();
           self.authorize.fadeOut();
+          if (self.library.count() < 1) {
+            self.empty.fadeIn();
+          } else {
+            self.empty.fadeOut();
+          }
+
           // TODO Is this the correct place to do this now?
           self.grid.reloadData();
         }
