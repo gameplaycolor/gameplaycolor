@@ -115,7 +115,7 @@
         // self.saver.onmessage = function(message) {
         //   console.log(message);
         // };
-        // self.load();
+        self.load();
         
       },
       
