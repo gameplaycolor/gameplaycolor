@@ -7,14 +7,13 @@
 1. Show license
 2. Host at inseven.co.uk/apps/intendo
 3. Consider a better update notification
-4. Closure
-5. Host at inseven.co.uk/apps/intendo
-6. Improved icon
-7. Pressable buttons
+4. Improved icon
+5. Pressable buttons
 
 ### Release
 
 1. Audio
+2. Closure
 
 ### Future
 
