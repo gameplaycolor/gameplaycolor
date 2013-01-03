@@ -180,7 +180,7 @@
       }
 
       // Grey out ROMs which are only available online.
-      if (offline === false) {
+      if (window.navigator.onLine === false && offline === false) {
         game.css("opacity", "0.5");
       }
       
