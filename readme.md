@@ -2,16 +2,12 @@
 
 ## Remaining Issues
 
-### Beta
-
-1. Pressable buttons
-2. Improved icon
-
 ### Release
 
 1. Audio
-2. Closure
-3. Host at an appropriate website
+2. Improved icon
+3. Closure
+4. Host at an appropriate website
 
 ### Future
 
