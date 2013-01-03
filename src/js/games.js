@@ -72,13 +72,13 @@
     didSelectItemForRow: function(index) {
       var self = this;
 
-      window.tracker.track('load-rom');
+      // Only attempt to load the ROM if it's available.
+      if (window.navigator.onLine || self.library.availableOffline(index)) {
+        window.tracker.track('load-rom');
+        var identifier = self.library.identifierForIndex(index);
+        self.callback(identifier);        
+      }
 
-      // Get the identifier of the ROM to load.
-      var identifier = self.library.identifierForIndex(index);
-
-      // Callback to say we're done.
-      self.callback(identifier);
     },
     
     update: function() {
