@@ -1,6 +1,6 @@
 CACHE MANIFEST
 
-# Version 145
+# Version 151
 
 CACHE:
 
@@ -55,12 +55,16 @@ images/labels.png
 images/labels_2x.png
 images/button.png
 images/button_2x.png
+images/button_pressed.png
+images/button_pressed_2x.png
 images/pad.png
 images/pad_2x.png
 images/labels_options.png
 images/labels_options_2x.png
 images/option.png
 images/option_2x.png
+images/option_pressed.png
+images/option_pressed_2x.png
 images/title.png
 images/title_2x.png
 images/loading.png

@@ -479,7 +479,7 @@ body
 
   #group-buttons { background-image: url(../images/labels.png); }
   .button { background-image: url(../images/button.png); }
-  .button.pressed { background-image: url(../images/button.png); }
+  .button.pressed { background-image: url(../images/button_pressed.png); }
 
   #control-dpad.sprite-pad-default   { background-image: url(../images/pad.png); }
   #control-dpad.sprite-pad-up        { background-image: url(../images/pad.png); }
@@ -492,8 +492,8 @@ body
   #control-dpad.sprite-pad-upleft    { background-image: url(../images/pad.png); }
 
   #group-options { background-image: url(../images/labels_options.png); }
-  .button-option { background-image: url(../images/option_2x.png); }
-  .button-option.pressed { background-image: url(../images/option_2x.png); }
+  .button-option { background-image: url(../images/option.png); }
+  .button-option.pressed { background-image: url(../images/option_pressed.png); }
 
 }
 
@@ -518,7 +518,7 @@ body
 
   #group-buttons { background-image: url(../images/labels_2x.png); }
   .button { background-image: url(../images/button_2x.png); }
-  .button.pressed { background-image: url(../images/button_2x.png); }
+  .button.pressed { background-image: url(../images/button_pressed_2x.png); }
 
   #control-dpad.sprite-pad-default   { background-image: url(../images/pad_2x.png); }
   #control-dpad.sprite-pad-up        { background-image: url(../images/pad_2x.png); }
@@ -532,7 +532,7 @@ body
 
   #group-options { background-image: url(../images/labels_options_2x.png); }
   .button-option { background-image: url(../images/option_2x.png); }
-  .button-option.pressed { background-image: url(../images/option_2x.png); }
+  .button-option.pressed { background-image: url(../images/option_pressed_2x.png); }
 
 } 
 
