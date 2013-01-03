@@ -12,6 +12,7 @@
 
 1. Pressable buttons
 2. Audio
+3. Copyright notice
 
 ### Future
 
