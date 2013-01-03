@@ -47,18 +47,22 @@
       var self = this;
       if (window.applicationCache !== undefined && window.applicationCache !== null) {
         window.applicationCache.addEventListener('updateready', function(event) {
-          self.updateApplication(event);
+          self.checkUpdate(event);
         });
       }
     },
 
-    updateApplication: function(event) {
+    checkUpdate: function(event) {
       var self = this;
       if (window.applicationCache.status != 4) return;
-        alert('Update Ready!');
-        window.applicationCache.removeEventListener('updateready', self.updateApplication);
-        window.applicationCache.swapCache();
-        window.location.reload();
+      $("#update-button").fadeIn();
+    },
+
+    updateApplication: function() {
+      var self = this;
+      window.applicationCache.removeEventListener('updateready', self.updateApplication);
+      window.applicationCache.swapCache();
+      window.location.reload();
     }
 
   });

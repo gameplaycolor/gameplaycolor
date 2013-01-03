@@ -442,6 +442,22 @@ body
   color: #666;
   }
 
+#update-button
+  {
+  position: absolute;
+  background-color: rgb(64, 64, 189);
+  color: white;
+  border-radius: 4px;
+  padding: 2px;
+  text-align: center;
+  width: 110px;
+  height: 13px;
+  left: 5px;
+  bottom: 12px;
+  text-transform: uppercase;
+  font-size: 11px;
+  }
+
 @media only screen and (-webkit-device-pixel-ratio:1) {
 
   body { background-image: url(../images/background.png); }
@@ -623,6 +639,12 @@ body
   #copyright-games
     {
     width: 320px;
+    }
+
+  #update-button
+    {
+    left: 103px;
+    bottom: 6px;
     }
 
 }

@@ -4,16 +4,14 @@
 
 ### Beta
 
-1. Show license
-2. Host at inseven.co.uk/apps/intendo
-3. Consider a better update notification
-4. Improved icon
-5. Pressable buttons
+1. Pressable buttons
+2. Improved icon
 
 ### Release
 
 1. Audio
 2. Closure
+3. Host at an appropriate website
 
 ### Future
 
