@@ -8,7 +8,7 @@
   };
 
   App.Controller.SAVE = false;
-  App.Controller.DEBUG = false;
+  App.Controller.DEBUG = true;
 
   jQuery.extend(App.Controller.prototype, {
 

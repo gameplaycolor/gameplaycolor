@@ -53,9 +53,6 @@
           } else {
             self.empty.fadeOut();
           }
-
-          // TODO Is this the correct place to do this now?
-          self.grid.reloadData();
         }
       });
 
@@ -81,13 +78,7 @@
     
     update: function() {
       var self = this;
-
-      // TODO Show the empty screen more sensibly
-      // and also support a loading screen.
-      
-      // Update the library.
       self.library.update();
-                  
     },
 
   });

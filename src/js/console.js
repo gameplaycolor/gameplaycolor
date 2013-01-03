@@ -57,7 +57,6 @@
             self.displayLoading.hide();
             self.displayIdle.hide();
           } else if (state === App.GameBoy.State.ERROR) {
-            // TODO Show the error.
           }
         });
 
@@ -155,8 +154,6 @@
                 self.store.property(App.Store.Property.STATE, function(stateJSON) {
                   if (stateJSON !== undefined) {
                       var state = jQuery.parseJSON(stateJSON);
-                      // TODO Move this into a more suitable location.
-                      // Perhaps into GameBoy itself.
                       self.gameBoy.pause();
                       gbMemory = state.gbMemory;
                       gbFrameBuffer = state.gbFrameBuffer;
