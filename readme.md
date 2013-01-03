@@ -4,11 +4,10 @@
 
 ### Beta
 
-1. Fix the grid view hit test
-2. Fix the off-by-one in the grid view paging calculations
-3. Add Google Analytics
-4. Review the TODOs
-5. Restore the workflow
+1. Fix the off-by-one in the grid view paging calculations
+2. Fix the grid view hit test
+3. Restore the workflow
+4. Add Google Analytics
 
 ### Release
 
