@@ -131,7 +131,7 @@
         return;
       }
 
-      for (var i=self.minPage(); i <= self.maxPage(); i++) {
+      for (var i = self.minPage(); i < self.maxPage(); i++) {
         var item = $('<div class="page">');
         self.pageControl.append(item);
         self.pageItems.push(item);
@@ -241,7 +241,7 @@
 
     maxPage: function() {
       var self = this;
-      var max = Math.floor(self.count / (self.rows * self.width));
+      var max = Math.ceil(self.count / (self.rows * self.width));
       return max;
     },
     
@@ -371,7 +371,7 @@
             // Animate back to the current page or move to the new page.
             if (page === self.page ||
                 page < self.minPage() ||
-                page > self.maxPage()) {
+                page >= self.maxPage()) {
               self.animate(self.page);
             } else {
               self.setPage(page);
