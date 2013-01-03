@@ -8,6 +8,7 @@ rsync -avPe ssh $ROOT/*.html $TARGET
 rsync -avPe ssh $ROOT/*.js   $TARGET
 rsync -avPe ssh $ROOT/js     $TARGET
 rsync -avPe ssh $ROOT/jsgb   $TARGET
+rsync -avPe ssh $ROOT/gbo    $TARGET
 rsync -avPe ssh $ROOT/css    $TARGET
 rsync -avPe ssh $ROOT/images $TARGET
 

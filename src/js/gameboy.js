@@ -1,4 +1,8 @@
 
+function cout(message, level) {
+  console.log(message);
+}
+
 (function($) {
 
   App.GameBoy = function(store, library) {
@@ -42,27 +46,27 @@
 
     pause: function() {
       var self = this;
-      gb_Pause();
+      // gb_Pause();
     },
 
     run: function() {
       var self = this;
       // Do not attempt to run unless we have been in the running state.
       if (self.state === App.GameBoy.State.RUNNING) {
-        gb_Run();
+        // gb_Run();
       }
     },
 
     keyDown: function(keycode) {
       var self = this;
       var e = { 'which': keycode, 'preventDefault': function() {} };
-      gb_OnKeyDown_Event(e);
+      // gb_OnKeyDown_Event(e);
     },
 
     keyUp: function(keycode) {
       var self = this;
       var e = { 'which': keycode, 'preventDefault': function() {} };
-      gb_OnKeyUp_Event(e);
+      // gb_OnKeyUp_Event(e);
     },
 
     load: function(identifier) {
@@ -83,7 +87,8 @@
 
     insertCartridge: function(data) {
       var self = this;
-      gb_Insert_Cartridge_Data(data, true);
+      // gb_Insert_Cartridge_Data(data, true);
+      start(document.getElementById('LCD'), data);
       self.setState(App.GameBoy.State.RUNNING);
     }
 
@@ -110,10 +115,10 @@ function gb_Show_Fps() {}
 
 function gb_KeyDown(keycode) {
   var e = { 'which': keycode, 'preventDefault': function() {} };
-  gb_OnKeyDown_Event(e);
+  // gb_OnKeyDown_Event(e);
 }
 
 function gb_KeyUp(keycode) {
   var e = { 'which': keycode, 'preventDefault': function() {} };
-  gb_OnKeyUp_Event(e);
+  // gb_OnKeyUp_Event(e);
 }
