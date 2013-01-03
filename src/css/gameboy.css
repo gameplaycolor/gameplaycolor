@@ -200,7 +200,7 @@ body
   position: absolute;
   bottom: 0;
   left: 0;
-  height: 26px;
+  height: 36px;
   width: 568px;
   display: -webkit-box;
   display: box;
@@ -261,7 +261,6 @@ body
     
 #screen-games
   {
-  background-color: #666;
   }
 
 #screen-empty
@@ -417,6 +416,25 @@ body
   margin: auto;
   margin-bottom: 20px;
   background-size: 57px 57px;
+  }
+
+.copyright
+  {
+  font-size: 10px;
+  font-weight: normal;
+  }
+
+#copyright-games
+  {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  font-size: 10px;
+  font-weight: normal;
+  color: #444;
+  text-shadow: 0 1px #000;
+  width: 568px;
+  text-align: center;
   }
 
 @media only screen and (-webkit-device-pixel-ratio:1) {
@@ -581,7 +599,6 @@ body
 
   #list-games-page-control
     {
-    height: 26px;
     width: 320px;
     }
 
@@ -596,6 +613,11 @@ body
   .placeholder
     {
     padding: 160px 40px;
+    }
+
+  #copyright-games
+    {
+    width: 320px;
     }
 
 }
