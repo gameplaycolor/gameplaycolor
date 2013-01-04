@@ -17,8 +17,6 @@ If you just want to play Game Play, you can find it online at [http://inseven.co
 2. Improved icon
 3. Host at an appropriate website
 4. Set up a new Google API for inseven.co.uk.
-5. JSGB?
-6. Apply a license
 
 ### Future Work
 
