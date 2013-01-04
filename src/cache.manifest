@@ -27,19 +27,17 @@ js/app.js
 js/store.js
 js/button.js
 js/control.js
-js/gameboy.js 
+js/gameboy.js
 js/games.js
 js/pad.js
 js/grid.js
 js/console.js
 js/library.js
-js/dummy.js
 js/touchlistener.js
 js/gesturerecognizer.js
 js/device.js
 js/tracker.js
-
-google.js
+js/drive.js
 
 images/states.png
 images/button.png
