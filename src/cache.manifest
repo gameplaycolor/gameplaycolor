@@ -1,22 +1,6 @@
-# Copyright (C) 2012-2013 InSeven Limited.
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-
 CACHE MANIFEST
 
-# Version 156
+# Version 169
 
 CACHE:
 
@@ -55,9 +39,7 @@ js/device.js
 js/tracker.js
 js/drive.js
 
-images/states.png
 images/button.png
-images/select.png
 images/background.png
 images/background_2x.png
 images/cartridge.png
@@ -88,6 +70,8 @@ images/done.png
 images/done_2x.png
 images/done_pressed.png
 images/done_pressed_2x.png
+images/showcase.png
+images/showcase_2x.png
 
 NETWORK:
 
