@@ -11,11 +11,6 @@ If you just want to play Game Play, you can find it online at [http://inseven.co
 
 ## Roadmap
 
-### Remaining Issues
-
-1. Improved icon
-2. Improved first-run instructions.
-
 ### Future Work
 
 1. **Audio support** - The GameBoy-Online (https://github.com/grantgalitz/GameBoy-Online) core has already been integrated on the 'gameboy-online' branch but performance seems quite poor.
