@@ -156,63 +156,54 @@
             self.setDown(false);
             self.setLeft(false);
             self.setRight(false);
-            $(self.identifier).attr("class", "sprite-pad-default");
             break;
           case App.Controls.Pad.State.UP:
             self.setUp(true);
             self.setDown(false);
             self.setLeft(false);
             self.setRight(false);
-            $(self.identifier).attr("class", "sprite-pad-up");
             break;
           case App.Controls.Pad.State.UPRIGHT:
             self.setUp(true);
             self.setDown(false);
             self.setLeft(false);
             self.setRight(true);
-            $(self.identifier).attr("class", "sprite-pad-upright");
             break;
           case App.Controls.Pad.State.RIGHT:
             self.setUp(false);
             self.setDown(false);
             self.setLeft(false);
             self.setRight(true);
-            $(self.identifier).attr("class", "sprite-pad-right");
             break;
           case App.Controls.Pad.State.DOWNRIGHT:
             self.setUp(false);
             self.setDown(true);
             self.setLeft(false);
             self.setRight(true);
-            $(self.identifier).attr("class", "sprite-pad-downright");
             break;
           case App.Controls.Pad.State.DOWN:
             self.setUp(false);
             self.setDown(true);
             self.setLeft(false);
             self.setRight(false);
-            $(self.identifier).attr("class", "sprite-pad-down");
             break;
           case App.Controls.Pad.State.DOWNLEFT:
             self.setUp(false);
             self.setDown(true);
             self.setLeft(true);
             self.setRight(false);
-            $(self.identifier).attr("class", "sprite-pad-downleft");
             break;
           case App.Controls.Pad.State.LEFT:
             self.setUp(false);
             self.setDown(false);
             self.setLeft(true);
             self.setRight(false);
-            $(self.identifier).attr("class", "sprite-pad-left");
             break;
           case App.Controls.Pad.State.UPLEFT:
             self.setUp(true);
             self.setDown(false);
             self.setLeft(true);
             self.setRight(false);
-            $(self.identifier).attr("class", "sprite-pad-upleft");
             break;
         }
 
