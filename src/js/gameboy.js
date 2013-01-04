@@ -46,6 +46,7 @@ function cout(message, level) {
       settings[App.GameBoy.Settings.SOFTWARE_RESIZING] = false;
       settings[App.GameBoy.Settings.ENABLE_COLORIZATION] = false;
       settings[App.GameBoy.Settings.RESIZE_SMOOTHING] = false;
+      settings[App.GameBoy.Settings.EMULATOR_LOOP_INTERVAL] = 12;
     },
 
     onStateChange: function(callback) {
