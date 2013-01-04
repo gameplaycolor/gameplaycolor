@@ -16,7 +16,7 @@
 
 CACHE MANIFEST
 
-# Version 151
+# Version 152
 
 CACHE:
 
@@ -58,7 +58,6 @@ js/drive.js
 images/states.png
 images/button.png
 images/select.png
-images/spinner.gif
 images/background.png
 images/background_2x.png
 images/cartridge.png

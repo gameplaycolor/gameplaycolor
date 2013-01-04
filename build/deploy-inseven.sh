@@ -12,4 +12,4 @@ rsync -avPe ssh $ROOT/css        $TARGET
 rsync -avPe ssh $ROOT/images     $TARGET
 rsync -avPe ssh $ROOT/*.manifest $TARGET
 
-rsync -avPe ssh $ROOT/settings.json $TARGET/settings.json
+rsync -avPe ssh $ROOT/settings-inseven.json $TARGET/settings.json
