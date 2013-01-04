@@ -55,9 +55,23 @@
           self.gameBoy.run();
         }
       }, self.store);
+
+      // Pre-fetch mouse-over images for the buttons.
+      self.prefetch("images/button_press.png");
+      self.prefetch("images/button_press_2x.png");
+      self.prefetch("images/option_press.png");
+      self.prefetch("images/option_press_2x.png");
+      self.prefetch("images/done_press.png");
+      self.prefetch("images/done_press_2x.png");
       
       self.checkForUpdate();
 
+    },
+
+    prefetch: function(src) {
+      var self = this;
+      var image = new Image();
+      image.src = src;
     },
         
     checkForUpdate: function() {

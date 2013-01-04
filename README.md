@@ -14,7 +14,7 @@ If you just want to play Game Play, you can find it online at [http://inseven.co
 ### Remaining Issues
 
 1. Improved icon
-2. Fix image flicker
+2. Improved first-run instructions.
 
 ### Future Work
 
