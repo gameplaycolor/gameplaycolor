@@ -14,8 +14,7 @@ If you just want to play Game Play, you can find it online at [http://inseven.co
 ### Remaining Issues
 
 1. Improved icon
-2. Host at an appropriate website
-3. Set up a new Google API for inseven.co.uk
+2. Fix image flicker
 
 ### Future Work
 
