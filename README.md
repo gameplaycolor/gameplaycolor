@@ -17,8 +17,8 @@ If you just want to play Game Play, you can find it online at [http://inseven.co
 2. Improved icon
 3. Host at an appropriate website
 4. Set up a new Google API for inseven.co.uk.
-5. Consider a donate button?
-6. JSGB?
+5. JSGB?
+6. Apply a license
 
 ### Future Work
 
@@ -34,14 +34,6 @@ The graphics make use of the following fonts:
 - [G.B.Boot](http://www.dafont.com/gb-boot.font)
 - [Gamegirl Classic](http://www.fontspace.com/freaky-fonts/gamegirl-classic)
 - [MicrogrammaD-MediExte](http://www.fontslog.com/microgrammad-mediexte-otf-23838.htm)
-
-## License
-
-- **Game Play** is licensed under the (GPL v2)[1].
-- **JSGB** is licensed under the (GPL)[2].
-- **GameBoy-Online** (included in the 'gameboy-online' branch) is licensed under the (GPL v2)[1].
-
-If I have failed to correctly acknowledge any code, please let me know and I will update the relevat documentation.
 
 ## Thanks
 
