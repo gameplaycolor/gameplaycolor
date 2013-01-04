@@ -1,6 +1,6 @@
 CACHE MANIFEST
 
-# Version 172
+# Version 173
 
 CACHE:
 
@@ -72,6 +72,8 @@ images/done_pressed.png
 images/done_pressed_2x.png
 images/showcase.png
 images/showcase_2x.png
+
+images/Default-568h@2x.png
 
 NETWORK:
 
