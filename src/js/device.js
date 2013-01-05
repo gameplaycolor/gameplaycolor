@@ -38,10 +38,7 @@
   };
 
   App.Device.Dimensions = {
-
-    IPHONE_5_HEIGHT: 444,
-    IPHONE_5_WIDTH:  568,
-
+    IPHONE_5_HEIGHT: 568,
     DEVICE_WIDTH: 320
   };
 
@@ -54,8 +51,8 @@
       self.retina = (window.devicePixelRatio > 1);
       self.orientationChangeCallbacks = [];
 
-      var width = $(window).width();
-      var height = $(window).height();
+      var width = screen.width;
+      var height = screen.height;
 
       // Determine the initial orientation, then observe orientation
       // events (via window size).
@@ -70,11 +67,11 @@
           self.type = App.Device.Type.IPHONE_4;
 
           if (self.orientation === App.Device.Orientation.PORTRAIT) {
-            if (height >= App.Device.Dimensions.IPHONE_5_HEIGHT) {
+            if (height == App.Device.Dimensions.IPHONE_5_HEIGHT) {
               self.type = App.Device.Type.IPHONE_5;
             }
           } else {
-            if (width >= App.Device.Dimensions.IPHONE_5_WIDTH) {
+            if (width == App.Device.Dimensions.IPHONE_5_HEIGHT) {
               self.type = App.Device.Type.IPHONE_5;
             }
           }
