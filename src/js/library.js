@@ -243,6 +243,14 @@
       var self = this;
 
       var identifier = file.id;
+
+      // Some files do not seem to have a valid parents array.
+      // If they do not, then there is no reasonable way to hunt for a thumbnail.
+      var parents = file.parents[0];
+      if (parents === undefined) {
+        return;
+      }
+      
       var parent = file.parents[0].id;
       var title = self.stripExtension(file.title) + "." + App.Library.THUMBNAIL_TYPE;
 
