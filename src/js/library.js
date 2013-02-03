@@ -158,23 +158,23 @@
       return file.id;
     },
 
-    thumbnailForIndex: function(index) {
+    thumbnailForIndex: function(index, callback) {
       var self = this;
       var identifier = self.identifierForIndex(index);
-      return self.thumbnailForIdentifier(identifier);
+      self.thumbnailForIdentifier(identifier, callback);
     },
 
     // Returns the thumbnail for a given identifier.
     // Triggers a fetch from the cache if the thumbnail is not present.
-    thumbnailForIdentifier: function(identifier) {
+    thumbnailForIdentifier: function(identifier, callback) {
       var self = this;
       if (identifier in self.thumbnails) {
-        return self.thumbnails[identifier];
+        callback(self.thumbnails[identifier]);
       } else {
         self.thumbnailStore.property(identifier, function(value) {
           if (value !== undefined) {
             self.thumbnails[identifier] = self.thumbnailDataUrl(value);
-            self.notifyChange();
+            callback(self.thumbnails[identifier]);
           }
         });
       }
@@ -239,7 +239,7 @@
     // This implementation caches all thumbnails in memory.  It's possible that this will
     // introduce performance issues, but it doesn't seem worthwhile loading everything lazily
     // at this stage.
-    updateThumbnail: function(file) {
+    updateThumbnail: function(file, callback) {
       var self = this;
 
       var identifier = file.id;
@@ -263,7 +263,7 @@
       self.thumbnailStore.property(identifier, function(value) {
         if (value !== undefined) {
           self.thumbnails[identifier] = self.thumbnailDataUrl(value);
-          self.notifyChange();
+          callback();
         } else {
           self.drive.file(parent, title, {
             'onStart': function() {},
@@ -275,8 +275,11 @@
                   self.notifyChange();
                 });
               }
+              callback();
             },
-            'onError': function(error) {}
+            'onError': function(error) {
+              callback();
+            }
           });
         }
       });
@@ -296,7 +299,7 @@
 
       // Update the thumbnails.
       for (i = 0; i < files.length; i++) {
-        self.updateThumbnail(files[i]);
+        self.updateThumbnail(files[i], function() {});
       }
 
       // Reset the update flag.

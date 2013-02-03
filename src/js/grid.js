@@ -63,6 +63,8 @@
       self.pageWidth = 0;
       self.page = 0;
 
+      self.thumbnailQueue = [];
+
       self.dataSource = {
         'count' : function() { return 0; },
         'titleForIndex': function(index) { return ''; }
@@ -106,13 +108,13 @@
       self.content.html("");
       for (var i=0; i<self.dataSource.count(); i++) {
         var title = self.dataSource.titleForIndex(i);
-        var thumbnail = self.dataSource.thumbnailForIndex(i);
         var offline = self.dataSource.availableOffline(i);
-        self.add(i, title, thumbnail, offline);
+        self.add(i, title, offline);
       }
 
       self.updatePageControl();
       self.updatePageItems();
+      self.updateThumbnails();
     },
     
     updateLayout: function() {
@@ -172,7 +174,7 @@
       }
     },
     
-    add: function(index, title, thumbnail, offline) {
+    add: function(index, title, offline) {
       var self = this;
       
       var row = self.count % self.rows;
@@ -204,11 +206,7 @@
       gameTitle.html(title);
       game.append(gameTitle);
 
-      if (thumbnail !== undefined) {
-        var img = $('<img class="game-thumbnail">');
-        img.attr("src", thumbnail);
-        game.append(img);
-      }
+      self.scheduleUpdateThumbnail(game, index);
 
       // Grey out ROMs which are only available online.
       if (window.navigator.onLine === false && offline === false) {
@@ -218,6 +216,31 @@
       self.content.append(game);
       self.count += 1;
       
+    },
+
+    scheduleUpdateThumbnail: function(game, index) {
+      var self = this;
+      self.thumbnailQueue.push({'game': game, 'index': index});
+    },
+
+    updateThumbnails: function() {
+      var self = this;
+      if (self.thumbnailQueue.length > 0) {
+        setTimeout(function() {
+          var item = self.thumbnailQueue.pop();
+          var game = item['game'];
+          var index = item['index'];
+
+          self.dataSource.thumbnailForIndex(index, function(thumbnail) {
+            if (thumbnail !== undefined) {
+              var img = $('<img class="game-thumbnail">');
+              img.attr("src", thumbnail);
+              game.append(img);
+            }
+            self.updateThumbnails();
+          });
+        }, 100);
+      }
     },
 
     // Convert a position in container coordinates to content coordinates.
