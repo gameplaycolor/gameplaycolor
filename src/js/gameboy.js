@@ -40,8 +40,8 @@ function cout(message, level) {
     MBC_ENABLE_OVERRIDE:    10, // Override MBC RAM disabling and always allow reading and writing to the banks (defaults to false)
     GB_BOOT_ROM_UTILIZED:   11, // Use the GameBoy boot ROM instead of the GameBoy Color boot ROM (defaults to false)
     SOFTWARE_RESIZING:      12, // Scale the canvas in JS, or let the browser scale the canvas (defaults to false)
-    RESIZE_SMOOTHING:       13, // Use image smoothing based scaling (defaults to true)
-  }
+    RESIZE_SMOOTHING:       13 // Use image smoothing based scaling (defaults to true)
+  };
 
   App.GameBoy.State = {
     IDLE: 0,
@@ -125,7 +125,6 @@ function cout(message, level) {
 
     insertCartridge: function(data) {
       var self = this;
-      // gb_Insert_Cartridge_Data(data, true);
       start(document.getElementById('LCD'), data);
       self.setState(App.GameBoy.State.RUNNING);
     }
