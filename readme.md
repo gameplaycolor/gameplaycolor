@@ -16,6 +16,9 @@ If you just want to play Game Play, you can find it online at [http://inseven.co
 1. Change the name to Game Play
 2. Improved icon
 3. Host at an appropriate website
+4. Set up a new Google API for inseven.co.uk.
+5. Consider a donate button?
+6. JSGB?
 
 ### Future Work
 
@@ -32,7 +35,16 @@ The graphics make use of the following fonts:
 - [Gamegirl Classic](http://www.fontspace.com/freaky-fonts/gamegirl-classic)
 - [MicrogrammaD-MediExte](http://www.fontslog.com/microgrammad-mediexte-otf-23838.htm)
 
+## License
+
+- **Game Play** is licensed under the (GPL v2)[1].
+- **JSGB** is licensed under the (GPL)[2].
+- **GameBoy-Online** (included in the 'gameboy-online' branch) is licensed under the (GPL v2)[1].
+
+If I have failed to correctly acknowledge any code, please let me know and I will update the relevat documentation.
+
 ## Thanks
 
 - [Pedro Ladaria](http://www.codebase.es/) for writing the JSGB core.
 - [David McLeod](http://twitter.com/Mucx) for graphical inspiration on [Dribbble](http://dribbble.com/mucx) and for letting me know about MicrogrammaD-MediExte.
+- [Paul Ledger](http://www.flexicoder.com) for suggesting the name 'Game Play'.
