@@ -1,35 +1,35 @@
-
 <!DOCTYPE html>
 <html manifest="cache.manifest">
 <head>
 
     <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0"/>
     <meta name="apple-mobile-web-app-capable" content="yes" />
-
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-
-    <link rel="apple-touch-startup-image" href="images/Default.png" sizes="320x460" />
-    <link rel="apple-touch-startup-image" href="images/Default-568h@2x.png" sizes="640x1096">
-
+    <link href="Images/Default-568h@2x.png" rel="apple-touch-startup-image" sizes="640x1096">
     <link rel="stylesheet" href="css/gameboy.css" type="text/css" media="screen, mobile" title="main" charset="utf-8">
-
     <link rel="apple-touch-icon-precomposed" href="images/icon_2x.png" />
 
-    <title>Intendo</title>
+    <title>Game Play</title>
 </head>
 <body>
+
+  <div class="button pressed" style="display: none"></div>
+  <div class="button-options pressed" style="display: none"></div>
+  <div class="button-done pressed" style="display: none"></div>
 
   <div id="instructions" style="display: none">
     <div class="icon"></div>
     <p id="instructions-iphone5" style="display: none">
-      Add to Home Screen
+      <strong>Game Play</strong><br/><br/>
+      <em>Play Game Boy games on your iPhone 5.</em><br/><br/>
+      Add this page to your home screen to start playing.<br/><br/>
+      <a href="http://twitter.com/insevenlimited">@insevenlimited</a>
     </p>
     <p id="instructions-other" style="display: none">
-      <em>Intendo is a Game Boy emulator for iPhone 5.</em><br/>
-      <em>Please visit this web page on an iPhone 5 to install.</em><br/><br/>
-      <div class="copyright">
-        Copyright &copy; 2012-2013 InSeven Limited. All rights reserved.
-      </div>
+      <strong>Game Play</strong><br/><br/>
+      <em>Play Game Boy games on your iPhone 5.</em><br/><br/>
+      Please visit this web page on an iPhone.<br/><br/>
+      <a href="http://twitter.com/insevenlimited">@insevenlimited</a>
     </p>
   </div>
   
@@ -66,7 +66,7 @@
         </div>
       </div>
       <div id="copyright-games" class="copyright">
-        &copy; 2012-2013 InSeven Limited. All rights reserved. <a class="license" href="license.txt">License</a>.
+        &copy; 2012-2013 InSeven Limited. All rights reserved. <a class="license" href="https://github.com/jbmorley/game-play/blob/master/LICENSE.md#license">License</a>.
       </div>
     </div>
 
@@ -92,7 +92,7 @@
       </div>
       <div id="title-bar" style="display: none">
         <div id="title-bar-label"></div>
-        <div id="button-done"></div>
+        <div id="button-done" class="button-done"></div>
       </div>
     </div>
 
@@ -152,8 +152,7 @@
   <script type="text/javascript" src="js/gesturerecognizer.js"></script>
   <script type="text/javascript" src="js/device.js"></script>
   <script type="text/javascript" src="js/tracker.js"></script>
-  
-  <script type="text/javascript" src="google.js"></script>
+  <script type="text/javascript" src="js/drive.js"></script>
 
 </body>
 </html>

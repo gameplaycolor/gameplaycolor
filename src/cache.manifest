@@ -1,6 +1,6 @@
 CACHE MANIFEST
 
-# Version 151
+# Version 232
 
 CACHE:
 
@@ -27,24 +27,19 @@ js/app.js
 js/store.js
 js/button.js
 js/control.js
-js/gameboy.js 
+js/gameboy.js
 js/games.js
 js/pad.js
 js/grid.js
 js/console.js
 js/library.js
-js/dummy.js
 js/touchlistener.js
 js/gesturerecognizer.js
 js/device.js
 js/tracker.js
+js/drive.js
 
-google.js
-
-images/states.png
 images/button.png
-images/select.png
-images/spinner.gif
 images/background.png
 images/background_2x.png
 images/cartridge.png
@@ -75,6 +70,10 @@ images/done.png
 images/done_2x.png
 images/done_pressed.png
 images/done_pressed_2x.png
+images/showcase.png
+images/showcase_2x.png
+
+images/Default-568h@2x.png
 
 NETWORK:
 

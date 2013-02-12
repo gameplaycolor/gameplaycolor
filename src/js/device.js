@@ -1,4 +1,21 @@
-
+/*
+ * Copyright (C) 2012-2013 InSeven Limited.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+ 
 (function($) {
 
   App.Device = function() {
@@ -21,10 +38,7 @@
   };
 
   App.Device.Dimensions = {
-
-    IPHONE_5_HEIGHT: 444,
-    IPHONE_5_WIDTH:  568,
-
+    IPHONE_5_HEIGHT: 568,
     DEVICE_WIDTH: 320
   };
 
@@ -37,8 +51,8 @@
       self.retina = (window.devicePixelRatio > 1);
       self.orientationChangeCallbacks = [];
 
-      var width = $(window).width();
-      var height = $(window).height();
+      var width = screen.width;
+      var height = screen.height;
 
       // Determine the initial orientation, then observe orientation
       // events (via window size).
@@ -53,11 +67,11 @@
           self.type = App.Device.Type.IPHONE_4;
 
           if (self.orientation === App.Device.Orientation.PORTRAIT) {
-            if (height >= App.Device.Dimensions.IPHONE_5_HEIGHT) {
+            if (height == App.Device.Dimensions.IPHONE_5_HEIGHT) {
               self.type = App.Device.Type.IPHONE_5;
             }
           } else {
-            if (width >= App.Device.Dimensions.IPHONE_5_WIDTH) {
+            if (width == App.Device.Dimensions.IPHONE_5_HEIGHT) {
               self.type = App.Device.Type.IPHONE_5;
             }
           }

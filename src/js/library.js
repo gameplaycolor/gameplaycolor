@@ -1,4 +1,21 @@
-
+/*
+ * Copyright (C) 2012-2013 InSeven Limited.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+ 
 (function($) {
 
   App.Library = function() {
@@ -141,23 +158,23 @@
       return file.id;
     },
 
-    thumbnailForIndex: function(index) {
+    thumbnailForIndex: function(index, callback) {
       var self = this;
       var identifier = self.identifierForIndex(index);
-      return self.thumbnailForIdentifier(identifier);
+      self.thumbnailForIdentifier(identifier, callback);
     },
 
     // Returns the thumbnail for a given identifier.
     // Triggers a fetch from the cache if the thumbnail is not present.
-    thumbnailForIdentifier: function(identifier) {
+    thumbnailForIdentifier: function(identifier, callback) {
       var self = this;
       if (identifier in self.thumbnails) {
-        return self.thumbnails[identifier];
+        callback(self.thumbnails[identifier]);
       } else {
         self.thumbnailStore.property(identifier, function(value) {
           if (value !== undefined) {
             self.thumbnails[identifier] = self.thumbnailDataUrl(value);
-            self.notifyChange();
+            callback(self.thumbnails[identifier]);
           }
         });
       }
@@ -222,10 +239,18 @@
     // This implementation caches all thumbnails in memory.  It's possible that this will
     // introduce performance issues, but it doesn't seem worthwhile loading everything lazily
     // at this stage.
-    updateThumbnail: function(file) {
+    updateThumbnail: function(file, callback) {
       var self = this;
 
       var identifier = file.id;
+
+      // Some files do not seem to have a valid parents array.
+      // If they do not, then there is no reasonable way to hunt for a thumbnail.
+      var parents = file.parents[0];
+      if (parents === undefined) {
+        return;
+      }
+      
       var parent = file.parents[0].id;
       var title = self.stripExtension(file.title) + "." + App.Library.THUMBNAIL_TYPE;
 
@@ -238,7 +263,7 @@
       self.thumbnailStore.property(identifier, function(value) {
         if (value !== undefined) {
           self.thumbnails[identifier] = self.thumbnailDataUrl(value);
-          self.notifyChange();
+          callback();
         } else {
           self.drive.file(parent, title, {
             'onStart': function() {},
@@ -250,8 +275,11 @@
                   self.notifyChange();
                 });
               }
+              callback();
             },
-            'onError': function(error) {}
+            'onError': function(error) {
+              callback();
+            }
           });
         }
       });
@@ -271,7 +299,7 @@
 
       // Update the thumbnails.
       for (i = 0; i < files.length; i++) {
-        self.updateThumbnail(files[i]);
+        self.updateThumbnail(files[i], function() {});
       }
 
       // Reset the update flag.

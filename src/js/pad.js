@@ -1,4 +1,21 @@
-
+/*
+ * Copyright (C) 2012-2013 InSeven Limited.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+ 
 (function($) {
 
   App.Controls = {};
@@ -139,63 +156,54 @@
             self.setDown(false);
             self.setLeft(false);
             self.setRight(false);
-            $(self.identifier).attr("class", "sprite-pad-default");
             break;
           case App.Controls.Pad.State.UP:
             self.setUp(true);
             self.setDown(false);
             self.setLeft(false);
             self.setRight(false);
-            $(self.identifier).attr("class", "sprite-pad-up");
             break;
           case App.Controls.Pad.State.UPRIGHT:
             self.setUp(true);
             self.setDown(false);
             self.setLeft(false);
             self.setRight(true);
-            $(self.identifier).attr("class", "sprite-pad-upright");
             break;
           case App.Controls.Pad.State.RIGHT:
             self.setUp(false);
             self.setDown(false);
             self.setLeft(false);
             self.setRight(true);
-            $(self.identifier).attr("class", "sprite-pad-right");
             break;
           case App.Controls.Pad.State.DOWNRIGHT:
             self.setUp(false);
             self.setDown(true);
             self.setLeft(false);
             self.setRight(true);
-            $(self.identifier).attr("class", "sprite-pad-downright");
             break;
           case App.Controls.Pad.State.DOWN:
             self.setUp(false);
             self.setDown(true);
             self.setLeft(false);
             self.setRight(false);
-            $(self.identifier).attr("class", "sprite-pad-down");
             break;
           case App.Controls.Pad.State.DOWNLEFT:
             self.setUp(false);
             self.setDown(true);
             self.setLeft(true);
             self.setRight(false);
-            $(self.identifier).attr("class", "sprite-pad-downleft");
             break;
           case App.Controls.Pad.State.LEFT:
             self.setUp(false);
             self.setDown(false);
             self.setLeft(true);
             self.setRight(false);
-            $(self.identifier).attr("class", "sprite-pad-left");
             break;
           case App.Controls.Pad.State.UPLEFT:
             self.setUp(true);
             self.setDown(false);
             self.setLeft(true);
             self.setRight(false);
-            $(self.identifier).attr("class", "sprite-pad-upleft");
             break;
         }
 
