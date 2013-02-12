@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export TARGET="zyloid:~/sites/jbmorley/gameboy"
+export TARGET="zyloid:~/sites/inseven/www/apps/gameplay"
 export ROOT=../src
 
 rsync -avPe ssh $ROOT/*.txt      $TARGET
