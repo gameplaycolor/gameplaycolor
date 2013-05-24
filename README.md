@@ -6,8 +6,8 @@ If you just want to play Game Play, you can find it online at [http://inseven.co
 
 ## Screenshots
 
-![Console](http://inseven.co.uk/images/gameplay/console.png)
-![Games](http://inseven.co.uk/images/gameplay/games.png)
+![Console](http://inseven.co.uk/images/ss_gameplay_tetris.png)
+![Games](http://inseven.co.uk/images/ss_gameplay_games.png)
 
 ## Roadmap
 
