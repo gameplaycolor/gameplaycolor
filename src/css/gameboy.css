@@ -22,8 +22,10 @@ body
 
 .display
   {
+  /*
   width: 320px;
   height: 288px;
+  */
   background-color: #EFFDE1;
   position: absolute;
   background-size: 320px 288px;

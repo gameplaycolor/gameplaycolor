@@ -1,6 +1,6 @@
 CACHE MANIFEST
 
-# Version 232
+# Version 281
 
 CACHE:
 
@@ -22,6 +22,16 @@ jsgb/jsgb.lcd.js
 jsgb/jsgb.timers.js
 jsgb/jsgb.debugger.js
 jsgb/jsgb.gameboy.js
+
+gbo/GameBoyCore.js
+gbo/GameBoyIO.js
+gbo/other/XAudioJS.swf
+gbo/other/XAudioServer.js
+gbo/other/XAudioServerMediaStreamWorker.js
+gbo/other/resampler.js
+gbo/other/resize.js
+gbo/other/resizeWorker.js
+gbo/other/swfobject.js
 
 js/app.js
 js/store.js
