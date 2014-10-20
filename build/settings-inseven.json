@@ -1,4 +1,5 @@
 {
+  "remote": "zyloid:~/sites/inseven/gameplay",
   "client_id": "151379758364",
   "scopes": "https://www.googleapis.com/auth/drive.readonly",
   "analytics": "UA-37991248-1",
