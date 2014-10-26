@@ -70,13 +70,13 @@
       </div>
     </div>
 
-    <div id="screen-console" class="screen flexbox vertical">
+    <div id="screen-console" class="screen flexbox horizontal">
 
-      <div class="flexbox horizontal grow2">
+      <div class="flexbox vertical grow1">
+        <div id="control-dpad" class="sprite-pad-default"></div>
+      </div>
 
-        <div class="flexbox vertical grow1">
-          <div id="control-dpad" class="sprite-pad-default"></div>
-        </div>
+      <div class="flexbox vertical grow1">
 
         <div class="flexbox vertical grow1">
           <div id="display">
@@ -87,25 +87,25 @@
         </div>
 
         <div class="flexbox vertical grow1">
-          <div id="group-buttons">
-            <div id="control-a" class="button"></div>
-            <div id="control-b" class="button"></div>
+          <div id="group-options">
+            <div id="control-select" class="button-option"></div>
+            <div id="control-start" class="button-option"></div>
           </div>
         </div>
 
       </div>
 
-      <div class="flexbox horizontal grow1">
-
-        <div id="group-options">
-          <div id="control-select" class="button-option"></div>
-          <div id="control-start" class="button-option"></div>
+      <div class="flexbox vertical grow1">
+        <div id="group-buttons">
+          <div id="control-a" class="button"></div>
+          <div id="control-b" class="button"></div>
         </div>
+      </div>
 
-        <div id="title-bar" style="display: none">
-          <div id="title-bar-label"></div>
-          <div id="button-done" class="button-done">Done</div>
-        </div>
+      <div id="title-bar" style="display: none">
+        <div id="title-bar-label"></div>
+        <div id="button-done" class="button-done">Done</div>
+      </div>
 
     </div>
 
