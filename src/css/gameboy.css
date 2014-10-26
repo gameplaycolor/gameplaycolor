@@ -3,9 +3,8 @@ body
   padding: 0;
   margin: 0;
   -webkit-user-select: none;
-  background-color: black;
-  font: 15px Geneva, Arial, Helvetica, sans-serif;
-  background-size: 320px 568px;
+  background-color: #222;
+  font: 15px Helvetica, sans-serif;
   }
 
 #LCD
@@ -22,10 +21,8 @@ body
 
 .display
   {
-  /*
   width: 320px;
   height: 288px;
-  */
   background-color: #EFFDE1;
   position: absolute;
   background-size: 320px 288px;
@@ -41,6 +38,7 @@ body
   width: 63px;
   height: 62px;
   background-size: 63px 62px;
+  cursor: pointer;
   }
 
 .button.pressed
@@ -52,10 +50,6 @@ body
   width: 42px;
   height: 31px;
   background-size: 42px 31px;
-  }
-
-.button-option.pressed
-  {
   }
 
 #group-buttons
@@ -122,13 +116,16 @@ body
   top: 8px;
   right: 6px;
   width: 61px;
-  height: 30px;
+  height: 24px;
   text-align: center;
+  color: #A64380;
+  cursor: pointer;
+  font-size: 16px;
+  padding-top: 6px;
   }
 
-.button-done
+.button-done.pressed
   {
-  background-size: 61px 30px;
   }
 
 #debug
@@ -149,17 +146,19 @@ body
 #screen-console
   {
   background-color: #ccc;
-  background-size: 320px 260px;
-  background-position: right bottom;
+  background-color: #CFD0D1;
+  width: 100%;
+  height: 100%;
   }
 
 #title-bar
   {
   position: absolute;
   left: 0;
-  top: 256px;
+  bottom: -16px;
   width: 568px;
   height: 57px;
+  width: 100%;
   background-size: 320px 57px;
   }
 
@@ -168,10 +167,8 @@ body
   padding: 0;
   margin: 0;
   text-align: center;
-  text-shadow: 0 1px white;
-  padding-top: 10px;
+  padding-top: 11px;
   font-size: 20px;
-  font-weight: bold;
   }
  
 #list-games
@@ -181,6 +178,8 @@ body
   padding: 0;
   overflow: hidden;
   background-size: 320px 568px;
+  width: 100%;
+  height: 100%;
   }
 
 .content
@@ -267,6 +266,8 @@ body
     
 #screen-games
   {
+  width: 100%;
+  height: 100%;
   }
 
 #screen-empty
@@ -275,7 +276,8 @@ body
 
 #screen-loading
   {
-
+  width: 100%;
+  height: 100%;
   }
 
 .placeholder
@@ -284,6 +286,7 @@ body
   text-shadow: 0 1px #000;
   text-align: center;
   padding: 80px 40px;
+  margin: auto;
   }
 
 #screen-authorize
@@ -433,14 +436,12 @@ body
 #copyright-games
   {
   position: absolute;
-  bottom: 0px;
-  left: 0px;
-  font-size: 10px;
-  font-weight: normal;
+  bottom: 0;
+  left: 0;
+  font-size: 11px;
   color: #444;
-  text-shadow: 0 1px #000;
-  width: 568px;
   text-align: center;
+  width: 100%;
   }
 
 #instructions a
@@ -452,6 +453,7 @@ body
 .license
   {
   color: #666;
+  text-decoration: none;
   }
 
 #update-button
@@ -470,62 +472,26 @@ body
   font-size: 11px;
   }
 
-@media only screen and (-webkit-device-pixel-ratio:1) {
-
-  body { background-image: url(../images/background.png); }
-
-  .icon { background-image: url(../images/showcase.png); }
-
-  #LCD-loading { background: url(../images/loading.png); }
-  #LCD-idle { background: url(../images/idle.png); }
-
-  #list-games { background-image: url(../images/background.png); }
-
-  .button-done { background-image: url(../images/done.png); }
-  .button-done.pressed { background-image: url(../images/done_pressed.png); }
-  
-  .game { background-image: url(../images/cartridge.png); }
-
-  #screen-console { background-image: url(../images/console.png); }
-  #title-bar { background-image: url(../images/title.png); }
-
-  #group-buttons { background-image: url(../images/labels.png); }
-  .button { background-image: url(../images/button.png); }
-  .button.pressed { background-image: url(../images/button_pressed.png); }
-
-  #control-dpad.sprite-pad-default   { background-image: url(../images/pad.png); }
-  #control-dpad.sprite-pad-up        { background-image: url(../images/pad.png); }
-  #control-dpad.sprite-pad-upright   { background-image: url(../images/pad.png); }
-  #control-dpad.sprite-pad-right     { background-image: url(../images/pad.png); }
-  #control-dpad.sprite-pad-downright { background-image: url(../images/pad.png); }
-  #control-dpad.sprite-pad-down      { background-image: url(../images/pad.png); }
-  #control-dpad.sprite-pad-downleft  { background-image: url(../images/pad.png); }
-  #control-dpad.sprite-pad-left      { background-image: url(../images/pad.png); }
-  #control-dpad.sprite-pad-upleft    { background-image: url(../images/pad.png); }
-
-  #group-options { background-image: url(../images/labels_options.png); }
-  .button-option { background-image: url(../images/option.png); }
-  .button-option.pressed { background-image: url(../images/option_pressed.png); }
-
+#LCD-loading, #LCD-idle {
+  background-size: 320px 288px;
 }
 
 @media only screen and (-webkit-device-pixel-ratio:2) {
 
-  body { background-image: url(../images/background_2x.png); }
-
   .icon { background-image: url(../images/showcase_2x.png); }
 
-  #LCD-loading { background: url(../images/loading_2x.png); }
-  #LCD-idle { background: url(../images/idle_2x.png); }
+  #LCD-loading {
+    background: url(../images/loading_2x.png);
+    background-size: 320px 288px;
+  }
 
-  #list-games { background-image: url(../images/background_2x.png); }
-
-  .button-done { background-image: url(../images/done_2x.png); }
-  .button-done.pressed { background-image: url(../images/done_pressed_2x.png); }
+  #LCD-idle {
+    background: url(../images/idle_2x.png);
+    background-size: 320px 288px;
+  }
 
   .game { background-image: url(../images/cartridge_2x.png); }
 
-  #screen-console { background-image: url(../images/console_2x.png); }
   #title-bar { background-image: url(../images/title_2x.png); }
 
   #group-buttons { background-image: url(../images/labels_2x.png); }

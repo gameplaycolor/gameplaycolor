@@ -38,7 +38,9 @@
     HIDE_TOP_PORTRAIT:  -504,
     HIDE_TOP_LANDSCAPE: -256,
     
-    DEVICE_WIDTH: 320
+    DEVICE_WIDTH: 320,
+
+    TITLEBAR_HEIGHT: 42
     
   };
 
@@ -204,10 +206,11 @@
           self.event('willHide');
         
           // Determine which offset to animate to.
-          var top = App.Console.Dimensions.HIDE_TOP_PORTRAIT
+          var top = App.Console.Dimensions.HIDE_TOP_PORTRAIT;
           if (self.device.orientation == App.Console.Orientation.LANDSCAPE) {
-            top = App.Console.Dimensions.HIDE_TOP_LANDSCAPE;
+            top = App.Console.Dimensions.TITLEBAR_HEIGHT - $(window).height();
           }
+
           
           self.state = App.Console.State.HIDDEN;
           self.element.animate({
@@ -249,7 +252,7 @@
           if (self.device.orientation == App.Console.Orientation.PORTRAIT) {
             self.element.css('top', App.Console.Dimensions.HIDE_TOP_PORTRAIT);
           } else {
-            self.element.css('top', App.Console.Dimensions.HIDE_TOP_LANDSCAPE);        
+            self.element.css('top', App.Console.Dimensions.HIDE_TOP_LANDSCAPE);
           }
         }
       },
