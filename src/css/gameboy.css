@@ -260,15 +260,17 @@ body
 
 .game-title
   {
-  font-family: 'Comic Sans MS', 'Marker Felt', sans-serif;
   background-color: #bbb;
-  width: 85px;
-  height: 74px;
+  width: 77px;
+  height: 66px;
   border-radius: 2px;
   word-wrap: break-word;
   position: absolute;
   top: 40px;
   left: 27px;
+  font-size: 12px;
+  color: #555;
+  padding: 4px;
   }
 
 .game-thumbnail

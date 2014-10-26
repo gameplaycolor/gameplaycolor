@@ -135,12 +135,7 @@
     // seem to guarantee file extensions in the file title).
     stripExtension: function(title) {
       var self = this;
-      if (title.toLowerCase().indexOf(".gb") === (title.length - 3) ||
-          title.toLowerCase().indexOf(".gbc") === (title.length - 4)) {
-        return title.slice(0, -3);
-      } else {
-        return title;
-      }
+      return title.slice(0, title.lastIndexOf("."));
     },
 
     availableOffline: function(index) {
@@ -221,7 +216,7 @@
       } else {
         var file = self.fileForIdentifier(identifier);
         downloadFile(file, function(data) {
-          localStorage.setItem(file.id, data);
+          //localStorage.setItem(file.id, data);
           self.notifyChange();
           callback(data);
         });
