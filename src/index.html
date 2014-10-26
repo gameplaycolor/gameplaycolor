@@ -70,30 +70,43 @@
       </div>
     </div>
 
-    <div id="screen-console" class="screen">
+    <div id="screen-console" class="screen flexbox vertical">
 
-      <div id="display" class="display">
-        <canvas id="LCD" class="display" width="160" height="144"></canvas>
-        <div id="LCD-idle" class="display"></div>
-        <div id="LCD-loading" class="display" style="display: none"></div>
+      <div class="flexbox horizontal grow2">
+
+        <div class="flexbox vertical grow1">
+          <div id="control-dpad" class="sprite-pad-default"></div>
+        </div>
+
+        <div class="flexbox vertical grow1">
+          <div id="display">
+            <canvas id="LCD" class="display" width="160" height="144"></canvas>
+            <div id="LCD-idle" class="display"></div>
+            <div id="LCD-loading" class="display" style="display: none"></div>
+          </div>
+        </div>
+
+        <div class="flexbox vertical grow1">
+          <div id="group-buttons">
+            <div id="control-a" class="button"></div>
+            <div id="control-b" class="button"></div>
+          </div>
+        </div>
+
       </div>
 
-      <div id="control-dpad" class="sprite-pad-default"></div>
-      <div id="group-options">
-        <div id="control-select" class="button-option"></div>
-        <div id="control-start" class="button-option"></div>
-      </div>
-      <div id="group-buttons">
-        <div id="control-a" class="button"></div>
-        <div id="control-b" class="button"></div>
-      </div>
-      <div id="update-button" style="display: none">
-        Udpate Available
-      </div>
-      <div id="title-bar" style="display: none">
-        <div id="title-bar-label"></div>
-        <div id="button-done" class="button-done">Done</div>
-      </div>
+      <div class="flexbox horizontal grow1">
+
+        <div id="group-options">
+          <div id="control-select" class="button-option"></div>
+          <div id="control-start" class="button-option"></div>
+        </div>
+
+        <div id="title-bar" style="display: none">
+          <div id="title-bar-label"></div>
+          <div id="button-done" class="button-done">Done</div>
+        </div>
+
     </div>
 
     <div id="debug" style="display: none">DEBUG</div>

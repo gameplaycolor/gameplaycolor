@@ -13,12 +13,14 @@ echo "Uploading to '$remote'..."
 
 export ROOT=../src
 
-rsync -avPe ssh $ROOT/*.html     "$remote"
-rsync -avPe ssh $ROOT/*.manifest "$remote"
-rsync -avPe ssh $ROOT/js         "$remote"
-rsync -avPe ssh $ROOT/jsgb       "$remote"
-rsync -avPe ssh $ROOT/css        "$remote"
-rsync -avPe ssh $ROOT/gbo        "$remote"
-rsync -avPe ssh $ROOT/images     "$remote"
+rsync -avPe ssh \
+    $ROOT/*.html \
+    $ROOT/*.manifest \
+    $ROOT/js \
+    $ROOT/jsgb \
+    $ROOT/css \
+    $ROOT/gbo \
+    $ROOT/images \
+    "$remote"
 
 rsync -avPe ssh "$configuration" "$remote/settings.json"
