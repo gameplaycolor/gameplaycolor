@@ -7,14 +7,6 @@ body
   font: 15px Helvetica, sans-serif;
   }
 
-#LCD
-  {
-  image-rendering: -webkit-optimize-contrast;
-  position: absolute;
-  top: 0;
-  left: 0;
-  }
-
 #display
   {
   position: relative;
@@ -26,10 +18,18 @@ body
 
 .display
   {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 320px;
   height: 288px;
   background-color: #EFFDE1;
   background-size: 320px 288px;
+  }
+
+#LCD
+  {
+  image-rendering: -webkit-optimize-contrast;
   }
 
 #STATUS
@@ -493,23 +493,12 @@ body
   font-size: 11px;
   }
 
-#LCD-loading, #LCD-idle {
-  background-size: 320px 288px;
-}
-
 @media only screen and (-webkit-device-pixel-ratio:2) {
 
   .icon { background-image: url(../images/showcase.png); }
 
-  #LCD-loading {
-    background: url(../images/loading.png);
-    background-size: 320px 288px;
-  }
-
-  #LCD-idle {
-    background: url(../images/idle.png);
-    background-size: 320px 288px;
-  }
+  #LCD-loading { background-image: url(../images/loading.png); }
+  #LCD-idle { background-image: url(../images/idle.png); }
 
   .game { background-image: url(../images/cartridge.png); }
 
