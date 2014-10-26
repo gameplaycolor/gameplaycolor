@@ -33,7 +33,7 @@
 
   App.Drive.instance = undefined;
 
-  App.Drive.QUERY = "trashed = false and mimeType = 'application/octet-stream'";
+  App.Drive.QUERY = "fullText contains '*.gb' and trashed = false and mimeType = 'application/octet-stream'";
 
   App.Drive.getInstance = function() {
     if (App.Drive.instance === undefined) {
