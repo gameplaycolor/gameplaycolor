@@ -478,39 +478,39 @@ body
 
 @media only screen and (-webkit-device-pixel-ratio:2) {
 
-  .icon { background-image: url(../images/showcase_2x.png); }
+  .icon { background-image: url(../images/showcase.png); }
 
   #LCD-loading {
-    background: url(../images/loading_2x.png);
+    background: url(../images/loading.png);
     background-size: 320px 288px;
   }
 
   #LCD-idle {
-    background: url(../images/idle_2x.png);
+    background: url(../images/idle.png);
     background-size: 320px 288px;
   }
 
-  .game { background-image: url(../images/cartridge_2x.png); }
+  .game { background-image: url(../images/cartridge.png); }
 
-  #title-bar { background-image: url(../images/title_2x.png); }
+  #title-bar { background-image: url(../images/title.png); }
 
-  #group-buttons { background-image: url(../images/labels_2x.png); }
-  .button { background-image: url(../images/button_2x.png); }
-  .button.pressed { background-image: url(../images/button_pressed_2x.png); }
+  #group-buttons { background-image: url(../images/labels.png); }
+  .button { background-image: url(../images/button.png); }
+  .button.pressed { background-image: url(../images/button_pressed.png); }
 
-  #control-dpad.sprite-pad-default   { background-image: url(../images/pad_2x.png); }
-  #control-dpad.sprite-pad-up        { background-image: url(../images/pad_2x.png); }
-  #control-dpad.sprite-pad-upright   { background-image: url(../images/pad_2x.png); }
-  #control-dpad.sprite-pad-right     { background-image: url(../images/pad_2x.png); }
-  #control-dpad.sprite-pad-downright { background-image: url(../images/pad_2x.png); }
-  #control-dpad.sprite-pad-down      { background-image: url(../images/pad_2x.png); }
-  #control-dpad.sprite-pad-downleft  { background-image: url(../images/pad_2x.png); }
-  #control-dpad.sprite-pad-left      { background-image: url(../images/pad_2x.png); }
-  #control-dpad.sprite-pad-upleft    { background-image: url(../images/pad_2x.png); }
+  #control-dpad.sprite-pad-default   { background-image: url(../images/pad.png); }
+  #control-dpad.sprite-pad-up        { background-image: url(../images/pad.png); }
+  #control-dpad.sprite-pad-upright   { background-image: url(../images/pad.png); }
+  #control-dpad.sprite-pad-right     { background-image: url(../images/pad.png); }
+  #control-dpad.sprite-pad-downright { background-image: url(../images/pad.png); }
+  #control-dpad.sprite-pad-down      { background-image: url(../images/pad.png); }
+  #control-dpad.sprite-pad-downleft  { background-image: url(../images/pad.png); }
+  #control-dpad.sprite-pad-left      { background-image: url(../images/pad.png); }
+  #control-dpad.sprite-pad-upleft    { background-image: url(../images/pad.png); }
 
-  #group-options { background-image: url(../images/labels_options_2x.png); }
-  .button-option { background-image: url(../images/option_2x.png); }
-  .button-option.pressed { background-image: url(../images/option_pressed_2x.png); }
+  #group-options { background-image: url(../images/labels_options.png); }
+  .button-option { background-image: url(../images/option.png); }
+  .button-option.pressed { background-image: url(../images/option_pressed.png); }
 
 } 
 
