@@ -135,7 +135,8 @@
     // seem to guarantee file extensions in the file title).
     stripExtension: function(title) {
       var self = this;
-      if (title.toLowerCase().indexOf(".gb") === (title.length - 3)) {
+      if (title.toLowerCase().indexOf(".gb") === (title.length - 3) ||
+          title.toLowerCase().indexOf(".gbc") === (title.length - 4)) {
         return title.slice(0, -3);
       } else {
         return title;
@@ -309,7 +310,8 @@
       self.items = [];
       for (i = 0; i < files.length; i++) {
         var file = files[i];
-        if (file.fileExtension === 'gb') {
+        if (file.fileExtension === 'gb' ||
+            file.fileExtension === 'gbc') {
           // Cache the file.
           self.items.push(file);
           // Remove the item from the list of deleted identifiers.
