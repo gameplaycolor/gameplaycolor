@@ -82,6 +82,36 @@
           }
         });
 
+        mapping = {
+          13: Gameboy.Key.START,
+          37: Gameboy.Key.LEFT,
+          38: Gameboy.Key.UP,
+          39: Gameboy.Key.RIGHT,
+          40: Gameboy.Key.DOWN,
+          88: Gameboy.Key.A,
+          90: Gameboy.Key.B
+        };
+
+        // Keyboard events.
+        $(document).keydown(function(event) {
+          keycode = mapping[event.which];
+          if (keycode) {
+            self.gameBoy.keyDown(keycode);
+            event.preventDefault();
+          } else {
+            console.log(event.which);
+          }
+        });
+        $(document).keyup(function(event) {
+          keycode = mapping[event.which];
+          if (keycode) {
+            self.gameBoy.keyUp(keycode);
+            event.preventDefault();
+          } else {
+            console.log(event.which);
+          }
+        });
+
         // D-Pad.
         self.pad = new App.Controls.Pad('#control-dpad', {
           'touchDownLeft'  : function() { self.gameBoy.keyDown(Gameboy.Key.LEFT); },
