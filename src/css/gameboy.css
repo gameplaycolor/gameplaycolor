@@ -3,7 +3,7 @@ body
   padding: 0;
   margin: 0;
   -webkit-user-select: none;
-  background-color: #222;
+  background-color: #333;
   font: 15px Helvetica, sans-serif;
   }
 
@@ -253,7 +253,6 @@ body
   {
   position: absolute;
   text-align: center;
-  background-size: 126px 141px;
   background-position: center;
   background-repeat: no-repeat; 
   }
@@ -261,14 +260,13 @@ body
 .game-title
   {
   background-color: #bbb;
-  width: 77px;
-  height: 66px;
-  border-radius: 2px;
+  width: 118px;
+  height: 118px;
   word-wrap: break-word;
   position: absolute;
-  top: 40px;
-  left: 27px;
-  font-size: 12px;
+  top: 0;
+  left: 0;
+  font-size: 14px;
   color: #555;
   padding: 4px;
   }
@@ -276,13 +274,12 @@ body
 .game-thumbnail
   {
   position: absolute;
-  width: 85px;
-  height: 74px;
-  border-radius: 2px;
+  width: 126px;
+  height: 126px;
   word-wrap: break-word;
   position: absolute;
-  top: 40px;
-  left: 27px;
+  top: 0;
+  left: 0;
   }
     
 #screen-games
@@ -448,23 +445,6 @@ body
   background-size: 150px 150px;
   }
 
-.copyright
-  {
-  font-size: 10px;
-  font-weight: normal;
-  }
-
-#copyright-games
-  {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  font-size: 11px;
-  color: #444;
-  text-align: center;
-  width: 100%;
-  }
-
 #instructions a
   {
   color: #666;
@@ -499,8 +479,6 @@ body
 
   #LCD-loading { background-image: url(../images/loading.png); }
   #LCD-idle { background-image: url(../images/idle.png); }
-
-  .game { background-image: url(../images/cartridge.png); }
 
   .button { background-image: url(../images/button.png); }
   .button.pressed { background-image: url(../images/button_pressed.png); }

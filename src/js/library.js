@@ -230,6 +230,56 @@
       return "data:image/" + App.Library.THUMBNAIL_TYPE + ";base64," + data;
     },
 
+    thumbnail: function(index, callback) {
+      var self = this;
+      var identifier = self.identifierForIndex(index);
+
+      self.thumbnailStore.property(identifier, function(value) {
+        if (value !== undefined) {
+          self.thumbnails[identifier] = self.thumbnailDataUrl(value);
+          callback(self.thumbnails[identifier]);
+        } else {
+
+          file = self.fileForIdentifier(identifier);
+
+          // Some files do not seem to have a valid parents array.
+          // If they do not, then there is no reasonable way to hunt for a thumbnail.
+          var parents = file.parents[0];
+          if (parents === undefined) {
+            return;
+          }
+          
+          var parent = file.parents[0].id;
+          var title = self.stripExtension(file.title) + "." + App.Library.THUMBNAIL_TYPE;
+
+          console.log("Fetching " + title + " ...");
+
+          self.drive.file(parent, title, {
+            'onStart': function() {},
+            'onSuccess': function(file) {
+              if (file !== undefined) {
+                downloadFileBase64(file, function(data) {
+                  try {
+                    self.thumbnailStore.setProperty(identifier, data);
+                  } catch (e) {
+                    console.log("Unable to store thumbnail.");
+                  }
+                  self.thumbnails[identifier] = self.thumbnailDataUrl(data);
+                  callback(self.thumbnails[identifier]);
+                });
+              } else {
+                callback();
+              }
+            },
+            'onError': function(error) {
+              callback();
+            }
+          });
+        }
+      });
+
+    },
+
     // Checks to see if there is a cached thumbnail.  If no thumbnail has been cached,
     // one will be fetched from Google Drive if it's available.
     // This implementation caches all thumbnails in memory.  It's possible that this will

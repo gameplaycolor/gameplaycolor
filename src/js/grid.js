@@ -114,7 +114,6 @@
 
       self.updatePageControl();
       self.updatePageItems();
-      self.updateThumbnails();
     },
     
     updateLayout: function() {
@@ -206,7 +205,14 @@
       gameTitle.html(title);
       game.append(gameTitle);
 
-      self.scheduleUpdateThumbnail(game, index);
+      // self.scheduleUpdateThumbnail(game, index);
+      self.dataSource.thumbnail(index, function(thumbnail) {
+        if (thumbnail !== undefined) {
+          var img = $('<img class="game-thumbnail">');
+          img.attr("src", thumbnail);
+          game.append(img);
+        }
+      });
 
       // Grey out ROMs which are only available online.
       if (window.navigator.onLine === false && offline === false) {
@@ -216,31 +222,6 @@
       self.content.append(game);
       self.count += 1;
       
-    },
-
-    scheduleUpdateThumbnail: function(game, index) {
-      var self = this;
-      self.thumbnailQueue.push({'game': game, 'index': index});
-    },
-
-    updateThumbnails: function() {
-      var self = this;
-      if (self.thumbnailQueue.length > 0) {
-        setTimeout(function() {
-          var item = self.thumbnailQueue.pop();
-          var game = item['game'];
-          var index = item['index'];
-
-          self.dataSource.thumbnailForIndex(index, function(thumbnail) {
-            if (thumbnail !== undefined) {
-              var img = $('<img class="game-thumbnail">');
-              img.attr("src", thumbnail);
-              game.append(img);
-            }
-            self.updateThumbnails();
-          });
-        }, 100);
-      }
     },
 
     // Convert a position in container coordinates to content coordinates.
