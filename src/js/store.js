@@ -38,7 +38,7 @@
         if (!window.openDatabase) {
           alert('Databases are not supported in this browser.');
         } else {
-          self.database = openDatabase(self.name, '1.0', self.name, 100000);
+          self.database = openDatabase(self.name, '1.0', self.name, 50*1024*1024);
           self.createTables();
         }
       } catch(e) {
@@ -51,36 +51,41 @@
       }
 
     },
+
+    transaction: function(callback, description) {
+      var self = this;
+      self.database.transaction(callback, function(error) {
+        console.log(description + ": Failed to access storage named '" + self.name + "' with error  '" + error.message + "' (" + error.code + ")");
+      });
+    },
     
     createTables: function() {
       var self = this;
-      self.database.transaction(
-        function(transaction) {
-          transaction.executeSql("CREATE TABLE IF NOT EXISTS " +
-                                  "properties( " +
-                                    "key TEXT NOT NULL PRIMARY KEY, " +
-                                    "value TEXT NOT NULL " +
-                                  ");");
-        }
-      );
+      self.transaction(function(transaction) {
+        transaction.executeSql("CREATE TABLE IF NOT EXISTS " +
+                                "properties ( " +
+                                  "id INTEGER PRIMARY KEY," +
+                                  "domain TEXT NOT NULL," +
+                                  "key TEXT NOT NULL," +
+                                  "value TEXT NOT NULL" +
+                                ")");
+      }, "Creating database tables");
     },
     
-    setProperty: function(key, value) {
+    setProperty: function(domain, key, value) {
       var self = this;
-      self.database.transaction(
-        function(transaction) {
-          transaction.executeSql(
-            "INSERT OR REPLACE INTO properties (key, value) VALUES ('" + key + "', '" + value + "')"
-          );
-        }
-      );
+      self.transaction(function(transaction) {
+        transaction.executeSql(
+          "INSERT OR REPLACE INTO properties (domain, key, value) VALUES ('" + domain + "', '" + key + "', '" + value + "')"
+        );
+      }, "Setting property '" + key + "'");
     },
     
-    property: function(key, callback) {
+    property: function(domain, key, callback) {
       var self = this;
-      self.database.transaction(function(tx) {
-        tx.executeSql(
-          "SELECT * FROM properties WHERE key = '" + key + "'",
+      self.transaction(function(transaction) {
+        transaction.executeSql(
+          "SELECT * FROM properties WHERE domain = '" + domain + "' AND key = '" + key + "'",
           [],
           function(transaction, results) {
             if (results.rows.length > 0) {
@@ -93,22 +98,43 @@
             callback(undefined);
           }
         );
-      });
+      }, "Reading property '" + key + "'");
     },
 
-    deleteProperty: function(key) {
+    deleteProperty: function(domain, key) {
       var self = this;
-      self.database.transaction(function(tx) {
-        tx.executeSql(
-          "DELETE FROM properties WHERE key = '" + key + "'"
+      self.transaction(function(transaction) {
+        transaction.executeSql(
+          "DELETE FROM properties WHERE key = domain = '" + domain + "' AND '" + key + "'"
         );
-      });
+      }, "Deleting property '" + key + "'");
+    },
+
+    propertiesForDomain: function(domain, callback) {
+      var self = this;
+      self.transaction(function(transaction) {
+        transaction.executeSql(
+          "SELECT * FROM properties WHERE domain = '" + domain + "'",
+          [],
+          function(transaction, results) {
+            var properties = {};
+            for (var i = 0; i < results.rows.length; i++) {
+              var item = results.rows.item(i);
+              properties[item.key] = item.value;
+            }
+            callback(properties);
+          },
+          function(transaction, error) {
+            callback({});
+          }
+        );
+      }, "Reading properties for domain '" + domain + "'");
     },
 
     keys: function(callback) {
       var self = this;
-      self.database.transaction(function(tx) {
-        tx.executeSql(
+      self.transaction(function(transation) {
+        transation.executeSql(
           "SELECT key FROM properties",
           [],
           function(transaction, results) {
@@ -118,7 +144,7 @@
             }
             callback(rows);
           },
-          function(error) {
+          function(transaction, error) {
             callback(undefined);
           }
         );

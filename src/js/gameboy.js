@@ -41,14 +41,6 @@ function base64ToArray(b64encoded) {
   return u8_2;
 }
 
-function setValue(key, value) {
-  localStorage.setItem(key, value);
-}
-
-function findValue(key) {
-  return localStorage.getItem(key);
-}
-
 (function($) {
 
   App.GameBoy = function(store, library) {
@@ -143,19 +135,19 @@ function findValue(key) {
       self.setState(App.GameBoy.State.LOADING);
 
       // Store the name of the file we're playing.
-      window.app.store.setProperty(App.Store.Property.GAME, identifier);
+      window.app.store.setProperty("settings", App.Store.Property.GAME, identifier);
 
       // Fetch the file.
       var file = self.library.fetch(identifier, function(data) {
-        self.insertCartridge(data);
+        self.insertCartridge(identifier, data);
         self.setState(App.GameBoy.State.RUNNING);
       });
 
     },
 
-    insertCartridge: function(data) {
+    insertCartridge: function(identifier, data) {
       var self = this;
-      start(document.getElementById('LCD'), data);
+      start(identifier, document.getElementById('LCD'), data);
       self.setState(App.GameBoy.State.RUNNING);
     }
 

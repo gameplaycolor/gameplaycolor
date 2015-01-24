@@ -84,6 +84,7 @@
 
         mapping = {
           13: Gameboy.Key.START,
+          16: Gameboy.Key.SELECT,
           37: Gameboy.Key.LEFT,
           38: Gameboy.Key.UP,
           39: Gameboy.Key.RIGHT,
@@ -98,8 +99,6 @@
           if (keycode) {
             self.gameBoy.keyDown(keycode);
             event.preventDefault();
-          } else {
-            console.log(event.which);
           }
         });
         $(document).keyup(function(event) {
@@ -107,8 +106,6 @@
           if (keycode) {
             self.gameBoy.keyUp(keycode);
             event.preventDefault();
-          } else {
-            console.log(event.which);
           }
         });
 
@@ -186,20 +183,20 @@
           gbTileData: gbTileData,
           gbBackgroundData: gbBackgroundData
         });
-        self.store.setProperty(App.Store.Property.STATE, state);
+        self.store.setProperty("settings", App.Store.Property.STATE, state);
       },
       
       load: function() {
         var self = this;
         
-        self.store.property(App.Store.Property.GAME, function(filename) {
+        self.store.property("settings", App.Store.Property.GAME, function(filename) {
         
           if (filename !== undefined) {
             var data = localStorage.getItem(filename);
             if (data) {
               self.gameBoy.insertCartridge(data);
               setTimeout(function() {
-                self.store.property(App.Store.Property.STATE, function(stateJSON) {
+                self.store.property("settings", App.Store.Property.STATE, function(stateJSON) {
                   if (stateJSON !== undefined) {
                       var state = jQuery.parseJSON(stateJSON);
                       self.gameBoy.pause();

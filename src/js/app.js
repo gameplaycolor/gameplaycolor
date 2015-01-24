@@ -35,6 +35,7 @@
       self.store = new App.Store('gameboy');
       self.library = new App.Library();
       self.gameBoy = new App.GameBoy(self.store, self.library);
+      self.saveState = new App.Store('save-state');
 
       // Prevent touchmove events.
       document.addEventListener('touchmove', function(e) {
@@ -80,6 +81,21 @@
       window.applicationCache.removeEventListener('updateready', self.updateApplication);
       window.applicationCache.swapCache();
       window.location.reload();
+    },
+
+    setValue: function(domain, key, value) {
+      var self = this;
+      self.saveState.setProperty(domain, key, value);
+    },
+
+    getValue: function(domain, key, callback) {
+      var self = this;
+      return self.saveState.property(domain, key, callback);
+    },
+
+    deleteValue: function(domain, key) {
+      var self = this;
+      self.saveState.deleteProperty(key);
     }
 
   });

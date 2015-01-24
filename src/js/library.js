@@ -167,7 +167,7 @@
       if (identifier in self.thumbnails) {
         callback(self.thumbnails[identifier]);
       } else {
-        self.thumbnailStore.property(identifier, function(value) {
+        self.thumbnailStore.property("thumbnails", identifier, function(value) {
           if (value !== undefined) {
             self.thumbnails[identifier] = self.thumbnailDataUrl(value);
             callback(self.thumbnails[identifier]);
@@ -234,7 +234,7 @@
       var self = this;
       var identifier = self.identifierForIndex(index);
 
-      self.thumbnailStore.property(identifier, function(value) {
+      self.thumbnailStore.property("thumbnails", identifier, function(value) {
         if (value !== undefined) {
           self.thumbnails[identifier] = self.thumbnailDataUrl(value);
           callback(self.thumbnails[identifier]);
@@ -260,7 +260,7 @@
               if (file !== undefined) {
                 downloadFileBase64(file, function(data) {
                   try {
-                    self.thumbnailStore.setProperty(identifier, data);
+                    self.thumbnailStore.setProperty("thumbnails", identifier, data);
                   } catch (e) {
                     console.log("Unable to store thumbnail.");
                   }
@@ -306,7 +306,7 @@
       }
 
       // Check the cache.
-      self.thumbnailStore.property(identifier, function(value) {
+      self.thumbnailStore.property("thumbnails", identifier, function(value) {
         if (value !== undefined) {
           self.thumbnails[identifier] = self.thumbnailDataUrl(value);
           callback();
@@ -316,7 +316,7 @@
             'onSuccess': function(file) {
               if (file !== undefined) {
                 downloadFileBase64(file, function(data) {
-                  self.thumbnailStore.setProperty(identifier, data);
+                  self.thumbnailStore.setProperty("thumbnails", identifier, data);
                   self.thumbnails[identifier] = self.thumbnailDataUrl(data);
                   self.notifyChange();
                 });
