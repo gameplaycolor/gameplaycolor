@@ -68,6 +68,7 @@
     checkForUpdate: function() {
       var self = this;
       if (window.applicationCache !== undefined && window.applicationCache !== null) {
+        console.log("Checking for application update (status " + window.applicationCache.status + ")");
         window.applicationCache.addEventListener('updateready', function(event) {
           self.checkUpdate(event);
         });
@@ -76,15 +77,9 @@
 
     checkUpdate: function(event) {
       var self = this;
+      console.log("Application update received (status " + window.applicationCache.status + ")");
       if (window.applicationCache.status != 4) return;
-      $("#update-button").fadeIn();
-    },
-
-    updateApplication: function() {
-      var self = this;
-      window.applicationCache.removeEventListener('updateready', self.updateApplication);
-      window.applicationCache.swapCache();
-      window.location.reload();
+      alert("Update available. Relaunch the application.");
     },
 
     setValue: function(domain, key, value) {
