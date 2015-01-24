@@ -17,14 +17,62 @@ var settings = [						//Some settings.
 	false,								//Scale the canvas in JS, or let the browser scale the canvas?
 	true								//Use image smoothing based scaling?
 ];
-function start(canvas, ROM) {
-	clearLastEmulation();
-	autoSave();	//If we are about to load a new game, then save the last one...
-	gameboy = new GameBoyCore(canvas, ROM);
-	gameboy.openMBC = openSRAM;
-	gameboy.openRTC = openRTC;
-	gameboy.start();
-	run();
+
+var saveStateContext = "";
+var saveState = {};
+
+function loadSaveStateContext(context) {
+
+	saveStateContext = context;
+	saveState = {};
+
+	console.log("Pre-loading save state for '" + saveStateContext + "'");
+
+	var deferred = new jQuery.Deferred();
+	window.app.saveState.propertiesForDomain(saveStateContext, function(properties) {
+
+		console.log("Loaded save state for '" + saveStateContext + "'");
+
+    for (var key in properties) {
+      if (properties.hasOwnProperty(key)) {
+        console.log("Found Key: " + key);
+        saveState[key] = properties[key];
+      }
+    }
+
+		deferred.resolve();
+	});
+	return deferred.promise();
+}
+
+function setValue(key, value) {
+	console.log("Save '" + key + "' for context '" + saveStateContext + "'");
+	saveState[key] = value;
+  window.app.setValue(saveStateContext, key, value);
+}
+
+function deleteValue(key) {
+	console.log("Delete '" + key + "' for context '" + saveStateContext + "'");
+	delete saveState[key];
+	window.app.deleteValue(saveStateContext, key);
+}
+
+function findValue(key) {
+	console.log("Read '" + key + "' for context '" + saveStateContext + "'");
+	return saveState[key];
+}
+
+function start(identifier, canvas, ROM) {
+	loadSaveStateContext("game-" + identifier).then(function() {
+
+		clearLastEmulation();
+		gameboy = new GameBoyCore(canvas, ROM);
+		gameboy.openMBC = openSRAM;
+		gameboy.openRTC = openRTC;
+		gameboy.start();
+		run();
+
+	});
 }
 function run() {
 	if (GameBoyEmulatorInitialized()) {
@@ -51,6 +99,7 @@ function run() {
 function pause() {
 	if (GameBoyEmulatorInitialized()) {
 		if (GameBoyEmulatorPlaying()) {
+			autoSave();
 			clearLastEmulation();
 		}
 		else {
