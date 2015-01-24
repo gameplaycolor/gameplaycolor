@@ -29,7 +29,7 @@ function loadSaveStateContext(context) {
 	console.log("Pre-loading save state for '" + saveStateContext + "'");
 
 	var deferred = new jQuery.Deferred();
-	window.app.saveState.propertiesForDomain(saveStateContext, function(properties) {
+	window.app.store.propertiesForDomain(saveStateContext, function(properties) {
 
 		console.log("Loaded save state for '" + saveStateContext + "'");
 
