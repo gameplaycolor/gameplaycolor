@@ -183,20 +183,20 @@
           gbTileData: gbTileData,
           gbBackgroundData: gbBackgroundData
         });
-        self.store.setProperty("settings", App.Store.Property.STATE, state);
+        self.store.setProperty(App.Controller.Domain.SETTINGS, App.Store.Property.STATE, state);
       },
       
       load: function() {
         var self = this;
         
-        self.store.property("settings", App.Store.Property.GAME, function(filename) {
+        self.store.property(App.Controller.Domain.SETTINGS, App.Store.Property.GAME, function(filename) {
         
           if (filename !== undefined) {
             var data = localStorage.getItem(filename);
             if (data) {
               self.gameBoy.insertCartridge(data);
               setTimeout(function() {
-                self.store.property("settings", App.Store.Property.STATE, function(stateJSON) {
+                self.store.property(App.Controller.Domain.SETTINGS, App.Store.Property.STATE, function(stateJSON) {
                   if (stateJSON !== undefined) {
                       var state = jQuery.parseJSON(stateJSON);
                       self.gameBoy.pause();

@@ -135,7 +135,7 @@ function base64ToArray(b64encoded) {
       self.setState(App.GameBoy.State.LOADING);
 
       // Store the name of the file we're playing.
-      window.app.store.setProperty("settings", App.Store.Property.GAME, identifier);
+      window.app.store.setProperty(App.Controller.Domain.SETTINGS, App.Store.Property.GAME, identifier);
 
       // Fetch the file.
       var file = self.library.fetch(identifier, function(data) {

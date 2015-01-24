@@ -27,15 +27,19 @@
   App.Controller.SAVE = false;
   App.Controller.DEBUG = true;
 
+  App.Controller.Domain = {
+    SETTINGS: "settings",
+    THUMBNAILS: "thumbnails"
+  };
+
   jQuery.extend(App.Controller.prototype, {
 
     init: function (device) {
       var self = this;
       self.device = device;
-      self.store = new App.Store('gameboy');
       self.library = new App.Library();
       self.gameBoy = new App.GameBoy(self.store, self.library);
-      self.saveState = new App.Store('save-state');
+      self.store = new App.Store('save-state');
 
       // Prevent touchmove events.
       document.addEventListener('touchmove', function(e) {
@@ -85,17 +89,17 @@
 
     setValue: function(domain, key, value) {
       var self = this;
-      self.saveState.setProperty(domain, key, value);
+      self.store.setProperty(domain, key, value);
     },
 
     getValue: function(domain, key, callback) {
       var self = this;
-      return self.saveState.property(domain, key, callback);
+      return self.store.property(domain, key, callback);
     },
 
     deleteValue: function(domain, key) {
       var self = this;
-      self.saveState.deleteProperty(key);
+      self.store.deleteProperty(key);
     }
 
   });
