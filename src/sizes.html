@@ -1,0 +1,77 @@
+<html>
+  <head>
+      <title>Sizes</title>
+      <style>
+
+        #device {
+          border: 1px solid black;
+        }
+
+        #content {
+          text-align: center;
+        }
+
+        #picker {
+          background-color: black;
+          color: white;
+          position: absolute;
+          margin: 10px;
+          padding: 10px;
+          opacity: 0.5;
+          list-style: none;
+          font-family: Helvetica, sans-serif;
+          font-size: 14px;
+        }
+
+        #picker a {
+          color: white;
+          text-decoration: none;
+        }
+
+      </style>
+      <script>
+
+        var devices = {
+          IPHONE_5: { width: 640, height: 1136, scale: 2 },
+          IPHONE_6: { width: 960, height: 1704, scale: 2 }
+        };
+
+        var orientation = {
+          PORTRAIT: 0,
+          LANDSCAPE: 1
+        }
+
+        function setSize(details, or) {
+          var device = document.getElementById("device");
+          var width = 0;
+          var height = 0;
+
+          if (or == orientation.PORTRAIT) {
+            width = details.width;
+            height = details.height;
+          } else if (or = orientation.LANDSCAPE) {
+            width = details.height;
+            height = details.width;
+          }
+
+          width = Math.floor(width / details.scale);
+          height = Math.floor(height / details.scale);
+
+          device.style.width = width;
+          device.style.height = height;
+        }
+
+      </script>
+  </head>
+  <body>
+    <ul id="picker">
+      <li><a href="javascript:setSize(devices.IPHONE_5, orientation.PORTRAIT);">iPhone 5 (Portrait)</a></li>
+      <li><a href="javascript:setSize(devices.IPHONE_5, orientation.LANDSCAPE);">iPhone 5 (Landscape)</a></li>
+      <li><a href="javascript:setSize(devices.IPHONE_6, orientation.PORTRAIT);">iPhone 6 (Portrait)</a></li>
+      <li><a href="javascript:setSize(devices.IPHONE_6, orientation.LANDSCAPE);">iPhone 6 (Landscape)</a></li>
+    </ul>
+    <div id="content">
+      <iframe id="device" src="index.html" width="1024" height="768" frameborder="0" scrolling="no"></iframe>
+    </div>
+  </body>
+</html>
