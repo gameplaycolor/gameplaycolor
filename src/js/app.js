@@ -29,7 +29,8 @@
 
   App.Controller.Domain = {
     SETTINGS: "settings",
-    THUMBNAILS: "thumbnails"
+    THUMBNAILS: "thumbnails",
+    GAMES: "games"
   };
 
   jQuery.extend(App.Controller.prototype, {
@@ -79,7 +80,7 @@
       var self = this;
       console.log("Application update received (status " + window.applicationCache.status + ")");
       if (window.applicationCache.status != 4) return;
-      alert("Update available. Relaunch the application.");
+      alert("Update available.\nRelaunch the application to update.");
     },
 
     setValue: function(domain, key, value) {

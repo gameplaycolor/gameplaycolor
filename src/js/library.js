@@ -209,19 +209,19 @@
     fetch: function(identifier, callback) {
       var self = this;
 
-      // Only attempt to download the file if it hasn't already been cached.
-      var data = localStorage.getItem(identifier);
-      if (data) {
-        callback(data);
-      } else {
-        var file = self.fileForIdentifier(identifier);
-        downloadFile(file, function(data) {
-          //localStorage.setItem(file.id, data);
-          self.notifyChange();
-          callback(data);
-        });
-      }
-
+      window.app.store.property(App.Controller.Domain.GAMES, identifier, function(data) {
+        if (data === undefined) {
+          console.log("Fetching '" + identifier + "'");
+          var file = self.fileForIdentifier(identifier);
+          downloadFile(file, function(data) {
+            window.app.store.setProperty(App.Controller.Domain.GAMES, identifier, utilities.btoa(data));
+            callback(data);
+          });
+        } else {
+          console.log("Using cached value for '" + identifier + "'");
+          callback(utilities.atob(data));
+        }
+      });
     },
 
     // Converts a base64 encoded thumbnail image into a suitable URL.

@@ -67,7 +67,7 @@
                                   "id INTEGER PRIMARY KEY," +
                                   "domain TEXT NOT NULL," +
                                   "key TEXT NOT NULL," +
-                                  "value TEXT NOT NULL" +
+                                  "value BLOB NOT NULL" +
                                 ")");
       }, "Creating database tables");
     },
@@ -76,7 +76,7 @@
       var self = this;
       self.transaction(function(transaction) {
         transaction.executeSql(
-          "INSERT OR REPLACE INTO properties (domain, key, value) VALUES ('" + domain + "', '" + key + "', '" + value + "')"
+          "INSERT OR REPLACE INTO properties (domain, key, value) VALUES (?, ?, ?)", [domain, key, value]
         );
       }, "Setting property '" + key + "'");
     },
@@ -85,16 +85,20 @@
       var self = this;
       self.transaction(function(transaction) {
         transaction.executeSql(
-          "SELECT * FROM properties WHERE domain = '" + domain + "' AND key = '" + key + "'",
-          [],
+          "SELECT * FROM properties WHERE domain = ? AND key = ?",
+          [domain, key],
           function(transaction, results) {
             if (results.rows.length > 0) {
+              console.log("Found property '" + key + "' for domain '" + domain + "' with length " + results.rows.item(0).value.length);
+              
               callback(results.rows.item(0).value);
             } else {
+              console.log("Unable to find property '" + key + "' for domain '" + domain + "'");
               callback(undefined);
             }
           },
-          function(error) {
+          function(transaction, error) {
+            console.log("Reading property '" + key + "': Failed with error '" + error.message + "'");
             callback(undefined);
           }
         );
@@ -105,7 +109,8 @@
       var self = this;
       self.transaction(function(transaction) {
         transaction.executeSql(
-          "DELETE FROM properties WHERE key = domain = '" + domain + "' AND '" + key + "'"
+          "DELETE FROM properties WHERE domain = ? AND key = ?",
+          [domain, key]
         );
       }, "Deleting property '" + key + "'");
     },
@@ -114,8 +119,8 @@
       var self = this;
       self.transaction(function(transaction) {
         transaction.executeSql(
-          "SELECT * FROM properties WHERE domain = '" + domain + "'",
-          [],
+          "SELECT * FROM properties WHERE domain = ?",
+          [domain],
           function(transaction, results) {
             var properties = {};
             for (var i = 0; i < results.rows.length; i++) {
@@ -124,7 +129,8 @@
             }
             callback(properties);
           },
-          function(transaction, error) {
+          function(error) {
+            console.log("Reading properties for domain '" + domain + "': Failed with error '" + error.message + "'");
             callback({});
           }
         );

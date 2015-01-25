@@ -21,24 +21,11 @@ function cout(message, level) {
 }
 
 function arrayToBase64(u8Arr) {
-  var CHUNK_SIZE = 0x8000; //arbitrary number
-  var index = 0;
-  var length = u8Arr.length;
-  var result = '';
-  var slice;
-  while (index < length) {
-    var max = Math.min(index + CHUNK_SIZE, length);
-    slice = u8Arr.slice(index, max);
-    result += String.fromCharCode.apply(null, slice);
-    index += CHUNK_SIZE;
-  }
-  return window.btoa(result);
+  return utilities.arrayToBase64(u8Arr);
 }
 
 function base64ToArray(b64encoded) {
-  var u8_2 = new Uint8Array(window.atob(b64encoded).split("").map(function(c) {
-    return c.charCodeAt(0); }));
-  return u8_2;
+  return utilities.base64ToArray(b64encoded);
 }
 
 (function($) {
