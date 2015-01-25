@@ -3,6 +3,10 @@
       <title>Sizes</title>
       <style>
 
+        body {
+          background-color: #333;
+        }
+
         #device {
           border: 1px solid black;
         }
@@ -16,11 +20,12 @@
           color: white;
           position: absolute;
           margin: 10px;
-          padding: 10px;
           opacity: 0.5;
-          list-style: none;
           font-family: Helvetica, sans-serif;
           font-size: 14px;
+          padding-top: 16px;
+          padding-right: 16px;
+          padding-bottom: 16px;
         }
 
         #picker a {
@@ -31,14 +36,44 @@
       </style>
       <script>
 
-        var devices = {
-          IPHONE_5: { width: 640, height: 1136, scale: 2 },
-          IPHONE_6: { width: 960, height: 1704, scale: 2 }
-        };
+        var items = [
+          { name: "iPhone 6", width: 750, height: 1334, scale: 2 },
+          { name: "iPhone 5", width: 640, height: 1136, scale: 2 },
+          { name: "iPhone 6 Plus", width: 1080, height: 1920, scale: 2 },
+          { name: "iPad", width: 2048, height: 1536, scale: 2 }
+        ];
 
         var orientation = {
           PORTRAIT: 0,
           LANDSCAPE: 1
+        };
+
+        function init() {
+          for (var i = 0; i < items.length; i++) {
+            addItem(items[i], orientation.PORTRAIT);
+            addItem(items[i], orientation.LANDSCAPE);
+          }
+          setSize(items[0], orientation.PORTRAIT);
+        }
+
+        function addItem(details, or) {
+          var picker = document.getElementById("picker");
+          var li = document.createElement('li');
+          var a = document.createElement('a');
+          a.href = "javascript:setSize(" + JSON.stringify(details) + ", " + or + ");";
+          a.appendChild(document.createTextNode(getTitle(details, or)));
+          li.appendChild(a);
+          picker.appendChild(li);
+        }
+
+        function getTitle(details, or) {
+          var title = details.name + " - ";
+          if (or == orientation.PORTRAIT) {
+            title = title + "Portrait";
+          } else if (or = orientation.LANDSCAPE) {
+            title = title + "Landscape";
+          }
+          return title;
         }
 
         function setSize(details, or) {
@@ -46,6 +81,7 @@
           var width = 0;
           var height = 0;
 
+          var title = getTitle(details, or);
           if (or == orientation.PORTRAIT) {
             width = details.width;
             height = details.height;
@@ -59,17 +95,26 @@
 
           device.style.width = width;
           device.style.height = height;
+          document.title = title;
         }
+
+        function keyPress(event) {
+          var keyCode = event.keyCode - 49;
+          if (keyCode >= 0 && keyCode < (items.length * 2)) {
+            var index = Math.floor(keyCode / 2);
+            var or = keyCode % 2;
+            var details = items[index];
+            setSize(details, or);
+          }
+        }
+
+        window.onload = init;
+        window.onkeypress = keyPress;
 
       </script>
   </head>
   <body>
-    <ul id="picker">
-      <li><a href="javascript:setSize(devices.IPHONE_5, orientation.PORTRAIT);">iPhone 5 (Portrait)</a></li>
-      <li><a href="javascript:setSize(devices.IPHONE_5, orientation.LANDSCAPE);">iPhone 5 (Landscape)</a></li>
-      <li><a href="javascript:setSize(devices.IPHONE_6, orientation.PORTRAIT);">iPhone 6 (Portrait)</a></li>
-      <li><a href="javascript:setSize(devices.IPHONE_6, orientation.LANDSCAPE);">iPhone 6 (Landscape)</a></li>
-    </ul>
+    <ol id="picker"></ol>
     <div id="content">
       <iframe id="device" src="index.html" width="1024" height="768" frameborder="0" scrolling="no"></iframe>
     </div>
