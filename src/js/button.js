@@ -76,7 +76,7 @@
 
     touchUp: function() {
       var self = this;
-      self.action("touchUp");      
+      self.action("touchUp");
     },
 
     touchUpInside: function() {
