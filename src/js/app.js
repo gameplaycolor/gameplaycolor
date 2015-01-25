@@ -38,19 +38,19 @@
     init: function (device) {
       var self = this;
       self.device = device;
-      self.library = new App.Library();
-      self.gameBoy = new App.GameBoy(self.store, self.library);
       self.store = new App.Store('save-state');
+      self.library = new App.Library(self.store, function(identifier) {
+        self.console.show();
+        self.gameBoy.load(identifier);
+      });
+      self.gameBoy = new App.GameBoy(self.store, self.library);
 
       // Prevent touchmove events.
       document.addEventListener('touchmove', function(e) {
         e.preventDefault();
       }, false);
       
-      self.games = new App.Games(self.device, self.gameBoy, self.library, function(identifier) {
-        self.console.show();
-        self.gameBoy.load(identifier);
-      });
+      self.games = new App.Games(self.device, self.gameBoy, self.library);
 
       self.console = new App.Console(self.device, self.gameBoy, {
         'willHide': function() {

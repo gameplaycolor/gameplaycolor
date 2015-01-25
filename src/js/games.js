@@ -18,19 +18,18 @@
  
 (function($) {
 
-  App.Games = function(device, gameBoy, library, callback) {
-    this.init(device, gameBoy, library, callback);
+  App.Games = function(device, gameBoy, library) {
+    this.init(device, gameBoy, library);
   };
 
   jQuery.extend(
     App.Games.prototype, {
 
-    init: function(device, gameBoy, library, callback) {
+    init: function(device, gameBoy, library) {
       var self = this;
       self.device = device;
       self.gameBoy = gameBoy;
       self.library = library;
-      self.callback = callback;
       self.element = $('#screen-games');
       self.empty = $('#screen-empty');
       self.loading = $('#screen-loading');
@@ -81,7 +80,7 @@
       });
 
       self.grid.dataSource = self.library;
-      self.grid.delegate = self;
+      self.grid.delegate = self.library;
       self.grid.reloadData();
 
     },
@@ -90,10 +89,10 @@
       var self = this;
 
       // Only attempt to load the ROM if it's available.
+      // TODO Replace this.
       if (window.navigator.onLine || self.library.availableOffline(index)) {
         window.tracker.track('load-rom');
         var identifier = self.library.identifierForIndex(index);
-        self.callback(identifier);
       }
 
     },

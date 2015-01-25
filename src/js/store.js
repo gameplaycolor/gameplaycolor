@@ -115,6 +115,25 @@
       }, "Deleting property '" + key + "'");
     },
 
+    hasProperty: function(domain, key) {
+      var self = this;
+      var deferred = new jQuery.Deferred();
+      self.transaction(function(transaction) {
+        transaction.executeSql(
+          "SELECT EXISTS(SELECT 1 FROM properties WHERE domain = ? AND key = ? LIMIT 1) AS found",
+          [domain, key],
+          function(transaction, results) {
+            deferred.resolve(results.rows.item(0).found);
+          },
+          function(transaction, error) {
+            self.logging.error("Checking for property '" + key + "': Failed with error '" + error.message + "'");
+            deferred.reject(error);
+          }
+        );
+      });
+      return deferred.promise();
+    },
+
     propertiesForDomain: function(domain, callback) {
       var self = this;
       self.transaction(function(transaction) {

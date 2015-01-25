@@ -18,8 +18,8 @@
  
 (function($) {
 
-  App.Library = function() {
-    this.init();
+  App.Library = function(store, callback) {
+    this.init(store, callback);
   };
 
   App.Library.State = {
@@ -35,7 +35,7 @@
   jQuery.extend(
     App.Library.prototype, {
 
-    init: function() {
+    init: function(store, callback) {
       var self = this;
       self.state = App.Library.State.UNINITIALIZED;
       self.items = [];
@@ -43,7 +43,9 @@
       self.changeCallbacks = [];
       self.stateChangeCallbacks = [];
       self.drive = App.Drive.getInstance();
-      self.thumbnailStore = new App.Store('thumbnails');
+      self.store = store;
+      self.fetches = {};
+      self.callback = callback;
 
       // We use a separate flag to track updates internally as
       // we need to be able to schedule updates in many different states
@@ -148,6 +150,19 @@
       return false;
     },
 
+    elementForIndex: function(index) {
+      var self = this;
+      var game = $('<div class="game">');
+      var identifier = self.identifierForIndex(index);
+      self.store.hasProperty(App.Controller.Domain.GAMES, identifier).then(function(result) {
+        console.log(result);
+        if (result) {
+          game.addClass('downloaded');
+        }
+      });
+      return game;
+    },
+
     identifierForIndex: function(index) {
       var self = this;
       var file = self.items[index];
@@ -167,13 +182,29 @@
       if (identifier in self.thumbnails) {
         callback(self.thumbnails[identifier]);
       } else {
-        self.thumbnailStore.property(App.Controller.Domain.THUMBNAILS, identifier, function(value) {
+        self.store.property(App.Controller.Domain.THUMBNAILS, identifier, function(value) {
           if (value !== undefined) {
             self.thumbnails[identifier] = self.thumbnailDataUrl(value);
             callback(self.thumbnails[identifier]);
           }
         });
       }
+    },
+
+    didSelectItemForRow: function(index, element) {
+      var self = this;
+      var identifier = self.identifierForIndex(index);
+      self.store.hasProperty(App.Controller.Domain.GAMES, identifier).then(function(found) {
+        if (found) {
+          self.callback(identifier);
+        } else {
+          self.fetch(identifier).then(function(data) {
+            console.log("Received identifier '" + identifier + "'");
+            element.addClass("downloaded");
+          });
+        }
+      });
+
     },
     
     update: function() {
@@ -188,7 +219,6 @@
             self.updateCallback(files);
           },
           'onError': function(error) {
-            // Ignore the error.
             self.setState(App.Library.State.READY);
           }
         });
@@ -206,8 +236,18 @@
       return undefined;
     },
 
-    fetch: function(identifier, callback) {
+    fetch: function(identifier) {
       var self = this;
+
+      // Check to see if there's an existing fetch.
+      if (self.fetches.hasOwnProperty(identifier)) {
+        return self.fetches[identifier].promise();
+      }
+
+      var deferred = new jQuery.Deferred();
+      self.fetches[identifier] = deferred;
+
+      console.log("Fetching identifier '" + identifier + "'");
 
       window.app.store.property(App.Controller.Domain.GAMES, identifier, function(data) {
         if (data === undefined) {
@@ -215,13 +255,17 @@
           var file = self.fileForIdentifier(identifier);
           downloadFile(file, function(data) {
             window.app.store.setProperty(App.Controller.Domain.GAMES, identifier, utilities.btoa(data));
-            callback(data);
+            delete self.fetches[identifier];
+            deferred.resolve(data);
           });
         } else {
           console.log("Using cached value for '" + identifier + "'");
-          callback(utilities.atob(data));
+          delete self.fetches[identifier];
+          deferred.resolve(utilities.atob(data));
         }
       });
+
+      return deferred.promise();
     },
 
     // Converts a base64 encoded thumbnail image into a suitable URL.
@@ -234,7 +278,7 @@
       var self = this;
       var identifier = self.identifierForIndex(index);
 
-      self.thumbnailStore.property(App.Controller.Domain.THUMBNAILS, identifier, function(value) {
+      self.store.property(App.Controller.Domain.THUMBNAILS, identifier, function(value) {
         if (value !== undefined) {
           self.thumbnails[identifier] = self.thumbnailDataUrl(value);
           callback(self.thumbnails[identifier]);
@@ -260,7 +304,7 @@
               if (file !== undefined) {
                 downloadFileBase64(file, function(data) {
                   try {
-                    self.thumbnailStore.setProperty(App.Controller.Domain.THUMBNAILS, identifier, data);
+                    self.store.setProperty(App.Controller.Domain.THUMBNAILS, identifier, data);
                   } catch (e) {
                     console.log("Unable to store thumbnail.");
                   }
@@ -306,7 +350,7 @@
       }
 
       // Check the cache.
-      self.thumbnailStore.property(App.Controller.Domain.THUMBNAILS, identifier, function(value) {
+      self.store.property(App.Controller.Domain.THUMBNAILS, identifier, function(value) {
         if (value !== undefined) {
           self.thumbnails[identifier] = self.thumbnailDataUrl(value);
           callback();
@@ -316,7 +360,7 @@
             'onSuccess': function(file) {
               if (file !== undefined) {
                 downloadFileBase64(file, function(data) {
-                  self.thumbnailStore.setProperty(App.Controller.Domain.THUMBNAILS, identifier, data);
+                  self.store.setProperty(App.Controller.Domain.THUMBNAILS, identifier, data);
                   self.thumbnails[identifier] = self.thumbnailDataUrl(data);
                   self.notifyChange();
                 });
@@ -370,7 +414,7 @@
       for (var key in deletedIdentifiers) {
         if (deletedIdentifiers.hasOwnProperty(key)) {
           localStorage.removeItem(key);
-          self.thumbnailStore.deleteProperty(key);
+          self.store.deleteProperty(key);
         }
       }
 

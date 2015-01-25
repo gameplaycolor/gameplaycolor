@@ -71,7 +71,7 @@
       };
 
       self.delegate = {
-        'didSelectItemForRow': function(index) {}
+        'didSelectItemForRow': function(index, element) {}
       };
 
       self.touchListener = new App.TouchListener(self.identifier, self);
@@ -108,8 +108,7 @@
       self.content.html("");
       for (var i=0; i<self.dataSource.count(); i++) {
         var title = self.dataSource.titleForIndex(i);
-        var offline = self.dataSource.availableOffline(i);
-        self.add(i, title, offline);
+        self.add(i, title);
       }
 
       self.updatePageControl();
@@ -173,7 +172,7 @@
       }
     },
     
-    add: function(index, title, offline) {
+    add: function(index, title) {
       var self = this;
       
       var row = self.count % self.rows;
@@ -186,40 +185,40 @@
       var x = self.margin().LEFT + ((self.margin().LEFT + self.margin().RIGHT) * page) + ((App.Grid.Cell.WIDTH + App.Grid.Cell.MARGIN) * col);
       var y = self.margin().TOP + ((App.Grid.Cell.HEIGHT + App.Grid.Cell.MARGIN) * row);
 
-      var dimensions = {
+      var element = self.dataSource.elementForIndex(index);
+
+      var details = {
         'x1': x,
         'y1': y,
         'x2': x + App.Grid.Cell.WIDTH,
-        'y2': y + App.Grid.Cell.HEIGHT
+        'y2': y + App.Grid.Cell.HEIGHT,
+        'element': element
       };
       
-      var game = $('<div class="game">');
-      game.css('top', y);
-      game.css('left', x);
-      game.css('height', App.Grid.Cell.HEIGHT);
-      game.css('width', App.Grid.Cell.WIDTH);
+      element.css('top', y);
+      element.css('left', x);
+      element.css('height', App.Grid.Cell.HEIGHT);
+      element.css('width', App.Grid.Cell.WIDTH);
 
-      self.items.push(dimensions);
+      self.items.push(details);
 
       var gameTitle = $('<div class="game-title">');
       gameTitle.html(title);
-      game.append(gameTitle);
+      element.append(gameTitle);
 
-      // self.scheduleUpdateThumbnail(game, index);
       self.dataSource.thumbnail(index, function(thumbnail) {
         if (thumbnail !== undefined) {
           var img = $('<img class="game-thumbnail">');
           img.attr("src", thumbnail);
-          game.append(img);
+          element.append(img);
         }
       });
 
       // Grey out ROMs which are only available online.
-      if (window.navigator.onLine === false && offline === false) {
-        game.css("opacity", "0.5");
+      if (window.navigator.onLine === false) {
       }
       
-      self.content.append(game);
+      self.content.append(element);
       self.count += 1;
       
     },
@@ -253,6 +252,12 @@
       }
 
       return undefined;
+    },
+
+    elementForIndex: function(index) {
+      var self = this;
+      var details = self.items[index];
+      return details.element;
     },
 
     minPage: function() {
@@ -405,7 +410,8 @@
 
             var index = self.itemForPosition(position);
             if (index !== undefined) {
-              self.delegate.didSelectItemForRow(index);
+              var element = self.elementForIndex(index);
+              self.delegate.didSelectItemForRow(index, element);
             }
 
           }

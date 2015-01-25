@@ -263,7 +263,13 @@ body
   position: absolute;
   text-align: center;
   background-position: center;
-  background-repeat: no-repeat; 
+  background-repeat: no-repeat;
+  opacity: 0.2;
+  }
+
+.downloaded
+  {
+  opacity: 1.0;
   }
 
 .game-title

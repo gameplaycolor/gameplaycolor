@@ -125,7 +125,7 @@ function base64ToArray(b64encoded) {
       window.app.store.setProperty(App.Controller.Domain.SETTINGS, App.Store.Property.GAME, identifier);
 
       // Fetch the file.
-      var file = self.library.fetch(identifier, function(data) {
+      var file = self.library.fetch(identifier).then(function(data) {
         self.insertCartridge(identifier, data);
         self.setState(App.GameBoy.State.RUNNING);
       });
