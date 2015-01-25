@@ -69,30 +69,26 @@
 
     <div id="screen-console" class="screen flexbox horizontal">
 
-      <div class="flexbox vertical grow1">
+      <div id="element-dpad">
         <div id="control-dpad" class="sprite-pad-default"></div>
       </div>
 
-      <div class="flexbox vertical grow1">
-
-        <div class="flexbox vertical grow1">
-          <div id="display">
-            <canvas id="LCD" class="display" width="160" height="144"></canvas>
-            <div id="LCD-idle" class="display"></div>
-            <div id="LCD-loading" class="display" style="display: none"></div>
-          </div>
+      <div id="element-screen">
+        <div id="display">
+          <canvas id="LCD" class="display" width="160" height="144"></canvas>
+          <div id="LCD-idle" class="display"></div>
+          <div id="LCD-loading" class="display" style="display: none"></div>
         </div>
-
-        <div class="flexbox vertical grow1">
-          <div id="group-options">
-            <div id="control-select" class="button-option"></div>
-            <div id="control-start" class="button-option"></div>
-          </div>
-        </div>
-
       </div>
 
-      <div class="flexbox vertical grow1">
+      <div id="element-options">
+        <div id="group-options">
+          <div id="control-select" class="button-option"></div>
+          <div id="control-start" class="button-option"></div>
+        </div>
+      </div>
+
+      <div id="element-buttons">
         <div id="group-buttons">
           <div id="control-a" class="button"></div>
           <div id="control-b" class="button"></div>

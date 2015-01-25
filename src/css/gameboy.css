@@ -102,26 +102,35 @@ body
   right: 7px;
   }
 
-.flexbox {
-  display: -webkit-flex;
-  -webkit-justify-content: center;
-}
+#element-dpad
+  {
+  position: absolute;
+  left: 10px;
+  bottom: 120px;
+  }
 
-.horizontal {
-  -webkit-flex-direction: row;
-}
+#element-buttons
+  {
+  position: absolute;
+  right: 10px;
+  bottom: 120px;
+  }
 
-.vertical {
-  -webkit-flex-direction: column;
-}
+#element-options
+  {
+  position: absolute;
+  width: 100%;
+  bottom: 10px;
+  left: 0;
+  }
 
-.grow1 {
-  -webkit-flex-grow: 1;
-}
-
-.grow2 {
-  -webkit-flex-grow: 2;
-}
+#element-screen
+  {
+  position: absolute;
+  width: 100%;
+  top: 20px;
+  left: 0;
+  }
 
 #control-dpad
   {
@@ -280,6 +289,8 @@ body
   position: absolute;
   top: 0;
   left: 0;
+  box-shadow: 0 0 15px;
+  border: 1px solid black;
   }
     
 #screen-games
@@ -607,3 +618,12 @@ body
 
 }
 
+@media only screen and (min-width: 1024px) {
+
+  #display
+    {
+    width: 640px;
+    height: 576px;
+    }
+
+}
