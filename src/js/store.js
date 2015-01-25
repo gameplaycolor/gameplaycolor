@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
- 
+
 (function($) {
 
   App.Store = function(name) {
@@ -33,6 +33,8 @@
       var self = this;
       self.name = name;
       self.database = undefined;
+      self.debug = false;
+      self.logging = new App.Logging(App.Logging.Level.WARNING);
       
       try {
         if (!window.openDatabase) {
@@ -43,10 +45,9 @@
         }
       } catch(e) {
         if (e == 2) {
-          // Version number mismatch.
-          console.log("Invalid database version.");
+          self.logging.error("Invalid database version.");
         } else {
-          console.log("Unknown error " + e + ".");
+          self.logging.error("Unknown error " + e + ".");
         }
       }
 
@@ -55,7 +56,7 @@
     transaction: function(callback, description) {
       var self = this;
       self.database.transaction(callback, function(error) {
-        console.log(description + ": Failed to access storage named '" + self.name + "' with error  '" + error.message + "' (" + error.code + ")");
+        self.logging.error(description + ": Failed to access storage named '" + self.name + "' with error  '" + error.message + "' (" + error.code + ")");
       });
     },
     
@@ -89,16 +90,15 @@
           [domain, key],
           function(transaction, results) {
             if (results.rows.length > 0) {
-              console.log("Found property '" + key + "' for domain '" + domain + "' with length " + results.rows.item(0).value.length);
-              
+              self.logging.debug("Found property '" + key + "' for domain '" + domain + "' with length " + results.rows.item(0).value.length);
               callback(results.rows.item(0).value);
             } else {
-              console.log("Unable to find property '" + key + "' for domain '" + domain + "'");
+              self.logging.error("Unable to find property '" + key + "' for domain '" + domain + "'");
               callback(undefined);
             }
           },
           function(transaction, error) {
-            console.log("Reading property '" + key + "': Failed with error '" + error.message + "'");
+            self.logging.error("Reading property '" + key + "': Failed with error '" + error.message + "'");
             callback(undefined);
           }
         );
@@ -130,7 +130,7 @@
             callback(properties);
           },
           function(error) {
-            console.log("Reading properties for domain '" + domain + "': Failed with error '" + error.message + "'");
+            self.logging.error("Reading properties for domain '" + domain + "': Failed with error '" + error.message + "'");
             callback({});
           }
         );
