@@ -7,6 +7,8 @@ if [[ ! -f "$configuration" ]]; then
     exit 1
 fi
 
+./build.sh
+
 remote=$( cat "$configuration" | python -c "import json; import sys; print json.load(sys.stdin)['remote']" )
 
 echo "Uploading to '$remote'..."
