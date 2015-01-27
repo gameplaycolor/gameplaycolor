@@ -126,6 +126,7 @@
     observeOrientationChanges: function() {
       var self = this;
       $(window).resize(function() {
+        console.log("Orientation change");
         self.updateOrientation(true);
       });
 

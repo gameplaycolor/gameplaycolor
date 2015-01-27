@@ -155,7 +155,6 @@
       var game = $('<div class="game">');
       var identifier = self.identifierForIndex(index);
       self.store.hasProperty(App.Controller.Domain.GAMES, identifier).then(function(result) {
-        console.log(result);
         if (result) {
           game.addClass('downloaded');
         }

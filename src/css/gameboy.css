@@ -102,36 +102,6 @@ body
   right: 7px;
   }
 
-#element-dpad
-  {
-  position: absolute;
-  left: 10px;
-  bottom: 120px;
-  }
-
-#element-buttons
-  {
-  position: absolute;
-  right: 10px;
-  bottom: 120px;
-  }
-
-#element-options
-  {
-  position: absolute;
-  width: 100%;
-  bottom: 10px;
-  left: 0;
-  }
-
-#element-screen
-  {
-  position: absolute;
-  width: 100%;
-  top: 20px;
-  left: 0;
-  }
-
 #control-dpad
   {
   width: 128px;
@@ -175,9 +145,11 @@ body
   
 #screen-console
   {
+  transition: top 0.3s ease-in-out;
   background-color: #f6f6f6;
   width: 100%;
   height: 100%;
+  top: 0;
   }
 
 #title-bar
@@ -185,9 +157,9 @@ body
   background-color: #f6f6f6;
   position: absolute;
   left: 0;
-  bottom: 0;
+  bottom: -44px;
   width: 100%;
-  height: 42px;
+  height: 44px;
   }
 
 #title-bar-label
@@ -373,12 +345,12 @@ body
   color: white;
   text-shadow: 0 1px rgba(0, 0, 0, 0.3);
   background-color: #357AE8;
-  background-image: -webkit-gradient(linear,left top,left bottom,from(#4d90fe  ),to(#357ae8  ));
-  background-image: -webkit-linear-gradient(top,#4d90fe  ,#357ae8  );
-  background-image: -moz-linear-gradient(top,#4d90fe  ,#357ae8  );
-  background-image: -ms-linear-gradient(top,#4d90fe  ,#357ae8  );
-  background-image: -o-linear-gradient(top,#4d90fe  ,#357ae8  );
-  background-image: linear-gradient(top,#4d90fe  ,#357ae8  );
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#4d90fe), to(#357ae8));
+  background-image: -webkit-linear-gradient(top,#4d90fe ,#357ae8 );
+  background-image: -moz-linear-gradient(top,#4d90fe ,#357ae8 );
+  background-image: -ms-linear-gradient(top,#4d90fe ,#357ae8 );
+  background-image: -o-linear-gradient(top,#4d90fe ,#357ae8 );
+  background-image: linear-gradient(top,#4d90fe ,#357ae8 );
   }
 
 .screen
@@ -490,140 +462,147 @@ body
   font-size: 11px;
   }
 
-@media only screen and (-webkit-device-pixel-ratio:2) {
+.icon { background-image: url(../images/showcase.png); }
 
-  .icon { background-image: url(../images/showcase.png); }
+#LCD-loading { background-image: url(../images/loading.png); }
+#LCD-idle { background-image: url(../images/idle.png); }
 
-  #LCD-loading { background-image: url(../images/loading.png); }
-  #LCD-idle { background-image: url(../images/idle.png); }
+.button { background-image: url(../images/button.png); }
+.button.pressed { background-image: url(../images/button_pressed.png); }
 
-  .button { background-image: url(../images/button.png); }
-  .button.pressed { background-image: url(../images/button_pressed.png); }
+#control-dpad.sprite-pad-default   { background-image: url(../images/pad.png); }
+#control-dpad.sprite-pad-up        { background-image: url(../images/pad.png); }
+#control-dpad.sprite-pad-upright   { background-image: url(../images/pad.png); }
+#control-dpad.sprite-pad-right     { background-image: url(../images/pad.png); }
+#control-dpad.sprite-pad-downright { background-image: url(../images/pad.png); }
+#control-dpad.sprite-pad-down      { background-image: url(../images/pad.png); }
+#control-dpad.sprite-pad-downleft  { background-image: url(../images/pad.png); }
+#control-dpad.sprite-pad-left      { background-image: url(../images/pad.png); }
+#control-dpad.sprite-pad-upleft    { background-image: url(../images/pad.png); }
 
-  #control-dpad.sprite-pad-default   { background-image: url(../images/pad.png); }
-  #control-dpad.sprite-pad-up        { background-image: url(../images/pad.png); }
-  #control-dpad.sprite-pad-upright   { background-image: url(../images/pad.png); }
-  #control-dpad.sprite-pad-right     { background-image: url(../images/pad.png); }
-  #control-dpad.sprite-pad-downright { background-image: url(../images/pad.png); }
-  #control-dpad.sprite-pad-down      { background-image: url(../images/pad.png); }
-  #control-dpad.sprite-pad-downleft  { background-image: url(../images/pad.png); }
-  #control-dpad.sprite-pad-left      { background-image: url(../images/pad.png); }
-  #control-dpad.sprite-pad-upleft    { background-image: url(../images/pad.png); }
+#group-options { background-image: url(../images/labels_options.png); }
+.button-option { background-image: url(../images/option.png); }
+.button-option.pressed { background-image: url(../images/option_pressed.png); }
 
-  #group-options { background-image: url(../images/labels_options.png); }
-  .button-option { background-image: url(../images/option.png); }
-  .button-option.pressed { background-image: url(../images/option_pressed.png); }
 
-} 
+#element-dpad
+  {
+  position: absolute;
+  left: 20px;
+  bottom: 120px;
+  }
 
-@media only screen and (max-width:320px) {
+#element-buttons
+  {
+  position: absolute;
+  right: 20px;
+  bottom: 120px;
+  }
 
-  #display
-    {
+#element-options
+  {
+  position: absolute;
+  width: 100%;
+  bottom: 10px;
+  left: 0;
+  }
+
+#element-screen
+  {
+  position: absolute;
+  width: 100%;
+  top: 30px;
+  left: 0;
+  }
+
+#screen-console.open {
+  transition: top 0.3s ease-in-out;
+}
+
+/* iPhone 5: Portrait */
+@media only screen and (min-width: 320px) {
+
+  #element-screen {
     top: 0;
-    left: 0;    
-    }
-      
-  .screen
-    {
-    width: 320px;
-    height: 548px;
+  }
+
+  #element-dpad {
+    left: 10px;
     }
 
-  #group-options
-    {
-    top: 462px;
-    left: 98px;
+  #element-buttons {
+    right: 10px;
     }
 
-  #group-buttons
-    {
-    top: 317px;
-    right: 12px;
+  #screen-console.open {
+    top: -548px;
+  }
+
+}
+
+/* iPhone 6: Portrait */
+@media only screen and (min-width: 375px) {
+
+  #element-screen {
+    top: 24px;
+  }
+
+  #element-dpad {
+    left: 20px;
     }
 
-  #control-dpad
-    {
-    top: 304px;
-    left: 13px;
+  #element-buttons {
+    right: 20px;
     }
 
-  #control-screen
+  #element-options
     {
+    bottom: 20px;
+    }
+
+  #screen-console.open {
+    top: -647px;
+  }
+
+}
+
+/* iPhone 5: Landscape */
+@media only screen and (min-width: 568px) {
+
+  #element-screen {
     top: 0;
-    left: 0;
-    }
+  }
 
-  #debug
-    {
-    width: 320px;
-    }
+  #screen-console.open {
+    top: -320px;
+  }
 
-  .title
+  #element-options
     {
-    height: 44px;
-    width: 320px;
-    }
-
-  #control-games
-    {
-    right: 8px;
-    top: 498px;
-    }
-
-  #title-bar
-    {
-    left: 0;
-    top: 504px;
-    width: 320px;
-    height: 57px;
-    }
-        
-  .content
-    {
-    top: 44px;
-    left: 0px;
-    height: 504px;
-    width: 320px;
-    }
-    
-  #list-games-content
-    {
-    height: 420px;
-    width: 2000px;
-    }
-
-  #list-games-page-control
-    {
-    width: 320px;
-    }
-
-  #screen-authorize-panel
-    {
-    top: 30px;
-    left: 30px;
-    width: 220px;
-    height: 390px;
-    }
-
-  .placeholder
-    {
-    padding: 160px 40px;
-    }
-
-  #copyright-games
-    {
-    width: 320px;
-    }
-
-  #update-button
-    {
-    left: 103px;
-    bottom: 6px;
+    bottom: 10px;
     }
 
 }
 
+/* iPhone 6: Landscape */
+@media only screen and (min-width: 667px) {
+
+  #element-screen {
+    top: 14px;
+  }
+
+  #screen-console.open {
+    top: -375px;
+  }
+
+  #element-options
+    {
+    bottom: 10px;
+    }
+
+}
+
+/* iPad: Landscape */
 @media only screen and (min-width: 1024px) {
 
   #display

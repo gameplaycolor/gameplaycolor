@@ -56,7 +56,6 @@
         self.store = store;
         self.state = App.Console.State.VISIBLE;
         self.element = $('#screen-console');
-        self.titleBar = $('#title-bar');
         self.displayIdle = $('#LCD-idle');
         self.displayLoading = $('#LCD-loading');
 
@@ -231,21 +230,9 @@
         if (self.state != App.Console.State.HIDDEN) {
         
           self.event('willHide');
-        
-          // Determine which offset to animate to.
-          var top = App.Console.Dimensions.HIDE_TOP_PORTRAIT;
-          if (self.device.orientation == App.Console.Orientation.LANDSCAPE) {
-            top = App.Console.Dimensions.TITLEBAR_HEIGHT - $(window).height();
-          }
-
-          
+          self.element.addClass("open");
           self.state = App.Console.State.HIDDEN;
-          self.element.animate({
-            'top': top
-          }, 300, function() {
-            self.event('didHide');
-          });
-          self.titleBar.fadeIn();
+          self.event('didHide');
           
         }
         
@@ -257,22 +244,18 @@
         if (self.state != App.Console.State.VISIBLE) {
 
           window.tracker.track('console');
-        
           self.event('willShow');
-        
           self.state = App.Console.State.VISIBLE;
-          self.element.animate({
-            'top': App.Console.Dimensions.SHOW_TOP
-          }, 300, function() {
-            self.event('didShow');
-          });
-          self.titleBar.fadeOut();
+          self.element.removeClass("open");
+          self.event('didShow');
+
         }
       },
       
       // Re-layout the console depending on its state.
       updateLayout: function() {
         var self = this;
+        console.log("Updating layout");
         // The layout only needs to be adjusted if we're currently in
         // the hidden state.
         if (self.state == App.Console.State.HIDDEN) {
