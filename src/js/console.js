@@ -61,12 +61,6 @@
 
         window.tracker.track('console');
 
-        // Update the initial orientation and watch for changes.
-        self.updateLayout();
-        self.device.onOrientationChange(function(orientation) {
-          self.updateLayout();
-        });
-
         self.gameBoy.onStateChange(function(state) {
           if (state === App.GameBoy.State.IDLE) {
             self.displayIdle.show();
@@ -250,23 +244,8 @@
           self.event('didShow');
 
         }
-      },
+      }
       
-      // Re-layout the console depending on its state.
-      updateLayout: function() {
-        var self = this;
-        console.log("Updating layout");
-        // The layout only needs to be adjusted if we're currently in
-        // the hidden state.
-        if (self.state == App.Console.State.HIDDEN) {
-          if (self.device.orientation == App.Console.Orientation.PORTRAIT) {
-            self.element.css('top', App.Console.Dimensions.HIDE_TOP_PORTRAIT);
-          } else {
-            self.element.css('top', App.Console.Dimensions.HIDE_TOP_LANDSCAPE);
-          }
-        }
-      },
-
   });
 
 })(jQuery);

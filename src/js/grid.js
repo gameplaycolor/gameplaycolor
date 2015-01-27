@@ -34,7 +34,7 @@
   App.Grid.Margin = {
     Portrait: {
       TOP: 20,
-      LEFT: 15,
+      LEFT: 10,
       RIGHT: 15
     },
     Landscape: {
@@ -171,18 +171,32 @@
         }
       }
     },
+
+    containerWidth: function() {
+      var self = this;
+      return self.element.width();
+    },
+
+    containerHeight: function() {
+      var self = this;
+      return self.element.height();
+    },
     
     add: function(index, title) {
       var self = this;
       
-      var row = self.count % self.rows;
-      var col = Math.floor(self.count / self.rows);
+      var rows = Math.floor(self.containerWidth() / App.Grid.Cell.WIDTH);
+      var columns = Math.floor(self.containerHeight() / App.Grid.Cell.HEIGHT);
 
-      var itemsPerPage = self.width * self.rows;
+      var itemsPerPage = rows * columns;
 
       var page = Math.floor(self.count / itemsPerPage);
+      var indexOnPage = self.count % itemsPerPage;
 
-      var x = self.margin().LEFT + ((self.margin().LEFT + self.margin().RIGHT) * page) + ((App.Grid.Cell.WIDTH + App.Grid.Cell.MARGIN) * col);
+      var row = Math.floor(indexOnPage / rows);
+      var col = indexOnPage % rows;
+
+      var x = (self.containerWidth() * page) + self.margin().LEFT + ((App.Grid.Cell.WIDTH + App.Grid.Cell.MARGIN) * col);
       var y = self.margin().TOP + ((App.Grid.Cell.HEIGHT + App.Grid.Cell.MARGIN) * row);
 
       var element = self.dataSource.elementForIndex(index);
@@ -227,7 +241,7 @@
     contentPosition: function(position) {
       var self = this;
       var contentPosition = {
-        x: position.x + (self.pageWidth * self.page),
+        x: position.x + (self.containerWidth() * self.page),
         y: position.y
       };
       return contentPosition;
@@ -238,7 +252,7 @@
     itemForPosition: function(position) {
       var self = this;
 
-      var x = position.x + (self.page * self.pageWidth);
+      var x = position.x + (self.page * self.containerWidth());
       var y = position.y;
 
       for (var i = 0; i < self.items.length; i++) {
@@ -275,7 +289,7 @@
     animate: function(page) {
       var self = this;
       self.content.animate({
-        'left': -1 * (page * self.pageWidth)
+        'left': -1 * (page * self.containerWidth())
       }, 300, function() {
         self.updatePageItems();
       });

@@ -101,9 +101,10 @@
       var self = this;
 
       var width = $(window).width();
+      var height = $(window).height();
 
       var orientation = self.orientation;
-      if (width > App.Device.Dimensions.DEVICE_WIDTH) {
+      if (width > height) {
         orientation = App.Device.Orientation.LANDSCAPE;
       } else {
         orientation = App.Device.Orientation.PORTRAIT;
