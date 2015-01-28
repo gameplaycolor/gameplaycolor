@@ -23,15 +23,21 @@
   };
   
   App.Grid.Cell = {
-    WIDTH:  140,
-    HEIGHT: 140,
-    MARGIN: 10
+    WIDTH:  128,
+    HEIGHT: 128,
+    MARGIN: 12
   };
 
   App.Grid.MOVE_THRESHOLD = 10;
   App.Grid.SCROLL_BIAS = 40;
 
   App.Grid.Margin = {
+
+    TOP: 44,
+    LEFT: 10,
+    BOTTOM: 20,
+    RIGHT: 15,
+
     Portrait: {
       TOP: 20,
       LEFT: 10,
@@ -185,19 +191,21 @@
     add: function(index, title) {
       var self = this;
       
-      var rows = Math.floor(self.containerWidth() / App.Grid.Cell.WIDTH);
-      var columns = Math.floor(self.containerHeight() / App.Grid.Cell.HEIGHT);
+      var columns = Math.floor((self.containerWidth() - App.Grid.Margin.LEFT - App.Grid.Margin.RIGHT) / (App.Grid.Cell.WIDTH + App.Grid.Cell.MARGIN));
+      var rows = Math.floor((self.containerHeight() - App.Grid.Margin.TOP - App.Grid.Margin.BOTTOM) / (App.Grid.Cell.HEIGHT + App.Grid.Cell.MARGIN));
 
       var itemsPerPage = rows * columns;
 
       var page = Math.floor(self.count / itemsPerPage);
       var indexOnPage = self.count % itemsPerPage;
 
-      var row = Math.floor(indexOnPage / rows);
-      var col = indexOnPage % rows;
+      var row = Math.floor(indexOnPage / columns);
+      var col = indexOnPage % columns;
 
-      var x = (self.containerWidth() * page) + self.margin().LEFT + ((App.Grid.Cell.WIDTH + App.Grid.Cell.MARGIN) * col);
-      var y = self.margin().TOP + ((App.Grid.Cell.HEIGHT + App.Grid.Cell.MARGIN) * row);
+      var offsetLeft = Math.floor((self.containerWidth() - (((App.Grid.Cell.MARGIN + App.Grid.Cell.WIDTH) * columns) - App.Grid.Cell.MARGIN)) / 2);
+
+      var x = (self.containerWidth() * page) + offsetLeft + ((App.Grid.Cell.WIDTH + App.Grid.Cell.MARGIN) * col);
+      var y = App.Grid.Margin.TOP + ((App.Grid.Cell.HEIGHT + App.Grid.Cell.MARGIN) * row);
 
       var element = self.dataSource.elementForIndex(index);
 
