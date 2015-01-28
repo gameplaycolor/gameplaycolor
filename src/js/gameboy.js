@@ -116,6 +116,12 @@ function base64ToArray(b64encoded) {
       GameBoyKeyUp(keycode);
     },
 
+    clear: function() {
+      var self = this;
+      clearLastEmulation();
+      self.setState(App.GameBoy.State.LOADING);
+    },
+
     load: function(identifier) {
       var self = this;
 
@@ -126,16 +132,17 @@ function base64ToArray(b64encoded) {
 
       // Fetch the file.
       var file = self.library.fetch(identifier).then(function(data) {
-        self.insertCartridge(identifier, data);
-        self.setState(App.GameBoy.State.RUNNING);
+        self.insertCartridge(identifier, data, function() {
+          self.setState(App.GameBoy.State.RUNNING);
+        });
       });
 
     },
 
-    insertCartridge: function(identifier, data) {
+    insertCartridge: function(identifier, data, callback) {
       var self = this;
       start(identifier, document.getElementById('LCD'), data);
-      self.setState(App.GameBoy.State.RUNNING);
+      setTimeout(callback, 100);
     }
 
   });

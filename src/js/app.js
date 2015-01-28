@@ -40,8 +40,11 @@
       self.device = device;
       self.store = new App.Store('save-state');
       self.library = new App.Library(self.store, function(identifier) {
+        self.gameBoy.clear();
         self.console.show();
-        self.gameBoy.load(identifier);
+        setTimeout(function() {
+          self.gameBoy.load(identifier);
+        }, 400);
       });
       self.gameBoy = new App.GameBoy(self.store, self.library);
 
