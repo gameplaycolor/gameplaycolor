@@ -25,7 +25,7 @@
   App.Grid.Cell = {
     WIDTH:  128,
     HEIGHT: 128,
-    MARGIN: 12
+    MARGIN: 30
   };
 
   App.Grid.MOVE_THRESHOLD = 10;
@@ -33,21 +33,11 @@
 
   App.Grid.Margin = {
 
-    TOP: 44,
+    TOP: 84,
     LEFT: 10,
     BOTTOM: 20,
     RIGHT: 15,
 
-    Portrait: {
-      TOP: 20,
-      LEFT: 10,
-      RIGHT: 15
-    },
-    Landscape: {
-      TOP: 40,
-      LEFT: 64,
-      RIGHT: 64
-    }
   };
 
   jQuery.extend(App.Grid.prototype, {
@@ -65,9 +55,9 @@
 
       self.count = 0;
       self.rows = 0;
-      self.width = 0;
-      self.pageWidth = 0;
+      self.width = 1000;
       self.page = 0;
+      self.pageCount = 0;
 
       self.thumbnailQueue = [];
 
@@ -89,21 +79,10 @@
       self.gestureRecognizer = new App.GestureRecognizer();
       self.touchListener.addRecognizer(self.gestureRecognizer);
       
-      self.updateLayout();
       $(window).resize(function() {
-        self.updateLayout();
+        self.reloadData();
       });
       
-    },
-
-    // Return the margin for the current orientation.
-    margin: function() {
-      var self = this;
-      if (self.device.orientation === App.Device.Orientation.PORTRAIT) {
-        return App.Grid.Margin.Portrait;
-      } else {
-        return App.Grid.Margin.Landscape;
-      }
     },
     
     reloadData: function() {
@@ -112,62 +91,35 @@
       self.count = 0;
       self.items = [];
       self.content.html("");
+      self.pageControl.html("");
+      self.pageItems = [];
+      self.pageCount = 0;
+      self.page = 0;
+
+      self.content.offset({
+        'left': 0,
+        'top': 0,
+      });
+
       for (var i=0; i<self.dataSource.count(); i++) {
         var title = self.dataSource.titleForIndex(i);
         self.add(i, title);
       }
 
-      self.updatePageControl();
       self.updatePageItems();
     },
+
+    addPage: function() {
+      console.log("Adding page...");
+      var self = this;
+      self.pageCount++;
+      var item = $('<div class="page">');
+      self.pageControl.append(item);
+      self.pageItems.push(item);
+    },
     
-    updateLayout: function() {
-      var self = this;
-
-      var cellHeight = App.Grid.Cell.HEIGHT + App.Grid.Cell.MARGIN;
-      var cellWidth = App.Grid.Cell.WIDTH + App.Grid.Cell.MARGIN;
-
-      var controlWidth = self.element.width() + App.Grid.Cell.MARGIN;
-      var controlHeight = self.element.height() + App.Grid.Cell.MARGIN;
-      
-      var rows = Math.floor(controlHeight / cellHeight);
-      var width =  Math.floor(controlWidth / cellWidth);
-      // Relayout if required.
-      if ((rows != self.rows) || (width != self.width)) {
-        self.rows = rows;
-        self.width = width;
-        self.pageWidth = (self.width * (App.Grid.Cell.WIDTH + App.Grid.Cell.MARGIN)) + self.margin().LEFT + self.margin().RIGHT;
-        self.page = 0;
-        self.content.css('left', 0);
-        self.reloadData();
-      }
-      
-    },
-
-    updatePageControl: function() {
-      var self = this;
-      
-      self.pageControl.html("");
-      self.pageItems = [];
-
-      if (self.count === 0) {
-        return;
-      }
-
-      for (var i = self.minPage(); i < self.maxPage(); i++) {
-        var item = $('<div class="page">');
-        self.pageControl.append(item);
-        self.pageItems.push(item);
-      }
-    },
-
     updatePageItems: function() {
       var self = this;
-
-      if (self.count === 0) {
-        return;
-      }
-
       for (var i = 0; i < self.pageItems.length; i++) {
         var item = self.pageItems[i];
         if (i === self.page) {
@@ -198,6 +150,10 @@
 
       var page = Math.floor(self.count / itemsPerPage);
       var indexOnPage = self.count % itemsPerPage;
+
+      if (self.pageCount < page + 1) {
+        self.addPage();
+      }
 
       var row = Math.floor(indexOnPage / columns);
       var col = indexOnPage % columns;
@@ -245,16 +201,6 @@
       
     },
 
-    // Convert a position in container coordinates to content coordinates.
-    contentPosition: function(position) {
-      var self = this;
-      var contentPosition = {
-        x: position.x + (self.containerWidth() * self.page),
-        y: position.y
-      };
-      return contentPosition;
-    },
-
     // Determine with which item a touch position intersects.
     // undefined if the touch does not intersect an item.
     itemForPosition: function(position) {
@@ -289,10 +235,9 @@
 
     maxPage: function() {
       var self = this;
-      var max = Math.ceil(self.count / (self.rows * self.width));
-      return max;
+      return self.pageCount;
     },
-    
+
     // Animate transition to a given page.
     animate: function(page) {
       var self = this;
@@ -309,14 +254,6 @@
         self.page = page;
         self.animate(self.page);
       }
-    },
-
-    // Returns the distance between two points.
-    distance: function(a, b) {
-      var self = this;
-      var x = a.x - b.x;
-      var y = a.y - b.y;
-      return Math.sqrt(x*x + y*y);
     },
 
     // Returns the horizontal distance between two points.
@@ -395,7 +332,7 @@
             // Work out if we are moving forwards or backwards.
             var page = self.page;
             var distance = self.distanceX(self.touchStart, position);
-            if (Math.abs(distance) > ((self.pageWidth / 2) - App.Grid.SCROLL_BIAS)) {
+            if (Math.abs(distance) > ((self.containerWidth() / 2) - App.Grid.SCROLL_BIAS)) {
               if (distance > 0) {
                 page = page - 1;
               } else {
