@@ -26,13 +26,41 @@ body
   background-size: 320px 288px;
   }
 
+#moulding {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: -webkit-flex;
+  width: 100%;
+  height: 100%;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.16)));
+}
+
+#moulding-left {
+  -webkit-flex-grow: 1;
+  height: 100%;
+  background-image: -webkit-gradient(linear, left top, right top, from(rgba(255, 255, 255, 0)), to(rgba(255, 255, 255, 0.04)));
+}
+
+#moulding-center {
+  -webkit-flex-grow: 3;
+  height: 100%;
+}
+
+#moulding-right {
+  -webkit-flex-grow: 1;
+  height: 100%;
+  background-image: -webkit-gradient(linear, right top, left top, from(rgba(255, 255, 255, 0)), to(rgba(255, 255, 255, 0.04)));
+}
+
 #display-surround
   {
-  background-color: #222;
-  border-bottom: 1px solid #111;
+  background-color: #222222;
+  border-bottom: 2px solid #111;
   position: absolute;
   width: 100%;
   height: 338px;
+  box-shadow: 0px 2px 2px rgba(255, 255, 255, 0.08), inset 0px -2px 3px rgba(255, 255, 255, 0.03);
   }
 
 #LCD
@@ -56,55 +84,76 @@ body
   display: none;
   }
 
-.button
-  {
+.button {
   width: 58px;
   height: 58px;
   cursor: pointer;
   border-radius: 31px;
   background-color: #4a4a4a;
-
   display: block;
   background-color: #f7f7f7;
   background-image: -webkit-linear-gradient(top, #262626, #000000);
   color: #000000;
   text-shadow: #313131 0px 1px;
-
   position: relative;
   text-align: center;
   line-height: 58px;
   font-size: 30px;
-  box-shadow: 0px 3px 7px #1b1b1b, inset 0px 2px 3px #676767;
+  box-shadow: 0 3px 7px #1b1b1b, inset 0 2px 3px #676767;
   border: 2px solid black;
-  }
+  border-top: 1px solid black;
+}
 
-.button.pressed
-  {
-  }
+.button.pressed {
+  box-shadow: 0 1px 4px rgba(27, 27, 27, 0.72), inset 0 2px 3px rgba(103, 103, 103, 0.59);
+}
 
-.button-option
-  {
-  width: 42px;
-  height: 31px;
-  background-size: 42px 31px;
-  }
+.button-option-group {
+  display: inline-block;
+  -webkit-flex-grow: 1;
+}
+
+.button-option {
+  margin: 0 auto;
+  width: 40px;
+  height: 16px;
+  background: black;
+  border-radius: 45%;
+  box-shadow: 0 -1px 3px #1b1b1b, inset 0 4px 8px rgba(103, 103, 103, 0.51);
+  border: 2px solid black;
+  border-top: 1px solid black;
+}
+
+.button-option.pressed {
+  box-shadow: 0 -1px 3px #1b1b1b, inset 0 4px 8px rgba(103, 103, 103, 0.39);
+}
+
+.button-label {
+  opacity: 0.3;
+  text-shadow: 0 -1px #777;
+  font-size: 14px;
+  margin-top: 8px;
+  text-transform: uppercase;
+  margin: 4px auto;
+  text-align: center;
+}
 
 #group-buttons {
   position: relative;
   height: 115px;
-  width: 132px;
+  width: 142px;
   background-size: 132px 115px;
   margin: auto;
-  }
+}
 
-#group-options
-  {
+#group-options {
   position: relative;
-  width: 125px;
+  width: 160px;
   height: 50px;
   background-size: 125px 50px;
   margin: auto;
-  }
+  display: -webkit-flex;
+}
 
 #control-a
   {
@@ -118,20 +167,6 @@ body
   position: absolute;
   bottom: 9px;
   left: 3px;
-  }
-
-#control-select
-  {
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  }
-
-#control-start
-  {
-  position: absolute;
-  top: 5px;
-  right: 7px;
   }
 
 #control-dpad
@@ -178,18 +213,26 @@ body
 #screen-console
   {
   transition: top 0.3s ease-in-out;
-  background-color: #f6f6f6;
-  background-color: #27358B;
   width: 100%;
   height: 100%;
   top: 0;
   background-image: url('/images/noise.png');
   }
 
+.grape {
+  background-color: #27358B;
+}
+
+.cherry {
+  background-color: #D81E57;
+}
+
+.teal {
+  background-color: #007FA0;
+}
+
 #title-bar
   {
-  background-color: #f6f6f6;
-  background-color: #27358B;
   position: absolute;
   left: 0;
   bottom: -44px;
@@ -510,11 +553,6 @@ body
 #control-dpad.sprite-pad-downleft  { background-image: url(../images/pad.png); }
 #control-dpad.sprite-pad-left      { background-image: url(../images/pad.png); }
 #control-dpad.sprite-pad-upleft    { background-image: url(../images/pad.png); }
-
-#group-options { background-image: url(../images/labels_options.png); }
-.button-option { background-image: url(../images/option.png); }
-.button-option.pressed { background-image: url(../images/option_pressed.png); }
-
 
 #element-branding
   {
