@@ -71,10 +71,14 @@
                                   "value BLOB NOT NULL" +
                                 ")");
       }, "Creating database tables");
+      self.transaction(function(transaction) {
+        transaction.executeSql("CREATE UNIQUE INDEX IF NOT EXISTS idx ON properties (domain, key)");
+      }, "Creating database index");
     },
     
     setProperty: function(domain, key, value) {
       var self = this;
+      self.logging.debug("Setting property '" + key + "' for domain '" + domain + "'");
       self.transaction(function(transaction) {
         transaction.executeSql(
           "INSERT OR REPLACE INTO properties (domain, key, value) VALUES (?, ?, ?)", [domain, key, value]
@@ -84,6 +88,7 @@
     
     property: function(domain, key, callback) {
       var self = this;
+      self.logging.debug("Reading property '" + key + "' for domain '" + domain + "'");
       self.transaction(function(transaction) {
         transaction.executeSql(
           "SELECT * FROM properties WHERE domain = ? AND key = ?",

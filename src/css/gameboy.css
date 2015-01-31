@@ -318,7 +318,6 @@ body
   
 .game
 {
-  transition: opacity 0.3s ease-in-out;
   position: absolute;
   text-align: center;
   opacity: 0.2;
@@ -326,7 +325,6 @@ body
 
 .downloaded
 {
-  transition: opacity 0.3s ease-in-out;
   opacity: 1.0;
 }
 

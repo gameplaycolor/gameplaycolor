@@ -81,18 +81,6 @@
       self.grid.reloadData();
 
     },
-
-    didSelectItemForRow: function(index) {
-      var self = this;
-
-      // Only attempt to load the ROM if it's available.
-      // TODO Replace this.
-      if (window.navigator.onLine || self.library.availableOffline(index)) {
-        window.tracker.track('load-rom');
-        var identifier = self.library.identifierForIndex(index);
-      }
-
-    },
     
     update: function() {
       var self = this;

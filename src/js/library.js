@@ -149,16 +149,6 @@
       return title.slice(0, title.lastIndexOf("."));
     },
 
-    availableOffline: function(index) {
-      var self = this;
-      var identifier = self.identifierForIndex(index);
-      var data = localStorage.getItem(identifier);
-      if (data !== null) {
-        return true;
-      }
-      return false;
-    },
-
     elementForIndex: function(index) {
       var self = this;
       var identifier = self.identifierForIndex(index);
