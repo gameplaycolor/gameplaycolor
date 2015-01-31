@@ -602,23 +602,25 @@ body
   }
 
 #element-options
-  {
+{
   position: absolute;
   width: 100%;
   bottom: 10px;
   left: 0;
-  }
+}
 
 #element-screen
-  {
+{
   position: absolute;
   width: 100%;
   top: 30px;
   left: 0;
-  }
+}
 
-#screen-console.open {
+#screen-console.open
+{
   transition: top 0.3s ease-in-out;
+  top: -100%;
 }
 
 /* iPhone 5: Portrait */
@@ -635,10 +637,6 @@ body
   #element-buttons {
     right: 10px;
     }
-
-  #screen-console.open {
-    top: -548px;
-  }
 
 }
 
@@ -662,10 +660,6 @@ body
     bottom: 20px;
     }
 
-  #screen-console.open {
-    top: -647px;
-  }
-
 }
 
 /* iPhone 5: Landscape */
@@ -673,10 +667,6 @@ body
 
   #element-screen {
     top: 0;
-  }
-
-  #screen-console.open {
-    top: -320px;
   }
 
   #element-options
@@ -691,10 +681,6 @@ body
 
   #element-screen {
     top: 14px;
-  }
-
-  #screen-console.open {
-    top: -375px;
   }
 
   #element-options
