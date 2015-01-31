@@ -1,22 +1,22 @@
 body
-  {
+{
   padding: 0;
   margin: 0;
   -webkit-user-select: none;
   background-color: #000;
   font: 15px Helvetica, sans-serif;
-  }
+}
 
 #display
-  {
+{
   position: relative;
   margin: auto;
   width: 320px;
   height: 288px;
-  }
+}
 
 .display
-  {
+{
   position: absolute;
   top: 0;
   left: 0;
@@ -24,9 +24,10 @@ body
   height: 288px;
   background-color: #EFFDE1;
   background-size: 320px 288px;
-  }
+}
 
-#moulding {
+#moulding
+{
   position: absolute;
   top: 0;
   left: 0;
@@ -36,25 +37,28 @@ body
   background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.16)));
 }
 
-#moulding-left {
+#moulding-left
+{
   -webkit-flex-grow: 1;
   height: 100%;
   background-image: -webkit-gradient(linear, left top, right top, from(rgba(255, 255, 255, 0)), to(rgba(255, 255, 255, 0.04)));
 }
 
-#moulding-center {
+#moulding-center
+{
   -webkit-flex-grow: 3;
   height: 100%;
 }
 
-#moulding-right {
+#moulding-right
+{
   -webkit-flex-grow: 1;
   height: 100%;
   background-image: -webkit-gradient(linear, right top, left top, from(rgba(255, 255, 255, 0)), to(rgba(255, 255, 255, 0.04)));
 }
 
 #display-surround
-  {
+{
   background-color: #222222;
   border-bottom: 2px solid #111;
   position: absolute;
@@ -62,30 +66,30 @@ body
   height: 338px;
   box-shadow: 0px 2px 2px rgba(255, 255, 255, 0.08), inset 0px -2px 3px rgba(255, 255, 255, 0.03);
   border-radius: 12px;
-  }
+}
 
 #LCD
-  {
+{
   image-rendering: -webkit-optimize-contrast;
-  }
+}
 
 #LCD-dropshadow
-  {
+{
   position: absolute;
   top: 0;
   left: 0;
   width: 320px;
   height: 288px;
-  /*box-shadow: 0 0 0 #000, inset 0px 1px 6px #222;*/
   box-shadow: 0 0.5px 0.5px #ffffff, inset 0px 3px 10px #222;
-  }
+}
 
 #STATUS
-  {
+{
   display: none;
-  }
+}
 
-.button {
+.button
+{
   width: 58px;
   height: 58px;
   cursor: pointer;
@@ -105,16 +109,19 @@ body
   border-top: 1px solid black;
 }
 
-.button.pressed {
+.button.pressed
+{
   box-shadow: 0 1px 4px rgba(27, 27, 27, 0.72), inset 0 2px 3px rgba(103, 103, 103, 0.59);
 }
 
-.button-option-group {
+.button-option-group
+{
   display: inline-block;
   -webkit-flex-grow: 1;
 }
 
-.button-option {
+.button-option
+{
   margin: 0 auto;
   width: 40px;
   height: 16px;
@@ -125,11 +132,13 @@ body
   border-top: 1px solid black;
 }
 
-.button-option.pressed {
+.button-option.pressed
+{
   box-shadow: 0 -1px 3px #1b1b1b, inset 0 4px 8px rgba(103, 103, 103, 0.39);
 }
 
-.button-label {
+.button-label
+{
   opacity: 0.3;
   text-shadow: 0 -1px #777;
   font-size: 14px;
@@ -139,7 +148,8 @@ body
   text-align: center;
 }
 
-#group-buttons {
+#group-buttons
+{
   position: relative;
   height: 115px;
   width: 142px;
@@ -147,7 +157,8 @@ body
   margin: auto;
 }
 
-#group-options {
+#group-options
+{
   position: relative;
   width: 160px;
   height: 50px;
@@ -157,29 +168,29 @@ body
 }
 
 #control-a
-  {
+{
   position: absolute;
   top: 5px;
   right: 3px;
-  }
+}
 
 #control-b
-  {
+{
   position: absolute;
   bottom: 9px;
   left: 3px;
-  }
+}
 
 #control-dpad
-  {
+{
   width: 128px;
   height: 128px;
   background-size: 128px 128px;
   margin: auto;
-  }
+}
 
 #button-done
-  {
+{
   position: absolute;
   top: 8px;
   right: 6px;
@@ -190,14 +201,14 @@ body
   cursor: pointer;
   font-size: 16px;
   padding-top: 6px;
-  }
+}
 
 .button-done.pressed
-  {
-  }
+{
+}
 
 #debug
-  {
+{
   height: 20px;
   width: 100px;
   position: absolute;
@@ -209,32 +220,35 @@ body
   padding: 20px 0;
   text-align: center;
   width: 568px;
-  }
+}
   
 #screen-console
-  {
+{
   transition: top 0.3s ease-in-out;
   width: 100%;
   height: 100%;
   top: 0;
   background-image: url('/images/noise.png');
   border-radius: 12px;
-  }
+}
 
-.grape {
+.grape 
+{
   background-color: #27358B;
 }
 
-.cherry {
+.cherry
+{
   background-color: #D81E57;
 }
 
-.teal {
+.teal
+{
   background-color: #007FA0;
 }
 
 #title-bar
-  {
+{
   position: absolute;
   left: 0;
   bottom: -44px;
@@ -242,47 +256,47 @@ body
   height: 44px;
   background-image: url('/images/noise.png');
   box-shadow: 0px 3px 5px;
-  }
+}
 
 #title-bar-label
-  {
+{
   padding: 0;
   margin: 0;
   text-align: center;
   padding-top: 11px;
   font-size: 20px;
-  }
+}
  
 #list-games
-  {
+{
   position: absolute;
   margin: 0;
   padding: 0;
   overflow: hidden;
   width: 100%;
   height: 100%;
-  }
+}
 
 .content
-  {
+{
   position: absolute;
   top: 0;
   left: 0;
   height: 100%;
   width: 100%;
-  }
+}
   
 #list-games-content
-  {
+{
   position: absolute;
   top: 0;
   left: 0;
   height: 120px;
   width: 2000px;
-  }
+}
 
 #list-games-page-control
-  {
+{
   position: absolute;
   bottom: 0;
   left: 0;
@@ -291,48 +305,40 @@ body
   display: -webkit-box;
   -webkit-box-orient: horizontal;
   -webkit-box-pack: center;
-  }
+}
 
 .page
-  {
+{
   width: 6px;
   height: 6px;
   background-color: white;
   border-radius: 50%;
   opacity: 0.5;
   margin: 5px;
-  }
+}
 
 .page.active
-  {
+{
   opacity: 1.000000;
-  }
+}
   
 .game
-  {
+{
   position: absolute;
   text-align: center;
-
-  /*
-  top: 200px;
-  left: 100px;
-  width: 140px;
-  height: 140px;
-  */
-
   border-radius: 2px;
   background-color: #969696;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.65), inset 0 1px rgba(255, 255, 255, 0.44);
-
   opacity: 0.2;
-  }
+}
 
 .downloaded
-  {
+{
   opacity: 1.0;
-  }
+}
 
-.game-title {
+.game-title
+{
   background-color: #bbb;
   width: 118px;
   height: 118px;
@@ -346,7 +352,8 @@ body
   display: none;
 }
 
-.game-thumbnail {
+.game-thumbnail
+{
   position: absolute;
   width: 100px;
   height: 90px;
@@ -358,43 +365,45 @@ body
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.55);
 }
     
-#screen-games {
+#screen-games
+{
   width: 100%;
   height: 100%;
   background-color: #333;
   border-radius: 12px;
 }
 
-#screen-empty {
+#screen-empty
+{
 }
 
 #screen-loading
-  {
+{
   width: 100%;
   height: 100%;
-  }
+}
 
 .placeholder
-  {
+{
   color: white;
   text-shadow: 0 1px #000;
   text-align: center;
   padding: 80px 40px;
   margin: auto;
-  }
+}
 
 #screen-authorize
-  {
-  }
+{
+}
 
 #screen-authorize h1
-  {
+{
   padding-top: 0;
   margin-top: 0;
-  }
+}
 
 #screen-authorize-panel
-  {
+{
   position: absolute;
   background-color: #fff;  
   top: 20px;
@@ -403,16 +412,16 @@ body
   height: 196px;
   padding: 10px;
   font-size: 14px;
-  }
+}
 
 .actions
-  {
+{
   text-align: center;
   margin: 30px;
-  }
+}
 
 .google-button-blue
-  {
+{
   border: 1px solid #3079ED;
   color: white;
   text-shadow: 0 1px rgba(0, 0, 0, 0.1);
@@ -424,10 +433,10 @@ body
   background-image: -o-linear-gradient(top,#4d90fe  ,#4787ed  );
   background-image: linear-gradient(top,#4d90fe  ,#4787ed  );
   padding: 8px;
-  }
+}
 
 .google-button-blue:hover
-  {
+{
   border: 1px solid #2F5BB7;
   color: white;
   text-shadow: 0 1px rgba(0, 0, 0, 0.3);
@@ -438,28 +447,28 @@ body
   background-image: -ms-linear-gradient(top,#4d90fe ,#357ae8 );
   background-image: -o-linear-gradient(top,#4d90fe ,#357ae8 );
   background-image: linear-gradient(top,#4d90fe ,#357ae8 );
-  }
+}
 
 .screen
-  {
+{
   position: absolute;
   top: 0;
   left: 0;
   width: 568px;
   height: 300px;
-  }
+}
 
 .title-button
-  {
+{
   background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#707070), to(#1C1C1C));
   border-radius: 4px;
   border: 1px solid black;
   height: 32px;
   width: 598px;
-  }
+}
 
 .title
-  {
+{
   background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#4A4A4A), to(#000000));
   position: absolute;
   top: 0;
@@ -467,74 +476,74 @@ body
   text-align: center;
   color: white;
   z-index: 20;
-  }
+}
 
 .title h3
-  {
+{
   margin-top: 11px;
-  }
+}
 
 #control-games-scroll
-  {
+{
   position: absolute;
   top: 44px;
   left: 0;
   height: 300px;
   width: 300px;
-  }
+}
 
 #control-games-list
-  {
+{
   position: absolute;
   top: 0;
   left: 0;
   width: 300px;
-  }
+}
 
 .table
-  {
+{
   list-style: none;
   padding: 0;
   margin: 0;
-  }
+}
 
 .table li
-  {
+{
   height: 88px;
   border-bottom: 1px solid #ccc;
-  }
+}
 
 #instructions
-  {
+{
   color: white;
   text-shadow: 0 1px #000;
   padding: 40px;
   text-align: center;
-  }
+}
 
 .icon
-  {
+{
   width: 150px;
   height: 150px;
   margin: auto;
   margin-bottom: 20px;
   background-size: 150px 150px;
-  }
+}
 
 #instructions a
-  {
+{
   color: #666;
   text-decoration: none;
-  }
+}
 
 .license
-  {
+{
   color: #666;
   text-decoration: none;
-  }
+}
 
 #update-button
-  {
+{
   position: absolute;
   background-color: rgb(64, 64, 189);
   color: white;
@@ -547,7 +556,7 @@ body
   bottom: 12px;
   text-transform: uppercase;
   font-size: 11px;
-  }
+}
 
 .icon { background-image: url(../images/showcase.png); }
 
@@ -565,15 +574,15 @@ body
 #control-dpad.sprite-pad-upleft    { background-image: url(../images/pad.png); }
 
 #element-branding
-  {
+{
   position: absolute;
   top:356px;
   width: 100%;
   text-align: center;
-  }
+}
 
 #branding
-  {
+{
   border: 4px solid black;
   display: inline-block;
   height: 26px;
@@ -585,21 +594,21 @@ body
   text-shadow: 0 1px #777;
   font-size: 18px;
   box-shadow: 0 1px #777, inset 0 1px #777;
-  }
+}
 
 #element-dpad
-  {
+{
   position: absolute;
   left: 20px;
   bottom: 120px;
-  }
+}
 
 #element-buttons
-  {
+{
   position: absolute;
   right: 20px;
   bottom: 120px;
-  }
+}
 
 #element-options
 {
@@ -624,69 +633,77 @@ body
 }
 
 /* iPhone 5: Portrait */
-@media only screen and (min-width: 320px) {
+@media only screen and (min-width: 320px){
 
-  #element-screen {
+  #element-screen
+  {
     top: 0;
   }
 
-  #element-dpad {
+  #element-dpad
+  {
     left: 10px;
-    }
+  }
 
-  #element-buttons {
+  #element-buttons 
+  {
     right: 10px;
-    }
+  }
 
 }
 
 /* iPhone 6: Portrait */
 @media only screen and (min-width: 375px) {
 
-  #element-screen {
+  #element-screen
+  {
     top: 24px;
   }
 
-  #element-dpad {
+  #element-dpad
+  {
     left: 20px;
-    }
+  }
 
-  #element-buttons {
+  #element-buttons
+  {
     right: 20px;
-    }
+  }
 
   #element-options
-    {
+  {
     bottom: 20px;
-    }
+  }
 
 }
 
 /* iPhone 5: Landscape */
 @media only screen and (min-width: 568px) {
 
-  #element-screen {
+  #element-screen
+  {
     top: 0;
   }
 
   #element-options
-    {
+  {
     bottom: 10px;
-    }
+  }
 
 }
 
 /* iPhone 6: Landscape */
 @media only screen and (min-width: 667px) {
 
-  #element-screen {
+  #element-screen
+  {
     top: 14px;
   }
 
   #element-options
-    {
+  {
     bottom: 10px;
-    }
+  }
 
 }
 
@@ -694,9 +711,9 @@ body
 @media only screen and (min-width: 1024px) {
 
   #display
-    {
+  {
     width: 640px;
     height: 576px;
-    }
+  }
 
 }
