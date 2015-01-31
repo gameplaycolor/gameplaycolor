@@ -44,6 +44,8 @@
     
   };
 
+  App.Console.SHAKE_THRESHOLD = 20;
+
   jQuery.extend(
     App.Console.prototype, {
       
@@ -58,6 +60,8 @@
         self.element = $('#screen-console');
         self.displayIdle = $('#LCD-idle');
         self.displayLoading = $('#LCD-loading');
+        self.colors = ["grape", "cherry", "teal", "lime"];
+        self.color = "teal";
 
         window.tracker.track('console');
 
@@ -152,6 +156,33 @@
         self.done = new App.Controls.Button('#button-done', { 'touchUp': function() {
           self.show();
         }});
+
+        // Color picker.
+        var shuffleColor = function() {
+          var index = Math.floor(Math.random() * (self.colors.length - 1));
+          var color = self.colors[index];
+          if (color == self.color) {
+            color = self.colors[index + 1];
+          }
+          self.element.addClass(color);
+          self.element.removeClass(self.color);
+          self.color = color;
+        };
+        self.picker = new App.Controls.Button('#element-color', { touchUp: shuffleColor });
+
+        window.addEventListener('devicemotion', function (e) {
+          var x = e.accelerationIncludingGravity.x;
+          var y = e.accelerationIncludingGravity.y;
+          var z = e.accelerationIncludingGravity.z;
+
+          var xy = Math.sqrt((x * x) + (y * y));
+          var xyz = Math.sqrt((xy * xy) + (z * z));
+
+          if (xyz > App.Console.SHAKE_THRESHOLD) {
+            shuffleColor();
+          }
+
+        }, false);
         
       },
       

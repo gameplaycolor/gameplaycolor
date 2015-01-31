@@ -201,8 +201,9 @@ body
   cursor: pointer;
   font-size: 16px;
   padding-right: 12px;
-  color: #777;
-  text-shadow: 0 1px 0 #000;
+  color: #000;
+  text-shadow: 0 1px 0 #ccc;
+  opacity: 0.6;
 }
 
 #button-done::after
@@ -255,6 +256,11 @@ body
   background-color: #007FA0;
 }
 
+.lime
+{
+  background-color: #A0D02E;
+}
+
 #list-games
 {
   position: absolute;
@@ -279,8 +285,8 @@ body
   position: absolute;
   top: 0;
   left: 0;
-  height: 120px;
   width: 2000px;
+  height: 100%;
 }
 
 #list-games-page-control
@@ -307,21 +313,20 @@ body
 
 .page.active
 {
-  opacity: 1.000000;
+  opacity: 1.0;
 }
   
 .game
 {
+  transition: opacity 0.3s ease-in-out;
   position: absolute;
   text-align: center;
-  border-radius: 2px;
-  background-color: #969696;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.65), inset 0 1px rgba(255, 255, 255, 0.44);
   opacity: 0.2;
 }
 
 .downloaded
 {
+  transition: opacity 0.3s ease-in-out;
   opacity: 1.0;
 }
 
@@ -343,14 +348,21 @@ body
 .game-thumbnail
 {
   position: absolute;
-  width: 100px;
-  height: 90px;
-  word-wrap: break-word;
+  top: 0;
+  left: 0;
+  width: 150px;
+  height: 150px;
+  border-radius: 1px;
+}
+
+.game-overlay
+{
   position: absolute;
-  top: 10px;
-  left: 12px;
-  border-radius: 4px;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.55);
+  top: 0;
+  left: 0;
+  width: 150px;
+  height: 150px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.74);
 }
     
 #screen-games
@@ -359,6 +371,8 @@ body
   height: 100%;
   background-color: #333;
   border-radius: 12px;
+  background-image: url(../images/wood-texture-3.jpg);
+  background-size: 233px 133px;
 }
 
 #screen-empty
@@ -612,6 +626,15 @@ body
   width: 100%;
   top: 30px;
   left: 0;
+}
+
+#element-color
+{
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  height: 44px;
+  width: 44px;
 }
 
 #screen-console.open

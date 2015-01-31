@@ -58,7 +58,7 @@
 
     width: function() {
       var self = this;
-      return self.element.width(); 
+      return self.element.width();
     },
 
     height: function() {

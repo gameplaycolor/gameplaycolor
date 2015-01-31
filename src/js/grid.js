@@ -23,8 +23,8 @@
   };
   
   App.Grid.Cell = {
-    WIDTH:  128,
-    HEIGHT: 128,
+    WIDTH:  150,
+    HEIGHT: 150,
     MARGIN: 20
   };
 
@@ -102,8 +102,7 @@
       });
 
       for (var i=0; i<self.dataSource.count(); i++) {
-        var title = self.dataSource.titleForIndex(i);
-        self.add(i, title);
+        self.add(i);
       }
 
       self.updatePageItems();
@@ -140,7 +139,7 @@
       return self.element.height();
     },
     
-    add: function(index, title) {
+    add: function(index) {
       var self = this;
       
       var columns = Math.floor((self.containerWidth() - App.Grid.Margin.LEFT - App.Grid.Margin.RIGHT + App.Grid.Cell.MARGIN) / (App.Grid.Cell.WIDTH + App.Grid.Cell.MARGIN));
@@ -179,18 +178,6 @@
       element.css('width', App.Grid.Cell.WIDTH);
 
       self.items.push(details);
-
-      var gameTitle = $('<div class="game-title">');
-      gameTitle.html(title);
-      element.append(gameTitle);
-
-      self.dataSource.thumbnail(index, function(thumbnail) {
-        if (thumbnail !== undefined) {
-          var img = $('<img class="game-thumbnail">');
-          img.attr("src", thumbnail);
-          element.append(img);
-        }
-      });
 
       // Grey out ROMs which are only available online.
       if (window.navigator.onLine === false) {

@@ -152,42 +152,42 @@
 
     elementForIndex: function(index) {
       var self = this;
-      var game = $('<div class="game">');
       var identifier = self.identifierForIndex(index);
+      var title = self.titleForIndex(index);
+
+      var element = $('<div class="game">');
+
+      var gameTitle = $('<div class="game-title">');
+      gameTitle.html(title);
+      element.append(gameTitle);
+
+      var gameImg = $('<img class="game-thumbnail">');
+      element.append(gameImg);
+
+      var gameOverlay = $('<div class="game-overlay">');
+      element.append(gameOverlay);
+
+      // Downloaded.
       self.store.hasProperty(App.Controller.Domain.GAMES, identifier).then(function(result) {
         if (result) {
-          game.addClass('downloaded');
+          element.addClass('downloaded');
         }
       });
-      return game;
+
+      // Thumbnail.
+      self.thumbnail(index, function(thumbnail) {
+        if (thumbnail !== undefined) {
+          gameImg.attr("src", thumbnail);
+        }
+      });
+
+      return element;
     },
 
     identifierForIndex: function(index) {
       var self = this;
       var file = self.items[index];
       return file.id;
-    },
-
-    thumbnailForIndex: function(index, callback) {
-      var self = this;
-      var identifier = self.identifierForIndex(index);
-      self.thumbnailForIdentifier(identifier, callback);
-    },
-
-    // Returns the thumbnail for a given identifier.
-    // Triggers a fetch from the cache if the thumbnail is not present.
-    thumbnailForIdentifier: function(identifier, callback) {
-      var self = this;
-      if (identifier in self.thumbnails) {
-        callback(self.thumbnails[identifier]);
-      } else {
-        self.store.property(App.Controller.Domain.THUMBNAILS, identifier, function(value) {
-          if (value !== undefined) {
-            self.thumbnails[identifier] = self.thumbnailDataUrl(value);
-            callback(self.thumbnails[identifier]);
-          }
-        });
-      }
     },
 
     didSelectItemForRow: function(index, element) {
@@ -204,12 +204,10 @@
           });
         }
       });
-
     },
     
     update: function() {
       var self = this;
-      // Only schedule a new update if we're not already updating.
       if (self.updatePending === false) {
         self.drive.files({
           'onStart': function() {
@@ -324,58 +322,6 @@
 
     },
 
-    // Checks to see if there is a cached thumbnail.  If no thumbnail has been cached,
-    // one will be fetched from Google Drive if it's available.
-    // This implementation caches all thumbnails in memory.  It's possible that this will
-    // introduce performance issues, but it doesn't seem worthwhile loading everything lazily
-    // at this stage.
-    updateThumbnail: function(file, callback) {
-      var self = this;
-
-      var identifier = file.id;
-
-      // Some files do not seem to have a valid parents array.
-      // If they do not, then there is no reasonable way to hunt for a thumbnail.
-      var parents = file.parents[0];
-      if (parents === undefined) {
-        return;
-      }
-      
-      var parent = file.parents[0].id;
-      var title = self.stripExtension(file.title) + "." + App.Library.THUMBNAIL_TYPE;
-
-      // Don't bother re-fetching a thumbnail if we've already cached it.
-      if (identifier in self.thumbnails) {
-        return;
-      }
-
-      // Check the cache.
-      self.store.property(App.Controller.Domain.THUMBNAILS, identifier, function(value) {
-        if (value !== undefined) {
-          self.thumbnails[identifier] = self.thumbnailDataUrl(value);
-          callback();
-        } else {
-          self.drive.file(parent, title, {
-            'onStart': function() {},
-            'onSuccess': function(file) {
-              if (file !== undefined) {
-                downloadFileBase64(file, function(data) {
-                  self.store.setProperty(App.Controller.Domain.THUMBNAILS, identifier, data);
-                  self.thumbnails[identifier] = self.thumbnailDataUrl(data);
-                  self.notifyChange();
-                });
-              }
-              callback();
-            },
-            'onError': function(error) {
-              callback();
-            }
-          });
-        }
-      });
-
-    },
-
     updateCallback: function(files) {
       var self = this;
       var i;
@@ -385,11 +331,6 @@
       for (i = 0; i < self.items.length; i++) {
         var identifier = self.items[i].id;
         deletedIdentifiers[identifier] = true;
-      }
-
-      // Update the thumbnails.
-      for (i = 0; i < files.length; i++) {
-        self.updateThumbnail(files[i], function() {});
       }
 
       // Reset the update flag.
