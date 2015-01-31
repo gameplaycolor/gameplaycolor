@@ -124,19 +124,12 @@ function base64ToArray(b64encoded) {
 
     load: function(identifier) {
       var self = this;
-
       self.setState(App.GameBoy.State.LOADING);
-
-      // Store the name of the file we're playing.
-      window.app.store.setProperty(App.Controller.Domain.SETTINGS, App.Store.Property.GAME, identifier);
-
-      // Fetch the file.
       var file = self.library.fetch(identifier).then(function(data) {
         self.insertCartridge(identifier, data, function() {
           self.setState(App.GameBoy.State.RUNNING);
         });
       });
-
     },
 
     insertCartridge: function(identifier, data, callback) {

@@ -39,12 +39,12 @@
       var self = this;
       self.device = device;
       self.store = new App.Store('save-state');
-      self.library = new App.Library(self.store, function(identifier, title) {
+
+      self.library = new App.Library(self.store, function(identifier) {
         self.gameBoy.clear();
         self.console.show();
-        self.console.setTitle(title);
         setTimeout(function() {
-          self.gameBoy.load(identifier);
+          self.load(identifier);
         }, 400);
       });
       self.gameBoy = new App.GameBoy(self.store, self.library);
@@ -70,6 +70,26 @@
 
       self.checkForUpdate();
 
+      self.loadPreviousGame();
+
+    },
+
+    loadPreviousGame: function() {
+      var self = this;
+      self.store.property(App.Controller.Domain.SETTINGS, App.Store.Property.GAME, function(identifier) {
+        if (identifier === undefined) {
+          return;
+        }
+        self.load(identifier);
+      });
+    },
+
+    load: function(identifier) {
+      var self = this;
+      var title = self.library.titleForIdentifier(identifier);
+      self.store.setProperty(App.Controller.Domain.SETTINGS, App.Store.Property.GAME, identifier);
+      self.console.setTitle(title);
+      self.gameBoy.load(identifier);
     },
 
     checkForUpdate: function() {

@@ -203,7 +203,7 @@
           setTimeout(function() {
             self.element.addClass("open");
             self.event('didHide');
-          }, 150);
+          }, 10);
           
         }
         

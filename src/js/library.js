@@ -133,6 +133,15 @@
       return self.stripExtension(file.title);
     },
 
+    titleForIdentifier: function(identifier) {
+      var self = this;
+      var index = self.indexForIdentifier(identifier);
+      if (index === undefined) {
+        return undefined;
+      }
+      return self.titleForIndex(index);
+    },
+
     // Very rudimentary mechanism to strip the file extension (Google Drive doesn't
     // seem to guarantee file extensions in the file title).
     stripExtension: function(title) {
@@ -193,10 +202,9 @@
     didSelectItemForRow: function(index, element) {
       var self = this;
       var identifier = self.identifierForIndex(index);
-      var title = self.titleForIndex(index);
       self.store.hasProperty(App.Controller.Domain.GAMES, identifier).then(function(found) {
         if (found) {
-          self.callback(identifier, title);
+          self.callback(identifier);
         } else {
           self.fetch(identifier).then(function(data) {
             console.log("Received identifier '" + identifier + "'");
@@ -225,10 +233,19 @@
 
     fileForIdentifier: function(identifier) {
       var self = this;
+      var index = self.indexForIdentifier(identifier);
+      if (index === undefined) {
+        return undefined;
+      }
+      return self.items[index];
+    },
+
+    indexForIdentifier: function(identifier) {
+      var self = this;
       for (var i = 0; i < self.items.length; i++) {
         var file = self.items[i];
         if (file.id === identifier) {
-          return file;
+          return i;
         }
       }
       return undefined;
