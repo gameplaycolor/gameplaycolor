@@ -25,7 +25,7 @@
   App.Grid.Cell = {
     WIDTH:  128,
     HEIGHT: 128,
-    MARGIN: 30
+    MARGIN: 20
   };
 
   App.Grid.MOVE_THRESHOLD = 10;
@@ -33,9 +33,9 @@
 
   App.Grid.Margin = {
 
-    TOP: 64,
+    TOP: 54,
     LEFT: 10,
-    BOTTOM: 20,
+    BOTTOM: 40,
     RIGHT: 10,
 
   };
