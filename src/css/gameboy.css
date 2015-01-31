@@ -57,7 +57,7 @@ body
   background-image: -webkit-gradient(linear, right top, left top, from(rgba(255, 255, 255, 0)), to(rgba(255, 255, 255, 0.04)));
 }
 
-#display-surround
+#element-surround
 {
   background-color: #222222;
   border-bottom: 2px solid #111;
@@ -638,7 +638,7 @@ body
     right: 10px;
   }
 
-  #display-surround
+  #element-surround
   {
     display: none;
   }
