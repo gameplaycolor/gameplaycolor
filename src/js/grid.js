@@ -33,10 +33,10 @@
 
   App.Grid.Margin = {
 
-    TOP: 84,
+    TOP: 64,
     LEFT: 10,
     BOTTOM: 20,
-    RIGHT: 15,
+    RIGHT: 10,
 
   };
 
@@ -143,8 +143,8 @@
     add: function(index, title) {
       var self = this;
       
-      var columns = Math.floor((self.containerWidth() - App.Grid.Margin.LEFT - App.Grid.Margin.RIGHT) / (App.Grid.Cell.WIDTH + App.Grid.Cell.MARGIN));
-      var rows = Math.floor((self.containerHeight() - App.Grid.Margin.TOP - App.Grid.Margin.BOTTOM) / (App.Grid.Cell.HEIGHT + App.Grid.Cell.MARGIN));
+      var columns = Math.floor((self.containerWidth() - App.Grid.Margin.LEFT - App.Grid.Margin.RIGHT + App.Grid.Cell.MARGIN) / (App.Grid.Cell.WIDTH + App.Grid.Cell.MARGIN));
+      var rows = Math.floor((self.containerHeight() - App.Grid.Margin.TOP - App.Grid.Margin.BOTTOM + App.Grid.Cell.MARGIN) / (App.Grid.Cell.HEIGHT + App.Grid.Cell.MARGIN));
 
       var itemsPerPage = rows * columns;
 
