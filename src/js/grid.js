@@ -109,7 +109,6 @@
     },
 
     addPage: function() {
-      console.log("Adding page...");
       var self = this;
       self.pageCount++;
       var item = $('<div class="page">');
