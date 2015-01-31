@@ -39,11 +39,8 @@
           self.library.authorize();
         }
       });
-      self.title = $('#title-bar-label');
       self.grid = new App.Grid(device);
       self.items = [];
-
-      self.title.html('Games');
 
       self.library.onStateChange(function(state) {
         if (state === App.Library.State.LOADING) {

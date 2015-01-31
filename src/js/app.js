@@ -39,9 +39,10 @@
       var self = this;
       self.device = device;
       self.store = new App.Store('save-state');
-      self.library = new App.Library(self.store, function(identifier) {
+      self.library = new App.Library(self.store, function(identifier, title) {
         self.gameBoy.clear();
         self.console.show();
+        self.console.setTitle(title);
         setTimeout(function() {
           self.gameBoy.load(identifier);
         }, 400);
@@ -58,6 +59,8 @@
       self.console = new App.Console(self.device, self.gameBoy, {
         'willHide': function() {
           self.gameBoy.pause();
+        },
+        'didHide': function() {
           self.games.update();
         },
         'didShow': function() {
@@ -74,16 +77,11 @@
       if (window.applicationCache !== undefined && window.applicationCache !== null) {
         console.log("Checking for application update (status " + window.applicationCache.status + ")");
         window.applicationCache.addEventListener('updateready', function(event) {
-          self.checkUpdate(event);
+          console.log("Application update received (status " + window.applicationCache.status + ")");
+          if (window.applicationCache.status != 4) return;
+          alert("Update available.\nRelaunch the application to update.");
         });
       }
-    },
-
-    checkUpdate: function(event) {
-      var self = this;
-      console.log("Application update received (status " + window.applicationCache.status + ")");
-      if (window.applicationCache.status != 4) return;
-      alert("Update available.\nRelaunch the application to update.");
     },
 
     setValue: function(domain, key, value) {

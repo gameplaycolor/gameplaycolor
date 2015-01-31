@@ -192,15 +192,22 @@ body
 #button-done
 {
   position: absolute;
-  top: 8px;
-  right: 6px;
-  width: 61px;
-  height: 24px;
-  text-align: center;
-  color: #A64380;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 44px;
+  line-height: 44px;
+  text-align: right;
   cursor: pointer;
   font-size: 16px;
-  padding-top: 6px;
+  padding-right: 12px;
+  color: #777;
+  text-shadow: 0 1px 0 #000;
+}
+
+#button-done::after
+{
+  content: " >";
 }
 
 .button-done.pressed
@@ -224,10 +231,11 @@ body
   
 #screen-console
 {
-  transition: top 0.3s ease-in-out;
+  transition: left 0.3s ease-in-out;
   width: 100%;
   height: 100%;
   top: 0;
+  left: 0;
   background-image: url('/images/noise.png');
   border-radius: 12px;
 }
@@ -247,26 +255,6 @@ body
   background-color: #007FA0;
 }
 
-#title-bar
-{
-  position: absolute;
-  left: 0;
-  bottom: -44px;
-  width: 100%;
-  height: 44px;
-  background-image: url('/images/noise.png');
-  box-shadow: 0px 3px 5px;
-}
-
-#title-bar-label
-{
-  padding: 0;
-  margin: 0;
-  text-align: center;
-  padding-top: 11px;
-  font-size: 20px;
-}
- 
 #list-games
 {
   position: absolute;
@@ -628,12 +616,12 @@ body
 
 #screen-console.open
 {
-  transition: top 0.3s ease-in-out;
-  top: -100%;
+  transition: left 0.3s ease-in-out;
+  left: 100%;
 }
 
 /* iPhone 5: Portrait */
-@media only screen and (min-width: 320px){
+@media only screen and (min-width: 320px) and (max-width: 374px) {
 
   #element-screen
   {
@@ -648,6 +636,21 @@ body
   #element-buttons 
   {
     right: 10px;
+  }
+
+  #display-surround
+  {
+    display: none;
+  }
+
+  #screen-console
+  {
+    border-radius: 0;
+  }
+
+  #screen-games
+  {
+    border-radius: 0;
   }
 
 }

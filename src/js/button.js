@@ -89,6 +89,11 @@
       self.action("touchUpOutside");
     },
 
+    setTitle: function(title) {
+      var self = this;
+      self.element.html(title);
+    },
+
   });
 
 })(jQuery);

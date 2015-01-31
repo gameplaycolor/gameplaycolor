@@ -152,62 +152,6 @@
         self.done = new App.Controls.Button('#button-done', { 'touchUp': function() {
           self.show();
         }});
-
-        self.load();
-        
-      },
-      
-      scheduleSave: function() {
-        var self = this;
-        if (App.Controller.SAVE === true) {
-          setTimeout(function() {
-            console.log("Save");
-            self.save();
-            self.scheduleSave();
-          }, 10000);
-        }
-      },
-      
-      save: function() {
-        var self = this;
-        var state = JSON.stringify({
-          gbMemory: gbMemory,
-          gbFrameBuffer: gbFrameBuffer,
-          gbTileData: gbTileData,
-          gbBackgroundData: gbBackgroundData
-        });
-        self.store.setProperty(App.Controller.Domain.SETTINGS, App.Store.Property.STATE, state);
-      },
-      
-      load: function() {
-        var self = this;
-        
-        self.store.property(App.Controller.Domain.SETTINGS, App.Store.Property.GAME, function(filename) {
-        
-          if (filename !== undefined) {
-            var data = localStorage.getItem(filename);
-            if (data) {
-              self.gameBoy.insertCartridge(data);
-              setTimeout(function() {
-                self.store.property(App.Controller.Domain.SETTINGS, App.Store.Property.STATE, function(stateJSON) {
-                  if (stateJSON !== undefined) {
-                      var state = jQuery.parseJSON(stateJSON);
-                      self.gameBoy.pause();
-                      gbMemory = state.gbMemory;
-                      gbFrameBuffer = state.gbFrameBuffer;
-                      gbTileData = state.gbTileData;
-                      gbBackgroundData = state.gbBackgroundData;
-                      gb_Framebuffer_to_LCD();
-                      self.gameBoy.run();
-                      self.scheduleSave();
-                    }
-                  });
-                }, 5000);
-              }
-            } else {
-              self.scheduleSave();
-            }
-          });
         
       },
       
@@ -222,11 +166,13 @@
         var self = this;
         
         if (self.state != App.Console.State.HIDDEN) {
-        
+
           self.event('willHide');
-          self.element.addClass("open");
           self.state = App.Console.State.HIDDEN;
-          self.event('didHide');
+          setTimeout(function() {
+            self.element.addClass("open");
+            self.event('didHide');
+          }, 150);
           
         }
         
@@ -241,9 +187,16 @@
           self.event('willShow');
           self.state = App.Console.State.VISIBLE;
           self.element.removeClass("open");
-          self.event('didShow');
+          setTimeout(function() {
+            self.event('didShow');
+          }, 400);
 
         }
+      },
+
+      setTitle: function(title)  {
+        var self = this;
+        self.done.setTitle(title);
       }
       
   });

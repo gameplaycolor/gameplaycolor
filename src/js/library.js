@@ -193,9 +193,10 @@
     didSelectItemForRow: function(index, element) {
       var self = this;
       var identifier = self.identifierForIndex(index);
+      var title = self.titleForIndex(index);
       self.store.hasProperty(App.Controller.Domain.GAMES, identifier).then(function(found) {
         if (found) {
-          self.callback(identifier);
+          self.callback(identifier, title);
         } else {
           self.fetch(identifier).then(function(data) {
             console.log("Received identifier '" + identifier + "'");
