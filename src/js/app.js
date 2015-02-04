@@ -121,32 +121,11 @@
 
   });
 
-  // Create the application.
   $(document).ready(function() {
 
     var device = new App.Device();
     window.tracker = new App.Tracker();
-
-    // Do not show the walkthrough if debugging.
-    if (App.Controller.DEBUG === true) {
-      $("#gameboy").show();
-      window.app = new App.Controller(device);
-      return;
-    }
-
-    // Work out if we've been installed or not.
-    if (window.navigator.standalone &&
-        device.type === App.Device.Type.IPHONE_5) {
-      $("#gameboy").show();
-      window.app = new App.Controller(device);
-    } else {
-      $("#instructions").show();
-      if (device.type === App.Device.Type.IPHONE_5) {
-        $("#instructions-iphone5").show();
-      } else {
-        $("#instructions-other").show();
-      }
-    }
+    window.app = new App.Controller(device);
 
   });
 
