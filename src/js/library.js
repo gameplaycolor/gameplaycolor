@@ -195,6 +195,8 @@
       self.store.hasProperty(App.Controller.Domain.GAMES, identifier).then(function(found) {
         if (found) {
           self.callback(identifier);
+          var spinner = new Spinner().spin();
+          element.appendChild(spinner.el);
         } else {
           self.fetch(identifier).then(function(data) {
             console.log("Received identifier '" + identifier + "'");

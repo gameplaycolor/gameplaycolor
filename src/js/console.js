@@ -44,7 +44,8 @@
     
   };
 
-  App.Console.SHAKE_THRESHOLD = 20;
+  App.Console.SHAKE_THRESHOLD = 18;
+  App.Console.SHAKE_TIMEOUT_MS = 800;
 
   jQuery.extend(
     App.Console.prototype, {
@@ -52,6 +53,7 @@
       init: function(device, gameBoy, events, store) {
         var self = this;
         
+        self.logging = new App.Logging(App.Logging.Level.WARNING);
         self.device = device;
         self.gameBoy = gameBoy;
         self.events = events;
@@ -60,7 +62,7 @@
         self.element = $('#screen-console');
         self.displayIdle = $('#LCD-idle');
         self.displayLoading = $('#LCD-loading');
-        self.colors = ["grape", "cherry", "teal", "lime"];
+        self.colors = ["grape", "cherry", "teal", "lime", "yellow"];
         self.color = "teal";
 
         window.tracker.track('console');
@@ -158,32 +160,75 @@
         }});
 
         // Color picker.
-        var shuffleColor = function() {
-          var index = Math.floor(Math.random() * (self.colors.length - 1));
-          var color = self.colors[index];
-          if (color == self.color) {
-            color = self.colors[index + 1];
-          }
-          self.element.addClass(color);
-          self.element.removeClass(self.color);
-          self.color = color;
-        };
-        self.picker = new App.Controls.Button('#element-color', { touchUp: shuffleColor });
+        self.picker = new App.Controls.Button('#element-color', { touchUp: function() {
+          self.shuffleColor();
+        }});
 
+        // Shake to set color.
+        self.restoreColor().then(function(color) {
+          self.onShake(self.shuffleColor);
+        });
+
+      },
+
+      shuffleColor: function() {
+        var self = this;
+        self.logging.info("Shuffle color");
+        var index = Math.floor(Math.random() * (self.colors.length - 1));
+        var color = self.colors[index];
+        if (color == self.color) {
+          color = self.colors[index + 1];
+        }
+        self.setColor(color);
+      },
+
+      onShake: function(callback) {
+        var self = this;
+        var lastShakeTime = new Date().getTime();
         window.addEventListener('devicemotion', function (e) {
           var x = e.accelerationIncludingGravity.x;
           var y = e.accelerationIncludingGravity.y;
           var z = e.accelerationIncludingGravity.z;
-
           var xy = Math.sqrt((x * x) + (y * y));
           var xyz = Math.sqrt((xy * xy) + (z * z));
-
-          if (xyz > App.Console.SHAKE_THRESHOLD) {
-            shuffleColor();
+          var now = new Date().getTime();
+          var msSinceLastShake = now - lastShakeTime;
+          if (msSinceLastShake > App.Console.SHAKE_TIMEOUT_MS &&
+              xyz > App.Console.SHAKE_THRESHOLD) {
+            self.logging.info("Shake occurred");
+            callback();
+            lastShakeTime = now;
           }
-
         }, false);
-        
+      },
+
+      restoreColor: function() {
+        var self = this;
+        var deferred = new jQuery.Deferred();
+        self.logging.info("Attempting to restore the previous color");
+        self.store.property(App.Controller.Domain.SETTINGS, App.Store.Property.COLOR, function(color) {
+          self.logging.info("Loaded previous color: " + color);
+          if (color === undefined) {
+            deferred.reject();
+            return;
+          }
+          self.setColor(color);
+          deferred.resolve(color);
+        });
+        return deferred.promise();
+      },
+
+      setColor: function(color) {
+        var self = this;
+        self.logging.info("Set color: " + color);
+        if (color == self.color) {
+          self.logging.info("Ignoring set to current color: " + color);
+          return;
+        }
+        self.store.setProperty(App.Controller.Domain.SETTINGS, App.Store.Property.COLOR, color);
+        self.element.addClass(color);
+        self.element.removeClass(self.color);
+        self.color = color;
       },
       
       event: function(id) {
@@ -195,25 +240,19 @@
       
       hide: function() {
         var self = this;
-        
         if (self.state != App.Console.State.HIDDEN) {
-
           self.event('willHide');
           self.state = App.Console.State.HIDDEN;
           setTimeout(function() {
             self.element.addClass("open");
             self.event('didHide');
           }, 10);
-          
         }
-        
       },
       
       show: function() {
         var self = this;
-        
         if (self.state != App.Console.State.VISIBLE) {
-
           window.tracker.track('console');
           self.event('willShow');
           self.state = App.Console.State.VISIBLE;
@@ -221,7 +260,6 @@
           setTimeout(function() {
             self.event('didShow');
           }, 400);
-
         }
       },
 

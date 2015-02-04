@@ -24,7 +24,8 @@
   
   App.Store.Property = {
     STATE: 0,
-    GAME:  1
+    GAME:  1,
+    COLOR: 2
   };
   
   jQuery.extend(App.Store.prototype, {
