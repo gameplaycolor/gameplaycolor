@@ -44,7 +44,7 @@
     
   };
 
-  App.Console.SHAKE_THRESHOLD = 18;
+  App.Console.SHAKE_THRESHOLD = 24;
   App.Console.SHAKE_TIMEOUT_MS = 800;
 
   jQuery.extend(
@@ -53,7 +53,7 @@
       init: function(device, gameBoy, events, store) {
         var self = this;
         
-        self.logging = new App.Logging(App.Logging.Level.WARNING);
+        self.logging = new App.Logging(App.Logging.Level.INFO);
         self.device = device;
         self.gameBoy = gameBoy;
         self.events = events;
@@ -166,7 +166,9 @@
 
         // Shake to set color.
         self.restoreColor().then(function(color) {
-          self.onShake(self.shuffleColor);
+          self.onShake(function() {
+            self.shuffleColor();
+          });
         });
 
       },
@@ -184,6 +186,7 @@
 
       onShake: function(callback) {
         var self = this;
+        self.logging.info("Registering shake listener");
         var lastShakeTime = new Date().getTime();
         window.addEventListener('devicemotion', function (e) {
           var x = e.accelerationIncludingGravity.x;
@@ -192,8 +195,8 @@
           var xy = Math.sqrt((x * x) + (y * y));
           var xyz = Math.sqrt((xy * xy) + (z * z));
           var now = new Date().getTime();
-          var msSinceLastShake = now - lastShakeTime;
-          if (msSinceLastShake > App.Console.SHAKE_TIMEOUT_MS &&
+          var timeSinceLastShake = now - lastShakeTime;
+          if (timeSinceLastShake > App.Console.SHAKE_TIMEOUT_MS &&
               xyz > App.Console.SHAKE_THRESHOLD) {
             self.logging.info("Shake occurred");
             callback();

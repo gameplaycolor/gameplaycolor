@@ -221,7 +221,7 @@
 
     maxPage: function() {
       var self = this;
-      return self.pageCount;
+      return self.pageCount - 1;
     },
 
     // Animate transition to a given page.
@@ -342,7 +342,7 @@
             // Animate back to the current page or move to the new page.
             if (page === self.page ||
                 page < self.minPage() ||
-                page >= self.maxPage()) {
+                page > self.maxPage()) {
               self.animate(self.page);
             } else {
               self.setPage(page);
