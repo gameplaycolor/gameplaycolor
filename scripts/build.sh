@@ -27,7 +27,6 @@ append "CACHE:"
 append *.html
 append "# Styles" **/*.css
 append "# Application" js/*.js
-append "# JavaScript GameBoy Emulator" jsgb/*.js
 append "# JavaScript GameBoy Color Emulator" gbo/*.js gbo/**/*.js
 append "# Images" images/*.png
 
