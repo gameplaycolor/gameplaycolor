@@ -19,7 +19,6 @@ rsync -avPe ssh \
     $ROOT/*.html \
     $ROOT/*.manifest \
     $ROOT/js \
-    $ROOT/jsgb \
     $ROOT/css \
     $ROOT/gbo \
     $ROOT/images \
