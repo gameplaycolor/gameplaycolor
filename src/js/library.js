@@ -178,6 +178,7 @@
       self.thumbnail(index, function(thumbnail) {
         if (thumbnail !== undefined) {
           gameImg.attr("src", thumbnail);
+          gameTitle.css('display', 'none');
         }
       });
 
