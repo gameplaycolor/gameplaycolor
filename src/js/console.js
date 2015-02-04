@@ -159,11 +159,6 @@
           self.show();
         }});
 
-        // Color picker.
-        self.picker = new App.Controls.Button('#element-color', { touchUp: function() {
-          self.shuffleColor();
-        }});
-
         // Shake to set color.
         self.restoreColor().always(function(color) {
           self.onShake(function() {

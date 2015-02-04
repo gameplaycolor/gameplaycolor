@@ -14,12 +14,8 @@
     <title>Game Play</title>
 </head>
 <body style="background-color: black;">
-
-  <div class="button pressed" style="display: none"></div>
-  <div class="button-options pressed" style="display: none"></div>
-  <div class="button-done pressed" style="display: none"></div>
   
-  <div id="gameboy">
+  <div id="gameboy" style="width: 100%; height: 100%">
 
     <div id="screen-games" class="screen">
       <div id="list-games" class="content">
@@ -34,18 +30,14 @@
       <div id="screen-empty" class="content" style="display: none">
         <div class="placeholder">
           <p><strong>No Games</strong></p>
-          <p>Add Game Boy ROMs <em>(with the .gb file extension)</em> to your Google Drive to see them here.</p>
+          <p>Add Game Boy ROMs <em>(with the .gb or .gbc file extension)</em> to your Google Drive to see them here.</p>
         </div>
       </div>
       <div id="screen-authorize" class="content" style="display: none">
         <div id="screen-authorize-panel">
           <h1>Google Drive</h1>
-          <p>
-            Sign into your Google Account to access Game Boy ROMs stored in Google Drive.
-          </p>
-          <p>
-            <em>Please relaunch the application after authenticating.</em>
-          </p>
+          <p>Sign into your Google Account to access Game Boy ROMs stored in Google Drive.</p>
+          <p><em>Please relaunch the application after authenticating.</em></p>
           <div class="actions">
             <a id="button-authorize" class="google-button-blue" />Sign in</a>
           </div>
@@ -61,15 +53,12 @@
         <div id="moulding-center"></div>
         <div id="moulding-right"></div>
       </div>
-
       <div id="element-surround" class="element-surround">
         <div id="surround" class="surround"></div>
       </div>
-
       <div id="element-branding">
         <div id="branding">InSeven Limited</div>
       </div>
-
       <div id="element-screen">
         <div id="display">
           <canvas id="LCD" class="display" width="160" height="144"></canvas>
@@ -78,11 +67,9 @@
           <div id="LCD-dropshadow"></div>
         </div>
       </div>
-
       <div id="element-dpad">
         <div id="control-dpad" class="sprite-pad-default"></div>
       </div>
-
       <div id="element-options">
         <div id="group-options">
           <div class="button-option-group">
@@ -95,15 +82,12 @@
           </div>
         </div>
       </div>
-
       <div id="element-buttons">
         <div id="group-buttons">
           <div id="control-a" class="button">A</div>
           <div id="control-b" class="button">B</div>
         </div>
       </div>
-
-      <div id="element-color"></div>
     </div>
 
     <div id="debug" style="display: none">DEBUG</div>

@@ -651,15 +651,6 @@ body
   left: 0;
 }
 
-#element-color
-{
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  height: 44px;
-  width: 44px;
-}
-
 #screen-console.open
 {
   transition: left 0.3s ease-in-out;
