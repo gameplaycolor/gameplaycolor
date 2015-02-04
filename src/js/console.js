@@ -169,6 +169,7 @@
           self.onShake(function() {
             self.shuffleColor();
           });
+          $('#screen-splash').hide();
         });
 
       },
