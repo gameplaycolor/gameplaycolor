@@ -325,12 +325,6 @@ body
 {
   position: absolute;
   text-align: center;
-  opacity: 0.2;
-}
-
-.downloaded
-{
-  opacity: 1.0;
 }
 
 .game-title
@@ -356,6 +350,12 @@ body
   width: 150px;
   height: 150px;
   border-radius: 1px;
+  opacity: 0.2;
+}
+
+.downloaded > .game-thumbnail
+{
+  opacity: 1.0;
 }
 
 .game-overlay
