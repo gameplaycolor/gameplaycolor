@@ -155,6 +155,7 @@
       var title = self.titleForIndex(index);
 
       var element = $('<div class="game">');
+      element.spinner = false;
 
       var gameTitle = $('<div class="game-title">');
       gameTitle.html(title);
@@ -197,18 +198,25 @@
           self.callback(identifier);
         } else {
 
-          var opts = {
-            color: '#fff',
-            zIndex: 0
-          };
-          var spinner = new Spinner(opts).spin();
-          var spinnerElement = spinner.el;
-          element.append(spinnerElement);
+          var spinner;
+          if (element.spinner === false) {
+            var opts = {
+              color: '#fff',
+              zIndex: 0
+            };
+            spinner = new Spinner(opts).spin();
+            var spinnerElement = spinner.el;
+            element.append(spinnerElement);
+            element.spinner = true;
+          }
 
           self.fetch(identifier).then(function(data) {
             console.log("Received identifier '" + identifier + "'");
             element.addClass("downloaded");
-            spinner.stop();
+            if (spinner !== undefined) {
+              spinner.stop();
+              element.spinner = false;
+            }
           });
         }
       });
