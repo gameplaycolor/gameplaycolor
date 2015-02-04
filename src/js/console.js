@@ -165,7 +165,7 @@
         }});
 
         // Shake to set color.
-        self.restoreColor().then(function(color) {
+        self.restoreColor().always(function(color) {
           self.onShake(function() {
             self.shuffleColor();
           });
