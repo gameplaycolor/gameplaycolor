@@ -23,6 +23,7 @@ rsync -avPe ssh \
     $ROOT/css \
     $ROOT/gbo \
     $ROOT/images \
+    $ROOT/defaults \
     "$remote"
 
 rsync -avPe ssh "$configuration" "$remote/settings.json"
