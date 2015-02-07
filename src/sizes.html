@@ -73,15 +73,15 @@
           } else if (or = orientation.LANDSCAPE) {
             title = title + "Landscape";
           }
+          size = getSize(details, or);
+          title = title + " - " + size.width + "x" + size.height;
           return title;
         }
 
-        function setSize(details, or) {
-          var device = document.getElementById("device");
+        function getSize(details, or) {
           var width = 0;
           var height = 0;
 
-          var title = getTitle(details, or);
           if (or == orientation.PORTRAIT) {
             width = details.width;
             height = details.height;
@@ -98,10 +98,16 @@
           width = Math.floor(width / details.scale);
           height = Math.floor(height / details.scale);
 
-          console.log("Device: (" + (width * details.scale) + ", " + (height * details.scale) + ")");
+          return { width: width, height: height };
+        }
 
-          device.style.width = width;
-          device.style.height = height;
+        function setSize(details, or) {
+          var device = document.getElementById("device");
+          var title = getTitle(details, or);
+          var size = getSize(details, or);
+          console.log("Device: (" + (size.width * details.scale) + ", " + (size.height * details.scale) + ")");
+          device.style.width = size.width;
+          device.style.height = size.height;
           document.title = title;
         }
 

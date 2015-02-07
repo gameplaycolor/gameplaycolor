@@ -709,7 +709,7 @@ body
 }
 
 /* iPhone 6: Portrait */
-@media only screen and (min-width: 375px) {
+@media only screen and (min-width: 375px) and (max-width: 567px) {
 
   #element-screen
   {
@@ -746,6 +746,51 @@ body
     bottom: 10px;
   }
 
+  #element-surround
+  {
+    display: none;
+  }
+
+  #element-options
+  {
+    bottom: -4px;
+  }
+
+  #element-buttons
+  {
+    right: 8px;
+  }
+
+  #group-buttons
+  {
+    width: 132px;
+  }
+
+  #element-dpad
+  {
+    left: 10px;
+  }
+
+  #element-branding
+  {
+    display: none;
+  }
+
+}
+
+/* iPhone 6: Landscape */
+@media only screen and (min-width: 667px) {
+
+  #element-screen
+  {
+    top: 12px;
+  }
+
+  #element-options
+  {
+    bottom: 10px;
+  }
+
   .surround
   {
     width: 346px;
@@ -772,29 +817,9 @@ body
     left: 10px;
   }
 
-  #element-screen
-  {
-    top: 12px;
-  }
-
   #element-branding
   {
     display: none;
-  }
-
-}
-
-/* iPhone 6: Landscape */
-@media only screen and (min-width: 667px) {
-
-  #element-screen
-  {
-    top: 14px;
-  }
-
-  #element-options
-  {
-    bottom: 10px;
   }
 
 }
