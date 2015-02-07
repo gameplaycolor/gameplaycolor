@@ -701,6 +701,11 @@ body
     border-radius: 0;
   }
 
+  #element-branding
+  {
+    display: none;
+  }
+
 }
 
 /* iPhone 6: Portrait */
