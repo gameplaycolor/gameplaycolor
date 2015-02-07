@@ -113,8 +113,7 @@ body
   text-shadow: #313131 0px 1px;
   position: relative;
   text-align: center;
-  line-height: 58px;
-  font-size: 30px;
+  font-size: 34px;
   box-shadow: 0 3px 7px #1b1b1b, inset 0 2px 3px #676767;
   border: 2px solid black;
   border-top: 1px solid black;
@@ -190,6 +189,18 @@ body
   position: absolute;
   bottom: 9px;
   left: 3px;
+}
+
+.control-text
+{
+  position: absolute;
+  bottom: 6px;
+  left: 14px;
+}
+
+.button.pressed .control-text
+{
+  bottom: 8px;
 }
 
 #control-dpad
