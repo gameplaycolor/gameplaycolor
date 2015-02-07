@@ -300,45 +300,44 @@
       var identifier = self.identifierForIndex(index);
 
       self.store.property(App.Controller.Domain.THUMBNAILS, identifier, function(value) {
+
         if (value !== undefined) {
           callback(self.thumbnailDataUrl(value));
-        } else {
+          return;
+        }
 
-          file = self.fileForIdentifier(identifier);
+        file = self.fileForIdentifier(identifier);
+        var parents = file.parents[0];
+        if (parents === undefined) {
+          return;
+        }
+        
+        var parent = file.parents[0].id;
+        var title = self.stripExtension(file.title) + "." + App.Library.THUMBNAIL_TYPE;
 
-          // Some files do not seem to have a valid parents array.
-          // If they do not, then there is no reasonable way to hunt for a thumbnail.
-          var parents = file.parents[0];
-          if (parents === undefined) {
-            return;
-          }
-          
-          var parent = file.parents[0].id;
-          var title = self.stripExtension(file.title) + "." + App.Library.THUMBNAIL_TYPE;
+        console.log("Fetching " + title + " ...");
 
-          console.log("Fetching " + title + " ...");
-
-          self.drive.file(parent, title, {
-            onStart: function() {},
-            onSuccess: function(file) {
-              if (file !== undefined) {
-                downloadFileBase64(file, function(data) {
-                  try {
-                    self.store.setProperty(App.Controller.Domain.THUMBNAILS, identifier, data);
-                  } catch (e) {
-                    console.log("Unable to store thumbnail.");
-                  }
-                  callback(self.thumbnailDataUrl(value));
-                });
-              } else {
-                callback();
-              }
-            },
-            onError: function(error) {
+        self.drive.file(parent, title, {
+          onStart: function() {},
+          onSuccess: function(file) {
+            if (file !== undefined) {
+              downloadFileBase64(file, function(data) {
+                try {
+                  self.store.setProperty(App.Controller.Domain.THUMBNAILS, identifier, data);
+                } catch (e) {
+                  console.log("Unable to store thumbnail.");
+                }
+                callback(self.thumbnailDataUrl(data));
+              });
+            } else {
               callback();
             }
-          });
-        }
+          },
+          onError: function(error) {
+            callback();
+          }
+        });
+
       });
 
     },
@@ -351,11 +350,12 @@
 
       var identifiers = {};
       $.each(self.items, function(index, value) {
-        identifiers[value.id] = true;
+        identifiers[value.id] = value.title;
       });
 
       var deleted = identifiers;
       var inserted = {};
+      var renamed = {};
       var oldItems = self.items;
       self.items = [];
       for (i = 0; i < files.length; i++) {
@@ -363,9 +363,12 @@
         if (file.fileExtension === 'gb' || file.fileExtension === 'gbc') {
           self.items.push(file);
           if (file.id in deleted) {
+            if (deleted[file.id] != file.title) {
+              renamed[file.id] = file.title;
+            }
             delete deleted[file.id];
           } else {
-            inserted[file.id] = true;
+            inserted[file.id] = file.title;
           }
         }
       }
@@ -374,7 +377,9 @@
 
       var deletedCount = 0;
       $.each(deleted, function(key, value) {
+        console.log("Deleting game for " + key);
         self.store.deleteProperty(App.Controller.Domain.GAMES, key);
+        console.log("Deleting thumbnail for " + key);
         self.store.deleteProperty(App.Controller.Domain.THUMBNAILS, key);
         deletedCount++;
       });
@@ -384,17 +389,14 @@
         insertedCount++;
       });
 
-      self.setState(App.Library.State.READY);
-
       var renamedCount = 0;
-      if (oldItems.length == self.items.length) {
-        $.each(oldItems, function(index, oldItem) {
-          var newItem = self.items[index];
-          if (oldItem.title != newItem.title) {
-            renamedCount++;
-          }
-        });
-      }
+      $.each(renamed, function(key, value) {
+        console.log("Deleting thumbnail for " + key);
+        self.store.deleteProperty(App.Controller.Domain.THUMBNAILS, key);
+        renamedCount++;
+      });
+
+      self.setState(App.Library.State.READY);
 
       if (deletedCount > 0 || insertedCount > 0 || renamedCount > 0) {
         self.notifyChange();
