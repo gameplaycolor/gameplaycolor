@@ -166,14 +166,12 @@
       var gameOverlay = $('<div class="game-overlay">');
       element.append(gameOverlay);
 
-      // Downloaded.
       self.store.hasProperty(App.Controller.Domain.GAMES, identifier).then(function(result) {
         if (result) {
           element.addClass('downloaded');
         }
       });
 
-      // Thumbnail.
       self.thumbnailForIndex(index, function(thumbnail) {
         if (thumbnail !== undefined) {
           gameImg.attr("src", thumbnail);
