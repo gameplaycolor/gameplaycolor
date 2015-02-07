@@ -33,10 +33,10 @@
 
   App.Grid.Margin = {
 
-    TOP: 54,
-    LEFT: 10,
+    TOP: 64,
+    LEFT: 20,
     BOTTOM: 40,
-    RIGHT: 10,
+    RIGHT: 20,
 
   };
 
@@ -156,10 +156,14 @@
       var row = Math.floor(indexOnPage / columns);
       var col = indexOnPage % columns;
 
-      var offsetLeft = Math.floor((self.containerWidth() - (((App.Grid.Cell.MARGIN + App.Grid.Cell.WIDTH) * columns) - App.Grid.Cell.MARGIN)) / 2);
+      var contentWidth = ((App.Grid.Cell.MARGIN + App.Grid.Cell.WIDTH) * columns) - App.Grid.Cell.MARGIN;
+      var contentHeight = ((App.Grid.Cell.MARGIN + App.Grid.Cell.HEIGHT) * rows) - App.Grid.Cell.MARGIN;
+
+      var offsetLeft = Math.floor((self.containerWidth() - contentWidth) / 2);
+      var offsetTop = Math.floor((self.containerHeight() - contentHeight) / 2);
 
       var x = (self.containerWidth() * page) + offsetLeft + ((App.Grid.Cell.WIDTH + App.Grid.Cell.MARGIN) * col);
-      var y = App.Grid.Margin.TOP + ((App.Grid.Cell.HEIGHT + App.Grid.Cell.MARGIN) * row);
+      var y = offsetTop + ((App.Grid.Cell.HEIGHT + App.Grid.Cell.MARGIN) * row);
 
       var element = self.dataSource.elementForIndex(index);
 
