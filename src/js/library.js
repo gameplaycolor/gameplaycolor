@@ -39,7 +39,6 @@
       var self = this;
       self.state = App.Library.State.UNINITIALIZED;
       self.items = [];
-      self.thumbnails = {};
       self.changeCallbacks = [];
       self.stateChangeCallbacks = [];
       self.drive = App.Drive.getInstance();
@@ -175,7 +174,7 @@
       });
 
       // Thumbnail.
-      self.thumbnail(index, function(thumbnail) {
+      self.thumbnailForIndex(index, function(thumbnail) {
         if (thumbnail !== undefined) {
           gameImg.attr("src", thumbnail);
           gameTitle.css('display', 'none');
@@ -271,12 +270,12 @@
 
       console.log("Fetching identifier '" + identifier + "'");
 
-      window.app.store.property(App.Controller.Domain.GAMES, identifier, function(data) {
+      self.store.property(App.Controller.Domain.GAMES, identifier, function(data) {
         if (data === undefined) {
           console.log("Fetching '" + identifier + "'");
           var file = self.fileForIdentifier(identifier);
           downloadFile(file, function(data) {
-            window.app.store.setProperty(App.Controller.Domain.GAMES, identifier, utilities.btoa(data));
+            self.store.setProperty(App.Controller.Domain.GAMES, identifier, utilities.btoa(data));
             delete self.fetches[identifier];
             deferred.resolve(data);
           });
@@ -296,14 +295,13 @@
       return "data:image/" + App.Library.THUMBNAIL_TYPE + ";base64," + data;
     },
 
-    thumbnail: function(index, callback) {
+    thumbnailForIndex: function(index, callback) {
       var self = this;
       var identifier = self.identifierForIndex(index);
 
       self.store.property(App.Controller.Domain.THUMBNAILS, identifier, function(value) {
         if (value !== undefined) {
-          self.thumbnails[identifier] = self.thumbnailDataUrl(value);
-          callback(self.thumbnails[identifier]);
+          callback(self.thumbnailDataUrl(value));
         } else {
 
           file = self.fileForIdentifier(identifier);
@@ -321,8 +319,8 @@
           console.log("Fetching " + title + " ...");
 
           self.drive.file(parent, title, {
-            'onStart': function() {},
-            'onSuccess': function(file) {
+            onStart: function() {},
+            onSuccess: function(file) {
               if (file !== undefined) {
                 downloadFileBase64(file, function(data) {
                   try {
@@ -330,14 +328,13 @@
                   } catch (e) {
                     console.log("Unable to store thumbnail.");
                   }
-                  self.thumbnails[identifier] = self.thumbnailDataUrl(data);
-                  callback(self.thumbnails[identifier]);
+                  callback(self.thumbnailDataUrl(value));
                 });
               } else {
                 callback();
               }
             },
-            'onError': function(error) {
+            onError: function(error) {
               callback();
             }
           });
@@ -350,41 +347,59 @@
       var self = this;
       var i;
 
-      // Create an associative array of identifiers which are currently in the store.
-      var deletedIdentifiers = {};
-      for (i = 0; i < self.items.length; i++) {
-        var identifier = self.items[i].id;
-        deletedIdentifiers[identifier] = true;
-      }
-
-      // Reset the update flag.
       self.updatePending = false;
 
-      // Update the files.
+      var identifiers = {};
+      $.each(self.items, function(index, value) {
+        identifiers[value.id] = true;
+      });
+
+      var deleted = identifiers;
+      var inserted = {};
+      var oldItems = self.items;
       self.items = [];
       for (i = 0; i < files.length; i++) {
         var file = files[i];
-        if (file.fileExtension === 'gb' ||
-            file.fileExtension === 'gbc') {
-          // Cache the file.
+        if (file.fileExtension === 'gb' || file.fileExtension === 'gbc') {
           self.items.push(file);
-          // Remove the item from the list of deleted identifiers.
-          delete deletedIdentifiers[file.id];
+          if (file.id in deleted) {
+            delete deleted[file.id];
+          } else {
+            inserted[file.id] = true;
+          }
         }
       }
       self.sort();
       self.save();
 
-      // Clean up the deleted items.
-      for (var key in deletedIdentifiers) {
-        if (deletedIdentifiers.hasOwnProperty(key)) {
-          localStorage.removeItem(key);
-          self.store.deleteProperty(key);
-        }
-      }
+      var deletedCount = 0;
+      $.each(deleted, function(key, value) {
+        self.store.deleteProperty(App.Controller.Domain.GAMES, key);
+        self.store.deleteProperty(App.Controller.Domain.THUMBNAILS, key);
+        deletedCount++;
+      });
+
+      var insertedCount = 0;
+      $.each(inserted, function(key, value) {
+        insertedCount++;
+      });
 
       self.setState(App.Library.State.READY);
-      self.notifyChange();
+
+      var renamedCount = 0;
+      if (oldItems.length == self.items.length) {
+        $.each(oldItems, function(index, oldItem) {
+          var newItem = self.items[index];
+          if (oldItem.title != newItem.title) {
+            renamedCount++;
+          }
+        });
+      }
+
+      if (deletedCount > 0 || insertedCount > 0 || renamedCount > 0) {
+        self.notifyChange();
+      }
+
     }
 
   });
