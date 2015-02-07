@@ -779,7 +779,7 @@ body
 }
 
 /* iPhone 6: Landscape */
-@media only screen and (min-width: 667px) {
+@media only screen and (min-width: 667px) and (max-width: 1023px) {
 
   #element-screen
   {
