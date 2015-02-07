@@ -181,10 +181,6 @@
       element.css('width', App.Grid.Cell.WIDTH);
 
       self.items.push(details);
-
-      // Grey out ROMs which are only available online.
-      if (window.navigator.onLine === false) {
-      }
       
       self.content.append(element);
       self.count += 1;

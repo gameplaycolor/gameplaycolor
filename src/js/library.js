@@ -197,8 +197,7 @@
       self.store.hasProperty(App.Controller.Domain.GAMES, identifier).then(function(found) {
         if (found) {
           self.callback(identifier);
-        } else {
-
+        } else if (window.navigator.onLine === true) {
           var spinner;
           if (element.spinner === false) {
             var opts = {
@@ -210,7 +209,6 @@
             element.append(spinnerElement);
             element.spinner = true;
           }
-
           self.fetch(identifier).then(function(data) {
             console.log("Received identifier '" + identifier + "'");
             element.addClass("downloaded");
