@@ -36,17 +36,17 @@
       </style>
       <script>
 
-        var items = [
-          { name: "iPhone 6", width: 750, height: 1294, scale: 2 },
-          { name: "iPhone 5", width: 640, height: 1136, scale: 2 },
-          { name: "iPhone 6 Plus", width: 1242, height: 2208, scale: 3 },
-          { name: "iPad", width: 1536, height: 2048, scale: 2 }
-        ];
-
         var orientation = {
-          PORTRAIT: 0,
-          LANDSCAPE: 1
+          PORTRAIT: 1,
+          LANDSCAPE: 2
         };
+
+        var items = [
+          { name: "iPhone 6", width: 750, height: 1334, scale: 2, status: orientation.PORTRAIT },
+          { name: "iPhone 5", width: 640, height: 1136, scale: 2, status: orientation.PORTRAIT },
+          { name: "iPhone 6 Plus", width: 1242, height: 2208, scale: 3, status: orientation.PORTRAIT },
+          { name: "iPad", width: 1536, height: 2048, scale: 2, status: orientation.PORTRAIT | orientation.LANDSCAPE }
+        ];
 
         function init() {
           for (var i = 0; i < items.length; i++) {
@@ -90,8 +90,15 @@
             height = details.width;
           }
 
+          var status = details.status & or;
+          if (status > 0) {
+            height = height - (20 * details.scale);
+          }
+
           width = Math.floor(width / details.scale);
           height = Math.floor(height / details.scale);
+
+          console.log("Device: (" + (width * details.scale) + ", " + (height * details.scale) + ")");
 
           device.style.width = width;
           device.style.height = height;
@@ -102,7 +109,10 @@
           var keyCode = event.keyCode - 49;
           if (keyCode >= 0 && keyCode < (items.length * 2)) {
             var index = Math.floor(keyCode / 2);
-            var or = keyCode % 2;
+            var or = orientation.PORTRAIT;
+            if ((keyCode % 2) > 0) {
+              or = orientation.LANDSCAPE;
+            }
             var details = items[index];
             setSize(details, or);
           }
