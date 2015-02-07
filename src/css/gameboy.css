@@ -126,8 +126,31 @@ body
 
 .button-option-group
 {
-  display: inline-block;
-  -webkit-flex-grow: 1;
+  width: 60px;
+}
+
+.left
+{
+  position: absolute;
+  left: 0;
+}
+
+.right
+{
+  position: absolute;
+  right: 0;
+}
+
+.top
+{
+  position: absolute;
+  top: 0;
+}
+
+.bottom
+{
+  position: absolute;
+  bottom: 0;
 }
 
 .button-option
@@ -170,11 +193,9 @@ body
 #group-options
 {
   position: relative;
-  width: 160px;
+  width: 140px;
   height: 50px;
-  background-size: 125px 50px;
   margin: auto;
-  display: -webkit-flex;
 }
 
 #control-a
@@ -774,6 +795,11 @@ body
   #element-branding
   {
     display: none;
+  }
+
+  #group-options
+  {
+    width: 500px;
   }
 
 }
