@@ -620,15 +620,224 @@ body
 #LCD-loading { background-image: url(../images/loading.png); }
 #LCD-idle { background-image: url(../images/idle.png); }
 
-#control-dpad.sprite-pad-default   { background-image: url(../images/pad.png); }
-#control-dpad.sprite-pad-up        { background-image: url(../images/pad.png); }
-#control-dpad.sprite-pad-upright   { background-image: url(../images/pad.png); }
-#control-dpad.sprite-pad-right     { background-image: url(../images/pad.png); }
-#control-dpad.sprite-pad-downright { background-image: url(../images/pad.png); }
-#control-dpad.sprite-pad-down      { background-image: url(../images/pad.png); }
-#control-dpad.sprite-pad-downleft  { background-image: url(../images/pad.png); }
-#control-dpad.sprite-pad-left      { background-image: url(../images/pad.png); }
-#control-dpad.sprite-pad-upleft    { background-image: url(../images/pad.png); }
+/* D-Pad */
+
+.dpad {
+    width: 124px;
+    height: 124px;
+    position: relative;
+}
+.dpad > .element {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background-color: blue;
+    border: 2px solid black;
+    border-top: 1px solid black;
+}
+.dpad > .top {
+    background-image: -webkit-linear-gradient(top, #525252, #383838);
+}
+.dpad > .middle {
+    background-image: -webkit-linear-gradient(top, #383838, #1C1C1C);
+}
+.dpad > .bottom {
+    background-image: -webkit-linear-gradient(top, #1C1C1C, #020202);
+}
+.dpad > .up {
+    top: 0;
+    left: 40px;
+    border-radius: 6px 6px 0 0;
+    border-bottom: 0;
+    box-shadow: 0 3px 7px 0 #1b1b1b, inset 0 3px 2px 0 #676767;
+}
+.dpad.pressed-up > .up {
+    box-shadow: 0 3px 4px 0 #1b1b1b, inset 0 0 2px -1px #676767;
+}
+.dpad.pressed-down > .up {
+    box-shadow: 0 3px 9px #1b1b1b, inset -1px 9px 2px -1px #676767;
+}
+.dpad.pressed-left > .up {
+    box-shadow: 1px 3px 7px 0 #1b1b1b, inset -2px 3px 2px 0 #676767;
+}
+.dpad.pressed-right > .up {
+    box-shadow: -1px 3px 7px 0 #1b1b1b, inset 2px 3px 2px 0 #676767;
+}
+.dpad > .down {
+    bottom: 0;
+    left: 40px;
+    border-radius: 0 0 6px 6px;
+    border-top: 0;
+    box-shadow: 0 3px 7px 0 #1b1b1b, inset 0 -2px 2px 0 #676767;
+}
+.dpad.pressed-up > .down {
+    box-shadow: 0 3px 11px 0 #1b1b1b, inset 0 -6px 2px 0 #676767;
+}
+.dpad.pressed-down > .down {
+    box-shadow: 0 0 7px 0 #1b1b1b, inset 0 0 2px 0 #676767;
+}
+.dpad.pressed-left > .down {
+    box-shadow: 1px 3px 7px 0 #1b1b1b, inset -2px -2px 2px 0 #676767;
+}
+.dpad.pressed-right > .down {
+    box-shadow: -1px 3px 7px 0 #1b1b1b, inset 2px -2px 2px 0 #676767;
+}
+.dpad > .left {
+    top: 40px;
+    left: 0;
+    border-radius: 12px 0 0 12px;
+    border-right: 0;
+    box-shadow: 0 3px 7px 0 #1b1b1b, inset 1px 3px 2px -1px #676767;
+}
+.dpad.pressed-up > .left {
+    box-shadow: 0 3px 9px 0 #1b1b1b, inset 1px -2px 2px -1px #676767;
+}
+.dpad.pressed-down > .left {
+    box-shadow: 0 3px 4px 0 #1b1b1b, inset 1px 5px 2px -1px #676767;
+}
+.dpad.pressed-left > .left {
+    box-shadow: 2px 1px 7px 0 #1b1b1b, inset 0 3px 1px -1px #676767;
+}
+.dpad.pressed-right > .left {
+    box-shadow: 2px 3px 7px 0 #1b1b1b, inset 5px 3px 2px -1px #676767;
+    width: 42px;
+}
+.dpad > .right {
+    top: 40px;
+    right: 0;
+    border-radius: 0 12px 12px 0;
+    border-left: 0;
+    box-shadow: 0 3px 7px #1b1b1b, inset -1px 3px 2px -1px #676767;
+}
+.dpad.pressed-up > .right {
+    box-shadow: 0 3px 9px #1b1b1b, inset -1px -2px 2px -1px #676767;
+}
+.dpad.pressed-down > .right {
+    box-shadow: 0 3px 4px #1b1b1b, inset -1px 5px 2px -1px #676767;
+}
+.dpad.pressed-left > .right {
+    box-shadow: -2px 3px 7px #1b1b1b, inset -5px 3px 1px -1px #676767;
+    width: 42px;
+}
+.dpad.pressed-right > .right {
+    box-shadow: -2px 1px 7px #1b1b1b, inset 0 3px 2px -1px #676767;
+
+}
+.dpad > .arrow:before {
+    position: absolute;
+    content:"";
+    left: 0;
+    top: 0;
+    opacity: 0.2;
+    text-shadow: 0 1px #777;
+    color: #000;
+    font-size: 20px;
+    line-height: 44px;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+.dpad > .up:before {
+    content:"\25B2";
+}
+.dpad.pressed-up > .up:before {
+    top: -2px;
+}
+.dpad.pressed-down > .up:before {
+    top: 2px;
+}
+.dpad.pressed-left > .up:before {
+    left: -1px;
+}
+.dpad.pressed-right > .up:before {
+    left: 1px;
+}
+.dpad > .down:before {
+    content:"\25BC";
+}
+.dpad.pressed-up > .down:before {
+    top: -2px;
+    text-shadow: 0 1px #aaa;
+}
+.dpad.pressed-down > .down:before {
+    top: 2px;
+}
+.dpad.pressed-left > .down:before {
+    left: -1px;
+}
+.dpad.pressed-right > .down:before {
+    left: 1px;
+}
+.dpad > .left:before {
+    content:"\25C0";
+}
+.dpad.pressed-up > .left:before {
+    top: -1px;
+}
+.dpad.pressed-down > .left:before {
+    top: 1px;
+}
+.dpad.pressed-left > .left:before {
+    left: -2px;
+}
+.dpad.pressed-right > .left:before {
+    left: 2px;
+}
+.dpad > .right:before {
+    content:"\25B6";
+}
+.dpad.pressed-up > .right:before {
+    top: -1px;
+}
+.dpad.pressed-down > .right:before {
+    top: 1px;
+}
+.dpad.pressed-left > .right:before {
+    left: -2px;
+}
+.dpad.pressed-right > .right:before {
+    left: 2px;
+}
+.dpad > .center {
+    top: 33%;
+    left: 40px;
+    border: 0;
+    width: 42px;
+    height: 42px;
+}
+.dpad > .center:before {
+    position: absolute;
+    height: 24px;
+    width: 24px;
+    content:"";
+    border-radius: 100%;
+    top: 8px;
+    left: 8px;
+    background-image: -webkit-linear-gradient(top, #000, #888);
+    box-shadow: 0 2px 0 #ccc;
+    opacity: 0.2;
+}
+.dpad.pressed-left > .center {
+    width: 40px;
+}
+.dpad.pressed-right > .center {
+    width: 40px;
+    left: 42px;
+}
+.dpad.pressed-up > .center:before {
+    top: 7px;
+}
+.dpad.pressed-down > .center:before {
+    top: 9px;
+}
+.dpad.pressed-left > .center:before {
+    left: 7px;
+}
+.dpad.pressed-right > .center:before {
+    left: 9px;
+}
+
+/* Branding */
 
 #element-branding
 {

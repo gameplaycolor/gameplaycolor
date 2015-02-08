@@ -216,8 +216,10 @@
         self.up = state;
         if (state) {
           self.action("touchDownUp");
+          self.element.addClass("pressed-up");
         } else {
           self.action("touchUpUp");
+          self.element.removeClass("pressed-up");
         }
       }
     },
@@ -228,8 +230,10 @@
         self.down = state;
         if (state) {
           self.action("touchDownDown");
+          self.element.addClass("pressed-down");
         } else {
           self.action("touchUpDown");
+          self.element.removeClass("pressed-down");
         }
       }
     },
@@ -240,8 +244,10 @@
         self.left = state;
         if (state) {
           self.action("touchDownLeft");
+          self.element.addClass("pressed-left");
         } else {
           self.action("touchUpLeft");
+          self.element.removeClass("pressed-left");
         }
       }
     },
@@ -252,8 +258,10 @@
         self.right = state;
         if (state) {
           self.action("touchDownRight");
+          self.element.addClass("pressed-right");
         } else {
           self.action("touchUpRight");
+          self.element.removeClass("pressed-right");
         }
       }
     },
