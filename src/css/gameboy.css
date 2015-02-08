@@ -636,13 +636,13 @@ body
     border-top: 1px solid black;
 }
 .dpad > .top {
-    background-image: -webkit-linear-gradient(top, #525252, #383838);
+    background-image: -webkit-linear-gradient(top, #2D2D2D, #1E1E1E);
 }
 .dpad > .middle {
-    background-image: -webkit-linear-gradient(top, #383838, #1C1C1C);
+    background-image: -webkit-linear-gradient(top, #1E1E1E, #0A0A0A);
 }
 .dpad > .bottom {
-    background-image: -webkit-linear-gradient(top, #1C1C1C, #020202);
+    background-image: -webkit-linear-gradient(top, #0A0A0A, #000000);
 }
 .dpad > .up {
     top: 0;
