@@ -249,7 +249,7 @@ body
   opacity: 0.6;
 }
 
-#button-done::after
+#button-done:after
 {
   content: " >";
 }
