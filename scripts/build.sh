@@ -8,6 +8,16 @@ function append() {
   echo "" >> "$manifest"
 }
 
+function minify() {
+    all_contents=""
+    for var in "$@"
+    do
+        contents=$(cat "$var")
+        all_contents="$all_contents $contents"
+    done
+    echo "$all_contents" | jsmin
+}
+
 script_directory=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 root_directory="$script_directory/.."
 source_directory="$root_directory/src"
@@ -20,16 +30,21 @@ fi
 
 pushd "$source_directory" > /dev/null
 
+# JavaScript.
+javascript=$(minify js/*.js)
+echo "$javascript"
+
+# Manifest.
 version=$(date +%s)
 append "CACHE MANIFEST"
 append "# Version: $version"
 append "CACHE:"
 append *.html
-append "# Styles" **/*.css
-append "# Application" js/*.js
-append "# JavaScript GameBoy Color Emulator" gbo/*.js gbo/**/*.js
-append "# Images" images/*.png
-append "# Defaults" defaults/*.png
+append **/*.css
+append js/*.js
+append gbo/*.js gbo/**/*.js
+append images/*.png
+append defaults/*.png
 
 append "NETWORK:"
 append "*"
