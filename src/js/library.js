@@ -52,15 +52,15 @@
       self.updatePending = false;
 
       // Handle Google Drive state changes to update our state.
-      self.drive.onStateChange(function(state) {
-        if (state === App.Drive.State.UNAUTHORIZED) {
-          self.setState(App.Library.State.UNAUTHORIZED);
-        } else if (state === App.Drive.State.READY) {
-          self.setState(App.Library.State.READY);
-        } else {
-          self.setState(App.Library.State.LOADING);
-        }
-      });
+      // self.drive.onStateChange(function(state) {
+      //   if (state === App.Drive.State.UNAUTHORIZED) {
+      //     self.setState(App.Library.State.UNAUTHORIZED);
+      //   } else if (state === App.Drive.State.READY) {
+      //     self.setState(App.Library.State.READY);
+      //   } else {
+      //     self.setState(App.Library.State.LOADING);
+      //   }
+      // });
       
       // Load the library.
       var library = localStorage.getItem('library');
@@ -69,6 +69,10 @@
       }
 
       self.sort();
+ 
+      self.drive.checkAuthentication().fail(function() {
+        self.drive.signIn();
+      });
       
     },
 

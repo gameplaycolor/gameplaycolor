@@ -33,12 +33,6 @@
       self.element = $('#screen-games');
       self.empty = $('#screen-empty');
       self.loading = $('#screen-loading');
-      self.authorize = new App.Controls.Button('#screen-authorize', {
-        'touchUp': function() {
-          window.tracker.track('games/authorize');
-          self.library.authorize();
-        }
-      });
       self.grid = new App.Grid(device);
       self.items = [];
 
