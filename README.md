@@ -1,8 +1,8 @@
-# Game Play
+# Game Play Color
 
-A JavaScript Game Boy emulator for iPhone 5, based on the [JSGB](http://www.codebase.es/jsgb/) emulator core.
+A JavaScript Game Boy Color emulator for iPhone 5, based on the [JSGB](http://www.codebase.es/jsgb/) emulator core.
 
-If you just want to play Game Play, you can find it online at [http://inseven.co.uk/apps/gameplay](http://inseven.co.uk/apps/gameplay).
+If you just want to play Game Play Color, you can find it online at [http://inseven.co.uk/apps/gameplay](http://inseven.co.uk/apps/gameplay).
 
 ## Screenshots
 
