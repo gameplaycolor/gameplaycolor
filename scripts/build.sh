@@ -8,15 +8,7 @@ function append() {
   echo "" >> "$manifest"
 }
 
-function minify() {
-    all_contents=""
-    for var in "$@"
-    do
-        contents=$(cat "$var")
-        all_contents="$all_contents $contents"
-    done
-    echo "$all_contents" | jsmin
-}
+
 
 script_directory=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 root_directory="$script_directory/.."
@@ -30,9 +22,17 @@ fi
 
 pushd "$source_directory" > /dev/null
 
-# JavaScript.
-javascript=$(minify js/*.js)
-echo "$javascript"
+# HTML.
+cat index.html | grep -B1000000 "<\!-- MINIFY JS START -->" > index.min.html
+echo "<script>" >> index.min.html
+
+for var in js/spin.min.js js/utilities.js js/app.js js/logging.js js/control.js js/console.js js/library.js js/games.js js/pad.js js/button.js js/gameboy.js js/grid.js js/store.js js/touchlistener.js js/gesturerecognizer.js js/device.js js/tracker.js js/drive.js
+do
+    cat "$var" | jsmin >> index.min.html
+done
+echo "$javascript" >> index.min.html
+echo "</script>" >> index.min.html
+cat index.html | grep -A1000000 "<\!-- MINIFY JS END -->" >> index.min.html
 
 # Manifest.
 version=$(date +%s)
