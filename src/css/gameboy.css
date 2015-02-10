@@ -261,15 +261,27 @@ body
   text-align: right;
   cursor: pointer;
   font-size: 16px;
-  padding-right: 12px;
+  padding-right: 34px;
   color: #d9d9d9;
   text-shadow: 0 1px 0 #4a4a4a;
   opacity: 0.6;
 }
-
-#button-done:after
-{
-  content: " >";
+#button-done:after, #button-done:before {
+  content: "";
+  width: 16px;
+  height: 3px;
+  background-color: #d9d9d9;
+  position: absolute;
+  right: 8px;
+  top: 0;
+}
+#button-done:after {
+    -webkit-transform:rotate(45deg);
+    top: 15.75px;
+}
+#button-done:before {
+    -webkit-transform:rotate(-45deg);
+    top: 25.25px;
 }
 
 .button-done.pressed
