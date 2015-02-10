@@ -578,15 +578,6 @@ body
   text-align: center;
 }
 
-.icon
-{
-  width: 150px;
-  height: 150px;
-  margin: auto;
-  margin-bottom: 20px;
-  background-size: 150px 150px;
-}
-
 #instructions a
 {
   color: #666;
@@ -614,8 +605,6 @@ body
   text-transform: uppercase;
   font-size: 11px;
 }
-
-.icon { background-image: url(../images/showcase.png); }
 
 #LCD-loading { background-image: url(../images/loading.png); }
 #LCD-idle { background-image: url(../images/idle.png); }
