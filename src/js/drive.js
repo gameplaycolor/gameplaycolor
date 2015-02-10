@@ -119,11 +119,15 @@
 
       signIn: function() {
         var self = this;
-        var href = 'https://accounts.google.com/o/oauth2/auth' +
-                      '?redirect_uri=' + encodeURIComponent(self.redirectURI) +
-                      '&response_type=code&client_id=' + self.clientID +
-                      '&scope=' + self.scopes;
-        window.location.href = href;
+        self.loadSDK().then(function() {
+          var href = 'https://accounts.google.com/o/oauth2/auth' +
+                        '?redirect_uri=' + encodeURIComponent(self.redirectURI) +
+                        '&response_type=code&client_id=' + self.clientID +
+                        '&scope=' + self.scopes;
+          window.location.href = href;
+        }).fail(function() {
+          console.log("Unable to navigate to Google sign-in page");
+        });
       },
 
       authorize: function() {

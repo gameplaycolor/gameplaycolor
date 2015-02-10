@@ -123,9 +123,12 @@
 
   $(document).ready(function() {
 
-    var device = new App.Device();
-    window.tracker = new App.Tracker();
-    window.app = new App.Controller(device);
+    var iOS = (navigator.userAgent.indexOf("iPhone OS") !== -1);
+    if (window.navigator.standalone === true || !iOS) {
+      var device = new App.Device();
+      window.tracker = new App.Tracker();
+      window.app = new App.Controller(device);
+    }
 
   });
 

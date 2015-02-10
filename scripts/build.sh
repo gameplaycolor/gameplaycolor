@@ -45,6 +45,7 @@ append js/*.js
 append gbo/*.js gbo/**/*.js
 append images/*.png
 append defaults/*.png
+append settings.json
 
 append "NETWORK:"
 append "*"
