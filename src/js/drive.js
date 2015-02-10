@@ -194,7 +194,7 @@
               'method': 'GET',
               'params': {
                 'maxResults': '1',
-                'q': "trashed = false and '" + parent + "' in parents and title = '" + title + "'"
+                'q': "trashed = false and '" + parent + "' in parents and title = '" + title.replace("'", "\\'") + "'"
               }
             });
             retrievePageOfFiles(initialRequest);
