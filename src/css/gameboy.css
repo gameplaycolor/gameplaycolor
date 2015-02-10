@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
- 
+
 body
 {
   padding: 0;
@@ -401,6 +401,12 @@ body
   vertical-align: middle; 
   text-align: center; 
   background-color: #999;
+  opacity: 0.2;
+}
+
+.downloaded > .game-title
+{
+  opacity: 1.0;
 }
 
 .game-thumbnail
