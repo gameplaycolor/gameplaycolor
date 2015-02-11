@@ -44,7 +44,6 @@
         return;
       }
       $(document).keydown(function(event) {
-        console.log("Key Down: " + event.which);
         if (event.which == keycode) {
           self.setPressed(true);
           self.touchDown();
@@ -52,7 +51,6 @@
         }
       });
       $(document).keyup(function(event) {
-        console.log("Key Up: " + event.which);
         if (event.which == keycode) {
           self.touchUpInside();
           self.touchUp();
