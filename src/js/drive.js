@@ -185,11 +185,8 @@
               "grant_type": "authorization_code",
               "state": "100000"
             },
-            success: function(data, textStatus, jqXHR) {
-              console.log("Token:");
-              console.log(data);
-              console.log(textStatus);
-              console.log(jqXHR);
+            success: function(token, textStatus, jqXHR) {
+              gapi.auth.setToken(token);
               deferred.resolve();
             },
             error: function(jqXHR, textStatus, error) {
