@@ -6,7 +6,7 @@ If you just want to play Game Play Color, you can find it online at [http://inse
 
 ## Screenshots
 
-![Console](previews/console.png)
+![Console](/previews/console.png)
 ![Games](http://inseven.co.uk/images/gameplay/games.png)
 
 ## Roadmap
