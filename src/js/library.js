@@ -222,6 +222,20 @@
         }
       });
     },
+
+    didLongPressItem: function(index, element) {
+      var self = this;
+      var identifier = self.identifierForIndex(index);
+      var title = self.titleForIndex(index);
+      self.store.hasProperty(App.Controller.Domain.GAMES, identifier).then(function(found) {
+        if (found) {
+          if (confirm("Remove '" + title + "' from your device?")) {
+            self.store.deleteProperty(App.Controller.Domain.GAMES, identifier);
+            element.removeClass("downloaded");
+          }
+        }
+      });
+    },
     
     update: function() {
       var self = this;

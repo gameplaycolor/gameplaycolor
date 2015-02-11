@@ -67,7 +67,8 @@
       };
 
       self.delegate = {
-        'didSelectItemForRow': function(index, element) {}
+        didSelectItemForRow: function(index, element) {},
+        didLongPressItem: function(index, element) {}
       };
 
       self.touchListener = new App.TouchListener(self.identifier, self);
@@ -295,8 +296,27 @@
         self.touchDidMove = false;
         self.touchCount = 1;
 
+        var cancelToken = { cancelled: false };
+        setTimeout(function() {
+          if (cancelToken.cancelled === false) {
+            var index = self.itemForPosition(position);
+            if (index !== undefined) {
+              var element = self.elementForIndex(index);
+              self.touchCount = 0;
+              self.delegate.didLongPressItem(index, element);
+            }
+          }
+        }, 1000);
+        self.longPressCancelToken = cancelToken;
+
       } else if (state === App.Control.Touch.MOVE) {
         if (self.touchCount > 0) {
+
+          // Cancel any long-press timeout.
+          if (self.longPressCancelToken !== undefined) {
+            self.longPressCancelToken.cancelled = true;
+            self.longPressCancelToken = undefined;
+          }
 
           // Update the move status.
           self.touchDidMove = self.touchDidMove | self.touchIsMove(position);
@@ -307,6 +327,12 @@
         }
       } else if (state === App.Control.Touch.END) {
         if (self.touchCount > 0) {
+
+          // Cancel any long-press timeout.
+          if (self.longPressCancelToken !== undefined) {
+            self.longPressCancelToken.cancelled = true;
+            self.longPressCancelToken = undefined;
+          }
 
           // Update the move status.
           self.touchDidMove = self.touchDidMove | self.touchIsMove(position);
