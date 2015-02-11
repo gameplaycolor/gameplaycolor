@@ -26,16 +26,11 @@ function loadSaveStateContext(context) {
 	saveStateContext = context;
 	saveState = {};
 
-	console.log("Pre-loading save state for '" + saveStateContext + "'");
-
 	var deferred = new jQuery.Deferred();
 	window.app.store.propertiesForDomain(saveStateContext, function(properties) {
 
-		console.log("Loaded save state for '" + saveStateContext + "'");
-
     for (var key in properties) {
       if (properties.hasOwnProperty(key)) {
-        console.log("Found Key: " + key);
         saveState[key] = properties[key];
       }
     }
