@@ -315,69 +315,69 @@
           }
 
         });
+      },
+
+      downloadFileBase64: function(file, callback) {
+        var self = this;
+        if (file.downloadUrl) {
+          var accessToken = gapi.auth.getToken().access_token;
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', file.downloadUrl);
+          xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+          xhr.responseType = 'arraybuffer';
+          xhr.onload = function(e) {
+            var uInt8Array = new Uint8Array(xhr.response);
+            var i = uInt8Array.length;
+            var binaryString = new Array(i);
+            while (i--) {
+              binaryString[i] = String.fromCharCode(uInt8Array[i]);
+            }
+            var data = binaryString.join('');
+            var base64 = window.btoa(data);
+            callback(base64);
+          };
+          xhr.onerror = function() {
+            callback(null);
+          };
+          xhr.send();
+        } else {
+          callback(null);
+        }
+      },
+
+      /**
+       * Download a file's content.
+       *
+       * @param {File} file Drive File instance.
+       * @param {Function} callback Function to call when the request is complete.
+       */
+      downloadFile: function(file, callback) {
+        var self = this;
+        if (file.downloadUrl) {
+          var accessToken = gapi.auth.getToken().access_token;
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', file.downloadUrl);
+          xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+          xhr.overrideMimeType('text/plain; charset=x-user-defined');
+          xhr.onload = function() {
+            callback(xhr.responseText);
+          };
+          xhr.onerror = function() {
+            callback(null);
+          };
+          xhr.send();
+        } else {
+          callback(null);
+        }
       }
+
 
   });
 
 })(jQuery);
 
-// Called when the client library is loaded to start the auth flow.
 function handleClientLoad() {
   setTimeout(function() {
     App.Drive.getInstance().sdk.resolve();
   }, 0);
 }
-
-function downloadFileBase64(file, callback) {
-  if (file.downloadUrl) {
-    var accessToken = gapi.auth.getToken().access_token;
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', file.downloadUrl);
-    xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
-    xhr.responseType = 'arraybuffer';
-    xhr.onload = function(e) {
-      var uInt8Array = new Uint8Array(xhr.response);
-      var i = uInt8Array.length;
-      var binaryString = new Array(i);
-      while (i--) {
-        binaryString[i] = String.fromCharCode(uInt8Array[i]);
-      }
-      var data = binaryString.join('');
-      var base64 = window.btoa(data);
-      callback(base64);
-    };
-    xhr.onerror = function() {
-      callback(null);
-    };
-    xhr.send();
-  } else {
-    callback(null);
-  }
-}
-
-/**
- * Download a file's content.
- *
- * @param {File} file Drive File instance.
- * @param {Function} callback Function to call when the request is complete.
- */
-function downloadFile(file, callback) {
-  if (file.downloadUrl) {
-    var accessToken = gapi.auth.getToken().access_token;
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', file.downloadUrl);
-    xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
-    xhr.overrideMimeType('text/plain; charset=x-user-defined');
-    xhr.onload = function() {
-      callback(xhr.responseText);
-    };
-    xhr.onerror = function() {
-      callback(null);
-    };
-    xhr.send();
-  } else {
-    callback(null);
-  }
-}
-
-

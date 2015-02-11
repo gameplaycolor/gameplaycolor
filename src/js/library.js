@@ -276,7 +276,7 @@
         if (data === undefined) {
           console.log("Fetching '" + identifier + "'");
           var file = self.fileForIdentifier(identifier);
-          downloadFile(file, function(data) {
+          self.drive.downloadFile(file, function(data) {
             self.store.setProperty(App.Controller.Domain.GAMES, identifier, utilities.btoa(data));
             delete self.fetches[identifier];
             deferred.resolve(data);
@@ -323,7 +323,7 @@
           onStart: function() {},
           onSuccess: function(file) {
             if (file !== undefined) {
-              downloadFileBase64(file, function(data) {
+              self.drive.downloadFileBase64(file, function(data) {
                 try {
                   self.store.setProperty(App.Controller.Domain.THUMBNAILS, identifier, data);
                 } catch (e) {
