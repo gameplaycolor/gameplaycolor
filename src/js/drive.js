@@ -49,6 +49,7 @@
         self.state = App.Drive.State.UNINITIALIZED;
         self.queue = [];
         self.stateChangeCallbacks = [];
+        self.logging = new App.Logging(App.Logging.Level.INFO, "drive");
       },
 
       onStateChange: function(callback) {
@@ -83,6 +84,7 @@
         self.sdk = deferred;
 
         if (navigator.onLine) {
+          self.logging.info("Loading settings");
           jQuery.getJSON("settings.json", function(data) {
             self.clientID = data["client_id"];
             self.scopes = data["scopes"];
@@ -112,7 +114,7 @@
                         '&scope=' + self.scopes;
           window.location.href = href;
         }).fail(function() {
-          console.log("Unable to navigate to Google sign-in page");
+          self.logger.error("Unable to navigate to Google sign-in page");
         });
       },
 

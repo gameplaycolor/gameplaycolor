@@ -35,7 +35,7 @@
       self.name = name;
       self.database = undefined;
       self.debug = false;
-      self.logging = new App.Logging(App.Logging.Level.WARNING);
+      self.logging = new App.Logging(App.Logging.Level.WARNING, "store");
       
       try {
         if (!window.openDatabase) {

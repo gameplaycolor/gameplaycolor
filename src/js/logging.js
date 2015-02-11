@@ -18,8 +18,8 @@
 
 (function($) {
 
-  App.Logging = function(level) {
-    this.init(level);
+  App.Logging = function(level, tag) {
+    this.init(level, tag);
   };
 
   App.Logging.Level = {
@@ -32,15 +32,20 @@
 
   jQuery.extend(App.Logging.prototype, {
 
-    init: function(level) {
+    init: function(level, tag) {
       var self = this;
       self.level = level;
+      self.tag = tag;
     },
 
     log: function(level, message) {
       var self = this;
       if (level >= self.level) {
-        console.log(message);
+        if (self.tag !== undefined) {
+          console.log(self.tag + ": " + message);
+        } else {
+          console.log(message);
+        }
       }
     },
 
