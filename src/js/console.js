@@ -81,81 +81,54 @@
           }
         });
 
-        mapping = {
-          13: Gameboy.Key.START,
-          16: Gameboy.Key.SELECT,
-          37: Gameboy.Key.LEFT,
-          38: Gameboy.Key.UP,
-          39: Gameboy.Key.RIGHT,
-          40: Gameboy.Key.DOWN,
-          88: Gameboy.Key.A,
-          90: Gameboy.Key.B
-        };
-
-        // Keyboard events.
-        $(document).keydown(function(event) {
-          keycode = mapping[event.which];
-          if (keycode) {
-            self.gameBoy.keyDown(keycode);
-            event.preventDefault();
-          }
-        });
-        $(document).keyup(function(event) {
-          keycode = mapping[event.which];
-          if (keycode) {
-            self.gameBoy.keyUp(keycode);
-            event.preventDefault();
-          }
-        });
-
         // D-Pad.
         self.pad = new App.Controls.Pad('#dpad', {
-          'touchDownLeft'  : function() { self.gameBoy.keyDown(Gameboy.Key.LEFT); },
-          'touchUpLeft'    : function() { self.gameBoy.keyUp(Gameboy.Key.LEFT); },
-          'touchDownRight' : function() { self.gameBoy.keyDown(Gameboy.Key.RIGHT); },
-          'touchUpRight'   : function() { self.gameBoy.keyUp(Gameboy.Key.RIGHT); },
-          'touchDownUp'    : function() { self.gameBoy.keyDown(Gameboy.Key.UP); },
-          'touchUpUp'      : function() { self.gameBoy.keyUp(Gameboy.Key.UP); },
-          'touchDownDown'  : function() { self.gameBoy.keyDown(Gameboy.Key.DOWN); },
-          'touchUpDown'    : function() { self.gameBoy.keyUp(Gameboy.Key.DOWN); }
+          touchDownLeft  : function() { self.gameBoy.keyDown(Gameboy.Key.LEFT); },
+          touchUpLeft    : function() { self.gameBoy.keyUp(Gameboy.Key.LEFT); },
+          touchDownRight : function() { self.gameBoy.keyDown(Gameboy.Key.RIGHT); },
+          touchUpRight   : function() { self.gameBoy.keyUp(Gameboy.Key.RIGHT); },
+          touchDownUp    : function() { self.gameBoy.keyDown(Gameboy.Key.UP); },
+          touchUpUp      : function() { self.gameBoy.keyUp(Gameboy.Key.UP); },
+          touchDownDown  : function() { self.gameBoy.keyDown(Gameboy.Key.DOWN); },
+          touchUpDown    : function() { self.gameBoy.keyUp(Gameboy.Key.DOWN); }
         });
         
         // A.
-        self.a = new App.Controls.Button('#control-a', { 'touchDown' : function() {
+        self.a = new App.Controls.Button('#control-a', { touchDown : function() {
           self.gameBoy.keyDown(Gameboy.Key.A);
-        }, 'touchUp': function() {
+        }, touchUp: function() {
           self.gameBoy.keyUp(Gameboy.Key.A);
-        }});
+        }}, 65 /* A */);
 
         // B.
-        self.b = new App.Controls.Button('#control-b', { 'touchDown' : function() {
+        self.b = new App.Controls.Button('#control-b', { touchDown : function() {
           self.gameBoy.keyDown(Gameboy.Key.B);
-        }, 'touchUp': function() {
+        }, touchUp: function() {
           self.gameBoy.keyUp(Gameboy.Key.B);
-        }});
+        }}, 83 /* S */);
 
         // Start.
-        self.start = new App.Controls.Button('#control-start', { 'touchDown' : function() {
+        self.start = new App.Controls.Button('#control-start', { touchDown : function() {
           self.gameBoy.keyDown(Gameboy.Key.START);
-        }, 'touchUp': function() {
+        }, touchUp: function() {
           self.gameBoy.keyUp(Gameboy.Key.START);
-        }});
+        }}, 13 /* Return */);
 
         // Select.
-        self.select = new App.Controls.Button('#control-select', { 'touchDown' : function() {
+        self.select = new App.Controls.Button('#control-select', { touchDown : function() {
           self.gameBoy.keyDown(Gameboy.Key.SELECT);
-        }, 'touchUp': function() {
+        }, touchUp: function() {
           self.gameBoy.keyUp(Gameboy.Key.SELECT);
-        }});
+        }}, 16 /* Left Shift */);
 
         // Tapping the screen shows the game picker.
-        self.screen = new App.Controls.Button('#display', { 'touchUp': function() {
+        self.screen = new App.Controls.Button('#display', { touchUp: function() {
           window.tracker.track('games');
           self.hide();
         }});
 
         // Dismiss button.
-        self.done = new App.Controls.Button('#button-done', { 'touchUp': function() {
+        self.done = new App.Controls.Button('#button-done', { touchUp: function() {
           self.show();
         }});
 

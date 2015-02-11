@@ -102,27 +102,13 @@
         return deferred.promise();
       },
 
-      showAuthenticationFrame: function() {
-        var self = this;
-        var frame = $('<iframe />', {
-          name: 'authFrame',
-          id: 'authFrame',
-          src: 'authorize.html'
-        });
-        frame.addClass('authframe');
-        frame.appendTo('body');
-        frame.load(function() {
-          console.log("iFrame Redirected: " + frame.attr("src"));
-          var url = document.getElementById("authFrame").contentWindow.href;
-        });
-      },
-
       signIn: function() {
         var self = this;
         self.loadSDK().then(function() {
           var href = 'https://accounts.google.com/o/oauth2/auth' +
                         '?redirect_uri=' + encodeURIComponent(self.redirectURI) +
-                        '&response_type=code&client_id=' + self.clientID +
+                        '&response_type=code' +
+                        '&client_id=' + self.clientID +
                         '&scope=' + self.scopes;
           window.location.href = href;
         }).fail(function() {
@@ -140,7 +126,6 @@
         var deferred = jQuery.Deferred();
         self.deferredAuthentication = deferred;
         self.loadSDK().then(function() {
-          console.log("authorize");
           gapi.auth.authorize(
             {
               'client_id': self.clientID,
@@ -201,6 +186,10 @@
               "state": "100000"
             },
             success: function(data, textStatus, jqXHR) {
+              console.log("Token:");
+              console.log(data);
+              console.log(textStatus);
+              console.log(jqXHR);
               deferred.resolve();
             },
             error: function(jqXHR, textStatus, error) {

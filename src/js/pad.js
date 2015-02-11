@@ -51,6 +51,40 @@
       self.down  = false;
       self.left  = false;
       self.right = false;
+
+      $(document).keydown(function(event) {
+        var keycode = event.which;
+        if (keycode == 37) {
+          self.setLeft(true);
+          event.preventDefault();
+        } else if (keycode == 38) {
+          self.setUp(true);
+          event.preventDefault();
+        } else if (keycode == 39) {
+          self.setRight(true);
+          event.preventDefault();
+        } else if (keycode == 40) {
+          self.setDown(true);
+          event.preventDefault();
+        }
+      });
+      $(document).keyup(function(event) {
+        var keycode = event.which;
+        if (keycode == 37) {
+          self.setLeft(false);
+          event.preventDefault();
+        } else if (keycode == 38) {
+          self.setUp(false);
+          event.preventDefault();
+        } else if (keycode == 39) {
+          self.setRight(false);
+          event.preventDefault();
+        } else if (keycode == 40) {
+          self.setDown(false);
+          event.preventDefault();
+        }
+      });
+
     },
 
     width: function() {

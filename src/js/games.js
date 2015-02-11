@@ -39,7 +39,6 @@
       self.library.onStateChange(function(state) {
         if (state === App.Library.State.LOADING) {
           self.empty.fadeOut();
-          self.authorize.fadeOut();
           if (self.library.count() < 1) {
             self.loading.fadeIn();
           }
@@ -47,17 +46,14 @@
           window.tracker.track('games/unauthorized');
           self.empty.fadeOut();
           self.loading.fadeOut();
-          self.authorize.fadeIn();
         } else if (state === App.Library.State.UPDATING) {
           window.tracker.track('games/update');
           self.empty.fadeOut();
-          self.authorize.fadeOut();
           if (self.library.count() < 1) {
             self.loading.fadeIn();
           }
         } else {
           self.loading.fadeOut();
-          self.authorize.fadeOut();
           if (self.library.count() < 1) {
             self.empty.fadeIn();
           } else {

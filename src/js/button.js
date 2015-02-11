@@ -18,8 +18,9 @@
  
 (function($) {
 
-  App.Controls.Button = function(identifier, actions) {
+  App.Controls.Button = function(identifier, actions, keycode) {
     this.init(identifier);
+    this.setKeyHandler(keycode);
     this.actions = actions;
   };
 
@@ -37,12 +38,49 @@
       self.state = App.Controls.Button.State.UP;
     },
 
+    setKeyHandler: function(keycode) {
+      var self = this;
+      if (keycode === undefined) {
+        return;
+      }
+      $(document).keydown(function(event) {
+        console.log("Key Down: " + event.which);
+        if (event.which == keycode) {
+          self.setPressed(true);
+          self.touchDown();
+          event.preventDefault();
+        }
+      });
+      $(document).keyup(function(event) {
+        console.log("Key Up: " + event.which);
+        if (event.which == keycode) {
+          self.touchUpInside();
+          self.touchUp();
+          self.setPressed(false);
+          event.preventDefault();
+        }
+      });
+    },
+
+    setPressed: function(pressed) {
+      var self = this;
+      if (self.pressed === pressed) {
+        return;
+      }
+      if (pressed) {
+        self.element.addClass("pressed");
+      } else {
+        self.element.removeClass("pressed");
+      }
+      self.pressed = pressed;
+    },
+
     onTouchEvent: function(state, position, timestamp) {
       var self = this;
 
       switch(state) {
         case App.Control.Touch.START:
-          self.element.toggleClass("pressed");
+          self.setPressed(true);
           self.touchDown();
           break;
         case App.Control.Touch.MOVE:
@@ -57,7 +95,7 @@
             self.touchUpOutside();
           }
           self.touchUp();
-          self.element.toggleClass("pressed");
+          self.setPressed(false);
           break;
       }
     },
