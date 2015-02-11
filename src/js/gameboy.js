@@ -16,8 +16,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+ var gbologger = new App.Logging(App.Logging.Level.WARNING, "gbo");
+
 function cout(message, level) {
-  console.log(message);
+  gbologger.info(message);
 }
 
 function arrayToBase64(u8Arr) {

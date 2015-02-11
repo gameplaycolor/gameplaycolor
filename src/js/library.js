@@ -45,6 +45,7 @@
       self.store = store;
       self.fetches = {};
       self.callback = callback;
+      self.logging = new App.Logging(App.Logging.Level.WARNING, "library");
 
       // We use a separate flag to track updates internally as
       // we need to be able to schedule updates in many different states
@@ -211,7 +212,7 @@
             element.spinner = true;
           }
           self.fetch(identifier).then(function(data) {
-            console.log("Received identifier '" + identifier + "'");
+            self.logging.info("Received identifier '" + identifier + "'");
             element.addClass("downloaded");
             if (spinner !== undefined) {
               spinner.stop();
@@ -270,11 +271,11 @@
       var deferred = new jQuery.Deferred();
       self.fetches[identifier] = deferred;
 
-      console.log("Fetching identifier '" + identifier + "'");
+      self.logging.info("Fetching identifier '" + identifier + "'");
 
       self.store.property(App.Controller.Domain.GAMES, identifier, function(data) {
         if (data === undefined) {
-          console.log("Fetching '" + identifier + "'");
+          self.logging.info("Fetching '" + identifier + "'");
           var file = self.fileForIdentifier(identifier);
           self.drive.downloadFile(file, function(data) {
             self.store.setProperty(App.Controller.Domain.GAMES, identifier, utilities.btoa(data));
@@ -282,7 +283,7 @@
             deferred.resolve(data);
           });
         } else {
-          console.log("Using cached value for '" + identifier + "'");
+          self.logging.info("Using cached value for '" + identifier + "'");
           delete self.fetches[identifier];
           deferred.resolve(utilities.atob(data));
         }
@@ -317,7 +318,7 @@
         var parent = file.parents[0].id;
         var title = self.stripExtension(file.title) + "." + App.Library.THUMBNAIL_TYPE;
 
-        console.log("Fetching " + title + " ...");
+        self.logging.info("Fetching '" + title + "'' ...");
 
         self.drive.file(parent, title, {
           onStart: function() {},
@@ -327,7 +328,7 @@
                 try {
                   self.store.setProperty(App.Controller.Domain.THUMBNAILS, identifier, data);
                 } catch (e) {
-                  console.log("Unable to store thumbnail.");
+                  self.logging.error("Unable to store thumbnail.");
                 }
                 callback(self.thumbnailDataUrl(data));
               });
@@ -379,9 +380,9 @@
 
       var deletedCount = 0;
       $.each(deleted, function(key, value) {
-        console.log("Deleting game for " + key);
+        self.logging.info("Deleting game for " + key);
         self.store.deleteProperty(App.Controller.Domain.GAMES, key);
-        console.log("Deleting thumbnail for " + key);
+        self.logging.info("Deleting thumbnail for " + key);
         self.store.deleteProperty(App.Controller.Domain.THUMBNAILS, key);
         deletedCount++;
       });
@@ -393,7 +394,7 @@
 
       var renamedCount = 0;
       $.each(renamed, function(key, value) {
-        console.log("Deleting thumbnail for " + key);
+        self.logging.info("Deleting thumbnail for " + key);
         self.store.deleteProperty(App.Controller.Domain.THUMBNAILS, key);
         renamedCount++;
       });

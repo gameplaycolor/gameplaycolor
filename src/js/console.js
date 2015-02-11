@@ -53,7 +53,7 @@
       init: function(device, gameBoy, events, store) {
         var self = this;
         
-        self.logging = new App.Logging(App.Logging.Level.INFO);
+        self.logging = new App.Logging(App.Logging.Level.WARNING, "console");
         self.device = device;
         self.gameBoy = gameBoy;
         self.events = events;

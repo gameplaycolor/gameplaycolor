@@ -39,6 +39,7 @@
       var self = this;
       self.device = device;
       self.store = new App.Store('save-state');
+      self.logging = new App.Logging(App.Logging.Level.WARNING, "app");
 
       self.library = new App.Library(self.store, function(identifier) {
         self.gameBoy.clear();
@@ -95,9 +96,9 @@
     checkForUpdate: function() {
       var self = this;
       if (window.applicationCache !== undefined && window.applicationCache !== null) {
-        console.log("Checking for application update (status " + window.applicationCache.status + ")");
+        self.logging.info("Checking for application update (status " + window.applicationCache.status + ")");
         window.applicationCache.addEventListener('updateready', function(event) {
-          console.log("Application update received (status " + window.applicationCache.status + ")");
+          self.logging.info("Application update received (status " + window.applicationCache.status + ")");
           if (window.applicationCache.status != 4) return;
           alert("Update available.\nRelaunch the application to update.");
         });
