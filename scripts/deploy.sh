@@ -14,7 +14,7 @@ echo "Uploading to '$remote'..."
 export root=".."
 export build="$root/build"
 
-python "$root/scripts/minify" "$root" "$configuration"
+python "$root/scripts/build" "$root" "$configuration"
 
 rsync -avPe ssh \
     $build/*.html \
