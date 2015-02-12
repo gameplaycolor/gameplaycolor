@@ -60,6 +60,11 @@ def yuicompressor(contents, suffix):
   os.unlink(temp)
   return output
 
+def htmlcompressor(contents):
+  p = subprocess.Popen(['htmlcompressor'], stdout = subprocess.PIPE, stdin = subprocess.PIPE, stderr = subprocess.STDOUT)
+  output = p.communicate(input = contents)[0]
+  return output
+
 def main():
   parser = argparse.ArgumentParser(description = "Generate the minified Game Play HTML file")
   parser.add_argument("project", help = "root of the project")
@@ -97,9 +102,13 @@ def main():
   style = yuicompressor(style, '.css')
   append_style(html, style)
 
+  # minify
+  contents = lxml.html.tostring(html)
+  contents = htmlcompressor(contents)
+
   with open(output_file, 'w') as f:
     f.write("<!DOCTYPE html>\n");
-    f.write(lxml.html.tostring(html))
+    f.write(contents)
 
   # images
   copy_directory(images_dir, build_dir)
