@@ -40,11 +40,6 @@ def copy_directory(source, destination):
   name = os.path.basename(os.path.abspath(source))
   shutil.copytree(source, os.path.join(destination, name))
 
-def jsmin(script):
-  p = subprocess.Popen(['jsmin'], stdout = subprocess.PIPE, stdin = subprocess.PIPE, stderr = subprocess.STDOUT)    
-  stdout = p.communicate(input = script)[0]
-  return stdout
-
 def append_javascript(html, script):
   body = html.find('body')
   source = "<script type='text/javascript' type='text/css'>" + script + "</script>"
@@ -94,7 +89,7 @@ def main():
 
   # script
   script = extract_tags(html, "//script[@type='text/javascript']", "src", source_dir)
-  script = jsmin(script)
+  script = yuicompressor(script, '.js')
   append_javascript(html, script)
 
   # style
