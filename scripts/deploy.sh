@@ -7,22 +7,19 @@ if [[ ! -f "$configuration" ]]; then
     exit 1
 fi
 
-./build.sh
-
 remote=$( cat "$configuration" | python -c "import json; import sys; print json.load(sys.stdin)['remote']" )
 
 echo "Uploading to '$remote'..."
 
-export ROOT=../src
+export root=".."
+export build="$root/build"
+
+python "$root/scripts/minify" "$root" "$configuration"
 
 rsync -avPe ssh \
-    $ROOT/*.html \
-    $ROOT/*.manifest \
-    $ROOT/js \
-    $ROOT/css \
-    $ROOT/gbo \
-    $ROOT/images \
-    $ROOT/defaults \
+    $build/*.html \
+    $build/*.manifest \
+    $build/*.json \
+    $build/images \
+    $build/defaults \
     "$remote"
-
-rsync -avPe ssh "$configuration" "$remote/settings.json"
