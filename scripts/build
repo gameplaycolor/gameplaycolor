@@ -8,6 +8,7 @@ import os
 import os.path
 import shutil
 import subprocess
+import tempfile
 
 def extract_javascript(html, root):
   scripts = ""
@@ -56,6 +57,14 @@ def append_style(html, style):
   style = lxml.html.fromstring(tag).find('.//style')
   head.append(style)
 
+def yuicompressor(contents, suffix):
+  temp = tempfile.mktemp(suffix=suffix)
+  with open(temp, 'w') as f:
+    f.write(contents)
+  output = subprocess.check_output(['yuicompressor', temp])
+  os.unlink(temp)
+  return output
+
 def main():
   parser = argparse.ArgumentParser(description = "Generate the minified Game Play HTML file")
   parser.add_argument("project", help = "root of the project")
@@ -90,6 +99,7 @@ def main():
 
   # style
   style = extract_tags(html, "//link[@type='text/css']", "href", source_dir)
+  style = yuicompressor(style, '.css')
   append_style(html, style)
 
   with open(output_file, 'w') as f:
