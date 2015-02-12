@@ -1,134 +1,122 @@
 <!DOCTYPE html>
 <html manifest="cache.manifest">
-<head>
-
-    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0"/>
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link href="/defaults/apple-touch-startup-image-750x1294.png" media="(device-width: 375px)" rel="apple-touch-startup-image">
-
-    <link rel="stylesheet" href="css/gameboy.css" type="text/css" media="screen, mobile" title="main" charset="utf-8">
-    <link rel="apple-touch-icon-precomposed" href="images/icon_2x.png" />
+    <link rel="stylesheet" href="css/gameboy.css" type="text/css">
+    <link rel="apple-touch-icon-precomposed" href="images/icon_2x.png">
 
     <title>Game Play</title>
-</head>
-<body style="background-color: black;">
-  
-  <div id="gameboy" style="width: 100%; height: 100%">
+  </head>
+  <body style="background-color: black;">
+    
+    <div id="gameboy" style="width: 100%; height: 100%">
 
-    <div id="screen-games" class="screen">
-      <div id="list-games" class="content">
-        <div id="list-games-content"></div>
-        <div id="list-games-page-control"></div>
-      </div>
-      <div id="screen-loading" class="content" style="display: none">
-        <div class="placeholder">
-          <p>Loading&hellip;</p>
+      <div id="screen-games" class="screen">
+        <div id="list-games" class="content">
+          <div id="list-games-content"></div>
+          <div id="list-games-page-control"></div>
         </div>
-      </div>
-      <div id="screen-empty" class="content" style="display: none">
-        <div class="placeholder">
-          <p><strong>No Games</strong></p>
-          <p>Add Game Boy ROMs <em>(with the .gb or .gbc file extension)</em> to your Google Drive to see them here.</p>
-        </div>
-      </div>
-      <div id="button-done" class="button-done">Console</div>
-    </div>
-
-    <div id="screen-console" class="screen flexbox horizontal grape">
-
-      <div id="moulding">
-        <div id="moulding-left"></div>
-        <div id="moulding-center"></div>
-        <div id="moulding-right"></div>
-      </div>
-      <div id="element-surround" class="element-surround">
-        <div id="surround" class="surround"></div>
-      </div>
-      <div id="element-branding">
-        <div id="branding">InSeven Limited</div>
-      </div>
-      <div id="element-screen">
-        <div id="display">
-          <canvas id="LCD" class="display" width="160" height="144"></canvas>
-          <div id="LCD-idle" class="display"></div>
-          <div id="LCD-loading" class="display" style="display: none"></div>
-          <div id="LCD-dropshadow"></div>
-        </div>
-      </div>
-      <div id="element-dpad">
-        <div id="dpad" class="dpad">
-          <div id="dpad-up" class="element up top arrow"></div>
-          <div id="dpad-left" class="element left middle arrow"></div>
-          <div id="dpad-down" class="element down bottom arrow"></div>
-          <div id="dpad-right" class="element right middle arrow"></div>
-          <div class="element center middle"></div>
-      </div>
-      </div>
-      <div id="element-options">
-        <div id="group-options">
-          <div class="button-option-group top left">
-            <div id="control-select" class="button-option"></div>
-            <div class="button-label">Select</div>
-          </div>
-          <div class="button-option-group top right">
-            <div id="control-start" class="button-option"></div>
-            <div class="button-label">Start</div>
+        <div id="screen-loading" class="content" style="display: none">
+          <div class="placeholder">
+            <p>Loading&hellip;</p>
           </div>
         </div>
+        <div id="screen-empty" class="content" style="display: none">
+          <div class="placeholder">
+            <p><strong>No Games</strong></p>
+            <p>Add Game Boy ROMs <em>(with the .gb or .gbc file extension)</em> to your Google Drive to see them here.</p>
+          </div>
+        </div>
+        <div id="button-done" class="button-done">Console</div>
       </div>
-      <div id="element-buttons">
-        <div id="group-buttons">
-          <div id="control-a" class="button"><div class="control-text">A</div></div>
-          <div id="control-b" class="button"><div class="control-text">B</div></div>
+
+      <div id="screen-console" class="screen flexbox horizontal grape">
+
+        <div id="moulding">
+          <div id="moulding-left"></div>
+          <div id="moulding-center"></div>
+          <div id="moulding-right"></div>
+        </div>
+        <div id="element-surround" class="element-surround">
+          <div id="surround" class="surround"></div>
+        </div>
+        <div id="element-branding">
+          <div id="branding">InSeven Limited</div>
+        </div>
+        <div id="element-screen">
+          <div id="display">
+            <canvas id="LCD" class="display" width="160" height="144"></canvas>
+            <div id="LCD-idle" class="display"></div>
+            <div id="LCD-loading" class="display" style="display: none"></div>
+            <div id="LCD-dropshadow"></div>
+          </div>
+        </div>
+        <div id="element-dpad">
+          <div id="dpad" class="dpad">
+            <div id="dpad-up" class="element up top arrow"></div>
+            <div id="dpad-left" class="element left middle arrow"></div>
+            <div id="dpad-down" class="element down bottom arrow"></div>
+            <div id="dpad-right" class="element right middle arrow"></div>
+            <div class="element center middle"></div>
+          </div>
+        </div>
+        <div id="element-options">
+          <div id="group-options">
+            <div class="button-option-group top left">
+              <div id="control-select" class="button-option"></div>
+              <div class="button-label">Select</div>
+            </div>
+            <div class="button-option-group top right">
+              <div id="control-start" class="button-option"></div>
+              <div class="button-label">Start</div>
+            </div>
+          </div>
+        </div>
+        <div id="element-buttons">
+          <div id="group-buttons">
+            <div id="control-a" class="button"><div class="control-text">A</div></div>
+            <div id="control-b" class="button"><div class="control-text">B</div></div>
+          </div>
         </div>
       </div>
+
+      <div id="DEBUG" style="display: none"></div>
+      <div id="DEBUGGER"></div>
+
     </div>
+    <div id="screen-splash" class="screen-splash"></div>
 
-    <div id="debug" style="display: none">DEBUG</div>
-    <div id="STATUS"></div>
-    <div id="DEBUG">&nbsp;</div>
-      <div id="buttons" style="display:none;">
-        <input id="BR" type="button" value="Run"     onfocus="this.blur();" onclick="gb_Run();"/>
-        <input id="BP" type="button" value="Pause"   onfocus="this.blur();" disabled onclick="gb_Pause();"/>
-        <input id="BS" type="button" value="Step"    onfocus="this.blur();" onclick="gb_Step();"/>
-        <input id="BS" type="button" value="Reset"   onfocus="this.blur();" onclick="gb_Insert_Cartridge($('CARTRIDGE').value,true);"/>
-        <input id="BX" type="button" value="Size x2" onfocus="this.blur();" onclick="gb_Resize_LCD();"/>
-      <div>
-    </div>
-    <div id="DEBUGGER"></div>
+    <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
 
-  </div>
-  <div id="screen-splash" class="screen-splash"></div>
+    <script type="text/javascript" src="gbo/other/swfobject.js"></script>
+    <script type="text/javascript" src="gbo/other/resampler.js"></script>
+    <script type="text/javascript" src="gbo/other/XAudioServer.js"></script>
+    <script type="text/javascript" src="gbo/other/resize.js"></script>
+    <script type="text/javascript" src="gbo/GameBoyCore.js"></script>
+    <script type="text/javascript" src="gbo/GameBoyIO.js"></script>  
 
-  <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="js/spin.min.js"></script>
+    <script type="text/javascript" src="js/utilities.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="js/logging.js"></script>
+    <script type="text/javascript" src="js/control.js"></script>
+    <script type="text/javascript" src="js/console.js"></script>
+    <script type="text/javascript" src="js/library.js"></script>
+    <script type="text/javascript" src="js/games.js"></script>
+    <script type="text/javascript" src="js/pad.js"></script>
+    <script type="text/javascript" src="js/button.js"></script>
+    <script type="text/javascript" src="js/gameboy.js"></script>
+    <script type="text/javascript" src="js/grid.js"></script>
+    <script type="text/javascript" src="js/store.js"></script>
+    <script type="text/javascript" src="js/touchlistener.js"></script>
+    <script type="text/javascript" src="js/gesturerecognizer.js"></script>
+    <script type="text/javascript" src="js/device.js"></script>
+    <script type="text/javascript" src="js/tracker.js"></script>
+    <script type="text/javascript" src="js/drive.js"></script>
 
-  <script type="text/javascript" src="gbo/other/swfobject.js"></script>
-  <script type="text/javascript" src="gbo/other/resampler.js"></script>
-  <script type="text/javascript" src="gbo/other/XAudioServer.js"></script>
-  <script type="text/javascript" src="gbo/other/resize.js"></script>
-  <script type="text/javascript" src="gbo/GameBoyCore.js"></script>
-  <script type="text/javascript" src="gbo/GameBoyIO.js"></script>  
-
-  <script type="text/javascript" src="js/spin.min.js"></script>
-  <script type="text/javascript" src="js/utilities.js"></script>
-  <script type="text/javascript" src="js/app.js"></script>
-  <script type="text/javascript" src="js/logging.js"></script>
-  <script type="text/javascript" src="js/control.js"></script>
-  <script type="text/javascript" src="js/console.js"></script>
-  <script type="text/javascript" src="js/library.js"></script>
-  <script type="text/javascript" src="js/games.js"></script>
-  <script type="text/javascript" src="js/pad.js"></script>
-  <script type="text/javascript" src="js/button.js"></script>
-  <script type="text/javascript" src="js/gameboy.js"></script>
-  <script type="text/javascript" src="js/grid.js"></script>
-  <script type="text/javascript" src="js/store.js"></script>
-  <script type="text/javascript" src="js/touchlistener.js"></script>
-  <script type="text/javascript" src="js/gesturerecognizer.js"></script>
-  <script type="text/javascript" src="js/device.js"></script>
-  <script type="text/javascript" src="js/tracker.js"></script>
-  <script type="text/javascript" src="js/drive.js"></script>
-
-</body>
+  </body>
 </html>

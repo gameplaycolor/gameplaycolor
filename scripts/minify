@@ -15,7 +15,6 @@ def extract_javascript(html, root):
       scripts = scripts + "\n" + script.read()
     transaction.drop_tree()
 
-  # 'use strict'
   filtered = ""
   for line in scripts.split("\n"):
     if line.find('"use strict";') != 0:
@@ -54,6 +53,7 @@ def main():
   append_javascript(html, script)
 
   with open(output_file, 'w') as f:
+    f.write("<!DOCTYPE html>\n");
     f.write(lxml.html.tostring(html))
 
 if __name__=='__main__':
