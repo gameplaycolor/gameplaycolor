@@ -1,0 +1,60 @@
+#!/usr/bin/env python
+
+import argparse
+import lxml.etree
+import lxml.html
+import os.path
+import subprocess
+
+def extract_javascript(html, root):
+  scripts = ""
+  transactions = html.xpath("//script[@type='text/javascript']")
+  for transaction in transactions:
+    src = os.path.join(root, transaction.get("src"))
+    with open(src) as script:
+      scripts = scripts + "\n" + script.read()
+    transaction.drop_tree()
+
+  # 'use strict'
+  filtered = ""
+  for line in scripts.split("\n"):
+    if line.find('"use strict";') != 0:
+      filtered = filtered + "\n" + line
+
+  return filtered
+
+def jsmin(script):
+  p = subprocess.Popen(['jsmin'], stdout = subprocess.PIPE, stdin = subprocess.PIPE, stderr = subprocess.STDOUT)    
+  stdout = p.communicate(input = script)[0]
+  return stdout
+
+def append_javascript(html, script):
+  body = html.find('body')
+  source = "<script type='text/javascript' type='text/css'>" + script + "</script>"
+  link = lxml.html.fromstring(source).find('.//script')
+  body.append(link)
+
+def main():
+  parser = argparse.ArgumentParser(description = "Generate the minified Game Play HTML file")
+  parser.add_argument("input", help = "input HTML file")
+  parser.add_argument("output", help = "output HTML file")
+  options = parser.parse_args()
+
+  input_file = os.path.abspath(options.input)
+  output_file = os.path.abspath(options.output)
+  root = os.path.dirname(input_file)
+
+  contents = None
+  with open(input_file) as f:
+    contents = f.read()
+
+  html = lxml.html.fromstring(contents)
+  script = extract_javascript(html, root)
+  script = jsmin(script)
+  append_javascript(html, script)
+
+  with open(output_file, 'w') as f:
+    f.write(lxml.html.tostring(html))
+
+if __name__=='__main__':
+  main()

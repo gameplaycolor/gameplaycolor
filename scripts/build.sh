@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -e
+set -u
+
 function append() {
   for var in "$@"
   do
@@ -22,17 +25,8 @@ fi
 
 pushd "$source_directory" > /dev/null
 
-# HTML.
-cat index.html | grep -B1000000 "<\!-- MINIFY JS START -->" > index.min.html
-echo "<script>" >> index.min.html
-
-for var in js/spin.min.js js/utilities.js js/app.js js/logging.js js/control.js js/console.js js/library.js js/games.js js/pad.js js/button.js js/gameboy.js js/grid.js js/store.js js/touchlistener.js js/gesturerecognizer.js js/device.js js/tracker.js js/drive.js
-do
-    cat "$var" | jsmin >> index.min.html
-done
-echo "$javascript" >> index.min.html
-echo "</script>" >> index.min.html
-cat index.html | grep -A1000000 "<\!-- MINIFY JS END -->" >> index.min.html
+# Minify.
+python "$script_directory/minify" index.html index.min.html
 
 # Manifest.
 version=$(date +%s)
