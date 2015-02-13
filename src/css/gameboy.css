@@ -915,31 +915,6 @@ body
     left: 9px;
 }
 
-/* Branding */
-
-#element-branding
-{
-  position: absolute;
-  top:356px;
-  width: 100%;
-  text-align: center;
-}
-
-#branding
-{
-  border: 4px solid black;
-  display: inline-block;
-  height: 26px;
-  border-radius: 26px;
-  padding: 0 9px;
-  line-height: 28px;
-  font-weight: bold;
-  opacity: 0.3;
-  text-shadow: 0 1px #777;
-  font-size: 18px;
-  box-shadow: 0 1px #777, inset 0 1px #777;
-}
-
 #element-dpad
 {
   position: absolute;
@@ -1009,11 +984,6 @@ body
     border-radius: 0;
   }
 
-  #element-branding
-  {
-    display: none;
-  }
-
 }
 
 /* iPhone 6: Portrait */
@@ -1074,11 +1044,6 @@ body
     left: 10px;
   }
 
-  #element-branding
-  {
-    display: none;
-  }
-
   #group-options
   {
     width: 500px;
@@ -1123,11 +1088,6 @@ body
   #element-dpad
   {
     left: 10px;
-  }
-
-  #element-branding
-  {
-    display: none;
   }
 
 }
