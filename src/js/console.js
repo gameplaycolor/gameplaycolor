@@ -82,7 +82,7 @@
         });
 
         // D-Pad.
-        self.pad = new App.Controls.Pad('#dpad', {
+        self.pad = new App.Controls.Pad({
           touchDownLeft  : function() { self.gameBoy.keyDown(Gameboy.Key.LEFT); },
           touchUpLeft    : function() { self.gameBoy.keyUp(Gameboy.Key.LEFT); },
           touchDownRight : function() { self.gameBoy.keyDown(Gameboy.Key.RIGHT); },

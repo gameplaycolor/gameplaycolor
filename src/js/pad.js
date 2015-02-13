@@ -20,8 +20,8 @@
 
   App.Controls = {};
 
-  App.Controls.Pad = function(identifier, actions) {
-    this.init(identifier);
+  App.Controls.Pad = function(actions) {
+    this.init('#dpad-touch-target');
     this.actions = actions;
   };
 
@@ -45,6 +45,7 @@
 
     onCreate: function() {
       var self = this;
+      self.pad = $('#dpad');
       self.touches = 0;
 
       self.up    = false;
@@ -250,10 +251,10 @@
         self.up = state;
         if (state) {
           self.action("touchDownUp");
-          self.element.addClass("pressed-up");
+          self.pad.addClass("pressed-up");
         } else {
           self.action("touchUpUp");
-          self.element.removeClass("pressed-up");
+          self.pad.removeClass("pressed-up");
         }
       }
     },
@@ -264,10 +265,10 @@
         self.down = state;
         if (state) {
           self.action("touchDownDown");
-          self.element.addClass("pressed-down");
+          self.pad.addClass("pressed-down");
         } else {
           self.action("touchUpDown");
-          self.element.removeClass("pressed-down");
+          self.pad.removeClass("pressed-down");
         }
       }
     },
@@ -278,10 +279,10 @@
         self.left = state;
         if (state) {
           self.action("touchDownLeft");
-          self.element.addClass("pressed-left");
+          self.pad.addClass("pressed-left");
         } else {
           self.action("touchUpLeft");
-          self.element.removeClass("pressed-left");
+          self.pad.removeClass("pressed-left");
         }
       }
     },
@@ -292,10 +293,10 @@
         self.right = state;
         if (state) {
           self.action("touchDownRight");
-          self.element.addClass("pressed-right");
+          self.pad.addClass("pressed-right");
         } else {
           self.action("touchUpRight");
-          self.element.removeClass("pressed-right");
+          self.pad.removeClass("pressed-right");
         }
       }
     },

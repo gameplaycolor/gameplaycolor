@@ -98,6 +98,8 @@ def main():
   defaults_dir = os.path.join(source_dir, "defaults")
   manifest_file = os.path.join(build_dir, "cache.manifest")
   settings_dest = os.path.join(build_dir, "settings.json")
+  sizes_file = os.path.join(source_dir, "sizes.html")
+  sizes_dest = os.path.join(build_dir, "sizes.html")
 
   # build
   if os.path.exists(build_dir):
@@ -148,6 +150,9 @@ def main():
     f.write("CACHE:\n")
     f.write("\n".join(map(lambda x: x, manifest)))
     f.write("\n")
+
+  # sizes
+  shutil.copy(sizes_file, sizes_dest)
 
 if __name__=='__main__':
   main()
