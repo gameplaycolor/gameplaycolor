@@ -72,7 +72,9 @@
       self.sort();
  
       self.drive.checkAuthentication().fail(function() {
-        self.drive.signIn();
+        if (window.navigator.onLine === true) {
+          self.drive.signIn();
+        }
       });
       
     },

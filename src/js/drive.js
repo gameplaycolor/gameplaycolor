@@ -321,30 +321,38 @@
 
       downloadFileBase64: function(file, callback) {
         var self = this;
-        if (file.downloadUrl) {
-          var accessToken = gapi.auth.getToken().access_token;
-          var xhr = new XMLHttpRequest();
-          xhr.open('GET', file.downloadUrl);
-          xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
-          xhr.responseType = 'arraybuffer';
-          xhr.onload = function(e) {
-            var uInt8Array = new Uint8Array(xhr.response);
-            var i = uInt8Array.length;
-            var binaryString = new Array(i);
-            while (i--) {
-              binaryString[i] = String.fromCharCode(uInt8Array[i]);
-            }
-            var data = binaryString.join('');
-            var base64 = window.btoa(data);
-            callback(base64);
-          };
-          xhr.onerror = function() {
+        self.authorize().then(function() {
+
+          if (file.downloadUrl) {
+            var accessToken = gapi.auth.getToken().access_token;
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', file.downloadUrl);
+            xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+            xhr.responseType = 'arraybuffer';
+            xhr.onload = function(e) {
+              var uInt8Array = new Uint8Array(xhr.response);
+              var i = uInt8Array.length;
+              var binaryString = new Array(i);
+              while (i--) {
+                binaryString[i] = String.fromCharCode(uInt8Array[i]);
+              }
+              var data = binaryString.join('');
+              var base64 = window.btoa(data);
+              callback(base64);
+            };
+            xhr.onerror = function() {
+              callback(null);
+            };
+            xhr.send();
+          } else {
             callback(null);
-          };
-          xhr.send();
-        } else {
+          }
+
+        }).fail(function() {
+
           callback(null);
-        }
+
+        });
       },
 
       /**
@@ -355,22 +363,30 @@
        */
       downloadFile: function(file, callback) {
         var self = this;
-        if (file.downloadUrl) {
-          var accessToken = gapi.auth.getToken().access_token;
-          var xhr = new XMLHttpRequest();
-          xhr.open('GET', file.downloadUrl);
-          xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
-          xhr.overrideMimeType('text/plain; charset=x-user-defined');
-          xhr.onload = function() {
-            callback(xhr.responseText);
-          };
-          xhr.onerror = function() {
+        self.authorize().then(function() {
+
+          if (file.downloadUrl) {
+            var accessToken = gapi.auth.getToken().access_token;
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', file.downloadUrl);
+            xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+            xhr.overrideMimeType('text/plain; charset=x-user-defined');
+            xhr.onload = function() {
+              callback(xhr.responseText);
+            };
+            xhr.onerror = function() {
+              callback(null);
+            };
+            xhr.send();
+          } else {
             callback(null);
-          };
-          xhr.send();
-        } else {
+          }
+
+        }).fail(function() {
+
           callback(null);
-        }
+
+        });
       }
 
 
