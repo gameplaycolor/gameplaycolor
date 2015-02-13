@@ -280,8 +280,6 @@
         var self = this;
         self.run(function() {
 
-          operation.onStart();
-
           try {
             var retrievePageOfFiles = function(request, result) {
               request.execute(function(resp) {

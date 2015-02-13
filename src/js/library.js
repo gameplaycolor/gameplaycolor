@@ -46,22 +46,6 @@
       self.fetches = {};
       self.callback = callback;
       self.logging = new App.Logging(App.Logging.Level.WARNING, "library");
-
-      // We use a separate flag to track updates internally as
-      // we need to be able to schedule updates in many different states
-      // due to the asynchronous nature of the update.
-      self.updatePending = false;
-
-      // Handle Google Drive state changes to update our state.
-      // self.drive.onStateChange(function(state) {
-      //   if (state === App.Drive.State.UNAUTHORIZED) {
-      //     self.setState(App.Library.State.UNAUTHORIZED);
-      //   } else if (state === App.Drive.State.READY) {
-      //     self.setState(App.Library.State.READY);
-      //   } else {
-      //     self.setState(App.Library.State.LOADING);
-      //   }
-      // });
       
       // Load the library.
       var library = localStorage.getItem('library');
@@ -241,19 +225,15 @@
     
     update: function() {
       var self = this;
-      if (self.updatePending === false) {
-        self.drive.files({
-          'onStart': function() {
-            self.setState(App.Library.State.UPDATING);
-          },
-          'onSuccess': function(files) {
-            self.updateCallback(files);
-          },
-          'onError': function(error) {
-            self.setState(App.Library.State.READY);
-          }
-        });
-      }
+      self.setState(App.Library.State.UPDATING);
+      self.drive.files({
+        onSuccess: function(files) {
+          self.updateCallback(files);
+        },
+        onError: function(error) {
+          self.setState(App.Library.State.READY);
+        }
+      });
     },
 
     fileForIdentifier: function(identifier) {
@@ -364,8 +344,6 @@
     updateCallback: function(files) {
       var self = this;
       var i;
-
-      self.updatePending = false;
 
       var identifiers = {};
       $.each(self.items, function(index, value) {
