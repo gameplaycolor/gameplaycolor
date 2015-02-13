@@ -273,11 +273,10 @@
 
       /**
        * Retrieve a list of File resources.
-       *
-       * @param {Function} callback Function to call when the request is complete.
        */
-      files: function(operation) {
+      files: function() {
         var self = this;
+        var deferred = $.Deferred();
         self.run(function() {
 
           try {
@@ -297,7 +296,7 @@
                   });
                   retrievePageOfFiles(request, result);
                 } else {
-                  operation.onSuccess(result);
+                  deferred.resolve(result);
                 }
               });
             };
@@ -311,10 +310,12 @@
             });
             retrievePageOfFiles(initialRequest, []);
           } catch (error) {
-            operation.onError(error);
+            deferred.reject(error);
           }
 
         });
+
+        return deferred.promise();
       },
 
       downloadFileBase64: function(file, callback) {

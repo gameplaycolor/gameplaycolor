@@ -226,13 +226,11 @@
     update: function() {
       var self = this;
       self.setState(App.Library.State.UPDATING);
-      self.drive.files({
-        onSuccess: function(files) {
-          self.updateCallback(files);
-        },
-        onError: function(error) {
-          self.setState(App.Library.State.READY);
-        }
+      self.drive.files().then(function(files) {
+        self.updateCallback(files);
+      }).fail(function(error) {
+        self.logging.error("Failed to list files with error " + error);
+        self.setState(App.Library.State.READY);
       });
     },
 
