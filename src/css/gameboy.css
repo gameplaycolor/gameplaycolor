@@ -478,8 +478,7 @@ body
 
 .placeholder
 {
-  color: white;
-  text-shadow: 0 1px #000;
+  color: #d9d9d9;
   text-align: center;
   padding: 80px 40px;
   margin: auto;
