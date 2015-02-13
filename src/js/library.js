@@ -315,7 +315,6 @@
         self.logging.info("Fetching '" + title + "'' ...");
 
         self.drive.file(parent, title, {
-          onStart: function() {},
           onSuccess: function(file) {
             if (file !== undefined) {
               self.drive.downloadFileBase64(file, function(data) {

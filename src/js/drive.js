@@ -47,7 +47,6 @@
       init: function() {
         var self = this;
         self.state = App.Drive.State.UNINITIALIZED;
-        self.queue = [];
         self.stateChangeCallbacks = [];
         self.logging = new App.Logging(App.Logging.Level.INFO, "drive");
       },
@@ -57,20 +56,9 @@
         self.stateChangeCallbacks.push(callback);
       },
 
-      run: function(operation) {
+      scheduleOperation: function(operation) {
         var self = this;
-        self.queue.push(operation);
-        self.processQueue();
-      },
-
-      processQueue: function() {
-        var self = this;
-        while (self.queue.length > 0) {
-          var operation = self.queue.shift();
-          self.authorize().always(function() {
-            operation();
-          });
-        }
+        operation();
       },
 
       loadSDK: function() {
@@ -137,7 +125,6 @@
             function(result) {
               if (result && !result.error) {
                 deferred.resolve(result);
-                self.processQueue();
               } else {
                 if (self.deferredAuthentication == deferred) {
                   self.deferredAuthentication = undefined;
@@ -242,32 +229,33 @@
       // Retrieve single file which matches a given filename in a specific parent container.
       file: function(parent, title, operation) {
         var self = this;
-        self.run(function() {
-          operation.onStart();
-
-          try {
-            var retrievePageOfFiles = function(request) {
-              request.execute(function(resp) {
-                if (resp.items.length > 0) {
-                  operation.onSuccess(resp.items[0]);
-                } else {
-                  operation.onSuccess(undefined);
+        self.scheduleOperation(function() {
+          self.authorize().then(function() {
+            try {
+              var retrievePageOfFiles = function(request) {
+                request.execute(function(resp) {
+                  if (resp.items.length > 0) {
+                    operation.onSuccess(resp.items[0]);
+                  } else {
+                    operation.onSuccess(undefined);
+                  }
+                });
+              };
+              var initialRequest = gapi.client.request({
+                'path': '/drive/v2/files',
+                'method': 'GET',
+                'params': {
+                  'maxResults': '1',
+                  'q': "trashed = false and '" + parent + "' in parents and title = '" + title.replace("'", "\\'") + "'"
                 }
               });
-            };
-            var initialRequest = gapi.client.request({
-              'path': '/drive/v2/files',
-              'method': 'GET',
-              'params': {
-                'maxResults': '1',
-                'q': "trashed = false and '" + parent + "' in parents and title = '" + title.replace("'", "\\'") + "'"
-              }
-            });
-            retrievePageOfFiles(initialRequest);
-          } catch (error) {
+              retrievePageOfFiles(initialRequest);
+            } catch (error) {
+              operation.onError(error);
+            }
+          }).fail(function(error) {
             operation.onError(error);
-          }
-
+          });
         });
       },
 
@@ -277,41 +265,46 @@
       files: function() {
         var self = this;
         var deferred = $.Deferred();
-        self.run(function() {
+        self.scheduleOperation(function() {
+          self.authorize().then(function() {
 
-          try {
-            var retrievePageOfFiles = function(request, result) {
-              request.execute(function(resp) {
-                result = result.concat(resp.items);
-                var nextPageToken = resp.nextPageToken;
-                if (nextPageToken) {
-                  request = gapi.client.request({
-                    'path': '/drive/v2/files',
-                    'method': 'GET',
-                    'params': {
-                      'maxResults': '100',
-                      'q': App.Drive.QUERY,
-                      'pageToken': nextPageToken
-                    }
-                  });
-                  retrievePageOfFiles(request, result);
-                } else {
-                  deferred.resolve(result);
+            try {
+              var retrievePageOfFiles = function(request, result) {
+                request.execute(function(resp) {
+                  result = result.concat(resp.items);
+                  var nextPageToken = resp.nextPageToken;
+                  if (nextPageToken) {
+                    request = gapi.client.request({
+                      'path': '/drive/v2/files',
+                      'method': 'GET',
+                      'params': {
+                        'maxResults': '100',
+                        'q': App.Drive.QUERY,
+                        'pageToken': nextPageToken
+                      }
+                    });
+                    retrievePageOfFiles(request, result);
+                  } else {
+                    deferred.resolve(result);
+                  }
+                });
+              };
+              var initialRequest = gapi.client.request({
+                'path': '/drive/v2/files',
+                'method': 'GET',
+                'params': {
+                  'maxResults': '100',
+                  'q': App.Drive.QUERY
                 }
               });
-            };
-            var initialRequest = gapi.client.request({
-              'path': '/drive/v2/files',
-              'method': 'GET',
-              'params': {
-                'maxResults': '100',
-                'q': App.Drive.QUERY
-              }
-            });
-            retrievePageOfFiles(initialRequest, []);
-          } catch (error) {
+              retrievePageOfFiles(initialRequest, []);
+            } catch (error) {
+              deferred.reject(error);
+            }
+
+          }).fail(function(error) {
             deferred.reject(error);
-          }
+          });
 
         });
 
