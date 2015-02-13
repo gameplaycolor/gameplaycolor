@@ -314,24 +314,17 @@
 
         self.logging.info("Fetching '" + title + "'' ...");
 
-        self.drive.file(parent, title, {
-          onSuccess: function(file) {
-            if (file !== undefined) {
-              self.drive.downloadFileBase64(file, function(data) {
-                try {
-                  self.store.setProperty(App.Controller.Domain.THUMBNAILS, identifier, data);
-                } catch (e) {
-                  self.logging.error("Unable to store thumbnail.");
-                }
-                callback(self.thumbnailDataUrl(data));
-              });
-            } else {
-              callback();
+        self.drive.file(parent, title).then(function(file) {
+          self.drive.downloadFileBase64(file, function(data) {
+            try {
+              self.store.setProperty(App.Controller.Domain.THUMBNAILS, identifier, data);
+            } catch (e) {
+              self.logging.error("Unable to store thumbnail.");
             }
-          },
-          onError: function(error) {
-            callback();
-          }
+            callback(self.thumbnailDataUrl(data));
+          });
+        }).fail(function(error) {
+          callback();
         });
 
       });

@@ -227,17 +227,18 @@
       },
 
       // Retrieve single file which matches a given filename in a specific parent container.
-      file: function(parent, title, operation) {
+      file: function(parent, title) {
         var self = this;
+        var deferred = $.Deferred();
         self.scheduleOperation(function() {
           self.authorize().then(function() {
             try {
               var retrievePageOfFiles = function(request) {
                 request.execute(function(resp) {
                   if (resp.items.length > 0) {
-                    operation.onSuccess(resp.items[0]);
+                    deferred.resolve(resp.items[0]);
                   } else {
-                    operation.onSuccess(undefined);
+                    deferred.reject();
                   }
                 });
               };
@@ -251,12 +252,13 @@
               });
               retrievePageOfFiles(initialRequest);
             } catch (error) {
-              operation.onError(error);
+              deferred.reject(error);
             }
           }).fail(function(error) {
-            operation.onError(error);
+            deferred.reject(error);
           });
         });
+        return deferred.promise();
       },
 
       /**
