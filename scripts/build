@@ -36,10 +36,6 @@ def extract_tags(html, tag, key, root):
     transaction.drop_tree()
   return scripts
 
-def copy_directory(source, destination):
-  name = os.path.basename(os.path.abspath(source))
-  shutil.copytree(source, os.path.join(destination, name))
-
 def append_javascript(html, script):
   body = html.find('body')
   source = "<script type='text/javascript' type='text/css'>" + script + "</script>"
@@ -64,6 +60,28 @@ def htmlcompressor(contents):
   p = subprocess.Popen(['htmlcompressor'], stdout = subprocess.PIPE, stdin = subprocess.PIPE, stderr = subprocess.STDOUT)
   output = p.communicate(input = contents)[0]
   return output
+
+def pngcrush(source_file, output_dir):
+  name = os.path.basename(os.path.abspath(source_file))
+  destination_file = os.path.join(output_dir, name)
+  print "Crushing '%s'..." % source_file
+  subprocess.check_call(['pngcrush', source_file, destination_file])
+
+def list(directory):
+  result = []
+  for root, subdirs, files in os.walk(directory):
+    for file in files:
+      if file.find('.') != 0:
+        result.append(os.path.relpath(os.path.join(root, file), directory))
+  return result
+
+def copy_image_directory(source_dir, output_dir):
+  name = os.path.basename(os.path.abspath(source_dir))
+  destination_dir = os.path.join(output_dir, name)
+  os.mkdir(destination_dir)
+  files = list(source_dir)
+  for file in files:
+    pngcrush(os.path.join(source_dir, file), destination_dir)
 
 def main():
   parser = argparse.ArgumentParser(description = "Generate the minified Game Play HTML file")
@@ -92,39 +110,38 @@ def main():
     contents = f.read()
   html = lxml.html.fromstring(contents)
 
-  # script
+  print "Minifying JavaScript..."
   script = extract_tags(html, "//script[@type='text/javascript']", "src", source_dir)
   script = yuicompressor(script, '.js')
   append_javascript(html, script)
 
-  # style
+  print "Minifying CSS..."
   style = extract_tags(html, "//link[@type='text/css']", "href", source_dir)
   style = yuicompressor(style, '.css')
   append_style(html, style)
 
-  # minify
+  print "Compressing HTML..."
   contents = lxml.html.tostring(html)
   contents = htmlcompressor(contents)
 
+  print "Writing HTML..."
   with open(output_file, 'w') as f:
     f.write("<!DOCTYPE html>\n");
     f.write(contents)
 
   # images
-  copy_directory(images_dir, build_dir)
+  print "Copying images..."
+  copy_image_directory(images_dir, build_dir)
   
   # defaults
-  copy_directory(defaults_dir, build_dir)
+  print "Copying defaults..."
+  copy_image_directory(defaults_dir, build_dir)
 
   # settings
   shutil.copy(options.settings, settings_dest)
 
   # manifest
-  manifest = []
-  for root, subdirs, files in os.walk(build_dir):
-    for file in files:
-      if file.find('.') != 0:
-        manifest.append(os.path.relpath(os.path.join(root, file), build_dir))
+  manifest = list(build_dir)
   with open(manifest_file, 'w') as f:
     f.write("CACHE MANIFEST\n")
     f.write("# %s\n" % str(datetime.datetime.now()))
