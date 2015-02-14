@@ -5015,19 +5015,10 @@ GameBoyCore.prototype.initLCD = function () {
 		this.canvasOffscreen.height = this.offscreenHeight;
 		this.drawContextOffscreen = this.canvasOffscreen.getContext("2d");
 		this.drawContextOnscreen = this.canvas.getContext("2d");
-		// this.canvas.setAttribute("style", (this.canvas.getAttribute("style") || "") + "; image-rendering: " + ((settings[13]) ? "auto" : "-webkit-optimize-contrast") + ";" + 
-		// "image-rendering: " + ((settings[13]) ? "optimizeQuality" : "-o-crisp-edges") + ";" +
-		// "image-rendering: " + ((settings[13]) ? "optimizeQuality" : "-moz-crisp-edges") + ";" +
-		// "-ms-interpolation-mode: " + ((settings[13]) ? "bicubic" : "nearest-neighbor") + ";");
 		this.drawContextOffscreen.webkitImageSmoothingEnabled  = settings[13];
 		this.drawContextOffscreen.mozImageSmoothingEnabled = settings[13];
-		// this.drawContextOnscreen.webkitImageSmoothingEnabled  = settings[13];
-		// this.drawContextOnscreen.mozImageSmoothingEnabled = settings[13];
+
 		//Get a CanvasPixelArray buffer:
-
-		this.canvas.style.width = "320px";
-		this.canvas.style.height = "288px";
-
 		try {
 			this.canvasBuffer = this.drawContextOffscreen.createImageData(this.offscreenWidth, this.offscreenHeight);
 		}
@@ -5056,15 +5047,7 @@ GameBoyCore.prototype.initLCD = function () {
 	}
 }
 GameBoyCore.prototype.graphicsBlit = function () {
-	// if (this.offscreenWidth == this.onscreenWidth && this.offscreenHeight == this.onscreenHeight) {
-		// alert("Put!");
-		this.drawContextOnscreen.putImageData(this.canvasBuffer, 0, 0);
-	// }
-	// else {
-	// 	this.drawContextOffscreen.putImageData(this.canvasBuffer, 0, 0);
-	// 	this.drawContextOnscreen.drawImage(this.canvasOffscreen, 0, 0, 160, 144);
-	// 	// this.drawContextOnscreen.drawImage(this.canvasOffscreen, 0, 0, this.onscreenWidth, this.onscreenHeight);
-	// }
+	this.drawContextOnscreen.putImageData(this.canvasBuffer, 0, 0);
 }
 GameBoyCore.prototype.JoyPadEvent = function (key, down) {
 	if (down) {
