@@ -466,7 +466,7 @@ body
   height: 100%;
 }
 
-.screen-splash
+.screen-splash, .screen-instructions
 {
   position: absolute;
   top: 0;
@@ -474,6 +474,11 @@ body
   width: 100%;
   height: 100%;
   background-color: #000;
+}
+
+.screen-instructions
+{
+  font-size: 22px;
 }
 
 .placeholder

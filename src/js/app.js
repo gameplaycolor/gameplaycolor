@@ -133,6 +133,8 @@
       var device = new App.Device();
       window.tracker = new App.Tracker();
       window.app = new App.Controller(device);
+    } else {
+      $("#screen-instructions").show();
     }
 
   });
