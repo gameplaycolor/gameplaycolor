@@ -40,19 +40,19 @@ function loadSaveStateContext(context) {
 }
 
 function setValue(key, value) {
-	console.log("Save '" + key + "' for context '" + saveStateContext + "'");
-	saveState[key] = value;
-  window.app.setValue(saveStateContext, key, value);
+	var previous = saveState[key];
+	if (previous !== value) {
+		saveState[key] = value;
+		window.app.setValue(saveStateContext, key, value);
+	}
 }
 
 function deleteValue(key) {
-	console.log("Delete '" + key + "' for context '" + saveStateContext + "'");
 	delete saveState[key];
 	window.app.deleteValue(saveStateContext, key);
 }
 
 function findValue(key) {
-	console.log("Read '" + key + "' for context '" + saveStateContext + "'");
 	return saveState[key];
 }
 
