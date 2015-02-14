@@ -17,7 +17,7 @@ var settings = [						//Some settings.
 	true								//Use image smoothing based scaling?
 ];
 
-var saveStateContext = "";
+var saveStateContext;
 var saveState = {};
 
 function loadSaveStateContext(context) {
