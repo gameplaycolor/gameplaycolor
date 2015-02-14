@@ -74,7 +74,6 @@
       self.loadPreviousGame();
 
       setInterval(function() {
-        console.log("Save");
         autoSave();
       }, 1000);
 
