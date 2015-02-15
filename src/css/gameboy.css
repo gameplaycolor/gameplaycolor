@@ -1117,12 +1117,16 @@ body
   {
     width: 640px;
     height: 576px;
+    background-size: 640px 576px;
   }
 
   .surround
   {
     height: 638px;
   }
+
+  #LCD-loading { background-image: url(../images/loading-large.png); }
+  #LCD-idle { background-image: url(../images/idle-large.png); }
 
 }
 
