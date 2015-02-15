@@ -957,7 +957,7 @@ body
 }
 
 /* iPhone 5: Portrait */
-@media only screen and (min-width: 320px) and (max-width: 374px) {
+@media only screen and (width: 320px) and (height: 548px) {
 
   #element-screen
   {
@@ -997,28 +997,8 @@ body
 
 }
 
-/* iPhone 6: Portrait */
-@media only screen and (min-width: 375px) and (max-width: 567px) {
-
-  #element-screen
-  {
-    top: 24px;
-  }
-
-  #element-buttons
-  {
-    right: 20px;
-  }
-
-  #element-options
-  {
-    bottom: 20px;
-  }
-
-}
-
 /* iPhone 5: Landscape */
-@media only screen and (min-width: 568px) and (max-width: 666px) {
+@media only screen and (width: 568px) and (height: 320px) {
 
   #element-screen
   {
@@ -1032,7 +1012,6 @@ body
 
   #element-surround
   {
-    display: none;
   }
 
   #element-options
@@ -1052,7 +1031,7 @@ body
 
   #element-dpad
   {
-    left: 10px;
+    left: -4px;
   }
 
   #group-options
@@ -1060,10 +1039,42 @@ body
     width: 500px;
   }
 
+  #LCD-dropshadow
+  {
+    box-shadow:0 0 0 0, inset 0 0 0 0;
+  }
+
+  .surround
+  {
+    height: 287px;
+    width: 321px;
+    border-radius: 0;
+  }
+
+}
+
+/* iPhone 6: Portrait */
+@media only screen and (width: 375px) and (height: 647px) {
+
+  #element-screen
+  {
+    top: 24px;
+  }
+
+  #element-buttons
+  {
+    right: 20px;
+  }
+
+  #element-options
+  {
+    bottom: 20px;
+  }
+
 }
 
 /* iPhone 6: Landscape */
-@media only screen and (min-width: 667px) and (max-width: 1023px) {
+@media only screen and (width: 667px) and (height: 375px) {
 
   #element-screen
   {
@@ -1089,23 +1100,41 @@ body
   #element-buttons
   {
     right: 8px;
+    bottom: 140px;
   }
 
   #element-dpad
   {
     left: 0;
+    bottom: 120px;
   }
 
 }
 
-/* iPad: Landscape */
-@media only screen and (min-width: 1024px) {
+@media only screen and (min-width: 768px) {
 
   #display, .display, #LCD-dropshadow
   {
     width: 640px;
     height: 576px;
   }
+
+  .surround
+  {
+    height: 638px;
+  }
+
+}
+
+/* iPad: Portrait */
+@media only screen and (width: 768px) and (height: 1004px) {
+
+
+
+}
+
+/* iPad: Landscape */
+@media only screen and (width: 1024px) and (height: 748px) {
 
   #element-buttons
   {
