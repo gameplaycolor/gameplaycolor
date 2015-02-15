@@ -966,7 +966,7 @@ body
 
   #element-dpad
   {
-    left: 10px;
+    left: 0;
   }
 
   #element-buttons 
@@ -974,9 +974,10 @@ body
     right: 10px;
   }
 
-  #element-surround
+  .surround
   {
-    display: none;
+    height: 287px;
+    border-radius: 0;
   }
 
   #screen-console
@@ -987,6 +988,11 @@ body
   #screen-games
   {
     border-radius: 0;
+  }
+
+  #LCD-dropshadow
+  {
+    box-shadow:0 0 0 0, inset 0 0 0 0;
   }
 
 }
@@ -1085,14 +1091,9 @@ body
     right: 8px;
   }
 
-  #group-buttons
-  {
-    width: 132px;
-  }
-
   #element-dpad
   {
-    left: 10px;
+    left: 0;
   }
 
 }
@@ -1104,6 +1105,40 @@ body
   {
     width: 640px;
     height: 576px;
+  }
+
+  #element-buttons
+  {
+    bottom: 280px;
+    width: 152px;
+    height: 132px;
+  }
+
+  #group-buttons
+  {
+    width: 152px;
+  }
+
+  #element-dpad
+  {
+    bottom: 280px;
+    left: 4px;
+  }
+
+  #element-screen
+  {
+    top: 50px;
+  }
+
+  #element-surround
+  {
+    top: 20px;
+  }
+
+  .surround
+  {
+    height: 636px;
+    width: 700px;
   }
 
 }
