@@ -1129,7 +1129,20 @@ body
 /* iPad: Portrait */
 @media only screen and (width: 768px) and (height: 1004px) {
 
+  #group-buttons
+  {
+    width: 152px;
+  }
 
+  #element-buttons
+  {
+    right: 52px;
+  }
+
+  #element-dpad
+  {
+    left: 40px;
+  }
 
 }
 
