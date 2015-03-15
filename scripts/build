@@ -87,6 +87,7 @@ def main():
   parser = argparse.ArgumentParser(description = "Generate the minified Game Play HTML file")
   parser.add_argument("project", help = "root of the project")
   parser.add_argument("settings", help = "settings file")
+  parser.add_argument("--debug", help = "Build without minifying files", action = "store_true", default = False)
   options = parser.parse_args()
 
   project_dir = os.path.abspath(options.project)
@@ -112,19 +113,24 @@ def main():
     contents = f.read()
   html = lxml.html.fromstring(contents)
 
-  print "Minifying JavaScript..."
+  print "Extracting JavaScript..."
   script = extract_tags(html, "//script[@type='text/javascript']", "src", source_dir)
-  script = yuicompressor(script, '.js')
+  if not options.debug:
+    print "Minifying JavaScript..."
+    script = yuicompressor(script, '.js')
   append_javascript(html, script)
 
-  print "Minifying CSS..."
+  print "Exctracting CSS..."
   style = extract_tags(html, "//link[@type='text/css']", "href", source_dir)
-  style = yuicompressor(style, '.css')
+  if not options.debug:
+    print "Minifying CSS..."
+    style = yuicompressor(style, '.css')
   append_style(html, style)
 
-  print "Compressing HTML..."
   contents = lxml.html.tostring(html)
-  contents = htmlcompressor(contents)
+  if not options.debug:
+    print "Compressing HTML..."
+    contents = htmlcompressor(contents)
 
   print "Writing HTML..."
   with open(output_file, 'w') as f:
