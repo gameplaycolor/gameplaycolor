@@ -1,14 +1,19 @@
-# Game Play Color
+Game Play Color
+===============
 
 A JavaScript Game Boy Color emulator for iOS, based on the [GameBoy-Online](https://github.com/grantgalitz/GameBoy-Online) emulator core.
 
 If you just want to play Game Play Color, you can find it online at [http://inseven.co.uk/apps/gameplaycolor](http://inseven.co.uk/apps/gameplaycolor).
 
-## Screenshots
+Screenshots
+-----------
 
 ![Console](previews/console.jpg)
 
-## Thanks
+Thanks
+------
+
+May thanks to:
 
 - [Grant Galitz](https://github.com/grantgalitz) for the GameBoy-Online emulator and core.
 - [Pedro Ladaria](http://www.codebase.es/) for writing the JSGB core.
