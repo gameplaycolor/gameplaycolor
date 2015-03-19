@@ -23,4 +23,4 @@ May thanks to:
 License
 -------
 
-Game Play Color contains code licensed under the GPL and MIT licenses. See [LICENSE.md](License.md) for more details.
+Game Play Color contains code licensed under the GPL and MIT licenses. See [LICENSE.md](LICENSE.md) for more details.
