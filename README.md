@@ -8,7 +8,6 @@ If you just want to play Game Play Color, you can find it online at [http://inse
 Screenshots
 -----------
 
-![Console](previews/console.jpg)
 <img src="previews/console.jpg" width="375" height="667" alt="Console" />
 
 Thanks
@@ -20,3 +19,8 @@ May thanks to:
 - [Pedro Ladaria](http://www.codebase.es/) for writing the JSGB core.
 - [David McLeod](http://twitter.com/Mucx) for graphical inspiration on [Dribbble](http://dribbble.com/mucx) and for letting me know about MicrogrammaD-MediExte.
 - [Paul Ledger](http://www.flexicoder.com) for suggesting the name 'Game Play'.
+
+License
+-------
+
+Game Play Color contains code licensed under the GPL and MIT licenses. See [LICENSE.md](License.md) for more details.
