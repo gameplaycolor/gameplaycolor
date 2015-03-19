@@ -9,6 +9,7 @@ Screenshots
 -----------
 
 ![Console](previews/console.jpg)
+<img src="previews/console.jpg" width="375" height="667" alt="Console" />
 
 Thanks
 ------
