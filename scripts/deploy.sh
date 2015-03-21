@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -e
+set -u
+
 configuration=$1
 
 if [[ ! -f "$configuration" ]]; then
