@@ -1,7 +1,9 @@
 {
-  "remote": "zyloid:~/sites/inseven/gameplay",
-  "client_id": "151379758364",
-  "scopes": "https://www.googleapis.com/auth/drive.readonly",
-  "analytics": "UA-37991248-1",
-  "domain": "inseven.co.uk"
+    "remote": "zyloid:~/sites/inseven/gameplaycolor",
+    "client_id": "151379758364",
+    "client_secret": "jn3po_ZX5rmfMm9DZ3Z4yyLd",
+    "scopes": "https://www.googleapis.com/auth/drive.readonly",
+    "analytics": "UA-37991248-1",
+    "domain": "inseven.co.uk",
+    "redirect_uri": "http://inseven.co.uk/apps/gameplaycolor/app/"
 }
