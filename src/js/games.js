@@ -36,6 +36,10 @@
       self.grid = new App.Grid(device);
       self.items = [];
 
+      self.thanks = new App.Controls.Button('#button-thanks', { touchUp: function() {
+          window.open("http://inseven.co.uk/apps/gameplaycolor/thanks/");
+      }});
+
       self.library.onStateChange(function(state) {
         if (state === App.Library.State.LOADING) {
           self.empty.fadeOut();

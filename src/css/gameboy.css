@@ -310,7 +310,7 @@ body
   height: 100%;
   top: 0;
   left: 0;
-  background-image: url('/images/noise.png');
+  background-image: url(images/noise.png);
   border-radius: 12px;
 }
 
@@ -446,6 +446,18 @@ body
   height: 150px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.74);
 }
+
+.button-thanks
+{
+  width: 200px;
+  height: 100px;
+  border: 2px solid red;
+  border-radius: 8px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+}
     
 #screen-games
 {
@@ -478,7 +490,30 @@ body
 
 .screen-instructions
 {
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
   font-size: 22px;
+}
+
+.appicon
+{
+  width: 200px;
+  height: 200px;
+  margin-bottom: 12px;
+  background-size: 200px 200px;
+  border-radius: 40px;
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+  display: inline-block;
+  background-image: url(images/icon-large.png);
+}
+
+.install-instructions
+{
+  text-align: left;
+}
+
+.install-instructions > li
+{
+  margin-bottom: 10px;
 }
 
 .placeholder
@@ -487,6 +522,11 @@ body
   text-align: center;
   padding: 80px 40px;
   margin: auto;
+}
+
+.screen-instructions .placeholder
+{
+  background-color: #222;
 }
 
 .screen
@@ -589,8 +629,8 @@ body
   font-size: 11px;
 }
 
-#LCD-loading { background-image: url(../images/loading.png); }
-#LCD-idle { background-image: url(../images/idle.png); }
+#LCD-loading { background-image: url(images/loading.png); }
+#LCD-idle { background-image: url(images/idle.png); }
 
 /* D-Pad */
 
@@ -1125,8 +1165,8 @@ body
     height: 638px;
   }
 
-  #LCD-loading { background-image: url(../images/loading-large.png); }
-  #LCD-idle { background-image: url(../images/idle-large.png); }
+  #LCD-loading { background-image: url(images/loading-large.png); }
+  #LCD-idle { background-image: url(images/idle-large.png); }
 
 }
 
