@@ -33,9 +33,9 @@
 
   App.Grid.Margin = {
 
-    TOP: 64,
+    TOP: 46,
     LEFT: 20,
-    BOTTOM: 40,
+    BOTTOM: 100,
     RIGHT: 20,
 
   };
@@ -161,7 +161,7 @@
       var contentHeight = ((App.Grid.Cell.MARGIN + App.Grid.Cell.HEIGHT) * rows) - App.Grid.Cell.MARGIN;
 
       var offsetLeft = Math.floor((self.containerWidth() - contentWidth) / 2);
-      var offsetTop = Math.floor((self.containerHeight() - contentHeight) / 2);
+      var offsetTop = Math.floor((self.containerHeight() - App.Grid.Margin.TOP - App.Grid.Margin.BOTTOM - contentHeight) / 2) + App.Grid.Margin.TOP;
 
       var x = (self.containerWidth() * page) + offsetLeft + ((App.Grid.Cell.WIDTH + App.Grid.Cell.MARGIN) * col);
       var y = offsetTop + ((App.Grid.Cell.HEIGHT + App.Grid.Cell.MARGIN) * row);

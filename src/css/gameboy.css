@@ -447,18 +447,31 @@ body
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.74);
 }
 
+.element-thanks
+{
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  text-align: center;
+}
+
 .button-thanks
 {
-  width: 200px;
-  height: 100px;
-  border: 2px solid red;
+  border: 2px solid #fff;
   border-radius: 8px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  cursor: pointer;
+  padding: 10px;
+  text-decoration: none;
+  color: #fff;
 }
-    
+
+.button-thanks:hover
+{
+  background-color: #fff;
+  color: #000;
+}
+
 #screen-games
 {
   width: 100%;
@@ -492,6 +505,7 @@ body
 {
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
   font-size: 22px;
+  background-color: #222;
 }
 
 .appicon
@@ -525,6 +539,11 @@ body
 }
 
 .screen-instructions .placeholder
+{
+  background-color: #222;
+}
+
+.body-grey
 {
   background-color: #222;
 }

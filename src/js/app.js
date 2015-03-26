@@ -128,8 +128,9 @@
 
   $(document).ready(function() {
 
+    var debug = false;
     var iOS = (navigator.userAgent.indexOf("iPhone OS") !== -1);
-    if (window.navigator.standalone === true || !iOS) {
+    if ((window.navigator.standalone === true && iOS) || debug) {
       var device = new App.Device();
       window.tracker = new App.Tracker();
       window.app = new App.Controller(device);
