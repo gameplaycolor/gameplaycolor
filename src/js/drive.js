@@ -48,7 +48,7 @@
         var self = this;
         self.state = App.Drive.State.UNINITIALIZED;
         self.stateChangeCallbacks = [];
-        self.logging = new App.Logging(App.Logging.Level.INFO, "drive");
+        self.logging = new App.Logging(App.Logging.Level.WARNING, "drive");
       },
 
       onStateChange: function(callback) {
@@ -74,22 +74,33 @@
         if (navigator.onLine) {
           self.logging.info("Loading settings");
           jQuery.getJSON("settings.json", function(data) {
+            self.logging.info("Successfully loaded settings");
             self.clientID = data["client_id"];
             self.scopes = data["scopes"];
             self.clientSecret = data["client_secret"];
             self.redirectURI = data["redirect_uri"];
             (function(d){
-               var js, id = 'google-sdk', ref = d.getElementsByTagName('script')[0];
-               if (d.getElementById(id)) {return;}
-               js = d.createElement('script'); js.id = id; js.async = true;
-               js.src = "https://apis.google.com/js/client.js?onload=handleClientLoad";
-               ref.parentNode.insertBefore(js, ref);
+              self.logging.info("Loading Google SDK");
+              var js, id = 'google-sdk', ref = d.getElementsByTagName('script')[0];
+              if (d.getElementById(id)) {return;}
+              js = d.createElement('script'); js.id = id; js.async = true;
+              js.src = "https://apis.google.com/js/client.js?onload=handleClientLoad";
+              ref.parentNode.insertBefore(js, ref);
              }(document));
+          }).fail(function() {
+            self.logging.warn("Failed to load settings");
+            deferred.reject();
           });
         } else {
           deferred.reject();
         }
         return deferred.promise();
+      },
+
+      didLoadSDK: function() {
+        var self = this;
+        self.logging.info("didLoadSDK");
+        self.sdk.resolve();
       },
 
       signIn: function() {
@@ -102,20 +113,23 @@
                         '&scope=' + self.scopes;
           window.location.href = href;
         }).fail(function() {
-          self.logger.error("Unable to navigate to Google sign-in page");
+          self.logging.error("Unable to navigate to Google sign-in page");
         });
       },
 
       authorize: function() {
         var self = this;
 
+        self.logging.info("Authenticating...");
+
         if (self.deferredAuthentication !== undefined) {
-          return self.deferredAuthentication;
+          return self.deferredAuthentication.promise();
         }
 
         var deferred = jQuery.Deferred();
         self.deferredAuthentication = deferred;
         self.loadSDK().then(function() {
+          self.logging.info("Successfully loaded SDK");
           gapi.auth.authorize(
             {
               'client_id': self.clientID,
@@ -390,6 +404,6 @@
 
 function handleClientLoad() {
   setTimeout(function() {
-    App.Drive.getInstance().sdk.resolve();
+    App.Drive.getInstance().didLoadSDK();
   }, 0);
 }
