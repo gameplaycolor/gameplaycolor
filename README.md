@@ -5,11 +5,6 @@ A JavaScript Game Boy Color emulator for iOS, based on the [GameBoy-Online](http
 
 If you just want to play Game Play Color, you can find it online at [http://inseven.co.uk/apps/gameplaycolor](http://inseven.co.uk/apps/gameplaycolor).
 
-Screenshots
------------
-
-<img src="previews/console.jpg" width="375" height="667" alt="Console" />
-
 Thanks
 ------
 
