@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2013 InSeven Limited.
+ * Copyright (C) 2012-2015 InSeven Limited.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,10 +16,41 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+ var gbologger = new App.Logging(App.Logging.Level.WARNING, "gbo");
+
+function cout(message, level) {
+  gbologger.info(message);
+}
+
+function arrayToBase64(u8Arr) {
+  return utilities.arrayToBase64(u8Arr);
+}
+
+function base64ToArray(b64encoded) {
+  return utilities.base64ToArray(b64encoded);
+}
+
 (function($) {
 
   App.GameBoy = function(store, library) {
     this.init(store, library);
+  };
+
+  App.GameBoy.Settings = {
+    ENABLE_SOUND:           0, // (defaults to true)
+    ENABLE_GBC_BIOS:        1, // Boot with boot rom first (defaults to true)
+    DISABLE_COLORS:         2, // Priority to game boy mode (defaults to false)
+    VOLUME_LEVEL:           3, // Volume (defaults to 1)
+    ENABLE_COLORIZATION:    4, // Colorize the game boy mode (defaults to true)
+    TYPED_ARRAYS_DISALLOW:  5, // Disallow typed arrays (defaults to false)
+    EMULATOR_LOOP_INTERVAL: 6, // Interval for the emulator loop (defaults to 4)
+    AUDIO_BUFFER_MIN_SPAN:  7, // (defaults to 15)
+    AUDIO_BUFFER_MAX_SPAN:  8, // (defaults to 30)
+    ROM_ONLY_OVERRIDE:      9, // Override to allow for MBC1 instead of ROM only (defaults to false)
+    MBC_ENABLE_OVERRIDE:    10, // Override MBC RAM disabling and always allow reading and writing to the banks (defaults to false)
+    GB_BOOT_ROM_UTILIZED:   11, // Use the GameBoy boot ROM instead of the GameBoy Color boot ROM (defaults to false)
+    SOFTWARE_RESIZING:      12, // Scale the canvas in JS, or let the browser scale the canvas (defaults to false)
+    RESIZE_SMOOTHING:       13 // Use image smoothing based scaling (defaults to true)
   };
 
   App.GameBoy.State = {
@@ -37,6 +68,13 @@
       self.library = library;
       self.state = App.GameBoy.State.IDLE;
       self.stateChangeCallbacks = [];
+
+      settings[App.GameBoy.Settings.ENABLE_SOUND] = true;
+      settings[App.GameBoy.Settings.SOFTWARE_RESIZING] = false;
+      settings[App.GameBoy.Settings.ENABLE_COLORIZATION] = false;
+      settings[App.GameBoy.Settings.RESIZE_SMOOTHING] = false;
+      settings[App.GameBoy.Settings.EMULATOR_LOOP_INTERVAL] = 12;
+
     },
 
     onStateChange: function(callback) {
@@ -59,49 +97,47 @@
 
     pause: function() {
       var self = this;
-      gb_Pause();
+      pause();
     },
 
     run: function() {
       var self = this;
       // Do not attempt to run unless we have been in the running state.
       if (self.state === App.GameBoy.State.RUNNING) {
-        gb_Run();
+        run();
       }
     },
 
     keyDown: function(keycode) {
       var self = this;
-      var e = { 'which': keycode, 'preventDefault': function() {} };
-      gb_OnKeyDown_Event(e);
+      GameBoyKeyDown(keycode);
     },
 
     keyUp: function(keycode) {
       var self = this;
-      var e = { 'which': keycode, 'preventDefault': function() {} };
-      gb_OnKeyUp_Event(e);
+      GameBoyKeyUp(keycode);
+    },
+
+    clear: function() {
+      var self = this;
+      clearLastEmulation();
+      self.setState(App.GameBoy.State.LOADING);
     },
 
     load: function(identifier) {
       var self = this;
-
       self.setState(App.GameBoy.State.LOADING);
-
-      // Store the name of the file we're playing.
-      window.app.store.setProperty(App.Store.Property.GAME, identifier);
-
-      // Fetch the file.
-      var file = self.library.fetch(identifier, function(data) {
-        self.insertCartridge(data);
-        self.setState(App.GameBoy.State.RUNNING);
+      var file = self.library.fetch(identifier).then(function(data) {
+        self.insertCartridge(identifier, data, function() {
+          self.setState(App.GameBoy.State.RUNNING);
+        });
       });
-
     },
 
-    insertCartridge: function(data) {
+    insertCartridge: function(identifier, data, callback) {
       var self = this;
-      gb_Insert_Cartridge_Data(data, true);
-      self.setState(App.GameBoy.State.RUNNING);
+      start(identifier, document.getElementById('LCD'), data);
+      setTimeout(callback, 100);
     }
 
   });
@@ -111,24 +147,12 @@
 Gameboy = {};
 
 Gameboy.Key = {
-  START: 65,
-  SELECT: 83,
-  A: 88,
-  B: 90,
-  UP: 38,
-  DOWN: 40,
-  LEFT: 37,
-  RIGHT: 39
+  START: "start",
+  SELECT: "select",
+  A: "a",
+  B: "b",
+  UP: "up",
+  DOWN: "down",
+  LEFT: "left",
+  RIGHT: "right"
 };
-
-function gb_Show_Fps() {}
-
-function gb_KeyDown(keycode) {
-  var e = { 'which': keycode, 'preventDefault': function() {} };
-  gb_OnKeyDown_Event(e);
-}
-
-function gb_KeyUp(keycode) {
-  var e = { 'which': keycode, 'preventDefault': function() {} };
-  gb_OnKeyUp_Event(e);
-}

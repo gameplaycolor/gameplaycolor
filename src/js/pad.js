@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2013 InSeven Limited.
+ * Copyright (C) 2012-2015 InSeven Limited.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,8 +20,8 @@
 
   App.Controls = {};
 
-  App.Controls.Pad = function(identifier, actions) {
-    this.init(identifier);
+  App.Controls.Pad = function(actions) {
+    this.init('#dpad-touch-target');
     this.actions = actions;
   };
 
@@ -45,12 +45,47 @@
 
     onCreate: function() {
       var self = this;
+      self.pad = $('#dpad');
       self.touches = 0;
 
       self.up    = false;
       self.down  = false;
       self.left  = false;
       self.right = false;
+
+      $(document).keydown(function(event) {
+        var keycode = event.which;
+        if (keycode == 37) {
+          self.setLeft(true);
+          event.preventDefault();
+        } else if (keycode == 38) {
+          self.setUp(true);
+          event.preventDefault();
+        } else if (keycode == 39) {
+          self.setRight(true);
+          event.preventDefault();
+        } else if (keycode == 40) {
+          self.setDown(true);
+          event.preventDefault();
+        }
+      });
+      $(document).keyup(function(event) {
+        var keycode = event.which;
+        if (keycode == 37) {
+          self.setLeft(false);
+          event.preventDefault();
+        } else if (keycode == 38) {
+          self.setUp(false);
+          event.preventDefault();
+        } else if (keycode == 39) {
+          self.setRight(false);
+          event.preventDefault();
+        } else if (keycode == 40) {
+          self.setDown(false);
+          event.preventDefault();
+        }
+      });
+
     },
 
     width: function() {
@@ -216,8 +251,10 @@
         self.up = state;
         if (state) {
           self.action("touchDownUp");
+          self.pad.addClass("pressed-up");
         } else {
           self.action("touchUpUp");
+          self.pad.removeClass("pressed-up");
         }
       }
     },
@@ -228,8 +265,10 @@
         self.down = state;
         if (state) {
           self.action("touchDownDown");
+          self.pad.addClass("pressed-down");
         } else {
           self.action("touchUpDown");
+          self.pad.removeClass("pressed-down");
         }
       }
     },
@@ -240,8 +279,10 @@
         self.left = state;
         if (state) {
           self.action("touchDownLeft");
+          self.pad.addClass("pressed-left");
         } else {
           self.action("touchUpLeft");
+          self.pad.removeClass("pressed-left");
         }
       }
     },
@@ -252,8 +293,10 @@
         self.right = state;
         if (state) {
           self.action("touchDownRight");
+          self.pad.addClass("pressed-right");
         } else {
           self.action("touchUpRight");
+          self.pad.removeClass("pressed-right");
         }
       }
     },

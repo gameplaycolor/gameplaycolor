@@ -18,68 +18,62 @@
 
 (function($) {
 
-  App.Controls = {};
-
-  App.Control = function(identifier) {
-    this.init(identifier);
+  App.Logging = function(level, tag) {
+    this.init(level, tag);
   };
 
-  App.Control.Touch = {
-    START: 0,
-    MOVE:  1,
-    END:   2
+  App.Logging.Level = {
+    CRITICAL: 50,
+    ERROR: 40,
+    WARNING: 30,
+    INFO: 20,
+    DEBUG: 10
   };
 
-  App.Control.State = {
-    DEFAULT:   0,
-    UP:        1,
-    UPRIGHT:   2,
-    RIGHT:     3,
-    DOWNRIGHT: 4,
-    DOWN:      5,
-    DOWNLEFT:  6,
-    LEFT:      7,
-    UPLEFT:    8
-  };
+  jQuery.extend(App.Logging.prototype, {
 
-  jQuery.extend(App.Control.prototype, {
-
-    init: function(identifier) {
+    init: function(level, tag) {
       var self = this;
-      self.identifier = identifier;
-      self.element = $(self.identifier);
-      self.touchListener = new App.TouchListener(self.identifier, self);
-      self.onCreate();
+      self.level = level;
+      self.tag = tag;
     },
 
-    onCreate: function() {
+    log: function(level, message) {
       var self = this;
+      if (level >= self.level) {
+        if (self.tag !== undefined) {
+          console.log(self.tag + ": " + message);
+        } else {
+          console.log(message);
+        }
+      }
     },
 
-    width: function() {
+    critical: function(message) {
       var self = this;
-      return self.element.width();
+      self.log(App.Logging.Level.CRITICAL, message);
     },
 
-    height: function() {
+    error: function(message) {
       var self = this;
-      return self.element.height();
+      self.log(App.Logging.Level.ERROR, message);
     },
 
-    onTouchEvent: function(state, position, timestamp) {
+    warning: function(message) {
       var self = this;
+      self.log(App.Logging.Level.WARNING, message);
     },
 
-    fadeIn: function() {
+    info: function(message) {
       var self = this;
-      self.element.fadeIn();
+      self.log(App.Logging.Level.INFO, message);
     },
 
-    fadeOut: function() {
+    debug: function(message) {
       var self = this;
-      self.element.fadeOut();
-    },
+      self.log(App.Logging.Level.DEBUG, message);
+    }
 
   });
 
-})(jQuery);
+ })(jQuery);

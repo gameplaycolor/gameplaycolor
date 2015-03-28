@@ -1,136 +1,295 @@
+/*
+ * Copyright (C) 2012-2015 InSeven Limited.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
 body
-  {
+{
   padding: 0;
   margin: 0;
   -webkit-user-select: none;
-  background-color: black;
-  font: 15px Geneva, Arial, Helvetica, sans-serif;
-  background-size: 320px 568px;
-  }
-
-#LCD
-  {
-  image-rendering: -webkit-optimize-contrast;
-  }
+  background-color: #000;
+  font: 15px Helvetica, sans-serif;
+}
 
 #display
-  {
-  position: absolute;
-  top: 0;
-  left: 124px;
-  }
-
-.display
-  {
+{
+  position: relative;
+  margin: auto;
   width: 320px;
   height: 288px;
-  background-color: #EFFDE1;
+}
+
+.display
+{
   position: absolute;
+  top: 0;
+  left: 0;
+  width: 320px;
+  height: 288px;
+  background-color: #fff;
   background-size: 320px 288px;
-  }
+}
+
+#moulding
+{
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: -webkit-flex;
+  width: 100%;
+  height: 100%;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.16)));
+}
+
+#moulding-left
+{
+  -webkit-flex-grow: 1;
+  height: 100%;
+  background-image: -webkit-gradient(linear, left top, right top, from(rgba(255, 255, 255, 0)), to(rgba(255, 255, 255, 0.04)));
+}
+
+#moulding-center
+{
+  -webkit-flex-grow: 3;
+  height: 100%;
+}
+
+#moulding-right
+{
+  -webkit-flex-grow: 1;
+  height: 100%;
+  background-image: -webkit-gradient(linear, right top, left top, from(rgba(255, 255, 255, 0)), to(rgba(255, 255, 255, 0.04)));
+}
+
+.element-surround
+{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
+.surround
+{
+  background-color: #222222;
+  border: 1px solid #000;
+  border-bottom: 1.5px solid #000;
+  margin: 0 auto;
+  width: 100%;
+  height: 338px;
+  box-shadow: 0 2px 2px rgba(255, 255, 255, 0.08), inset 0 -2px 3px rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+}
+
+#LCD
+{
+  image-rendering: -webkit-optimize-contrast;
+}
+
+#LCD-dropshadow
+{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 320px;
+  height: 288px;
+  box-shadow: 0 0.5px 0.5px #ffffff, inset 0px 3px 10px #222;
+}
 
 #STATUS
-  {
+{
   display: none;
-  }
+}
 
 .button
-  {
-  width: 63px;
-  height: 62px;
-  background-size: 63px 62px;
-  }
+{
+  width: 58px;
+  height: 58px;
+  cursor: pointer;
+  border-radius: 31px;
+  background-color: #4a4a4a;
+  display: block;
+  background-color: #f7f7f7;
+  background-image: -webkit-linear-gradient(top, #262626, #000000);
+  color: #000000;
+  text-shadow: #313131 0px 1px;
+  position: relative;
+  text-align: center;
+  font-size: 34px;
+  box-shadow: 0 3px 7px #1b1b1b, inset 0 2px 3px #676767;
+  border: 2px solid black;
+  border-top: 1px solid black;
+}
 
 .button.pressed
-  {
-  }
+{
+  box-shadow: 0 1px 4px rgba(27, 27, 27, 0.72), inset 0 2px 3px rgba(103, 103, 103, 0.59);
+}
+
+.button-option-group
+{
+  width: 60px;
+}
+
+.left
+{
+  position: absolute;
+  left: 0;
+}
+
+.right
+{
+  position: absolute;
+  right: 0;
+}
+
+.top
+{
+  position: absolute;
+  top: 0;
+}
+
+.bottom
+{
+  position: absolute;
+  bottom: 0;
+}
 
 .button-option
-  {
-  width: 42px;
-  height: 31px;
-  background-size: 42px 31px;
-  }
+{
+  margin: 0 auto;
+  width: 40px;
+  height: 16px;
+  background: black;
+  border-radius: 45%;
+  box-shadow: 0 -1px 3px #1b1b1b, inset 0 4px 8px rgba(103, 103, 103, 0.51);
+  border: 2px solid black;
+  border-top: 1px solid black;
+}
 
 .button-option.pressed
-  {
-  }
+{
+  box-shadow: 0 -1px 3px #1b1b1b, inset 0 4px 8px rgba(103, 103, 103, 0.39);
+}
+
+.button-label
+{
+  opacity: 0.3;
+  text-shadow: 0 -1px #777;
+  font-size: 14px;
+  margin-top: 8px;
+  text-transform: uppercase;
+  margin: 4px auto;
+  text-align: center;
+}
 
 #group-buttons
-  {
-  position: absolute;
+{
+  position: relative;
   height: 115px;
-  width: 132px;
+  width: 142px;
   background-size: 132px 115px;
-  top: 60px;
-  right: 0;
-  }
+  margin: auto;
+}
 
 #group-options
-  {
-  position: absolute;
-  width: 125px;
+{
+  position: relative;
+  width: 140px;
   height: 50px;
-  top: 248px;
-  right: 0;
-  background-size: 125px 50px;
-  }
+  margin: auto;
+}
 
 #control-a
-  {
+{
   position: absolute;
   top: 5px;
   right: 3px;
-  }
+}
 
 #control-b
-  {
+{
   position: absolute;
   bottom: 9px;
   left: 3px;
-  }
+}
 
-#control-select
-  {
+.control-text
+{
   position: absolute;
-  top: 5px;
-  left: 5px;
-  }
+  bottom: 6px;
+  left: 14px;
+}
 
-#control-start
-  {
-  position: absolute;
-  top: 5px;
-  right: 7px;
-  }
+.button.pressed .control-text
+{
+  bottom: 8px;
+}
 
 #control-dpad
-  {
-  position: absolute;
+{
   width: 128px;
   height: 128px;
   background-size: 128px 128px;
-  top: 60px;
-  left: 0;
-  }
+  margin: auto;
+}
 
 #button-done
-  {
+{
   position: absolute;
-  top: 8px;
-  right: 6px;
-  width: 61px;
-  height: 30px;
-  text-align: center;
-  }
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 44px;
+  line-height: 44px;
+  text-align: right;
+  cursor: pointer;
+  font-size: 16px;
+  padding-right: 34px;
+  color: #d9d9d9;
+  text-shadow: 0 1px 0 #4a4a4a;
+  opacity: 0.6;
+}
+#button-done:after, #button-done:before {
+  content: "";
+  width: 16px;
+  height: 3px;
+  background-color: #d9d9d9;
+  position: absolute;
+  right: 8px;
+  top: 0;
+}
+#button-done:after {
+    -webkit-transform:rotate(45deg);
+    top: 15.75px;
+}
+#button-done:before {
+    -webkit-transform:rotate(-45deg);
+    top: 25.25px;
+}
 
-.button-done
-  {
-  background-size: 61px 30px;
-  }
+.button-done.pressed
+{
+}
 
 #debug
-  {
+{
   height: 20px;
   width: 100px;
   position: absolute;
@@ -142,225 +301,273 @@ body
   padding: 20px 0;
   text-align: center;
   width: 568px;
-  }
+}
   
 #screen-console
-  {
-  background-color: #ccc;
-  background-size: 320px 260px;
-  background-position: right bottom;
-  }
-
-#title-bar
-  {
-  position: absolute;
+{
+  transition: left 0.3s ease-in-out;
+  width: 100%;
+  height: 100%;
+  top: 0;
   left: 0;
-  top: 256px;
-  width: 568px;
-  height: 57px;
-  background-size: 320px 57px;
-  }
+  background-image: url(images/noise.png);
+  border-radius: 12px;
+}
 
-#title-bar-label
-  {
-  padding: 0;
-  margin: 0;
-  text-align: center;
-  text-shadow: 0 1px white;
-  padding-top: 10px;
-  font-size: 20px;
-  font-weight: bold;
-  }
- 
+.grape 
+{
+  background-color: #27358B;
+}
+
+.cherry
+{
+  background-color: #D81E57;
+}
+
+.teal
+{
+  background-color: #007FA0;
+}
+
+.lime
+{
+  background-color: #A0D02E;
+}
+
+.yellow
+{
+  background-color: #FECF41;
+}
+
 #list-games
-  {
+{
   position: absolute;
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-size: 320px 568px;
-  }
+  width: 100%;
+  height: 100%;
+}
 
 .content
-  {
-  position: absolute;
-  top: 44px;
-  left: 0px;
-  height: 256px;
-  width: 568px;
-  }
-  
-#list-games-content
-  {
+{
   position: absolute;
   top: 0;
   left: 0;
-  height: 120px;
+  height: 100%;
+  width: 100%;
+}
+  
+#list-games-content
+{
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 2000px;
-  }
+  height: 100%;
+}
 
 #list-games-page-control
-  {
+{
   position: absolute;
   bottom: 0;
   left: 0;
   height: 36px;
-  width: 568px;
+  width: 100%;
   display: -webkit-box;
-  display: box;
   -webkit-box-orient: horizontal;
-  box-orient: horizontal;
   -webkit-box-pack: center;
-  box-pack: center;
-  }
+}
 
 .page
-  {
+{
   width: 6px;
   height: 6px;
   background-color: white;
   border-radius: 50%;
   opacity: 0.5;
   margin: 5px;
-  }
+}
 
 .page.active
-  {
-  opacity: 1.000000;
-  }
+{
+  opacity: 1.0;
+}
   
 .game
-  {
+{
   position: absolute;
   text-align: center;
-  background-size: 126px 141px;
-  background-position: center;
-  background-repeat: no-repeat; 
-  }
+}
 
 .game-title
-  {
-  font-family: 'Comic Sans MS', 'Marker Felt', sans-serif;
-  background-color: #bbb;
-  width: 85px;
-  height: 74px;
-  border-radius: 2px;
+{
   word-wrap: break-word;
-  position: absolute;
-  top: 40px;
-  left: 27px;
-  }
+  font-size: 16px;
+  color: #444;
+  width: 130px;
+  height: 130px;
+  padding: 10px;
+  margin: 10px;
+  display: table-cell; 
+  vertical-align: middle; 
+  text-align: center; 
+  background-color: #999;
+  opacity: 0.2;
+}
+
+.downloaded > .game-title
+{
+  opacity: 1.0;
+}
 
 .game-thumbnail
-  {
+{
   position: absolute;
-  width: 85px;
-  height: 74px;
-  border-radius: 2px;
-  word-wrap: break-word;
+  top: 0;
+  left: 0;
+  width: 150px;
+  height: 150px;
+  border-radius: 1px;
+  opacity: 0.2;
+}
+
+.downloaded > .game-thumbnail
+{
+  opacity: 1.0;
+}
+
+.game-overlay
+{
   position: absolute;
-  top: 40px;
-  left: 27px;
-  }
-    
+  top: 0;
+  left: 0;
+  width: 150px;
+  height: 150px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.74);
+}
+
+.element-thanks
+{
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  text-align: center;
+}
+
+.button-thanks
+{
+  border: 2px solid #fff;
+  border-radius: 8px;
+  padding: 10px;
+  text-decoration: none;
+  color: #fff;
+}
+
+.button-thanks:hover
+{
+  background-color: #fff;
+  color: #000;
+}
+
 #screen-games
-  {
-  }
+{
+  width: 100%;
+  height: 100%;
+  background-color: #272727;
+  border-radius: 12px;
+  background-size: 233px 133px;
+}
 
 #screen-empty
-  {
-  }
+{
+}
 
 #screen-loading
-  {
+{
+  width: 100%;
+  height: 100%;
+}
 
-  }
+.screen-splash, .screen-instructions
+{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+}
+
+.screen-instructions
+{
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-size: 22px;
+  background-color: #222;
+}
+
+.appicon
+{
+  width: 200px;
+  height: 200px;
+  margin-bottom: 12px;
+  background-size: 200px 200px;
+  border-radius: 40px;
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+  display: inline-block;
+  background-image: url(images/icon-large.png);
+}
+
+.install-instructions
+{
+  text-align: left;
+}
+
+.install-instructions > li
+{
+  margin-bottom: 10px;
+}
 
 .placeholder
-  {
-  color: white;
-  text-shadow: 0 1px #000;
+{
+  color: #d9d9d9;
   text-align: center;
   padding: 80px 40px;
-  }
+  margin: auto;
+}
 
-#screen-authorize
-  {
-  }
+.screen-instructions .placeholder
+{
+  background-color: #222;
+}
 
-#screen-authorize h1
-  {
-  padding-top: 0;
-  margin-top: 0;
-  }
-
-#screen-authorize-panel
-  {
-  position: absolute;
-  background-color: #fff;  
-  top: 20px;
-  left: 20px;
-  width: 508px;
-  height: 196px;
-  padding: 10px;
-  font-size: 14px;
-  }
-
-.actions
-  {
-  text-align: center;
-  margin: 30px;
-  }
-
-.google-button-blue
-  {
-  border: 1px solid #3079ED;
-  color: white;
-  text-shadow: 0 1px rgba(0, 0, 0, 0.1);
-  background-color: #4D90FE;
-  background-image: -webkit-gradient(linear,left top,left bottom,from(#4d90fe  ),to(#4787ed  ));
-  background-image: -webkit-linear-gradient(top,#4d90fe  ,#4787ed  );
-  background-image: -moz-linear-gradient(top,#4d90fe  ,#4787ed  );
-  background-image: -ms-linear-gradient(top,#4d90fe  ,#4787ed  );
-  background-image: -o-linear-gradient(top,#4d90fe  ,#4787ed  );
-  background-image: linear-gradient(top,#4d90fe  ,#4787ed  );
-  padding: 8px;
-  }
-
-.google-button-blue:hover
-  {
-  border: 1px solid #2F5BB7;
-  color: white;
-  text-shadow: 0 1px rgba(0, 0, 0, 0.3);
-  background-color: #357AE8;
-  background-image: -webkit-gradient(linear,left top,left bottom,from(#4d90fe  ),to(#357ae8  ));
-  background-image: -webkit-linear-gradient(top,#4d90fe  ,#357ae8  );
-  background-image: -moz-linear-gradient(top,#4d90fe  ,#357ae8  );
-  background-image: -ms-linear-gradient(top,#4d90fe  ,#357ae8  );
-  background-image: -o-linear-gradient(top,#4d90fe  ,#357ae8  );
-  background-image: linear-gradient(top,#4d90fe  ,#357ae8  );
-  }
+.body-grey
+{
+  background-color: #222;
+}
 
 .screen
-  {
+{
   position: absolute;
   top: 0;
   left: 0;
   width: 568px;
   height: 300px;
-  }
+}
 
 .title-button
-  {
+{
   background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#707070), to(#1C1C1C));
   border-radius: 4px;
   border: 1px solid black;
   height: 32px;
   width: 598px;
-  }
+}
 
 .title
-  {
+{
   background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#4A4A4A), to(#000000));
   position: absolute;
   top: 0;
@@ -368,92 +575,65 @@ body
   text-align: center;
   color: white;
   z-index: 20;
-  }
+}
 
 .title h3
-  {
+{
   margin-top: 11px;
-  }
+}
 
 #control-games-scroll
-  {
+{
   position: absolute;
   top: 44px;
   left: 0;
   height: 300px;
   width: 300px;
-  }
+}
 
 #control-games-list
-  {
+{
   position: absolute;
   top: 0;
   left: 0;
   width: 300px;
-  }
+}
 
 .table
-  {
+{
   list-style: none;
   padding: 0;
   margin: 0;
-  }
+}
 
 .table li
-  {
+{
   height: 88px;
   border-bottom: 1px solid #ccc;
-  }
+}
 
 #instructions
-  {
+{
   color: white;
   text-shadow: 0 1px #000;
   padding: 40px;
   text-align: center;
-  }
-
-.icon
-  {
-  width: 150px;
-  height: 150px;
-  margin: auto;
-  margin-bottom: 20px;
-  background-size: 150px 150px;
-  }
-
-.copyright
-  {
-  font-size: 10px;
-  font-weight: normal;
-  }
-
-#copyright-games
-  {
-  position: absolute;
-  bottom: 0px;
-  left: 0px;
-  font-size: 10px;
-  font-weight: normal;
-  color: #444;
-  text-shadow: 0 1px #000;
-  width: 568px;
-  text-align: center;
-  }
+}
 
 #instructions a
-  {
+{
   color: #666;
   text-decoration: none;
-  }
+}
 
 .license
-  {
+{
   color: #666;
-  }
+  text-decoration: none;
+}
 
 #update-button
-  {
+{
   position: absolute;
   background-color: rgb(64, 64, 189);
   color: white;
@@ -466,196 +646,604 @@ body
   bottom: 12px;
   text-transform: uppercase;
   font-size: 11px;
+}
+
+#LCD-loading { background-image: url(images/loading.png); }
+#LCD-idle { background-image: url(images/idle.png); }
+
+/* D-Pad */
+
+.dpad-touch-target
+{
+    width: 160px;
+    height: 160px;
+    position: relative;
+}
+
+.dpad
+{
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    width: 124px;
+    height: 124px;
+}
+
+.dpad > .element
+{
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background-color: blue;
+    border: 2px solid black;
+    border-top: 1px solid black;
+}
+
+.dpad > .top
+{
+    background-image: -webkit-linear-gradient(top, #2D2D2D, #1E1E1E);
+}
+
+.dpad > .middle
+{
+    background-image: -webkit-linear-gradient(top, #1E1E1E, #0A0A0A);
+}
+
+.dpad > .bottom
+{
+    background-image: -webkit-linear-gradient(top, #0A0A0A, #000000);
+}
+
+.dpad > .up
+{
+    top: 0;
+    left: 40px;
+    border-radius: 6px 6px 0 0;
+    border-bottom: 0;
+    box-shadow: 0 3px 7px 0 #1b1b1b, inset 0 3px 2px 0 #676767;
+}
+
+.dpad.pressed-up > .up
+{
+    box-shadow: 0 3px 4px 0 #1b1b1b, inset 0 0 2px -1px #676767;
+}
+
+.dpad.pressed-down > .up
+{
+    box-shadow: 0 3px 9px #1b1b1b, inset -1px 9px 2px -1px #676767;
+}
+
+.dpad.pressed-left > .up
+{
+    box-shadow: 1px 3px 7px 0 #1b1b1b, inset -2px 3px 2px 0 #676767;
+}
+
+.dpad.pressed-right > .up
+{
+    box-shadow: -1px 3px 7px 0 #1b1b1b, inset 2px 3px 2px 0 #676767;
+}
+
+.dpad > .down
+{
+    bottom: 0;
+    left: 40px;
+    border-radius: 0 0 6px 6px;
+    border-top: 0;
+    box-shadow: 0 3px 7px 0 #1b1b1b, inset 0 -2px 2px 0 #676767;
+}
+
+.dpad.pressed-up > .down
+{
+    box-shadow: 0 3px 11px 0 #1b1b1b, inset 0 -6px 2px 0 #676767;
+}
+
+.dpad.pressed-down > .down
+{
+    box-shadow: 0 0 7px 0 #1b1b1b, inset 0 0 2px 0 #676767;
+}
+
+.dpad.pressed-left > .down
+{
+    box-shadow: 1px 3px 7px 0 #1b1b1b, inset -2px -2px 2px 0 #676767;
+}
+
+.dpad.pressed-right > .down
+{
+    box-shadow: -1px 3px 7px 0 #1b1b1b, inset 2px -2px 2px 0 #676767;
+}
+
+.dpad > .left
+{
+    top: 40px;
+    left: 0;
+    border-radius: 12px 0 0 12px;
+    border-right: 0;
+    box-shadow: 0 3px 7px 0 #1b1b1b, inset 1px 3px 2px -1px #676767;
+}
+
+.dpad.pressed-up > .left
+{
+    box-shadow: 0 3px 9px 0 #1b1b1b, inset 1px -2px 2px -1px #676767;
+}
+
+.dpad.pressed-down > .left
+{
+    box-shadow: 0 3px 4px 0 #1b1b1b, inset 1px 5px 2px -1px #676767;
+}
+
+.dpad.pressed-left > .left
+{
+    box-shadow: 2px 1px 7px 0 #1b1b1b, inset 0 3px 1px -1px #676767;
+}
+
+.dpad.pressed-right > .left
+{
+    box-shadow: 2px 3px 7px 0 #1b1b1b, inset 5px 3px 2px -1px #676767;
+    width: 42px;
+}
+
+.dpad > .right
+{
+    top: 40px;
+    right: 0;
+    border-radius: 0 12px 12px 0;
+    border-left: 0;
+    box-shadow: 0 3px 7px #1b1b1b, inset -1px 3px 2px -1px #676767;
+}
+
+.dpad.pressed-up > .right
+{
+    box-shadow: 0 3px 9px #1b1b1b, inset -1px -2px 2px -1px #676767;
+}
+
+.dpad.pressed-down > .right
+{
+    box-shadow: 0 3px 4px #1b1b1b, inset -1px 5px 2px -1px #676767;
+}
+
+.dpad.pressed-left > .right
+{
+    box-shadow: -2px 3px 7px #1b1b1b, inset -5px 3px 1px -1px #676767;
+    width: 42px;
+}
+
+.dpad.pressed-right > .right
+{
+    box-shadow: -2px 1px 7px #1b1b1b, inset 0 3px 2px -1px #676767;
+}
+
+.dpad > .arrow:before
+{
+    position: absolute;
+    content:"";
+    left: 0;
+    top: 0;
+    opacity: 0.2;
+    text-shadow: 0 1px #777;
+    color: #000;
+    font-size: 20px;
+    line-height: 44px;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+.dpad > .up:before
+{
+    content:"\25B2";
+}
+
+.dpad.pressed-up > .up:before
+{
+    top: -2px;
+}
+
+.dpad.pressed-down > .up:before
+{
+    top: 2px;
+}
+
+.dpad.pressed-left > .up:before
+{
+    left: -1px;
+}
+.dpad.pressed-right > .up:before
+{
+    left: 1px;
+}
+
+.dpad > .down:before
+{
+    content:"\25BC";
+}
+
+.dpad.pressed-up > .down:before
+{
+    top: -2px;
+    text-shadow: 0 1px #aaa;
+}
+
+.dpad.pressed-down > .down:before
+{
+    top: 2px;
+}
+
+.dpad.pressed-left > .down:before
+{
+    left: -1px;
+}
+
+.dpad.pressed-right > .down:before
+{
+    left: 1px;
+}
+
+.dpad > .left:before
+{
+    content:"\25C0";
+}
+
+.dpad.pressed-up > .left:before
+{
+    top: -1px;
+}
+
+.dpad.pressed-down > .left:before
+{
+    top: 1px;
+}
+
+.dpad.pressed-left > .left:before
+{
+    left: -2px;
+}
+
+.dpad.pressed-right > .left:before
+{
+    left: 2px;
+}
+
+.dpad > .right:before
+{
+    content:"\25B6";
+}
+
+.dpad.pressed-up > .right:before
+{
+    top: -1px;
+}
+
+.dpad.pressed-down > .right:before
+{
+    top: 1px;
+}
+
+.dpad.pressed-left > .right:before
+{
+    left: -2px;
+}
+
+.dpad.pressed-right > .right:before
+{
+    left: 2px;
+}
+
+.dpad > .center
+{
+    top: 33%;
+    left: 40px;
+    border: 0;
+    width: 42px;
+    height: 42px;
+}
+
+.dpad > .center:before
+{
+    position: absolute;
+    height: 24px;
+    width: 24px;
+    content:"";
+    border-radius: 100%;
+    top: 8px;
+    left: 8px;
+    background-image: -webkit-linear-gradient(top, #000, #888);
+    box-shadow: 0 2px 0 #ccc;
+    opacity: 0.2;
+}
+
+.dpad.pressed-left > .center
+{
+    width: 40px;
+}
+
+.dpad.pressed-right > .center
+{
+    width: 40px;
+    left: 42px;
+}
+
+.dpad.pressed-up > .center:before
+{
+    top: 7px;
+}
+.dpad.pressed-down > .center:before
+{
+    top: 9px;
+}
+.dpad.pressed-left > .center:before
+{
+    left: 7px;
+}
+.dpad.pressed-right > .center:before
+{
+    left: 9px;
+}
+
+#element-dpad
+{
+  position: absolute;
+  left: 8px;
+  bottom: 100px;
+}
+
+#element-buttons
+{
+  position: absolute;
+  right: 20px;
+  bottom: 120px;
+}
+
+#element-options
+{
+  position: absolute;
+  width: 100%;
+  bottom: 10px;
+  left: 0;
+}
+
+#element-screen
+{
+  position: absolute;
+  width: 100%;
+  top: 30px;
+  left: 0;
+}
+
+#screen-console.open
+{
+  transition: left 0.3s ease-in-out;
+  left: 100%;
+}
+
+/* iPhone 5: Portrait */
+@media only screen and (width: 320px) and (height: 548px) {
+
+  #element-screen
+  {
+    top: 0;
   }
 
-@media only screen and (-webkit-device-pixel-ratio:1) {
+  #element-dpad
+  {
+    left: 0;
+  }
 
-  body { background-image: url(../images/background.png); }
+  #element-buttons 
+  {
+    right: 10px;
+  }
 
-  .icon { background-image: url(../images/showcase.png); }
+  .surround
+  {
+    height: 287px;
+    border-radius: 0;
+  }
 
-  #LCD-loading { background: url(../images/loading.png); }
-  #LCD-idle { background: url(../images/idle.png); }
+  #screen-console
+  {
+    border-radius: 0;
+  }
 
-  #list-games { background-image: url(../images/background.png); }
+  #screen-games
+  {
+    border-radius: 0;
+  }
 
-  .button-done { background-image: url(../images/done.png); }
-  .button-done.pressed { background-image: url(../images/done_pressed.png); }
-  
-  .game { background-image: url(../images/cartridge.png); }
-
-  #screen-console { background-image: url(../images/console.png); }
-  #title-bar { background-image: url(../images/title.png); }
-
-  #group-buttons { background-image: url(../images/labels.png); }
-  .button { background-image: url(../images/button.png); }
-  .button.pressed { background-image: url(../images/button_pressed.png); }
-
-  #control-dpad.sprite-pad-default   { background-image: url(../images/pad.png); }
-  #control-dpad.sprite-pad-up        { background-image: url(../images/pad.png); }
-  #control-dpad.sprite-pad-upright   { background-image: url(../images/pad.png); }
-  #control-dpad.sprite-pad-right     { background-image: url(../images/pad.png); }
-  #control-dpad.sprite-pad-downright { background-image: url(../images/pad.png); }
-  #control-dpad.sprite-pad-down      { background-image: url(../images/pad.png); }
-  #control-dpad.sprite-pad-downleft  { background-image: url(../images/pad.png); }
-  #control-dpad.sprite-pad-left      { background-image: url(../images/pad.png); }
-  #control-dpad.sprite-pad-upleft    { background-image: url(../images/pad.png); }
-
-  #group-options { background-image: url(../images/labels_options.png); }
-  .button-option { background-image: url(../images/option.png); }
-  .button-option.pressed { background-image: url(../images/option_pressed.png); }
+  #LCD-dropshadow
+  {
+    box-shadow:0 0 0 0, inset 0 0 0 0;
+  }
 
 }
 
-@media only screen and (-webkit-device-pixel-ratio:2) {
+/* iPhone 5: Landscape */
+@media only screen and (width: 568px) and (height: 320px) {
 
-  body { background-image: url(../images/background_2x.png); }
-
-  .icon { background-image: url(../images/showcase_2x.png); }
-
-  #LCD-loading { background: url(../images/loading_2x.png); }
-  #LCD-idle { background: url(../images/idle_2x.png); }
-
-  #list-games { background-image: url(../images/background_2x.png); }
-
-  .button-done { background-image: url(../images/done_2x.png); }
-  .button-done.pressed { background-image: url(../images/done_pressed_2x.png); }
-
-  .game { background-image: url(../images/cartridge_2x.png); }
-
-  #screen-console { background-image: url(../images/console_2x.png); }
-  #title-bar { background-image: url(../images/title_2x.png); }
-
-  #group-buttons { background-image: url(../images/labels_2x.png); }
-  .button { background-image: url(../images/button_2x.png); }
-  .button.pressed { background-image: url(../images/button_pressed_2x.png); }
-
-  #control-dpad.sprite-pad-default   { background-image: url(../images/pad_2x.png); }
-  #control-dpad.sprite-pad-up        { background-image: url(../images/pad_2x.png); }
-  #control-dpad.sprite-pad-upright   { background-image: url(../images/pad_2x.png); }
-  #control-dpad.sprite-pad-right     { background-image: url(../images/pad_2x.png); }
-  #control-dpad.sprite-pad-downright { background-image: url(../images/pad_2x.png); }
-  #control-dpad.sprite-pad-down      { background-image: url(../images/pad_2x.png); }
-  #control-dpad.sprite-pad-downleft  { background-image: url(../images/pad_2x.png); }
-  #control-dpad.sprite-pad-left      { background-image: url(../images/pad_2x.png); }
-  #control-dpad.sprite-pad-upleft    { background-image: url(../images/pad_2x.png); }
-
-  #group-options { background-image: url(../images/labels_options_2x.png); }
-  .button-option { background-image: url(../images/option_2x.png); }
-  .button-option.pressed { background-image: url(../images/option_pressed_2x.png); }
-
-} 
-
-@media only screen and (max-width:320px) {
-
-  #display
-    {
+  #element-screen
+  {
     top: 0;
-    left: 0;    
-    }
-      
-  .screen
-    {
-    width: 320px;
-    height: 548px;
-    }
+  }
 
-  #group-options
-    {
-    top: 462px;
-    left: 98px;
-    }
+  #element-options
+  {
+    bottom: 10px;
+  }
+
+  #element-surround
+  {
+  }
+
+  #element-options
+  {
+    bottom: -4px;
+  }
+
+  #element-buttons
+  {
+    right: 8px;
+  }
 
   #group-buttons
-    {
-    top: 317px;
-    right: 12px;
-    }
+  {
+    width: 132px;
+  }
 
-  #control-dpad
-    {
-    top: 304px;
-    left: 13px;
-    }
+  #element-dpad
+  {
+    left: -4px;
+  }
 
-  #control-screen
-    {
-    top: 0;
-    left: 0;
-    }
+  #group-options
+  {
+    width: 500px;
+  }
 
-  #debug
-    {
-    width: 320px;
-    }
+  #LCD-dropshadow
+  {
+    box-shadow:0 0 0 0, inset 0 0 0 0;
+  }
 
-  .title
-    {
-    height: 44px;
-    width: 320px;
-    }
-
-  #control-games
-    {
-    right: 8px;
-    top: 498px;
-    }
-
-  #title-bar
-    {
-    left: 0;
-    top: 504px;
-    width: 320px;
-    height: 57px;
-    }
-    
-  #spinner
-    {
-    padding-top: 280px;
-    }
-    
-  .content
-    {
-    top: 44px;
-    left: 0px;
-    height: 504px;
-    width: 320px;
-    }
-    
-  #list-games-content
-    {
-    height: 420px;
-    width: 2000px;
-    }
-
-  #list-games-page-control
-    {
-    width: 320px;
-    }
-
-  #screen-authorize-panel
-    {
-    top: 30px;
-    left: 30px;
-    width: 220px;
-    height: 390px;
-    }
-
-  .placeholder
-    {
-    padding: 160px 40px;
-    }
-
-  #copyright-games
-    {
-    width: 320px;
-    }
-
-  #update-button
-    {
-    left: 103px;
-    bottom: 6px;
-    }
+  .surround
+  {
+    height: 287px;
+    width: 321px;
+    border-radius: 0;
+  }
 
 }
 
+/* iPhone 6: Portrait */
+@media only screen and (width: 375px) and (height: 647px) {
+
+  #element-screen
+  {
+    top: 24px;
+  }
+
+  #element-buttons
+  {
+    right: 20px;
+  }
+
+  #element-options
+  {
+    bottom: 20px;
+  }
+
+}
+
+/* iPhone 6: Landscape */
+@media only screen and (width: 667px) and (height: 375px) {
+
+  #element-screen
+  {
+    top: 12px;
+  }
+
+  #element-options
+  {
+    bottom: 10px;
+  }
+
+  .surround
+  {
+    width: 346px;
+    height: 312px;
+  }
+
+  #element-options
+  {
+    bottom: -4px;
+  }
+
+  #element-buttons
+  {
+    right: 8px;
+    bottom: 140px;
+  }
+
+  #element-dpad
+  {
+    left: 0;
+    bottom: 120px;
+  }
+
+}
+
+@media only screen and (min-width: 768px) {
+
+  #display, .display, #LCD-dropshadow
+  {
+    width: 640px;
+    height: 576px;
+    background-size: 640px 576px;
+  }
+
+  .surround
+  {
+    height: 638px;
+  }
+
+  #LCD-loading { background-image: url(images/loading-large.png); }
+  #LCD-idle { background-image: url(images/idle-large.png); }
+
+}
+
+/* iPad: Portrait */
+@media only screen and (width: 768px) and (height: 1004px) {
+
+  #group-buttons
+  {
+    width: 152px;
+  }
+
+  #element-buttons
+  {
+    right: 52px;
+  }
+
+  #element-dpad
+  {
+    left: 40px;
+  }
+
+}
+
+/* iPad: Landscape */
+@media only screen and (width: 1024px) and (height: 748px) {
+
+  #element-buttons
+  {
+    bottom: 280px;
+    width: 152px;
+    height: 132px;
+  }
+
+  #group-buttons
+  {
+    width: 152px;
+  }
+
+  #element-dpad
+  {
+    bottom: 280px;
+    left: 4px;
+  }
+
+  #element-screen
+  {
+    top: 50px;
+  }
+
+  #element-surround
+  {
+    top: 20px;
+  }
+
+  .surround
+  {
+    height: 636px;
+    width: 700px;
+  }
+
+}

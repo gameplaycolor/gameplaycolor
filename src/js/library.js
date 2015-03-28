@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2013 InSeven Limited.
+ * Copyright (C) 2012-2015 InSeven Limited.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,8 +18,8 @@
  
 (function($) {
 
-  App.Library = function() {
-    this.init();
+  App.Library = function(store, callback) {
+    this.init(store, callback);
   };
 
   App.Library.State = {
@@ -35,31 +35,17 @@
   jQuery.extend(
     App.Library.prototype, {
 
-    init: function() {
+    init: function(store, callback) {
       var self = this;
       self.state = App.Library.State.UNINITIALIZED;
       self.items = [];
-      self.thumbnails = {};
       self.changeCallbacks = [];
       self.stateChangeCallbacks = [];
       self.drive = App.Drive.getInstance();
-      self.thumbnailStore = new App.Store('thumbnails');
-
-      // We use a separate flag to track updates internally as
-      // we need to be able to schedule updates in many different states
-      // due to the asynchronous nature of the update.
-      self.updatePending = false;
-
-      // Handle Google Drive state changes to update our state.
-      self.drive.onStateChange(function(state) {
-        if (state === App.Drive.State.UNAUTHORIZED) {
-          self.setState(App.Library.State.UNAUTHORIZED);
-        } else if (state === App.Drive.State.READY) {
-          self.setState(App.Library.State.READY);
-        } else {
-          self.setState(App.Library.State.LOADING);
-        }
-      });
+      self.store = store;
+      self.fetches = {};
+      self.callback = callback;
+      self.logging = new App.Logging(App.Logging.Level.WARNING, "library");
       
       // Load the library.
       var library = localStorage.getItem('library');
@@ -68,6 +54,12 @@
       }
 
       self.sort();
+ 
+      self.drive.checkAuthentication().fail(function() {
+        if (window.navigator.onLine === true) {
+          self.drive.signIn();
+        }
+      });
       
     },
 
@@ -131,25 +123,54 @@
       return self.stripExtension(file.title);
     },
 
+    titleForIdentifier: function(identifier) {
+      var self = this;
+      var index = self.indexForIdentifier(identifier);
+      if (index === undefined) {
+        return undefined;
+      }
+      return self.titleForIndex(index);
+    },
+
     // Very rudimentary mechanism to strip the file extension (Google Drive doesn't
     // seem to guarantee file extensions in the file title).
     stripExtension: function(title) {
       var self = this;
-      if (title.toLowerCase().indexOf(".gb") === (title.length - 3)) {
-        return title.slice(0, -3);
-      } else {
-        return title;
-      }
+      return title.slice(0, title.lastIndexOf("."));
     },
 
-    availableOffline: function(index) {
+    elementForIndex: function(index) {
       var self = this;
       var identifier = self.identifierForIndex(index);
-      var data = localStorage.getItem(identifier);
-      if (data !== null) {
-        return true;
-      }
-      return false;
+      var title = self.titleForIndex(index);
+
+      var element = $('<div class="game">');
+      element.spinner = false;
+
+      var gameTitle = $('<div class="game-title">');
+      gameTitle.html(title);
+      element.append(gameTitle);
+
+      var gameImg = $('<img class="game-thumbnail">');
+      element.append(gameImg);
+
+      var gameOverlay = $('<div class="game-overlay">');
+      element.append(gameOverlay);
+
+      self.store.hasProperty(App.Controller.Domain.GAMES, identifier).then(function(result) {
+        if (result) {
+          element.addClass('downloaded');
+        }
+      });
+
+      self.thumbnailForIndex(index, function(thumbnail) {
+        if (thumbnail !== undefined) {
+          gameImg.attr("src", thumbnail);
+          gameTitle.css('display', 'none');
+        }
+      });
+
+      return element;
     },
 
     identifierForIndex: function(index) {
@@ -158,74 +179,111 @@
       return file.id;
     },
 
-    thumbnailForIndex: function(index, callback) {
+    didSelectItemForRow: function(index, element) {
       var self = this;
       var identifier = self.identifierForIndex(index);
-      self.thumbnailForIdentifier(identifier, callback);
+      self.store.hasProperty(App.Controller.Domain.GAMES, identifier).then(function(found) {
+        if (found) {
+          self.callback(identifier);
+        } else if (window.navigator.onLine === true) {
+          var spinner;
+          if (element.spinner === false) {
+            var opts = {
+              color: '#fff',
+              zIndex: 0
+            };
+            spinner = new Spinner(opts).spin();
+            var spinnerElement = spinner.el;
+            element.append(spinnerElement);
+            element.spinner = true;
+          }
+          self.fetch(identifier).then(function(data) {
+            self.logging.info("Received identifier '" + identifier + "'");
+            element.addClass("downloaded");
+            if (spinner !== undefined) {
+              spinner.stop();
+              element.spinner = false;
+            }
+          });
+        }
+      });
     },
 
-    // Returns the thumbnail for a given identifier.
-    // Triggers a fetch from the cache if the thumbnail is not present.
-    thumbnailForIdentifier: function(identifier, callback) {
+    didLongPressItem: function(index, element) {
       var self = this;
-      if (identifier in self.thumbnails) {
-        callback(self.thumbnails[identifier]);
-      } else {
-        self.thumbnailStore.property(identifier, function(value) {
-          if (value !== undefined) {
-            self.thumbnails[identifier] = self.thumbnailDataUrl(value);
-            callback(self.thumbnails[identifier]);
+      var identifier = self.identifierForIndex(index);
+      var title = self.titleForIndex(index);
+      self.store.hasProperty(App.Controller.Domain.GAMES, identifier).then(function(found) {
+        if (found) {
+          if (confirm("Remove '" + title + "' from your device?")) {
+            self.store.deleteProperty(App.Controller.Domain.GAMES, identifier);
+            element.removeClass("downloaded");
           }
-        });
-      }
+        }
+      });
     },
     
     update: function() {
       var self = this;
-      // Only schedule a new update if we're not already updating.
-      if (self.updatePending === false) {
-        self.drive.files({
-          'onStart': function() {
-            self.setState(App.Library.State.UPDATING);
-          },
-          'onSuccess': function(files) {
-            self.updateCallback(files);
-          },
-          'onError': function(error) {
-            // Ignore the error.
-            self.setState(App.Library.State.READY);
-          }
-        });
-      }
+      self.setState(App.Library.State.UPDATING);
+      self.drive.files().then(function(files) {
+        self.updateCallback(files);
+      }).fail(function(error) {
+        self.logging.error("Failed to list files with error " + error);
+        self.setState(App.Library.State.READY);
+      });
     },
 
     fileForIdentifier: function(identifier) {
       var self = this;
+      var index = self.indexForIdentifier(identifier);
+      if (index === undefined) {
+        return undefined;
+      }
+      return self.items[index];
+    },
+
+    indexForIdentifier: function(identifier) {
+      var self = this;
       for (var i = 0; i < self.items.length; i++) {
         var file = self.items[i];
         if (file.id === identifier) {
-          return file;
+          return i;
         }
       }
       return undefined;
     },
 
-    fetch: function(identifier, callback) {
+    fetch: function(identifier) {
       var self = this;
 
-      // Only attempt to download the file if it hasn't already been cached.
-      var data = localStorage.getItem(identifier);
-      if (data) {
-        callback(data);
-      } else {
-        var file = self.fileForIdentifier(identifier);
-        downloadFile(file, function(data) {
-          localStorage.setItem(file.id, data);
-          self.notifyChange();
-          callback(data);
-        });
+      // Check to see if there's an existing fetch.
+      if (self.fetches.hasOwnProperty(identifier)) {
+        return self.fetches[identifier].promise();
       }
 
+      var deferred = new jQuery.Deferred();
+      self.fetches[identifier] = deferred;
+
+      self.logging.info("Fetching identifier '" + identifier + "'");
+
+      self.store.property(App.Controller.Domain.GAMES, identifier, function(data) {
+        if (data === undefined) {
+          self.logging.info("Fetching '" + identifier + "'");
+          var file = self.fileForIdentifier(identifier);
+          self.drive.downloadFile(file, function(data) {
+            self.store.setProperty(App.Controller.Domain.GAMES, identifier, utilities.btoa(data));
+            delete self.fetches[identifier];
+            deferred.resolve(data);
+          });
+        } else {
+          self.logging.info("Using cached value for '" + identifier + "'");
+          delete self.fetches[identifier];
+          deferred.resolve(utilities.atob(data));
+        }
+      });
+
+      return deferred.promise();
     },
 
     // Converts a base64 encoded thumbnail image into a suitable URL.
@@ -234,54 +292,41 @@
       return "data:image/" + App.Library.THUMBNAIL_TYPE + ";base64," + data;
     },
 
-    // Checks to see if there is a cached thumbnail.  If no thumbnail has been cached,
-    // one will be fetched from Google Drive if it's available.
-    // This implementation caches all thumbnails in memory.  It's possible that this will
-    // introduce performance issues, but it doesn't seem worthwhile loading everything lazily
-    // at this stage.
-    updateThumbnail: function(file, callback) {
+    thumbnailForIndex: function(index, callback) {
       var self = this;
+      var identifier = self.identifierForIndex(index);
 
-      var identifier = file.id;
+      self.store.property(App.Controller.Domain.THUMBNAILS, identifier, function(value) {
 
-      // Some files do not seem to have a valid parents array.
-      // If they do not, then there is no reasonable way to hunt for a thumbnail.
-      var parents = file.parents[0];
-      if (parents === undefined) {
-        return;
-      }
-      
-      var parent = file.parents[0].id;
-      var title = self.stripExtension(file.title) + "." + App.Library.THUMBNAIL_TYPE;
-
-      // Don't bother re-fetching a thumbnail if we've already cached it.
-      if (identifier in self.thumbnails) {
-        return;
-      }
-
-      // Check the cache.
-      self.thumbnailStore.property(identifier, function(value) {
         if (value !== undefined) {
-          self.thumbnails[identifier] = self.thumbnailDataUrl(value);
-          callback();
-        } else {
-          self.drive.file(parent, title, {
-            'onStart': function() {},
-            'onSuccess': function(file) {
-              if (file !== undefined) {
-                downloadFileBase64(file, function(data) {
-                  self.thumbnailStore.setProperty(identifier, data);
-                  self.thumbnails[identifier] = self.thumbnailDataUrl(data);
-                  self.notifyChange();
-                });
-              }
-              callback();
-            },
-            'onError': function(error) {
-              callback();
-            }
-          });
+          callback(self.thumbnailDataUrl(value));
+          return;
         }
+
+        file = self.fileForIdentifier(identifier);
+        var parents = file.parents[0];
+        if (parents === undefined) {
+          return;
+        }
+        
+        var parent = file.parents[0].id;
+        var title = self.stripExtension(file.title) + "." + App.Library.THUMBNAIL_TYPE;
+
+        self.logging.info("Fetching '" + title + "'' ...");
+
+        self.drive.file(parent, title).then(function(file) {
+          self.drive.downloadFileBase64(file, function(data) {
+            try {
+              self.store.setProperty(App.Controller.Domain.THUMBNAILS, identifier, data);
+            } catch (e) {
+              self.logging.error("Unable to store thumbnail.");
+            }
+            callback(self.thumbnailDataUrl(data));
+          });
+        }).fail(function(error) {
+          callback();
+        });
+
       });
 
     },
@@ -290,45 +335,60 @@
       var self = this;
       var i;
 
-      // Create an associative array of identifiers which are currently in the store.
-      var deletedIdentifiers = {};
-      for (i = 0; i < self.items.length; i++) {
-        var identifier = self.items[i].id;
-        deletedIdentifiers[identifier] = true;
-      }
+      var identifiers = {};
+      $.each(self.items, function(index, value) {
+        identifiers[value.id] = value.title;
+      });
 
-      // Update the thumbnails.
-      for (i = 0; i < files.length; i++) {
-        self.updateThumbnail(files[i], function() {});
-      }
-
-      // Reset the update flag.
-      self.updatePending = false;
-
-      // Update the files.
+      var deleted = identifiers;
+      var inserted = {};
+      var renamed = {};
+      var oldItems = self.items;
       self.items = [];
       for (i = 0; i < files.length; i++) {
         var file = files[i];
-        if (file.fileExtension === 'gb') {
-          // Cache the file.
+        if (file.fileExtension === 'gb' || file.fileExtension === 'gbc') {
           self.items.push(file);
-          // Remove the item from the list of deleted identifiers.
-          delete deletedIdentifiers[file.id];
+          if (file.id in deleted) {
+            if (deleted[file.id] != file.title) {
+              renamed[file.id] = file.title;
+            }
+            delete deleted[file.id];
+          } else {
+            inserted[file.id] = file.title;
+          }
         }
       }
       self.sort();
       self.save();
 
-      // Clean up the deleted items.
-      for (var key in deletedIdentifiers) {
-        if (deletedIdentifiers.hasOwnProperty(key)) {
-          localStorage.removeItem(key);
-          self.thumbnailStore.deleteProperty(key);
-        }
-      }
+      var deletedCount = 0;
+      $.each(deleted, function(key, value) {
+        self.logging.info("Deleting game for " + key);
+        self.store.deleteProperty(App.Controller.Domain.GAMES, key);
+        self.logging.info("Deleting thumbnail for " + key);
+        self.store.deleteProperty(App.Controller.Domain.THUMBNAILS, key);
+        deletedCount++;
+      });
+
+      var insertedCount = 0;
+      $.each(inserted, function(key, value) {
+        insertedCount++;
+      });
+
+      var renamedCount = 0;
+      $.each(renamed, function(key, value) {
+        self.logging.info("Deleting thumbnail for " + key);
+        self.store.deleteProperty(App.Controller.Domain.THUMBNAILS, key);
+        renamedCount++;
+      });
 
       self.setState(App.Library.State.READY);
-      self.notifyChange();
+
+      if (deletedCount > 0 || insertedCount > 0 || renamedCount > 0) {
+        self.notifyChange();
+      }
+
     }
 
   });

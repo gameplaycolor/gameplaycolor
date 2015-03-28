@@ -1,0 +1,26 @@
+{
+	"folders":
+	[
+		{
+			"path": ".."
+		}
+	],
+  "build_systems":
+  [
+    {
+      "name": "gameboy-beta.jbmorley.co.uk",
+      "cmd": ["/bin/bash", "deploy.sh", "settings-beta.json"],
+      "working_dir": "${project_path}"
+    },
+    {
+      "name": "gameboy.jbmorley.co.uk",
+      "cmd": ["/bin/bash", "deploy.sh", "settings-jbmorley.json"],
+      "working_dir": "${project_path}"
+    },
+    {
+      "name": "inseven.co.uk/apps/gameplay",
+      "cmd": ["/bin/bash", "deploy.sh", "settings-inseven.json"],
+      "working_dir": "${project_path}"
+    }
+  ]
+}

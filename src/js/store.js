@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2013 InSeven Limited.
+ * Copyright (C) 2012-2015 InSeven Limited.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
- 
+
 (function($) {
 
   App.Store = function(name) {
@@ -24,7 +24,8 @@
   
   App.Store.Property = {
     STATE: 0,
-    GAME:  1
+    GAME:  1,
+    COLOR: 2
   };
   
   jQuery.extend(App.Store.prototype, {
@@ -33,82 +34,134 @@
       var self = this;
       self.name = name;
       self.database = undefined;
+      self.debug = false;
+      self.logging = new App.Logging(App.Logging.Level.WARNING, "store");
       
       try {
         if (!window.openDatabase) {
           alert('Databases are not supported in this browser.');
         } else {
-          self.database = openDatabase(self.name, '1.0', self.name, 100000);
+          self.database = openDatabase(self.name, '1.0', self.name, 50*1024*1024);
           self.createTables();
         }
       } catch(e) {
         if (e == 2) {
-          // Version number mismatch.
-          console.log("Invalid database version.");
+          self.logging.error("Invalid database version.");
         } else {
-          console.log("Unknown error " + e + ".");
+          self.logging.error("Unknown error " + e + ".");
         }
       }
 
     },
+
+    transaction: function(callback, description) {
+      var self = this;
+      self.database.transaction(callback, function(error) {
+        self.logging.error(description + ": Failed to access storage named '" + self.name + "' with error  '" + error.message + "' (" + error.code + ")");
+      });
+    },
     
     createTables: function() {
       var self = this;
-      self.database.transaction(
-        function(transaction) {
-          transaction.executeSql("CREATE TABLE IF NOT EXISTS " +
-                                  "properties( " +
-                                    "key TEXT NOT NULL PRIMARY KEY, " +
-                                    "value TEXT NOT NULL " +
-                                  ");");
-        }
-      );
+      self.transaction(function(transaction) {
+        transaction.executeSql("CREATE TABLE IF NOT EXISTS " +
+                                "properties ( " +
+                                  "id INTEGER PRIMARY KEY," +
+                                  "domain TEXT NOT NULL," +
+                                  "key TEXT NOT NULL," +
+                                  "value BLOB NOT NULL" +
+                                ")");
+      }, "Creating database tables");
     },
     
-    setProperty: function(key, value) {
+    setProperty: function(domain, key, value) {
       var self = this;
-      self.database.transaction(
-        function(transaction) {
-          transaction.executeSql(
-            "INSERT OR REPLACE INTO properties (key, value) VALUES ('" + key + "', '" + value + "')"
-          );
-        }
-      );
+      self.logging.debug("Setting property '" + key + "' for domain '" + domain + "'");
+      self.transaction(function(transaction) {
+        transaction.executeSql("DELETE FROM properties WHERE domain = ? AND key = ?", [domain, key]);
+        transaction.executeSql("INSERT OR REPLACE INTO properties (domain, key, value) VALUES (?, ?, ?)", [domain, key, value]);
+      }, "Setting property '" + key + "'");
     },
     
-    property: function(key, callback) {
+    property: function(domain, key, callback) {
       var self = this;
-      self.database.transaction(function(tx) {
-        tx.executeSql(
-          "SELECT * FROM properties WHERE key = '" + key + "'",
-          [],
+      self.logging.debug("Reading property '" + key + "' for domain '" + domain + "'");
+      self.transaction(function(transaction) {
+        transaction.executeSql(
+          "SELECT * FROM properties WHERE domain = ? AND key = ?",
+          [domain, key],
           function(transaction, results) {
             if (results.rows.length > 0) {
+              self.logging.debug("Found property '" + key + "' for domain '" + domain + "' with length " + results.rows.item(0).value.length);
               callback(results.rows.item(0).value);
             } else {
+              self.logging.error("Unable to find property '" + key + "' for domain '" + domain + "'");
               callback(undefined);
             }
           },
-          function(error) {
+          function(transaction, error) {
+            self.logging.error("Reading property '" + key + "': Failed with error '" + error.message + "'");
             callback(undefined);
           }
         );
-      });
+      }, "Reading property '" + key + "'");
     },
 
-    deleteProperty: function(key) {
+    deleteProperty: function(domain, key) {
       var self = this;
-      self.database.transaction(function(tx) {
-        tx.executeSql(
-          "DELETE FROM properties WHERE key = '" + key + "'"
+      self.transaction(function(transaction) {
+        transaction.executeSql(
+          "DELETE FROM properties WHERE domain = ? AND key = ?",
+          [domain, key]
+        );
+      }, "Deleting property '" + key + "'");
+    },
+
+    hasProperty: function(domain, key) {
+      var self = this;
+      var deferred = new jQuery.Deferred();
+      self.transaction(function(transaction) {
+        transaction.executeSql(
+          "SELECT EXISTS(SELECT 1 FROM properties WHERE domain = ? AND key = ? LIMIT 1) AS found",
+          [domain, key],
+          function(transaction, results) {
+            deferred.resolve(results.rows.item(0).found);
+          },
+          function(transaction, error) {
+            self.logging.error("Checking for property '" + key + "': Failed with error '" + error.message + "'");
+            deferred.reject(error);
+          }
         );
       });
+      return deferred.promise();
+    },
+
+    propertiesForDomain: function(domain, callback) {
+      var self = this;
+      self.transaction(function(transaction) {
+        transaction.executeSql(
+          "SELECT * FROM properties WHERE domain = ?",
+          [domain],
+          function(transaction, results) {
+            var properties = {};
+            for (var i = 0; i < results.rows.length; i++) {
+              var item = results.rows.item(i);
+              properties[item.key] = item.value;
+            }
+            callback(properties);
+          },
+          function(error) {
+            self.logging.error("Reading properties for domain '" + domain + "': Failed with error '" + error.message + "'");
+            callback({});
+          }
+        );
+      }, "Reading properties for domain '" + domain + "'");
     },
 
     keys: function(callback) {
       var self = this;
-      self.database.transaction(function(tx) {
-        tx.executeSql(
+      self.transaction(function(transation) {
+        transation.executeSql(
           "SELECT key FROM properties",
           [],
           function(transaction, results) {
@@ -118,7 +171,7 @@
             }
             callback(rows);
           },
-          function(error) {
+          function(transaction, error) {
             callback(undefined);
           }
         );

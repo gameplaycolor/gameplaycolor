@@ -1,149 +1,156 @@
 <!DOCTYPE html>
 <html manifest="cache.manifest">
-<head>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0"/>
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <link href="Images/Default-568h@2x.png" rel="apple-touch-startup-image" sizes="640x1096">
-    <link rel="stylesheet" href="css/gameboy.css" type="text/css" media="screen, mobile" title="main" charset="utf-8">
-    <link rel="apple-touch-icon-precomposed" href="images/icon_2x.png" />
+    <!-- iPhone 5 -->
+    <link href="/defaults/apple-touch-startup-image-640x1096.png"
+          media="(device-width: 320px) and (device-height: 568px)"
+          rel="apple-touch-startup-image">
+    <!-- iPhone 6 -->
+    <link href="/defaults/apple-touch-startup-image-750x1294.png"
+          media="(device-width: 375px) and (device-height: 667px)"
+          rel="apple-touch-startup-image">
+    <!-- iPhone 6 Plus Portrait -->
+    <link href="/defaults/apple-touch-startup-image-1242x2148.png"
+          media="(device-width: 414px) and (device-height: 736px)"
+          rel="apple-touch-startup-image">
+    <!-- iPad Portrait -->
+    <link href="/defaults/apple-touch-startup-image-1536x2008.png"
+          media="(device-width: 768px) and (device-height: 1024px)"
+          rel="apple-touch-startup-image">
+    <!-- iPad Landscape -->
+    <link href="/defaults/apple-touch-startup-image-2048x1496.png"
+          media="(device-width: 1024px) and (device-height: 768px)"
+          rel="apple-touch-startup-image">
+
+    <link rel="stylesheet" href="css/gameboy.css" type="text/css">
+    <link rel="apple-touch-icon-precomposed" href="images/icon.png">
 
     <title>Game Play</title>
-</head>
-<body>
+  </head>
+  <body style="background-color: black;">
+    
+    <div id="gameboy" style="width: 100%; height: 100%">
 
-  <div class="button pressed" style="display: none"></div>
-  <div class="button-options pressed" style="display: none"></div>
-  <div class="button-done pressed" style="display: none"></div>
-
-  <div id="instructions" style="display: none">
-    <div class="icon"></div>
-    <p id="instructions-iphone5" style="display: none">
-      <strong>Game Play</strong><br/><br/>
-      <em>Play Game Boy games on your iPhone 5.</em><br/><br/>
-      Add this page to your home screen to start playing.<br/><br/>
-      <a href="http://twitter.com/insevenlimited">@insevenlimited</a>
-    </p>
-    <p id="instructions-other" style="display: none">
-      <strong>Game Play</strong><br/><br/>
-      <em>Play Game Boy games on your iPhone 5.</em><br/><br/>
-      Please visit this web page on an iPhone.<br/><br/>
-      <a href="http://twitter.com/insevenlimited">@insevenlimited</a>
-    </p>
-  </div>
-  
-  <div id="gameboy" style="display: none">
-
-    <div id="screen-games" class="screen">
-      <div id="list-games" class="content">
-        <div id="list-games-content"></div>
-        <div id="list-games-page-control"></div>
-      </div>
-      <div id="screen-loading" class="content" style="display: none">
-        <div class="placeholder">
-          <p>Loading&hellip;</p>
+      <div id="screen-games" class="screen">
+        <div id="list-games" class="content">
+          <div id="list-games-content"></div>
+          <div id="list-games-page-control"></div>
+        </div>
+        <div id="screen-loading" class="content" style="display: none">
+          <div class="placeholder">
+            <p>Loading&hellip;</p>
+          </div>
+        </div>
+        <div id="screen-empty" class="content" style="display: none">
+          <div class="placeholder">
+            <p><strong>No Games</strong></p>
+            <p>Add Game Boy ROMs with the .gb or .gbc file extension to see them here.</p>
+          </div>
+        </div>
+        <div id="button-done" class="button-done">Console</div>
+        <div class="element-thanks">
+          <a href="https://inseven.co.uk/apps/gameplaycolor/thanks/" target="_blank" class="button-thanks">&#9829; Say Thanks</a>
         </div>
       </div>
-      <div id="screen-empty" class="content" style="display: none">
-        <div class="placeholder">
-          <p><strong>No Games</strong></p>
-          <p>Add Game Boy ROMs <em>(with the .gb file extension)</em> to your Google Drive to see them here.</p>
+
+      <div id="screen-console" class="screen flexbox horizontal grape">
+
+        <div id="moulding">
+          <div id="moulding-left"></div>
+          <div id="moulding-center"></div>
+          <div id="moulding-right"></div>
         </div>
-      </div>
-      <div id="screen-authorize" class="content" style="display: none">
-        <div id="screen-authorize-panel">
-          <h1>Google Drive</h1>
-          <p>
-            Sign into your Google Account to access Game Boy ROMs stored in Google Drive.
-          </p>
-          <p>
-            <em>Please relaunch the application after authenticating.</em>
-          </p>
-          <div class="actions">
-            <a id="button-authorize" class="google-button-blue" />Sign in</a>
+        <div id="element-surround" class="element-surround">
+          <div id="surround" class="surround"></div>
+        </div>
+        <div id="element-screen">
+          <div id="display">
+            <canvas id="LCD" class="display" width="160" height="144"></canvas>
+            <div id="LCD-idle" class="display"></div>
+            <div id="LCD-loading" class="display" style="display: none"></div>
+            <div id="LCD-dropshadow"></div>
+          </div>
+        </div>
+        <div id="element-dpad">
+          <div id="dpad-touch-target" class="dpad-touch-target">
+            <div id="dpad" class="dpad">
+              <div id="dpad-up" class="element up top arrow"></div>
+              <div id="dpad-left" class="element left middle arrow"></div>
+              <div id="dpad-down" class="element down bottom arrow"></div>
+              <div id="dpad-right" class="element right middle arrow"></div>
+              <div class="element center middle"></div>
+            </div>
+          </div>
+        </div>
+        <div id="element-options">
+          <div id="group-options">
+            <div class="button-option-group top left">
+              <div id="control-select" class="button-option"></div>
+              <div class="button-label">Select</div>
+            </div>
+            <div class="button-option-group top right">
+              <div id="control-start" class="button-option"></div>
+              <div class="button-label">Start</div>
+            </div>
+          </div>
+        </div>
+        <div id="element-buttons">
+          <div id="group-buttons">
+            <div id="control-a" class="button"><div class="control-text">A</div></div>
+            <div id="control-b" class="button"><div class="control-text">B</div></div>
           </div>
         </div>
       </div>
-      <div id="copyright-games" class="copyright">
-        &copy; 2012-2013 InSeven Limited. All rights reserved. <a class="license" href="https://github.com/jbmorley/game-play/blob/master/LICENSE.md#license">License</a>.
+
+      <div id="DEBUG" style="display: none"></div>
+      <div id="DEBUGGER"></div>
+
+    </div>
+    <div id="screen-splash" class="screen-splash"></div>
+    <div id="screen-instructions" class="screen-instructions" style="display: none">
+      <div class="placeholder">
+        <div class="appicon"></div>
+        <h1>Game Play Color</h1>
+        <ol class="install-instructions">
+          <li>Open in Mobile Safari on your iPhone or iPad</li>
+          <li>Tap the 'Share' button</li>
+          <li>Choose 'Add to Home Screen'</li>
+        </ol>
       </div>
     </div>
 
-    <div id="screen-console" class="screen">
+    <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
 
-      <div id="display" class="display">
-        <canvas id="LCD" class="display" width="160" height="144"></canvas>
-        <div id="LCD-idle" class="display"></div>
-        <div id="LCD-loading" class="display" style="display: none"></div>
-      </div>
+    <script type="text/javascript" src="gbo/other/swfobject.js"></script>
+    <script type="text/javascript" src="gbo/other/resampler.js"></script>
+    <script type="text/javascript" src="gbo/other/XAudioServer.js"></script>
+    <script type="text/javascript" src="gbo/other/resize.js"></script>
+    <script type="text/javascript" src="gbo/GameBoyCore.js"></script>
+    <script type="text/javascript" src="gbo/GameBoyIO.js"></script>  
 
-      <div id="control-dpad" class="sprite-pad-default"></div>
-      <div id="group-options">
-        <div id="control-select" class="button-option"></div>
-        <div id="control-start" class="button-option"></div>
-      </div>
-      <div id="group-buttons">
-        <div id="control-a" class="button"></div>
-        <div id="control-b" class="button"></div>
-      </div>
-      <div id="update-button" style="display: none">
-        Udpate Available
-      </div>
-      <div id="title-bar" style="display: none">
-        <div id="title-bar-label"></div>
-        <div id="button-done" class="button-done"></div>
-      </div>
-    </div>
+    <script type="text/javascript" src="js/spin.min.js"></script>
+    <script type="text/javascript" src="js/utilities.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="js/logging.js"></script>
+    <script type="text/javascript" src="js/control.js"></script>
+    <script type="text/javascript" src="js/console.js"></script>
+    <script type="text/javascript" src="js/library.js"></script>
+    <script type="text/javascript" src="js/games.js"></script>
+    <script type="text/javascript" src="js/pad.js"></script>
+    <script type="text/javascript" src="js/button.js"></script>
+    <script type="text/javascript" src="js/gameboy.js"></script>
+    <script type="text/javascript" src="js/grid.js"></script>
+    <script type="text/javascript" src="js/store.js"></script>
+    <script type="text/javascript" src="js/touchlistener.js"></script>
+    <script type="text/javascript" src="js/gesturerecognizer.js"></script>
+    <script type="text/javascript" src="js/device.js"></script>
+    <script type="text/javascript" src="js/tracker.js"></script>
+    <script type="text/javascript" src="js/drive.js"></script>
 
-    <div id="debug" style="display: none">DEBUG</div>
-
-    <div id="STATUS"></div>
-
-    <div id="DEBUG">&nbsp;</div>
-      <div id="buttons" style="display:none;">
-        <input id="BR" type="button" value="Run"     onfocus="this.blur();" onclick="gb_Run();"/>
-        <input id="BP" type="button" value="Pause"   onfocus="this.blur();" disabled onclick="gb_Pause();"/>
-        <input id="BS" type="button" value="Step"    onfocus="this.blur();" onclick="gb_Step();"/>
-        <input id="BS" type="button" value="Reset"   onfocus="this.blur();" onclick="gb_Insert_Cartridge($('CARTRIDGE').value,true);"/>
-        <input id="BX" type="button" value="Size x2" onfocus="this.blur();" onclick="gb_Resize_LCD();"/>
-      <div>
-    </div>
-    <div id="DEBUGGER"></div>
-
-  </div>
-
-  <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
-  <script> var $j = jQuery.noConflict(); </script>
-
-  <script src="jsgb/toolbox.js" type="application/x-javascript"></script>
-  <script src="jsgb/scrollbar.js" type="application/x-javascript"></script>
-
-  <script src="jsgb/jsgb.cpu.js" type="application/x-javascript"></script>
-  <script src="jsgb/jsgb.memory.js" type="application/x-javascript"></script>
-  <script src="jsgb/jsgb.rom.js" type="application/x-javascript"></script>
-  <script src="jsgb/jsgb.interrupts.js" type="application/x-javascript"></script>
-  <script src="jsgb/jsgb.input.js" type="application/x-javascript"></script>
-  <script src="jsgb/jsgb.lcd.js" type="application/x-javascript"></script>
-  <script src="jsgb/jsgb.timers.js" type="application/x-javascript"></script>
-  <script src="jsgb/jsgb.debugger.js" type="application/x-javascript"></script>
-  <script src="jsgb/jsgb.gameboy.js" type="application/x-javascript"></script>
-
-  <script type="text/javascript" src="js/app.js"></script>
-  <script type="text/javascript" src="js/control.js"></script>
-  <script type="text/javascript" src="js/console.js"></script>
-  <script type="text/javascript" src="js/library.js"></script>
-  <script type="text/javascript" src="js/games.js"></script>
-  <script type="text/javascript" src="js/pad.js"></script>
-  <script type="text/javascript" src="js/button.js"></script>
-  <script type="text/javascript" src="js/gameboy.js"></script>
-  <script type="text/javascript" src="js/grid.js"></script>
-  <script type="text/javascript" src="js/store.js"></script>
-  <script type="text/javascript" src="js/touchlistener.js"></script>
-  <script type="text/javascript" src="js/gesturerecognizer.js"></script>
-  <script type="text/javascript" src="js/device.js"></script>
-  <script type="text/javascript" src="js/tracker.js"></script>
-  <script type="text/javascript" src="js/drive.js"></script>
-
-</body>
+  </body>
 </html>
