@@ -129,8 +129,9 @@
   $(document).ready(function() {
 
     var debug = false;
-    var iOS = (navigator.userAgent.indexOf("iPhone OS") !== -1);
-    if ((window.navigator.standalone === true && iOS) || debug) {
+    var iPhone = (navigator.userAgent.indexOf("iPhone OS") !== -1);
+    var iPad = (navigator.userAgent.indexOf("iPad") !== -1);
+    if ((window.navigator.standalone === true && (iPhone || iPad)) || debug) {
       var device = new App.Device();
       window.tracker = new App.Tracker();
       window.app = new App.Controller(device);
