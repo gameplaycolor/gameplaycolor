@@ -168,7 +168,8 @@ function saveRTC() {	//Execute this when SRAM is being saved as well.
 		if (gameboy.cTIMER) {
 			try {
 				cout("Saving the RTC...", 0);
-				setValue("RTC_" + gameboy.name, gameboy.saveRTCState());
+				var rtcState = JSON.stringify(gameboy.saveRTCState());
+				setValue("RTC_" + gameboy.name, rtcState);
 			}
 			catch (error) {
 				cout("Could not save the RTC of the current emulation state(\"" + error.message + "\").", 2);
@@ -209,7 +210,8 @@ function openRTC(filename) {
 	try {
 		if (findValue("RTC_" + filename) != null) {
 			cout("Found a previous RTC state (Will attempt to load).", 0);
-			return findValue("RTC_" + filename);
+			var rtcState = findValue("RTC_" + filename);
+			return $.parseJSON(rtcState);
 		}
 		else {
 			cout("Could not find any previous RTC copy for the current ROM.", 0);
