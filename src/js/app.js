@@ -37,10 +37,15 @@
 
     init: function (device) {
       var self = this;
-      self.device = device;
-      self.store = new App.Store('save-state');
-      self.logging = new App.Logging(App.Logging.Level.WARNING, "app");
 
+      self.store = new App.Store('save-state');
+      if (!self.store.open()) {
+        alert("Unable to create database.\nPlease accept increased storage size when asked.");
+        return;
+      }
+
+      self.device = device;
+      self.logging = new App.Logging(App.Logging.Level.WARNING, "app");
       self.library = new App.Library(self.store, function(identifier) {
         self.gameBoy.clear();
         self.console.show();
@@ -50,7 +55,6 @@
       });
       self.gameBoy = new App.GameBoy(self.store, self.library);
 
-      // Prevent touchmove events.
       document.addEventListener('touchmove', function(e) {
         e.preventDefault();
       }, false);

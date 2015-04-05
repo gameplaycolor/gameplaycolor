@@ -36,7 +36,15 @@
       self.database = undefined;
       self.debug = false;
       self.logging = new App.Logging(App.Logging.Level.WARNING, "store");
-      
+    },
+
+    /**
+     * Open the storage.
+     *
+     * true if successful. false otherwise.
+     */
+    open: function() {
+      var self = this;
       try {
         if (!window.openDatabase) {
           alert('Databases are not supported in this browser.');
@@ -44,20 +52,25 @@
           self.database = openDatabase(self.name, '1.0', self.name, 50*1024*1024);
           self.createTables();
         }
+        return true;
       } catch(e) {
         if (e == 2) {
           self.logging.error("Invalid database version.");
         } else {
           self.logging.error("Unknown error " + e + ".");
         }
+        return false;
       }
-
     },
 
+    /**
+     * Perform a transaction on the database using the common error handler.
+     */
     transaction: function(callback, description) {
       var self = this;
       self.database.transaction(callback, function(error) {
-        self.logging.error(description + ": Failed to access storage named '" + self.name + "' with error  '" + error.message + "' (" + error.code + ")");
+        self.logging.error(description + ": Failed to access storage named '" + self.name + "' with error  '" +
+                           error.message + "' (" + error.code + ")");
       });
     },
     
@@ -79,7 +92,8 @@
       self.logging.debug("Setting property '" + key + "' for domain '" + domain + "'");
       self.transaction(function(transaction) {
         transaction.executeSql("DELETE FROM properties WHERE domain = ? AND key = ?", [domain, key]);
-        transaction.executeSql("INSERT OR REPLACE INTO properties (domain, key, value) VALUES (?, ?, ?)", [domain, key, value]);
+        transaction.executeSql("INSERT OR REPLACE INTO properties (domain, key, value) VALUES (?, ?, ?)",
+                               [domain, key, value]);
       }, "Setting property '" + key + "'");
     },
     
@@ -92,7 +106,8 @@
           [domain, key],
           function(transaction, results) {
             if (results.rows.length > 0) {
-              self.logging.debug("Found property '" + key + "' for domain '" + domain + "' with length " + results.rows.item(0).value.length);
+              self.logging.debug("Found property '" + key + "' for domain '" + domain + "' with length " +
+                                 results.rows.item(0).value.length);
               callback(results.rows.item(0).value);
             } else {
               self.logging.error("Unable to find property '" + key + "' for domain '" + domain + "'");
