@@ -249,9 +249,16 @@
             try {
               var retrievePageOfFiles = function(request) {
                 request.execute(function(resp) {
-                  if (resp.items.length > 0) {
+                  if (resp === undefined) {
+                    self.logging.error("Google Drive file search received undefined response");
+                    deferred.reject();
+                  } else if (resp.items === undefined) {
+                    self.logging.error("Google Drive file search received undefined items");
+                    deferred.reject();
+                  } else if (resp.items.length > 0) {
                     deferred.resolve(resp.items[0]);
                   } else {
+                    self.logging.debug("Google Drive file search found no items");
                     deferred.reject();
                   }
                 });
