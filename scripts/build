@@ -2,6 +2,7 @@
 
 import argparse
 import datetime
+import json
 import lxml.etree
 import lxml.html
 import os
@@ -61,9 +62,7 @@ def htmlcompressor(contents):
   output = p.communicate(input = contents)[0]
   return output
 
-def pngcrush(source_file, output_dir):
-  name = os.path.basename(os.path.abspath(source_file))
-  destination_file = os.path.join(output_dir, name)
+def pngcrush(source_file, destination_file):
   print "Crushing '%s'..." % source_file
   subprocess.check_call(['pngcrush', source_file, destination_file])
 
@@ -81,7 +80,9 @@ def copy_image_directory(source_dir, output_dir):
   os.mkdir(destination_dir)
   files = list(source_dir)
   for file in files:
-    pngcrush(os.path.join(source_dir, file), destination_dir)
+    image_name = os.path.basename(os.path.abspath(file))
+    destination_file = os.path.join(destination_dir, image_name)
+    pngcrush(os.path.join(source_dir, file), destination_file)
 
 def main():
   parser = argparse.ArgumentParser(description = "Generate the minified Game Play HTML file")
@@ -147,6 +148,12 @@ def main():
 
   # settings
   shutil.copy(options.settings, settings_dest)
+
+  # icon
+  with open(options.settings, 'r') as f:
+    settings = json.load(f)
+    icon_file = os.path.join(project_dir, settings['icon'])
+    pngcrush(icon_file, os.path.join(build_dir, "images", "icon.png"))
 
   # manifest
   manifest = list(build_dir)
