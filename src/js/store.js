@@ -46,20 +46,30 @@
     open: function() {
       var self = this;
       try {
+
         if (!window.openDatabase) {
           alert('Databases are not supported in this browser.');
-        } else {
-          self.database = openDatabase(self.name, '1.0', self.name, 50*1024*1024);
-          self.createTables();
+          return false;
         }
+
+        self.database = openDatabase(self.name, '1.0', self.name, 50*1024*1024);
+        if (self.database === undefined) {
+          self.logging.error("Unable to create database");
+          return false;
+        }
+
+        self.createTables();
         return true;
+
       } catch(e) {
+
         if (e == 2) {
           self.logging.error("Invalid database version.");
         } else {
           self.logging.error("Unknown error " + e + ".");
         }
         return false;
+        
       }
     },
 
