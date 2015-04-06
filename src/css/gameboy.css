@@ -1061,6 +1061,62 @@ body
 
 }
 
+/* iPhone 4: Landscape */
+@media only screen and (width: 480px) and (height: 320px) {
+
+  #element-screen
+  {
+    top: 0;
+  }
+
+  #element-options
+  {
+    bottom: 10px;
+  }
+
+  #element-surround
+  {
+  }
+
+  #element-options
+  {
+    bottom: -4px;
+  }
+
+  #element-buttons
+  {
+    right: 8px;
+  }
+
+  #group-buttons
+  {
+    width: 132px;
+  }
+
+  #element-dpad
+  {
+    left: -4px;
+  }
+
+  #group-options
+  {
+    width: 460px;
+  }
+
+  #LCD-dropshadow
+  {
+    box-shadow:0 0 0 0, inset 0 0 0 0;
+  }
+
+  .surround
+  {
+    height: 287px;
+    width: 321px;
+    border-radius: 0;
+  }
+
+}
+
 /* iPhone 5: Portrait */
 @media only screen and (width: 320px) and (height: 548px) {
 
