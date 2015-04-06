@@ -8,6 +8,10 @@ If you just want to play Game Play Color, you can find it online at [https://gam
 Changelog
 ---------
 
+### Version 2.0.6
+
+- Changing the default error handler to ignore errors from cross-origin scripts.
+
 ### Version 2.0.5
 
 - Fixed crash when inspecting Google Drive files with no extension.
