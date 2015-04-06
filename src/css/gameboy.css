@@ -21,6 +21,9 @@ body
   padding: 0;
   margin: 0;
   -webkit-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
   background-color: #000;
   font: 15px Helvetica, sans-serif;
 }
