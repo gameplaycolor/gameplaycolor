@@ -148,8 +148,20 @@
 })(jQuery);
 
 window.onerror = function(message, url, linenumber) {
+
+  // Ignore errors originating in cross-site scripts to the default handler.
+  if (message == "Script error." && linenumber === 0) {
+    console.log("Encountered error '" + message + "' in file '" + url + "' on line " + linenumber + ".");
+    return true;
+  }
+
+  // Present a dialog asking users if they wish to report other errors.
   if (confirm('Game Play encountered an error.\nSend crash report?')) {
     window.location.href = 'mailto:crashes@inseven.co.uk?subject=Crash Report: Game Play Color&body=Description:%0A%0APlease describe what you were doing at the time.%0A%0AError:%0A%0A' + encodeURIComponent(message) + '%0A' + encodeURIComponent(url) + '%0A' + encodeURIComponent(linenumber);
+    return true;
   }
-  return true;
+
+  // Defer to the default handler.
+  return false;
+  
 };
