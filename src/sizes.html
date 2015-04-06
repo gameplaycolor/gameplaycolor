@@ -54,6 +54,8 @@
             addItem(items[i], orientation.LANDSCAPE);
           }
           setSize(items[0], orientation.PORTRAIT);
+          var device = document.getElementById("device");
+          device.contentWindow.postMessage('debug', '*');
         }
 
         function addItem(details, or) {

@@ -131,21 +131,22 @@
   });
 
   $(document).ready(function() {
-
-    var debug = false;
     var iPhone = (navigator.userAgent.indexOf("iPhone OS") !== -1);
     var iPad = (navigator.userAgent.indexOf("iPad") !== -1);
-    if ((window.navigator.standalone === true && (iPhone || iPad)) || debug) {
-      var device = new App.Device();
-      window.tracker = new App.Tracker();
-      window.app = new App.Controller(device);
+    if ((window.navigator.standalone === true && (iPhone || iPad))) {
+      bootstrap();
     } else {
       $("#screen-instructions").show();
     }
-
   });
 
 })(jQuery);
+
+function bootstrap() {
+  var device = new App.Device();
+  window.tracker = new App.Tracker();
+  window.app = new App.Controller(device);
+}
 
 window.onerror = function(message, url, linenumber) {
 
@@ -163,5 +164,16 @@ window.onerror = function(message, url, linenumber) {
 
   // Defer to the default handler.
   return false;
-  
+
+};
+
+window.onmessage = function(message) {
+
+  if (message.data === "debug") {
+    $("#screen-instructions").hide();
+    bootstrap();
+  } else {
+    console.log("Unsupported message '" + message.data + "'");
+  }
+
 };
