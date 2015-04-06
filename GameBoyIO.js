@@ -155,7 +155,7 @@ function saveSRAM() {
 			}
 		}
 		else {
-			cout("Cannot save a game that does not have battery backed SRAM specified.", 1);
+			cout("Cannot save a game that does not have battery backed SRAM specified.", 0);
 		}
 		saveRTC();
 	}
