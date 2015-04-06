@@ -30,6 +30,14 @@
     DEBUG: 10
   };
 
+  App.Logging.messages = [];
+
+  App.Logging.globalLevel = App.Logging.Level.INFO;
+
+  App.Logging.logs = function() {
+    return App.Logging.messages.join("\n");
+  };
+
   jQuery.extend(App.Logging.prototype, {
 
     init: function(level, tag) {
@@ -40,13 +48,22 @@
 
     log: function(level, message) {
       var self = this;
-      if (level >= self.level) {
-        if (self.tag !== undefined) {
-          console.log(self.tag + ": " + message);
-        } else {
-          console.log(message);
-        }
+
+      var output = message;
+      if (self.tag !== undefined) {
+        output = self.tag + ": " + message;
       }
+      var date = new Date();
+      output = "[" + date.toISOString() + "] " + output;
+
+      if (level >= self.level) {
+        console.log(output);
+      }
+
+      if (level >= App.Logging.globalLevel) {
+        App.Logging.messages.push(output);
+      }
+
     },
 
     critical: function(message) {

@@ -312,7 +312,7 @@
         var parent = file.parents[0].id;
         var title = self.stripExtension(file.title) + "." + App.Library.THUMBNAIL_TYPE;
 
-        self.logging.info("Fetching '" + title + "'' ...");
+        self.logging.info("Searching for thumbnail '" + title + "' ...");
 
         self.drive.file(parent, title).then(function(file) {
           self.drive.downloadFileBase64(file, function(data) {
@@ -324,6 +324,7 @@
             callback(self.thumbnailDataUrl(data));
           });
         }).fail(function(error) {
+          self.logging.warning("Unable to find thumbnail '" + title + "'");
           callback();
         });
 

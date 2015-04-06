@@ -19,7 +19,17 @@
  var gbologger = new App.Logging(App.Logging.Level.WARNING, "gbo");
 
 function cout(message, level) {
-  gbologger.info(message);
+  var l = App.Logging.Level.INFO;
+  if (level === 0) {
+    l = App.Logging.Level.DEBUG;
+  } else if (level === 1) {
+    l = App.Logging.Level.INFO;
+  } else if (level === 2) {
+    l = App.Logging.Level.WARNING;
+  } else {
+    l = App.Logging.Level.ERROR;
+  }
+  gbologger.log(l, message);
 }
 
 function arrayToBase64(u8Arr) {

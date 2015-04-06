@@ -172,8 +172,6 @@ window.onmessage = function(message) {
   if (message.data === "debug") {
     $("#screen-instructions").hide();
     bootstrap();
-  } else {
-    console.log("Unsupported message '" + message.data + "'");
   }
 
 };
