@@ -88,7 +88,7 @@
               ref.parentNode.insertBefore(js, ref);
              }(document));
           }).fail(function() {
-            self.logging.warn("Failed to load settings");
+            self.logging.warning("Failed to load settings");
             deferred.reject();
           });
         } else {
