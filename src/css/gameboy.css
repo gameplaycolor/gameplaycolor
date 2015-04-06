@@ -1018,6 +1018,49 @@ body
   left: 100%;
 }
 
+/* iPhone 4: Portrait */
+@media only screen and (width: 320px) and (height: 460px) {
+
+  #element-screen
+  {
+    top: 0;
+  }
+
+  .surround
+  {
+    height: 287px;
+    border-radius: 0;
+  }
+
+  #LCD-dropshadow
+  {
+    box-shadow:0 0 0 0, inset 0 0 0 0;
+  }
+
+  #screen-console
+  {
+    border-radius: 0;
+  }
+
+  #element-dpad
+  {
+    left: 0;
+    bottom: 40px;
+  }
+
+  #element-buttons
+  {
+    right: 10px;
+    bottom: 60px;
+  }
+
+  #element-options
+  {
+    bottom: -10px;
+  }
+
+}
+
 /* iPhone 5: Portrait */
 @media only screen and (width: 320px) and (height: 548px) {
 
