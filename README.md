@@ -5,10 +5,28 @@ A JavaScript Game Boy Color emulator for iOS, based on the [GameBoy-Online](http
 
 If you just want to play Game Play Color, you can find it online at [http://inseven.co.uk/apps/gameplaycolor](http://inseven.co.uk/apps/gameplaycolor).
 
+Changelog
+---------
+
+### Version 2.0.5
+
+- Fixed crash when inspecting Google Drive files with no extension.
+- Preventing application from running if the user cancels database creation.
+- Fixed crash when Google Drive returned an empty response.
+- Fixed crash due to incorrectly named logging call.
+
+### Version 2.0.0
+
+- Initial release of Game Play Color.
+
+### Version 1.0.0
+
+- Initial release of Game Play.
+
 Thanks
 ------
 
-May thanks to:
+Many thanks to:
 
 - [Grant Galitz](https://github.com/grantgalitz) for the GameBoy-Online emulator and core.
 - [Pedro Ladaria](http://www.codebase.es/) for writing the JSGB core.
