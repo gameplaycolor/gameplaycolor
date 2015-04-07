@@ -15,7 +15,7 @@
           text-align: center;
         }
 
-        #picker {
+        .panel {
           background-color: black;
           color: white;
           position: absolute;
@@ -28,9 +28,19 @@
           padding-bottom: 16px;
         }
 
-        #picker a {
+        .panel a {
           color: white;
           text-decoration: none;
+        }
+
+        .left {
+          top: 0;
+          left: 0;
+        }
+
+        .right {
+          top: 0;
+          right: 0;
         }
 
       </style>
@@ -49,14 +59,18 @@
           { name: "iPhone 4", width: 640, height: 960, scale: 2, status: orientation.PORTRAIT }
         ];
 
+        function postMessage(message) {
+          var device = document.getElementById("device");
+          device.contentWindow.postMessage(message, '*');
+        }
+
         function init() {
           for (var i = 0; i < items.length; i++) {
             addItem(items[i], orientation.PORTRAIT);
             addItem(items[i], orientation.LANDSCAPE);
           }
           setSize(items[0], orientation.PORTRAIT);
-          var device = document.getElementById("device");
-          device.contentWindow.postMessage('debug', '*');
+          postMessage('debug');
         }
 
         function addItem(details, or) {
@@ -127,13 +141,20 @@
           }
         }
 
+        function crash() {
+          postMessage('crash');
+        }
+
         window.onload = init;
         window.onkeypress = keyPress;
 
       </script>
   </head>
   <body>
-    <ol id="picker"></ol>
+    <ol id="picker" class="panel left"></ol>
+    <ol id="actions" class="panel right">
+      <li><a href="javascript:crash();">Crash</a></li>
+    </ol>
     <div id="content">
       <iframe id="device" src="index.html" width="1024" height="768" frameborder="0" scrolling="no"></iframe>
     </div>
