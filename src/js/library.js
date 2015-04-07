@@ -290,7 +290,7 @@
             }
           });
         } else {
-          self.logging.info("Using locally stored game for '" + identifier + "'");
+          self.logging.info("Using locally stored game for '" + identifier + "' with length " + data.length);
           delete self.fetches[identifier];
           deferred.resolve(utilities.atob(data));
         }
