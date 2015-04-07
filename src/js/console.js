@@ -179,11 +179,12 @@
         var deferred = new jQuery.Deferred();
         self.logging.info("Attempting to restore the previous color");
         self.store.property(App.Controller.Domain.SETTINGS, App.Store.Property.COLOR, function(color) {
-          self.logging.info("Loaded previous color: " + color);
           if (color === undefined) {
+            self.logging.warning("No previous color to load");
             deferred.reject();
             return;
           }
+          self.logging.info("Loaded previous color '" + color + "'");
           self.setColor(color);
           deferred.resolve(color);
         });

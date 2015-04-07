@@ -49,6 +49,7 @@
         self.state = App.Drive.State.UNINITIALIZED;
         self.stateChangeCallbacks = [];
         self.logging = new App.Logging(App.Logging.Level.WARNING, "drive");
+        self.requestId = 0;
       },
 
       onStateChange: function(callback) {
@@ -99,7 +100,7 @@
 
       didLoadSDK: function() {
         var self = this;
-        self.logging.info("didLoadSDK");
+        self.logging.info("Google Drive SDK loaded");
         self.sdk.resolve();
       },
 
@@ -120,7 +121,7 @@
       authorize: function() {
         var self = this;
 
-        self.logging.info("Authenticating...");
+        self.logging.info("Checking authentication");
 
         if (self.deferredAuthentication !== undefined) {
           return self.deferredAuthentication.promise();
@@ -130,6 +131,7 @@
         self.deferredAuthentication = deferred;
         self.loadSDK().then(function() {
           self.logging.info("Successfully loaded SDK");
+          self.logging.info("Authorizing");
           gapi.auth.authorize(
             {
               'client_id': self.clientID,
@@ -138,8 +140,10 @@
             },
             function(result) {
               if (result && !result.error) {
+                self.logging.info("Authorized");
                 deferred.resolve(result);
               } else {
+                self.logging.warning("Failed to authorize");
                 if (self.deferredAuthentication == deferred) {
                   self.deferredAuthentication = undefined;
                 }
@@ -378,9 +382,22 @@
        */
       downloadFile: function(file, callback) {
         var self = this;
+        self.requestId++;
+        var requestId = self.requestId;
+        self.logging.info("Starting to download file from Google Drive [" + requestId + "]");
+
+        if (file === undefined) {
+          self.logging.warning("Failed to download undefined file [" + requestId + "]");
+          callback(null);
+          return;
+        }
+
         self.authorize().then(function() {
+          self.logging.info("Google drive authorized [" + requestId + "]");
 
           if (file.downloadUrl) {
+            self.logging.info("Downloading file with URL " + file.downloadUrl + " [" + requestId + "]");
+
             var accessToken = gapi.auth.getToken().access_token;
             var xhr = new XMLHttpRequest();
             xhr.open('GET', file.downloadUrl);
@@ -394,11 +411,12 @@
             };
             xhr.send();
           } else {
+            self.logging.warning("Unable to download file with no URL [" + requestId + "]");
             callback(null);
           }
 
         }).fail(function() {
-
+          self.logging.warning("Failed to authorize Google Drive [" + requestId + "]");
           callback(null);
 
         });

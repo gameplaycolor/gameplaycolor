@@ -238,6 +238,7 @@
       var self = this;
       var index = self.indexForIdentifier(identifier);
       if (index === undefined) {
+        self.logging.warning("Unable to find file for identifier '" + identifier + "'");
         return undefined;
       }
       return self.items[index];
@@ -265,19 +266,31 @@
       var deferred = new jQuery.Deferred();
       self.fetches[identifier] = deferred;
 
-      self.logging.info("Fetching identifier '" + identifier + "'");
+      self.logging.info("Loading game with identifier '" + identifier + "'");
 
       self.store.property(App.Controller.Domain.GAMES, identifier, function(data) {
-        if (data === undefined) {
-          self.logging.info("Fetching '" + identifier + "'");
+
+        // Guard against seemingly corrupt ROMs.
+        // It's unclear how this might happen but we need to do something to protect against this behaviour.
+        if (data !== undefined && data.length < 100) {
+          self.logging.warning("Dropping seemingly corrupt game for identifier '" + identifier + "'");
+          self.store.deleteProperty(App.Controller.Domain.GAMES, identifier);
+        }
+
+        if (data === undefined || data.length < 100) {
+          self.logging.info("Downloading game from Google Drive '" + identifier + "'");
           var file = self.fileForIdentifier(identifier);
           self.drive.downloadFile(file, function(data) {
-            self.store.setProperty(App.Controller.Domain.GAMES, identifier, utilities.btoa(data));
-            delete self.fetches[identifier];
-            deferred.resolve(data);
+            if (data === undefined) {
+              deferred.reject();
+            } else {
+              self.store.setProperty(App.Controller.Domain.GAMES, identifier, utilities.btoa(data));
+              delete self.fetches[identifier];
+              deferred.resolve(data);
+            }
           });
         } else {
-          self.logging.info("Using cached value for '" + identifier + "'");
+          self.logging.info("Using locally stored game for '" + identifier + "'");
           delete self.fetches[identifier];
           deferred.resolve(utilities.atob(data));
         }
