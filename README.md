@@ -8,6 +8,13 @@ If you just want to play Game Play Color, you can find it online at [https://gam
 Changelog
 ---------
 
+### Version 2.0.8
+
+- Improving information available in crash log emails.
+- Fixing some bugs which resulted in an attmept to play and save ROMs that had failed to download.
+- Introduced a recovery mechanism for the above scenario.
+- Improved debugging tools.
+
 ### Version 2.0.7
 
 - Layout support for iPhone 4 and 4S.
