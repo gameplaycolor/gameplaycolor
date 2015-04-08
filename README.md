@@ -8,6 +8,10 @@ If you just want to play Game Play Color, you can find it online at [https://gam
 Changelog
 ---------
 
+### Version 2.0.10
+
+- Adding the application version, screen size and user agent string into the logs.
+
 ### Version 2.0.9
 
 - Improved logging.
