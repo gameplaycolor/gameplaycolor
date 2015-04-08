@@ -45,7 +45,12 @@
       }
 
       self.device = device;
+
       self.logging = new App.Logging(App.Logging.Level.WARNING, "app");
+      self.logging.info("Version: 2.0.10");
+      self.logging.info("Screen size: " + $(window).width() + " x " + $(window).height());
+      self.logging.info("User Agent: " + navigator.userAgent);
+
       self.library = new App.Library(self.store, function(identifier) {
         self.gameBoy.clear();
         self.console.show();
