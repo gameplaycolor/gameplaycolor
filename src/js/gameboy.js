@@ -137,15 +137,19 @@ function base64ToArray(b64encoded) {
 
     load: function(identifier) {
       var self = this;
+      var deferred = $.Deferred();
       self.setState(App.GameBoy.State.LOADING);
       self.library.fetch(identifier).then(function(data) {
         self.insertCartridge(identifier, data, function() {
           self.setState(App.GameBoy.State.RUNNING);
+          deferred.resolve();
         });
       }).fail(function() {
+        self.setState(App.GameBoy.State.IDLE);
         self.logging.warning("Unable to load game");
-        alert("Unable to load game");
+        deferred.reject();
       });
+      return deferred.promise();
     },
 
     insertCartridge: function(identifier, data, callback) {

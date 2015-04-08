@@ -96,9 +96,14 @@
     load: function(identifier) {
       var self = this;
       var title = self.library.titleForIdentifier(identifier);
-      self.store.setProperty(App.Controller.Domain.SETTINGS, App.Store.Property.GAME, identifier);
-      self.console.setTitle(title);
-      self.gameBoy.load(identifier);
+      self.gameBoy.load(identifier).then(function() {
+        self.store.setProperty(App.Controller.Domain.SETTINGS, App.Store.Property.GAME, identifier);
+        self.console.setTitle(title);
+      }).fail(function() {
+        alert("Unable to load game");
+        self.store.deleteProperty(App.Controller.Domain.SETTINGS, App.Store.Property.GAME);
+        self.console.setTitle("Console");
+      });
     },
 
     checkForUpdate: function() {
