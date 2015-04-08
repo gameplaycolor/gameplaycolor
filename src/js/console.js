@@ -123,12 +123,14 @@
 
         // Tapping the screen shows the game picker.
         self.screen = new App.Controls.Button('#display', { touchUp: function() {
+          self.logging.info("Show games");
           window.tracker.track('games');
           self.hide();
         }});
 
         // Dismiss button.
         self.done = new App.Controls.Button('#button-done', { touchUp: function() {
+          self.logging.info("Show console");
           self.show();
         }});
 

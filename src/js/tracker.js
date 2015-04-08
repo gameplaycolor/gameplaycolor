@@ -50,8 +50,9 @@ var _gaq = _gaq || [];
 
     track: function(event) {
       var self = this;
+      var eventname = "app/" + event;
       if (window.navigator.onLine === true) {
-        _gaq.push(['_trackPageview', event]);
+        _gaq.push(['_trackPageview', eventname]);
       }
     }
 

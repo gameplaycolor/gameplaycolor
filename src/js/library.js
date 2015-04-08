@@ -182,6 +182,7 @@
     didSelectItemForRow: function(index, element) {
       var self = this;
       var identifier = self.identifierForIndex(index);
+      self.logging.info("Did select item for row " + index + " (" + identifier + ")");
       self.store.hasProperty(App.Controller.Domain.GAMES, identifier).then(function(found) {
         if (found) {
           self.callback(identifier);
@@ -278,16 +279,27 @@
         }
 
         if (data === undefined || data.length < 100) {
+
           self.logging.info("Downloading game from Google Drive '" + identifier + "'");
+
           var file = self.fileForIdentifier(identifier);
+          if (file === undefined) {
+            self.logging.warning("Unable to find file for identifier '" + identifier + "'");
+            delete self.fetches[identifier];
+            deferred.reject();
+          }
+
           self.drive.downloadFile(file, function(data) {
+
             if (data === undefined) {
+              delete self.fetches[identifier];
               deferred.reject();
             } else {
               self.store.setProperty(App.Controller.Domain.GAMES, identifier, utilities.btoa(data));
               delete self.fetches[identifier];
               deferred.resolve(data);
             }
+
           });
         } else {
           self.logging.info("Using locally stored game for '" + identifier + "' with length " + data.length);

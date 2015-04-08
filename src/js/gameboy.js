@@ -78,6 +78,7 @@ function base64ToArray(b64encoded) {
       self.library = library;
       self.state = App.GameBoy.State.IDLE;
       self.stateChangeCallbacks = [];
+      self.logging = new App.Logging(App.Logging.Level.WARNING, "gameboy");
 
       settings[App.GameBoy.Settings.ENABLE_SOUND] = true;
       settings[App.GameBoy.Settings.SOFTWARE_RESIZING] = false;
@@ -137,10 +138,13 @@ function base64ToArray(b64encoded) {
     load: function(identifier) {
       var self = this;
       self.setState(App.GameBoy.State.LOADING);
-      var file = self.library.fetch(identifier).then(function(data) {
+      self.library.fetch(identifier).then(function(data) {
         self.insertCartridge(identifier, data, function() {
           self.setState(App.GameBoy.State.RUNNING);
         });
+      }).fail(function() {
+        self.logging.warning("Unable to load game");
+        alert("Unable to load game");
       });
     },
 
