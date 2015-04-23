@@ -88,7 +88,6 @@ def main():
   parser = argparse.ArgumentParser(description = "Generate the minified Game Play HTML file")
   parser.add_argument("project", help = "root of the project")
   parser.add_argument("settings", help = "settings file")
-  parser.add_argument("--debug", help = "Build without minifying files", action = "store_true", default = False)
   options = parser.parse_args()
 
   project_dir = os.path.abspath(options.project)
@@ -103,6 +102,11 @@ def main():
   sizes_file = os.path.join(source_dir, "sizes.html")
   sizes_dest = os.path.join(build_dir, "sizes.html")
 
+  # Load the settings.
+  settings = None
+  with open(options.settings, 'r') as f:
+    settings = json.load(f)
+
   # build
   if os.path.exists(build_dir):
     shutil.rmtree(build_dir)
@@ -116,20 +120,20 @@ def main():
 
   print "Extracting JavaScript..."
   script = extract_tags(html, "//script[@type='text/javascript']", "src", source_dir)
-  if not options.debug:
+  if not settings["debug"]:
     print "Minifying JavaScript..."
     script = yuicompressor(script, '.js')
   append_javascript(html, script)
 
   print "Exctracting CSS..."
   style = extract_tags(html, "//link[@type='text/css']", "href", source_dir)
-  if not options.debug:
+  if not settings["debug"]:
     print "Minifying CSS..."
     style = yuicompressor(style, '.css')
   append_style(html, style)
 
   contents = lxml.html.tostring(html)
-  if not options.debug:
+  if not settings["debug"]:
     print "Compressing HTML..."
     contents = htmlcompressor(contents)
 
@@ -150,10 +154,8 @@ def main():
   shutil.copy(options.settings, settings_dest)
 
   # icon
-  with open(options.settings, 'r') as f:
-    settings = json.load(f)
-    icon_file = os.path.join(project_dir, settings['icon'])
-    pngcrush(icon_file, os.path.join(build_dir, "images", "icon.png"))
+  icon_file = os.path.join(project_dir, settings['icon'])
+  pngcrush(icon_file, os.path.join(build_dir, "images", "icon.png"))
 
   # manifest
   manifest = list(build_dir)

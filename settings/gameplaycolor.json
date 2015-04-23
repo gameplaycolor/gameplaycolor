@@ -6,5 +6,6 @@
     "analytics": "UA-37991248-2",
     "domain": "gameplaycolor.com",
     "redirect_uri": "https://gameplaycolor.com/app/",
-    "icon": "icons/icon.png"
+    "icon": "icons/icon.png",
+    "debug": false
 }

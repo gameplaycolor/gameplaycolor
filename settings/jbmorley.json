@@ -6,5 +6,6 @@
   "analytics": "UA-37393449-1",
   "domain": "jbmorley.co.uk",
   "redirect_uri": "http://gameboy.jbmorley.co.uk",
-  "icon": "icons/icon-beta.png"
+  "icon": "icons/icon-beta.png",
+  "debug": true
 }
