@@ -833,7 +833,7 @@ body
 
 .dpad > .up:before
 {
-    content:"\25B2";
+    content: "\25B2\FE0E";
 }
 
 .dpad.pressed-up > .up:before
@@ -857,7 +857,7 @@ body
 
 .dpad > .down:before
 {
-    content:"\25BC";
+    content:"\25BC\FE0E";
 }
 
 .dpad.pressed-up > .down:before
@@ -883,7 +883,7 @@ body
 
 .dpad > .left:before
 {
-    content:"\25C0";
+    content:"\25C0\FE0E";
 }
 
 .dpad.pressed-up > .left:before
@@ -908,7 +908,7 @@ body
 
 .dpad > .right:before
 {
-    content:"\25B6";
+    content:"\25B6\FE0E";
 }
 
 .dpad.pressed-up > .right:before
