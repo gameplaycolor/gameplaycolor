@@ -8,6 +8,10 @@ If you just want to play Game Play Color, you can find it online at [https://gam
 Changelog
 ---------
 
+### Version 2.0.12
+
+- Improving guards against loading corrupt ROMs.
+
 ### Version 2.0.11
 
 - Correcting the characters used on the d-pad and in the 'Say Thanks' link on iOS 8.3.

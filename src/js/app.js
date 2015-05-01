@@ -47,7 +47,7 @@
       self.device = device;
 
       self.logging = new App.Logging(App.Logging.Level.WARNING, "app");
-      self.logging.info("Version: 2.0.11");
+      self.logging.info("Version: 2.0.12");
       self.logging.info("Screen size: " + $(window).width() + " x " + $(window).height());
       self.logging.info("User Agent: " + navigator.userAgent);
 
@@ -104,8 +104,8 @@
       self.gameBoy.load(identifier).then(function() {
         self.store.setProperty(App.Controller.Domain.SETTINGS, App.Store.Property.GAME, identifier);
         self.console.setTitle(title);
-      }).fail(function() {
-        alert("Unable to load game");
+      }).fail(function(e) {
+        alert("Unable to load ROM\n" + e);
         self.store.deleteProperty(App.Controller.Domain.SETTINGS, App.Store.Property.GAME);
         self.console.setTitle("Console");
       });

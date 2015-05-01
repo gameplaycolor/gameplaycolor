@@ -138,24 +138,37 @@ function base64ToArray(b64encoded) {
     load: function(identifier) {
       var self = this;
       var deferred = $.Deferred();
+
+      var resetStateAndReject = function(e) {
+        self.logging.warning("Unable to load game");
+        self.setState(App.GameBoy.State.IDLE);
+        deferred.reject(e);
+      };
+
       self.setState(App.GameBoy.State.LOADING);
       self.library.fetch(identifier).then(function(data) {
-        self.insertCartridge(identifier, data, function() {
+
+        self._insertCartridge(identifier, data).then(function() {
           self.setState(App.GameBoy.State.RUNNING);
           deferred.resolve();
-        });
-      }).fail(function() {
-        self.setState(App.GameBoy.State.IDLE);
-        self.logging.warning("Unable to load game");
-        deferred.reject();
-      });
+        }).fail(resetStateAndReject);
+
+      }).fail(resetStateAndReject);
+
       return deferred.promise();
     },
 
-    insertCartridge: function(identifier, data, callback) {
+    _insertCartridge: function(identifier, data) {
       var self = this;
-      start(identifier, document.getElementById('LCD'), data);
-      setTimeout(callback, 100);
+      var deferred = $.Deferred();
+      start(identifier, document.getElementById('LCD'), data).then(function() {
+        setTimeout(function() {
+          deferred.resolve();
+        }, 100);
+      }).fail(function(e) {
+        deferred.reject(e);
+      });
+      return deferred.promise();
     }
 
   });
