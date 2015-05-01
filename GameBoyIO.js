@@ -57,16 +57,21 @@ function findValue(key) {
 }
 
 function start(identifier, canvas, ROM) {
+	var deferred = jQuery.Deferred();
 	loadSaveStateContext("game-" + identifier).then(function() {
-
-		clearLastEmulation();
-		gameboy = new GameBoyCore(canvas, ROM);
-		gameboy.openMBC = openSRAM;
-		gameboy.openRTC = openRTC;
-		gameboy.start();
-		run();
-
+		try {
+			clearLastEmulation();
+			gameboy = new GameBoyCore(canvas, ROM);
+			gameboy.openMBC = openSRAM;
+			gameboy.openRTC = openRTC;
+			gameboy.start();
+			run();
+			deferred.resolve();
+		} catch (e) {
+			deferred.reject(e);
+		}
 	});
+	return deferred.promise();
 }
 function run() {
 	if (GameBoyEmulatorInitialized()) {
