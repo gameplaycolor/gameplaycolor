@@ -127,16 +127,19 @@
 
     <div id="screen-account" class="screen-instructions" style="display: none">
       <div class="placeholder">
-        <div class="appicon"></div>
-        <h1>Sign in to Google Drive!</h1>
-        <a id="google-drive-auth" href="" target="_blank">Sign In</a>
+        <div class="appicon"></div><br />
+        <a class="simple-button" id="google-drive-auth" href="" target="_blank">Sign In</a>
+        <hr />
+        <input id="redeem-code" class="input-code" type="text" />
+        <div class="simple-button" id="button-redeem">Redeem</div>
       </div>
     </div>
 
     <div id="screen-authorizing" class="screen-instructions" style="display: none">
       <div class="placeholder">
         <div class="appicon"></div>
-        <h1>Authorizing...</h1>
+        <p>Copy and paste code into <strong>Game Play Color</strong> then click <strong>Redeem</strong>.</p>
+        <input id="authorization-code" class="input-code" type="text" />
         <p id="message-success" style="display: none">Success :)</p>
         <p id="message-failure" style="display: none">Failure =(</p>
       </div>

@@ -71,6 +71,11 @@
 
         self.state = state;
 
+        if (self.state == App.Drive.State.UNAUTHORIZED) {
+          self.store.deleteProperty(App.Drive.DOMAIN, App.Drive.Property.TOKEN);
+          self.deferredAuthentication = undefined;
+        }
+
         for (var i = 0; i < self.stateChangeCallbacks.length; i++) {
           self.stateChangeCallbacks[i](state);
         }
@@ -88,7 +93,6 @@
         self.track("signOut", deferred.promise());
 
         deferred.promise().then(function() {
-          self.store.deleteProperty(App.Drive.DOMAIN, App.Drive.Property.TOKEN);
           self.setState(App.Drive.State.UNAUTHORIZED);
         });
 
@@ -264,7 +268,6 @@
         deferred.promise().then(function() {
           self.setState(App.Drive.State.AUTHORIZED);
         }).fail(function(e) {
-          self.deferredAuthentication = undefined;
           self.setState(App.Drive.State.UNAUTHORIZED);
         });
 
@@ -316,21 +319,11 @@
               "state": "100000"
             },
             success: function(token, textStatus, jqXHR) {
-
-              console.log(token);
               self.store.setProperty(App.Drive.DOMAIN, App.Drive.Property.TOKEN, token.access_token);
-
-              var date = new Date();
-              date.setTime(date.getTime()+(10*24*60*60*1000));
-              document.cookie = 'access_token=' + token.access_token + '; expires=' + date.toGMTString() + '; path=/';
-
               deferred.resolve();
-
             },
             error: function(jqXHR, textStatus, error) {
-
               deferred.reject(error);
-
             }
           });
 

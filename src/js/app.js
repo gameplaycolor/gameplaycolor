@@ -88,6 +88,16 @@
         }
       }});
 
+      self.redeem = new App.Controls.Button('#button-redeem', { touchUp: function() {
+        $("#redeem-code").blur();
+        var code = $("#redeem-code").val();
+        drive.redeemTokenV3(code).then(function() {
+          self.drive.authorize();
+        }).fail(function() {
+          alert("Unable to sign in.");
+        });
+      }});
+
       self.drive.onStateChange(function(state) {
         if (state == App.Drive.State.UNKNOWN) {
 
@@ -110,6 +120,7 @@
         } else if (state == App.Drive.State.AUTHORIZED) {
 
           self.logging.info("Google Drive state authorized.");
+          $("#screen-account").hide();
           self.account.show();
           self.drive.user().then(function(user) {
             self.account.setTitle(user.email);
@@ -204,8 +215,6 @@
 
   $(document).ready(function() {
 
-    alert(document.cookie);
-
     var iPhone = (navigator.userAgent.indexOf("iPhone OS") !== -1);
     var iPad = (navigator.userAgent.indexOf("iPad") !== -1);
     if ((window.navigator.standalone === true && (iPhone || iPad))) {
@@ -220,15 +229,7 @@
 
         console.log("Received authentication token: " + code);
         $("#screen-authorizing").show();
-        drive.redeemTokenV3(code).then(function() {
-
-          $("#message-success").show();
-
-        }).fail(function() {
-
-          $("message-failure").show();
-
-        });
+        $("#authorization-code").val(code);
 
       } else {
 
