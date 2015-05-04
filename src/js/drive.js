@@ -23,33 +23,38 @@
   };
 
   App.Drive.State = {
-    UNINITIALIZED:  0,
-    LOADING_SDK:    1,
-    SDK_LOADED:     2,
-    AUTHENTICATING: 3,
-    UNAUTHORIZED:   4,
-    READY:          5
+    UNKNOWN: 0,
+    UNAUTHORIZED: 1,
+    AUTHORIZED: 2,
   };
 
-  App.Drive.instance = undefined;
+  App.Drive.DOMAIN = "drive";
 
-  App.Drive.QUERY = "(fullText contains '*.gb' or fullText contains '*.gbc') and trashed = false and mimeType = 'application/octet-stream'";
+  App.Drive.Property = {
+    TOKEN: 0
+  };
 
-  App.Drive.getInstance = function() {
-    if (App.Drive.instance === undefined) {
-      App.Drive.instance = new App.Drive();
+  App.Drive.Instance = function() {
+    if (window.drive === undefined) {
+      window.drive = new App.Drive();
     }
-    return App.Drive.instance;
+    return window.drive;
   };
 
   jQuery.extend(App.Drive.prototype, {
         
-      init: function() {
+      init: function(store) {
         var self = this;
         self.state = App.Drive.State.UNINITIALIZED;
         self.stateChangeCallbacks = [];
-        self.logging = new App.Logging(App.Logging.Level.WARNING, "drive");
+        self.logging = new App.Logging(App.Logging.Level.INFO, "drive");
         self.requestId = 0;
+
+        self.store = new App.Store('com.gameplaycolor.drive');
+        if (!self.store.open()) {
+          alert("Unable to create database.\nPlease accept increased storage size when asked.");
+          return;
+        }
       },
 
       onStateChange: function(callback) {
@@ -57,44 +62,86 @@
         self.stateChangeCallbacks.push(callback);
       },
 
+      setState: function(state) {
+        var self = this;
+
+        if (self.state == state) {
+          return;
+        }
+
+        self.state = state;
+
+        for (var i = 0; i < self.stateChangeCallbacks.length; i++) {
+          self.stateChangeCallbacks[i](state);
+        }
+      },
+
       scheduleOperation: function(operation) {
         var self = this;
         operation();
       },
 
-      loadSDK: function() {
+      signOut: function() {
         var self = this;
 
-        if (self.sdk) {
-          return self.sdk.promise();
+        var deferred = jQuery.Deferred();
+        self.track("signOut", deferred.promise());
+
+        deferred.promise().then(function() {
+          self.store.deleteProperty(App.Drive.DOMAIN, App.Drive.Property.TOKEN);
+          self.setState(App.Drive.State.UNAUTHORIZED);
+        });
+
+        self.token().then(function(token) {
+
+          $.ajax({
+            type: 'GET',
+            url: 'https://accounts.google.com/o/oauth2/revoke?token=' + token,
+            async: false, // TODO Not neccessary?
+            contentType: "application/json",
+            dataType: 'jsonp',
+            success: function(nullResponse) {
+              deferred.resolve();
+            },
+            error: function(e) {
+              deferred.reject(e);
+            }
+          });
+
+        }).fail(function(e) {
+
+          deferred.reject(e);
+
+        });
+
+        return deferred.promise();
+      },
+
+      loadSettings: function() {
+        var self = this;
+
+        if (self.settings) {
+          return self.settings.promise();
         }
 
         var deferred = new jQuery.Deferred();
-        self.sdk = deferred;
+        self.track("loadSettings", deferred.promise());
 
+        deferred.promise().fail(function(e) {
+          self.settings = undefined;
+        });
+
+        self.settings = deferred;
         if (navigator.onLine) {
-          self.logging.info("Loading settings");
-          jQuery.getJSON("settings.json", function(data) {
-            self.logging.info("Successfully loaded settings");
-            self.clientID = data["client_id"];
-            self.scopes = data["scopes"];
-            self.clientSecret = data["client_secret"];
-            self.redirectURI = data["redirect_uri"];
-            (function(d){
-              self.logging.info("Loading Google SDK");
-              var js, id = 'google-sdk', ref = d.getElementsByTagName('script')[0];
-              if (d.getElementById(id)) {return;}
-              js = d.createElement('script'); js.id = id; js.async = true;
-              js.src = "https://apis.google.com/js/client.js?onload=handleClientLoad";
-              ref.parentNode.insertBefore(js, ref);
-             }(document));
+          jQuery.getJSON("settings.json", function(settings) {
+            deferred.resolve(settings);
           }).fail(function() {
-            self.logging.warning("Failed to load settings");
             deferred.reject();
           });
         } else {
           deferred.reject();
         }
+
         return deferred.promise();
       },
 
@@ -106,54 +153,128 @@
 
       signIn: function() {
         var self = this;
-        self.loadSDK().then(function() {
-          var href = 'https://accounts.google.com/o/oauth2/auth' +
-                        '?redirect_uri=' + encodeURIComponent(self.redirectURI) +
-                        '&response_type=code' +
-                        '&client_id=' + self.clientID +
-                        '&scope=' + self.scopes;
-          window.location.href = href;
-        }).fail(function() {
-          self.logging.error("Unable to navigate to Google sign-in page");
+
+        self.logging.info("Signing in to Google Drive");
+        self.authURL().then(function(url) {
+
+          self.logging.info("Navigating to " + url);
+          window.open(url, "_blank");
+
         });
+      },
+
+      authURL: function() {
+        var self = this;
+
+        var deferred = jQuery.Deferred();
+        self.track("authURL", deferred.promise());
+
+        self.loadSettings().then(function(settings) {
+
+          var url = 'https://accounts.google.com/o/oauth2/auth' +
+                    '?redirect_uri=' + encodeURIComponent(settings.redirect_uri) +
+                    '&response_type=code' +
+                    '&client_id=' + settings.client_id +
+                    '&scope=' + settings.scopes.join(" ");
+          deferred.resolve(url);
+
+        }).fail(function() {
+
+          deferred.reject();
+
+        });
+
+        return deferred.promise();
+      },
+
+      user: function() {
+        var self = this;
+
+        var deferred = jQuery.Deferred();
+        self.track("user", deferred.promise());
+
+        self.token().then(function(token) {
+
+          $.ajax({
+            url: "https://www.googleapis.com/oauth2/v1/userinfo",
+            type: "GET",
+            data: {
+              "access_token": token
+            },
+            success: function(user, textStatus, jqXHR) {
+              deferred.resolve(user);
+            },
+            error: function(jqXHR, textStatus, error) {
+              deferred.reject(error);
+            }
+          });
+
+        }).fail(function(e) {
+          deferred.reject(e);
+        });
+
+        return deferred.promise();
+      },
+
+      nextRequestId: function() {
+        var self = this;
+        self.requestId++;
+        return self.requestId;
+      },
+
+      log: function(requestId, message) {
+        var self = this;
+        self.logging.info("[" + requestId + "] " + message);
+      },
+
+      track: function(description, promise) {
+        var self = this;
+        var requestId = self.nextRequestId();
+        self.log(requestId, description);
+        promise.then(function() {
+          self.log(requestId, description + " -> SUCCESS");
+        }).fail(function(e) {
+          self.log(requestId, description + " -> FAIL " + e);
+        });
+      },
+
+      token: function() {
+        var self = this;
+        var deferred = jQuery.Deferred();
+        self.store.property(App.Drive.DOMAIN, App.Drive.Property.TOKEN, function(token) {
+          if (token) {
+            deferred.resolve(token);
+          } else {
+            deferred.reject();
+          }
+        });
+        return deferred.promise();
       },
 
       authorize: function() {
         var self = this;
-
-        self.logging.info("Checking authentication");
 
         if (self.deferredAuthentication !== undefined) {
           return self.deferredAuthentication.promise();
         }
 
         var deferred = jQuery.Deferred();
+        self.track("authorize", deferred.promise());
+
+        deferred.promise().then(function() {
+          self.setState(App.Drive.State.AUTHORIZED);
+        }).fail(function(e) {
+          self.deferredAuthentication = undefined;
+          self.setState(App.Drive.State.UNAUTHORIZED);
+        });
+
         self.deferredAuthentication = deferred;
-        self.loadSDK().then(function() {
-          self.logging.info("Successfully loaded SDK");
-          self.logging.info("Authorizing");
-          gapi.auth.authorize(
-            {
-              'client_id': self.clientID,
-              'scope': self.scopes,
-              'immediate': true
-            },
-            function(result) {
-              if (result && !result.error) {
-                self.logging.info("Authorized");
-                deferred.resolve(result);
-              } else {
-                self.logging.warning("Failed to authorize");
-                if (self.deferredAuthentication == deferred) {
-                  self.deferredAuthentication = undefined;
-                }
-                deferred.reject();
-              }
-            }
-          );
+        self.token().then(function(token) {
+          deferred.resolve();
         }).fail(function() {
           deferred.reject();
         });
+
         return deferred.promise();
       },
 
@@ -173,112 +294,83 @@
         });
 
         return parameters;
-
       },
 
-      redeemToken: function(code) {
+      redeemTokenV3: function(code) {
         var self = this;
-        var deferred = $.Deferred();
-        self.loadSDK().then(function() {
+
+        var deferred = jQuery.Deferred();
+        self.track("redeemTokenV3", deferred.promise());
+
+        self.loadSettings().then(function(settings) {
 
           $.ajax({
             url: "https://www.googleapis.com/oauth2/v3/token",
             type: "POST",
             data: {
               "code": code,
-              "client_id": self.clientID,
-              "client_secret": self.clientSecret,
-              "redirect_uri": self.redirectURI,
+              "client_id": settings.client_id,
+              "client_secret": settings.client_secret,
+              "redirect_uri": settings.redirect_uri,
               "grant_type": "authorization_code",
               "state": "100000"
             },
             success: function(token, textStatus, jqXHR) {
-              gapi.auth.setToken(token);
+
+              console.log(token);
+              self.store.setProperty(App.Drive.DOMAIN, App.Drive.Property.TOKEN, token.access_token);
+
+              var date = new Date();
+              date.setTime(date.getTime()+(10*24*60*60*1000));
+              document.cookie = 'access_token=' + token.access_token + '; expires=' + date.toGMTString() + '; path=/';
+
               deferred.resolve();
+
             },
             error: function(jqXHR, textStatus, error) {
+
               deferred.reject(error);
+
             }
           });
 
-        });
-
-        return deferred.promise();
-
-      },
-
-      redeemOutstandingTokens: function() {
-        var self = this;
-        var deferred = $.Deferred();
-
-        var code = self.getParameters().code;
-        if (code === undefined) {
-          deferred.resolve();
-          return deferred.promise();
-        }
-
-        self.redeemToken(code).then(function() {
-          deferred.resolve();
-        }).fail(function(error) {
-          deferred.reject(error);
-        });
-
-        return deferred.promise();
-      },
-
-      checkAuthentication: function() {
-        var self = this;
-
-        var deferred = $.Deferred();
-
-        self.redeemOutstandingTokens().then(function() {
-          self.authorize().then(function() {
-            deferred.resolve();
-          }).fail(function() {
-            deferred.reject();
-          });
         }).fail(function() {
+
           deferred.reject();
+
         });
 
         return deferred.promise();
+
       },
 
-      // Retrieve single file which matches a given filename in a specific parent container.
       file: function(parent, title) {
         var self = this;
-        var deferred = $.Deferred();
+
+        var deferred = jQuery.Deferred();
+        self.track("file", deferred.promise());
+
         self.scheduleOperation(function() {
-          self.authorize().then(function() {
-            try {
-              var retrievePageOfFiles = function(request) {
-                request.execute(function(resp) {
-                  if (resp === undefined) {
-                    self.logging.error("Google Drive file search received undefined response");
-                    deferred.reject();
-                  } else if (resp.items === undefined) {
-                    self.logging.error("Google Drive file search received undefined items");
-                    deferred.reject();
-                  } else if (resp.items.length > 0) {
-                    deferred.resolve(resp.items[0]);
-                  } else {
-                    self.logging.debug("Google Drive file search found no items");
-                    deferred.reject();
-                  }
-                });
-              };
-              var initialRequest = gapi.client.request({
-                'path': '/drive/v2/files',
-                'method': 'GET',
-                'params': {
-                  'maxResults': '1',
-                  'q': "trashed = false and '" + parent + "' in parents and title = '" + title.replace("'", "\\'") + "'"
+          self.token().then(function(token) {
+            $.ajax({
+              url: "https://www.googleapis.com/drive/v2/files",
+              type: "GET",
+              data: {
+                'maxResults': '1',
+                'q': "trashed = false and '" + parent + "' in parents and title = '" + title.replace("'", "\\'") + "'",
+                "access_token": token
+              },
+              success: function(result, textStatus, jqXHR) {
+                if (result.items.length > 0) {
+                  deferred.resolve(result.items[0]);
+                } else {
+                  deferred.reject();
                 }
-              });
-              retrievePageOfFiles(initialRequest);
-            } catch (error) {
-              deferred.reject(error);
-            }
+              },
+              error: function(jqXHR, textStatus, error) {
+                deferred.reject(error);
+              }
+            });
           }).fail(function(error) {
             deferred.reject(error);
           });
@@ -286,48 +378,51 @@
         return deferred.promise();
       },
 
-      /**
-       * Retrieve a list of File resources.
-       */
       files: function() {
         var self = this;
-        var deferred = $.Deferred();
-        self.scheduleOperation(function() {
-          self.authorize().then(function() {
 
-            try {
-              var retrievePageOfFiles = function(request, result) {
-                request.execute(function(resp) {
-                  result = result.concat(resp.items);
-                  var nextPageToken = resp.nextPageToken;
-                  if (nextPageToken) {
-                    request = gapi.client.request({
-                      'path': '/drive/v2/files',
-                      'method': 'GET',
-                      'params': {
-                        'maxResults': '100',
-                        'q': App.Drive.QUERY,
-                        'pageToken': nextPageToken
-                      }
-                    });
-                    retrievePageOfFiles(request, result);
-                  } else {
-                    deferred.resolve(result);
-                  }
-                });
+        var deferred = jQuery.Deferred();
+        self.track("files", deferred.promise());
+
+        self.scheduleOperation(function() {
+          self.token().then(function(token) {
+
+            var files = [];
+
+            var retrievePageOfFiles = function(nextPageToken) {
+
+              var params = {
+                'maxResults': '100',
+                  'q': "(fullText contains '*.gb' or fullText contains '*.gbc') and trashed = false and mimeType = 'application/octet-stream'",
+                  "access_token": token
               };
-              var initialRequest = gapi.client.request({
-                'path': '/drive/v2/files',
-                'method': 'GET',
-                'params': {
-                  'maxResults': '100',
-                  'q': App.Drive.QUERY
+
+              if (nextPageToken) {
+                params["pageToken"] = nextPageToken;
+              }
+
+              $.ajax({
+                url: "https://www.googleapis.com/drive/v2/files",
+                type: "GET",
+                data: params,
+                success: function(result, textStatus, jqXHR) {
+
+                  files = files.concat(result.items);
+                  if (result.nextPageToken) {
+                    retrievePageOfFiles(result.nextPageToken);
+                  } else {
+                    deferred.resolve(files);
+                  }
+
+                },
+                error: function(jqXHR, textStatus, error) {
+                  deferred.reject(error);
                 }
               });
-              retrievePageOfFiles(initialRequest, []);
-            } catch (error) {
-              deferred.reject(error);
-            }
+
+            };
+
+            retrievePageOfFiles();
 
           }).fail(function(error) {
             deferred.reject(error);
@@ -340,13 +435,12 @@
 
       downloadFileBase64: function(file, callback) {
         var self = this;
-        self.authorize().then(function() {
+        self.token().then(function(token) {
 
           if (file.downloadUrl) {
-            var accessToken = gapi.auth.getToken().access_token;
             var xhr = new XMLHttpRequest();
             xhr.open('GET', file.downloadUrl);
-            xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+            xhr.setRequestHeader('Authorization', 'Bearer ' + token);
             xhr.responseType = 'arraybuffer';
             xhr.onload = function(e) {
               var uInt8Array = new Uint8Array(xhr.response);
@@ -374,61 +468,43 @@
         });
       },
 
-      /**
-       * Download a file's content.
-       *
-       * @param {File} file Drive File instance.
-       * @param {Function} callback Function to call when the request is complete.
-       */
-      downloadFile: function(file, callback) {
+      downloadFile: function(file) {
         var self = this;
-        self.requestId++;
-        var requestId = self.requestId;
-        self.logging.info("Starting to download file from Google Drive [" + requestId + "]");
+
+        var deferred = jQuery.Deferred();
+        self.track("downloadFile", deferred.promise());
 
         if (file === undefined) {
-          self.logging.warning("Failed to download undefined file [" + requestId + "]");
-          callback(null);
-          return;
+          deferred.reject();
+          return deferred.promise();
         }
 
-        self.authorize().then(function() {
-          self.logging.info("Google drive authorized [" + requestId + "]");
+        self.token().then(function(token) {
 
           if (file.downloadUrl) {
-            self.logging.info("Downloading file with URL " + file.downloadUrl + " [" + requestId + "]");
-
-            var accessToken = gapi.auth.getToken().access_token;
             var xhr = new XMLHttpRequest();
             xhr.open('GET', file.downloadUrl);
-            xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+            xhr.setRequestHeader('Authorization', 'Bearer ' + token);
             xhr.overrideMimeType('text/plain; charset=x-user-defined');
             xhr.onload = function() {
-              callback(xhr.responseText);
+              deferred.resolve(xhr.responseText);
             };
             xhr.onerror = function() {
-              callback(null);
+              deferred.reject();
             };
             xhr.send();
           } else {
-            self.logging.warning("Unable to download file with no URL [" + requestId + "]");
-            callback(null);
+            deferred.reject();
           }
 
-        }).fail(function() {
-          self.logging.warning("Failed to authorize Google Drive [" + requestId + "]");
-          callback(null);
-
+        }).fail(function(e) {
+          deferred.reject(e);
         });
+
+        return deferred.promise();
       }
 
 
   });
 
 })(jQuery);
-
-function handleClientLoad() {
-  setTimeout(function() {
-    App.Drive.getInstance().didLoadSDK();
-  }, 0);
-}

@@ -130,6 +130,16 @@
       self.element.html(title);
     },
 
+    hide: function() {
+      var self = this;
+      self.element.hide();
+    },
+
+    show: function() {
+      var self = this;
+      self.element.show();
+    }
+
   });
 
 })(jQuery);

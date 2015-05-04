@@ -41,7 +41,7 @@
       self.items = [];
       self.changeCallbacks = [];
       self.stateChangeCallbacks = [];
-      self.drive = App.Drive.getInstance();
+      self.drive = App.Drive.Instance();
       self.store = store;
       self.fetches = {};
       self.callback = callback;
@@ -54,12 +54,6 @@
       }
 
       self.sort();
- 
-      self.drive.checkAuthentication().fail(function() {
-        if (window.navigator.onLine === true) {
-          self.drive.signIn();
-        }
-      });
       
     },
 
@@ -198,13 +192,23 @@
             element.append(spinnerElement);
             element.spinner = true;
           }
+
           self.fetch(identifier).then(function(data) {
+
             self.logging.info("Received identifier '" + identifier + "'");
             element.addClass("downloaded");
+
+          }).fail(function() {
+
+            alert("Unable to download file.");
+
+          }).always(function() {
+
             if (spinner !== undefined) {
               spinner.stop();
               element.spinner = false;
             }
+
           });
         }
       });
@@ -289,16 +293,16 @@
             deferred.reject();
           }
 
-          self.drive.downloadFile(file, function(data) {
+          self.drive.downloadFile(file).then(function(data) {
 
-            if (data === undefined) {
-              delete self.fetches[identifier];
-              deferred.reject();
-            } else {
-              self.store.setProperty(App.Controller.Domain.GAMES, identifier, utilities.btoa(data));
-              delete self.fetches[identifier];
-              deferred.resolve(data);
-            }
+            self.store.setProperty(App.Controller.Domain.GAMES, identifier, utilities.btoa(data));
+            delete self.fetches[identifier];
+            deferred.resolve(data);
+
+          }).fail(function() {
+
+            delete self.fetches[identifier];
+            deferred.reject();
 
           });
         } else {

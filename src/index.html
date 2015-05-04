@@ -52,7 +52,8 @@
             <p>Add Game Boy ROMs with the .gb or .gbc file extension to see them here.</p>
           </div>
         </div>
-        <div id="button-done" class="button-done">Console</div>
+        <div id="button-account" class="navigation-button button-account">Sign Out</div>
+        <div id="button-done" class="navigation-button button-done">Console</div>
         <div class="element-thanks">
           <a href="https://gameplaycolor.com/thanks/" target="_blank" class="button-thanks">&#x2764;&#xFE0E; Say Thanks</a>
         </div>
@@ -121,6 +122,23 @@
           <li>Tap the 'Share' button</li>
           <li>Choose 'Add to Home Screen'</li>
         </ol>
+      </div>
+    </div>
+
+    <div id="screen-account" class="screen-instructions" style="display: none">
+      <div class="placeholder">
+        <div class="appicon"></div>
+        <h1>Sign in to Google Drive!</h1>
+        <a id="google-drive-auth" href="" target="_blank">Sign In</a>
+      </div>
+    </div>
+
+    <div id="screen-authorizing" class="screen-instructions" style="display: none">
+      <div class="placeholder">
+        <div class="appicon"></div>
+        <h1>Authorizing...</h1>
+        <p id="message-success" style="display: none">Success :)</p>
+        <p id="message-failure" style="display: none">Failure =(</p>
       </div>
     </div>
 

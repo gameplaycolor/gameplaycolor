@@ -2,7 +2,7 @@
   "remote": "zyloid:~/sites/jbmorley/gameboy",
   "client_id": "662240015525",
   "client_secret": "vwCoWQRMovjbofUQDM5DFYFS",
-  "scopes": "https://www.googleapis.com/auth/drive.readonly",
+  "scopes": ["https://www.googleapis.com/auth/drive.readonly", "https://www.googleapis.com/auth/userinfo.email"],
   "analytics": "UA-37393449-1",
   "domain": "jbmorley.co.uk",
   "redirect_uri": "http://gameboy.jbmorley.co.uk",

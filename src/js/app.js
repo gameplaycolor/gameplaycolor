@@ -46,7 +46,7 @@
 
       self.device = device;
 
-      self.logging = new App.Logging(App.Logging.Level.WARNING, "app");
+      self.logging = new App.Logging(App.Logging.Level.INFO, "app");
       self.logging.info("Version: 2.0.13");
       self.logging.info("Screen size: " + $(window).width() + " x " + $(window).height());
       self.logging.info("User Agent: " + navigator.userAgent);
@@ -77,6 +77,47 @@
           self.gameBoy.run();
         }
       }, self.store);
+
+      self.drive = App.Drive.Instance();
+
+      self.account = new App.Controls.Button('#button-account', { touchUp: function() {
+        if (confirm("Sign out of Google Drive?")) {
+          self.drive.signOut().fail(function(e) {
+            alert("Unable to sign out of Google Drive.\n" + e);
+          });
+        }
+      }});
+
+      self.drive.onStateChange(function(state) {
+        if (state == App.Drive.State.UNKNOWN) {
+
+          self.logging.info("Google Drive state unknown.");
+
+        } else if (state == App.Drive.State.UNAUTHORIZED) {
+
+          self.logging.info("Google Drive state unauthorized.");
+          self.account.hide();
+
+          if (window.navigator.onLine === true) {
+            self.drive.authURL().then(function(url) {
+              $("#google-drive-auth").attr("href", url);
+              $("#screen-account").show();
+            }).fail(function() {
+              alert("Unable to generate Google authentication URL.");
+            });
+          }
+
+        } else if (state == App.Drive.State.AUTHORIZED) {
+
+          self.logging.info("Google Drive state authorized.");
+          self.account.show();
+          self.drive.user().then(function(user) {
+            self.account.setTitle(user.email);
+          });
+
+        }
+      });
+      self.drive.authorize();
 
       self.checkForUpdate();
 
@@ -162,12 +203,39 @@
   });
 
   $(document).ready(function() {
+
+    alert(document.cookie);
+
     var iPhone = (navigator.userAgent.indexOf("iPhone OS") !== -1);
     var iPad = (navigator.userAgent.indexOf("iPad") !== -1);
     if ((window.navigator.standalone === true && (iPhone || iPad))) {
+
       bootstrap();
+
     } else {
-      $("#screen-instructions").show();
+
+      var drive = App.Drive.Instance();
+      var code = drive.getParameters().code;
+      if (code !== undefined) {
+
+        console.log("Received authentication token: " + code);
+        $("#screen-authorizing").show();
+        drive.redeemTokenV3(code).then(function() {
+
+          $("#message-success").show();
+
+        }).fail(function() {
+
+          $("message-failure").show();
+
+        });
+
+      } else {
+
+        $("#screen-instructions").show();
+
+      }
+      
     }
   });
 
