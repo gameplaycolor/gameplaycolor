@@ -31,7 +31,8 @@
   App.Drive.DOMAIN = "drive";
 
   App.Drive.Property = {
-    TOKEN: 0
+    TOKEN: 0,
+    REFRESH_TOKEN: 1
   };
 
   App.Drive.Instance = function() {
@@ -73,6 +74,7 @@
 
         if (self.state == App.Drive.State.UNAUTHORIZED) {
           self.store.deleteProperty(App.Drive.DOMAIN, App.Drive.Property.TOKEN);
+          self.store.deleteProperty(App.Drive.DOMAIN, App.Drive.Property.REFRESH_TOKEN);
           self.deferredAuthentication = undefined;
         }
 
@@ -87,7 +89,8 @@
       // which implements this off-the-shelf.
       handleInvalidToken: function() {
         var self = this;
-        self.setState(App.Drive.State.UNAUTHORIZED);
+        // self.setState(App.Drive.State.UNAUTHORIZED);
+        alert("Invalid token detected");
       },
 
       scheduleOperation: function(operation) {
@@ -188,7 +191,8 @@
                     '?redirect_uri=' + encodeURIComponent(settings.redirect_uri) +
                     '&response_type=code' +
                     '&client_id=' + settings.client_id +
-                    '&scope=' + settings.scopes.join(" ");
+                    '&scope=' + settings.scopes.join(" ") +
+                    '&access_type=offline';
           deferred.resolve(url);
 
         }).fail(function() {
@@ -255,10 +259,10 @@
         });
       },
 
-      token: function() {
+      deferredProperty: function(property) {
         var self = this;
         var deferred = jQuery.Deferred();
-        self.store.property(App.Drive.DOMAIN, App.Drive.Property.TOKEN, function(token) {
+        self.store.property(App.Drive.DOMAIN, property, function(token) {
           if (token) {
             deferred.resolve(token);
           } else {
@@ -266,6 +270,16 @@
           }
         });
         return deferred.promise();
+      },
+
+      token: function() {
+        var self = this;
+        return self.deferredProperty(App.Drive.Property.TOKEN);
+      },
+
+      refreshToken: function() {
+        var self = this;
+        return self.deferredProperty(App.Drive.Property.REFRESH_TOKEN);
       },
 
       authorize: function() {
@@ -333,6 +347,7 @@
             },
             success: function(token, textStatus, jqXHR) {
               self.store.setProperty(App.Drive.DOMAIN, App.Drive.Property.TOKEN, token.access_token);
+              self.store.setProperty(App.Drive.DOMAIN, App.Drive.Property.REFRESH_TOKEN, token.refresh_token);
               deferred.resolve();
             },
             error: function(jqXHR, textStatus, error) {
