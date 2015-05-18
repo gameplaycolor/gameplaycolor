@@ -3,13 +3,15 @@
 import argparse
 import datetime
 import json
-import lxml.etree
-import lxml.html
 import os
 import os.path
 import shutil
 import subprocess
 import tempfile
+
+import lxml.etree
+import lxml.html
+
 
 def extract_javascript(html, root):
   scripts = ""
@@ -27,6 +29,7 @@ def extract_javascript(html, root):
 
   return filtered
 
+
 def extract_tags(html, tag, key, root):
   scripts = ""
   transactions = html.xpath(tag)
@@ -37,17 +40,20 @@ def extract_tags(html, tag, key, root):
     transaction.drop_tree()
   return scripts
 
+
 def append_javascript(html, script):
   body = html.find('body')
   source = "<script type='text/javascript' type='text/css'>" + script + "</script>"
   link = lxml.html.fromstring(source).find('.//script')
   body.append(link)
 
+
 def append_style(html, style):
   head = html.find('head')
   tag = "<style>" + style + "</style>"
   style = lxml.html.fromstring(tag).find('.//style')
   head.append(style)
+
 
 def yuicompressor(contents, suffix):
   temp = tempfile.mktemp(suffix=suffix)
@@ -57,14 +63,17 @@ def yuicompressor(contents, suffix):
   os.unlink(temp)
   return output
 
+
 def htmlcompressor(contents):
-  p = subprocess.Popen(['htmlcompressor'], stdout = subprocess.PIPE, stdin = subprocess.PIPE, stderr = subprocess.STDOUT)
-  output = p.communicate(input = contents)[0]
+  p = subprocess.Popen(['htmlcompressor'], stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.STDOUT)
+  output = p.communicate(input=contents)[0]
   return output
+
 
 def pngcrush(source_file, destination_file):
   print "Crushing '%s'..." % source_file
   subprocess.check_call(['pngcrush', source_file, destination_file])
+
 
 def list(directory):
   result = []
@@ -73,6 +82,7 @@ def list(directory):
       if file.find('.') != 0:
         result.append(os.path.relpath(os.path.join(root, file), directory))
   return result
+
 
 def copy_image_directory(source_dir, output_dir):
   name = os.path.basename(os.path.abspath(source_dir))
@@ -84,10 +94,18 @@ def copy_image_directory(source_dir, output_dir):
     destination_file = os.path.join(destination_dir, image_name)
     pngcrush(os.path.join(source_dir, file), destination_file)
 
+
+def copy_files(source, destination, files):
+  for file in files:
+    source_file = os.path.join(source, file)
+    destination_file = os.path.join(destination, file)
+    shutil.copy(source_file, destination_file)
+
+
 def main():
-  parser = argparse.ArgumentParser(description = "Generate the minified Game Play HTML file")
-  parser.add_argument("project", help = "root of the project")
-  parser.add_argument("settings", help = "settings file")
+  parser = argparse.ArgumentParser(description="Generate the minified Game Play HTML file")
+  parser.add_argument("project", help="root of the project")
+  parser.add_argument("settings", help="settings file")
   options = parser.parse_args()
 
   project_dir = os.path.abspath(options.project)
@@ -99,8 +117,6 @@ def main():
   defaults_dir = os.path.join(source_dir, "defaults")
   manifest_file = os.path.join(build_dir, "cache.manifest")
   settings_dest = os.path.join(build_dir, "settings.json")
-  sizes_file = os.path.join(source_dir, "sizes.html")
-  sizes_dest = os.path.join(build_dir, "sizes.html")
 
   # Load the settings.
   settings = None
@@ -139,13 +155,13 @@ def main():
 
   print "Writing HTML..."
   with open(output_file, 'w') as f:
-    f.write("<!DOCTYPE html>\n");
+    f.write("<!DOCTYPE html>\n")
     f.write(contents)
 
   # images
   print "Copying images..."
   copy_image_directory(images_dir, build_dir)
-  
+
   # defaults
   print "Copying defaults..."
   copy_image_directory(defaults_dir, build_dir)
@@ -168,8 +184,9 @@ def main():
     f.write("NETWORK:\n")
     f.write("*\n")
 
-  # sizes
-  shutil.copy(sizes_file, sizes_dest)
+  # We don't want the following files to be added to the manifest.
+  copy_files(source_dir, build_dir, ["release.txt", "sizes.html"])
 
-if __name__=='__main__':
+
+if __name__ == '__main__':
   main()

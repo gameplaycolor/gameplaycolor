@@ -8,6 +8,11 @@ If you just want to play Game Play Color, you can find it online at [https://gam
 Changelog
 ---------
 
+### Version 2.0.13
+
+- Show release notes when informing users about updates.
+- Only display errors if no update is available.
+
 ### Version 2.0.12
 
 - Improving guards against loading corrupt ROMs.

@@ -1,0 +1,4 @@
+Version 2.0.13
+
+- Show release notes when informing users about updates.
+- Only display errors if no update is available.

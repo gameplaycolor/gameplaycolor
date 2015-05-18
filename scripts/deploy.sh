@@ -20,7 +20,7 @@ export build="$root/build"
 python "$root/scripts/build" "$root" "$configuration"
 
 rsync -avPe ssh \
-    $build/*.html \
+    $build/*.{html,txt} \
     $build/*.manifest \
     $build/*.json \
     $build/images \
