@@ -81,6 +81,15 @@
         }
       },
 
+      // TODO This should return a promise which reports success if we manage to refresh our token.
+      // Failure otherwise. Functions then implement retry by calling themselves again upon success.
+      // Perhaps in the future there could be one common function which uses xhr to call the google endpoints
+      // which implements this off-the-shelf.
+      handleInvalidToken: function() {
+        var self = this;
+        self.setState(App.Drive.State.UNAUTHORIZED);
+      },
+
       scheduleOperation: function(operation) {
         var self = this;
         operation();
@@ -210,6 +219,10 @@
             },
             error: function(jqXHR, textStatus, error) {
               deferred.reject(error);
+              if (jqXHR.status == 401 ||
+                  jqXHR.status == 403) {
+                self.handleInvalidToken();
+              }
             }
           });
 
@@ -362,6 +375,10 @@
               },
               error: function(jqXHR, textStatus, error) {
                 deferred.reject(error);
+                if (jqXHR.status == 401 ||
+                    jqXHR.status == 403) {
+                  self.handleInvalidToken();
+                }
               }
             });
           }).fail(function(error) {
@@ -410,6 +427,10 @@
                 },
                 error: function(jqXHR, textStatus, error) {
                   deferred.reject(error);
+                  if (jqXHR.status == 401 ||
+                      jqXHR.status == 403) {
+                    self.handleInvalidToken();
+                  }
                 }
               });
 
@@ -436,15 +457,23 @@
             xhr.setRequestHeader('Authorization', 'Bearer ' + token);
             xhr.responseType = 'arraybuffer';
             xhr.onload = function(e) {
-              var uInt8Array = new Uint8Array(xhr.response);
-              var i = uInt8Array.length;
-              var binaryString = new Array(i);
-              while (i--) {
-                binaryString[i] = String.fromCharCode(uInt8Array[i]);
+              if (xhr.status == 200) {
+                var uInt8Array = new Uint8Array(xhr.response);
+                var i = uInt8Array.length;
+                var binaryString = new Array(i);
+                while (i--) {
+                  binaryString[i] = String.fromCharCode(uInt8Array[i]);
+                }
+                var data = binaryString.join('');
+                var base64 = window.btoa(data);
+                callback(base64);
+              } else if (xhr.status == 401 ||
+                         xhr.status == 403) {
+                deferred.reject();
+                self.handleInvalidToken();
+              } else {
+                deferred.reject();
               }
-              var data = binaryString.join('');
-              var base64 = window.btoa(data);
-              callback(base64);
             };
             xhr.onerror = function() {
               callback(null);
@@ -455,9 +484,7 @@
           }
 
         }).fail(function() {
-
           callback(null);
-
         });
       },
 
@@ -480,7 +507,15 @@
             xhr.setRequestHeader('Authorization', 'Bearer ' + token);
             xhr.overrideMimeType('text/plain; charset=x-user-defined');
             xhr.onload = function() {
-              deferred.resolve(xhr.responseText);
+              if (xhr.status == 200) {
+                deferred.resolve(xhr.responseText);
+              } else if (xhr.status == 401 ||
+                         xhr.status == 403) {
+                deferred.reject();
+                self.handleInvalidToken();
+              } else {
+                deferred.reject();
+              }
             };
             xhr.onerror = function() {
               deferred.reject();
