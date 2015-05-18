@@ -1,6 +1,6 @@
 Version 2.1.0
 
-** Updating will require you to sign in again. Your games will not be lost. **
+UPDATING WILL REQUIRE YOU TO SIGN IN AGAIN. YOUR GAMES WILL NOT BE LOST.
 
 - Fixing bugs in Google Drive sign-in.
 - Showing details of current Google account.
