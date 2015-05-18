@@ -50,7 +50,7 @@
         self.logging = new App.Logging(App.Logging.Level.INFO, "drive");
         self.requestId = 0;
 
-        self.store = new App.Store('com.gameplaycolor.drive');
+        self.store = new App.Store('com.gameplaycolor.drive', 1);
         if (!self.store.open()) {
           alert("Unable to create database.\nPlease accept increased storage size when asked.");
           return;

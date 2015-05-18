@@ -30,11 +30,12 @@
   
   jQuery.extend(App.Store.prototype, {
 
-    init: function(name) {
+    init: function(name, size) {
       var self = this;
       self.name = name;
       self.database = undefined;
       self.debug = false;
+      self.size = size;
       self.logging = new App.Logging(App.Logging.Level.WARNING, "store");
     },
 
@@ -52,7 +53,7 @@
           return false;
         }
 
-        self.database = openDatabase(self.name, '1.0', self.name, 50*1024*1024);
+        self.database = openDatabase(self.name, '1.0', self.name, self.size*1024*1024);
         if (self.database === undefined) {
           self.logging.error("Unable to create database");
           return false;
