@@ -1,4 +1,7 @@
-Version 2.0.13
+Version 2.1.0
 
-- Show release notes when informing users about updates.
-- Only display errors if no update is available.
+** Updating will require you to sign in again. Your games will not be lost. **
+
+- Fixing bugs in Google Drive sign-in.
+- Showing details of current Google account.
+- Support for signing out of Google Drive.
