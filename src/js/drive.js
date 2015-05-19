@@ -66,6 +66,8 @@
       setState: function(state) {
         var self = this;
 
+        self.logging.info("setState: current = " + self.state + ", new = " + state);
+
         if (self.state == state) {
           return;
         }
@@ -88,6 +90,7 @@
       handleInvalidToken: function() {
         var self = this;
         return self.refreshToken().fail(function() {
+          self.logging.info("Failed to refresh token, setting state to unauthorized");
           self.setState(App.Drive.State.UNAUTHORIZED);
         });
       },
@@ -272,9 +275,10 @@
       deferredProperty: function(property) {
         var self = this;
         var deferred = jQuery.Deferred();
-        self.store.property(App.Drive.DOMAIN, property, function(token) {
-          if (token) {
-            deferred.resolve(token);
+        self.track("deferredProperty: " + property, deferred.promise());
+        self.store.property(App.Drive.DOMAIN, property, function(value) {
+          if (value) {
+            deferred.resolve(value);
           } else {
             deferred.reject();
           }
@@ -284,7 +288,9 @@
 
       token: function() {
         var self = this;
-        return self.deferredProperty(App.Drive.Property.TOKEN);
+        return self.deferredProperty(App.Drive.Property.TOKEN).fail(function() {
+          self.setState(App.Drive.State.UNAUTHORIZED);
+        });
       },
 
       authorize: function() {

@@ -135,6 +135,12 @@ function base64ToArray(b64encoded) {
       self.setState(App.GameBoy.State.LOADING);
     },
 
+    reset: function() {
+      var self = this;
+      clearLastEmulation();
+      self.setState(App.GameBoy.State.IDLE);
+    },
+
     load: function(identifier) {
       var self = this;
       var deferred = $.Deferred();

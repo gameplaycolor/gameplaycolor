@@ -112,9 +112,13 @@
           self.logging.info("Google Drive state unauthorized.");
           self.account.hide();
 
+          self.reset();
+          self.console.show();
+
           if (window.navigator.onLine === true) {
             self.drive.authURL().then(function(url) {
               $("#google-drive-auth").attr("href", url);
+              $("#redeem-code").val('');
               $("#screen-account").show();
             }).fail(function() {
               alert("Unable to generate Google authentication URL.");
@@ -165,6 +169,13 @@
         self.store.deleteProperty(App.Controller.Domain.SETTINGS, App.Store.Property.GAME);
         self.console.setTitle("Console");
       });
+    },
+
+    reset: function() {
+      var self = this;
+      self.gameBoy.reset();
+      self.store.deleteProperty(App.Controller.Domain.SETTINGS, App.Store.Property.GAME);
+      self.console.setTitle("Console");
     },
 
     checkForUpdate: function() {
