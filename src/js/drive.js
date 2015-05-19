@@ -82,15 +82,14 @@
           self.stateChangeCallbacks[i](state);
         }
       },
-
-      // TODO This should return a promise which reports success if we manage to refresh our token.
-      // Failure otherwise. Functions then implement retry by calling themselves again upon success.
-      // Perhaps in the future there could be one common function which uses xhr to call the google endpoints
-      // which implements this off-the-shelf.
+      
+      // Attmept to refresh the token,
+      // If this action fails, the state is automatically reset to unauthorized.
       handleInvalidToken: function() {
         var self = this;
-        // self.setState(App.Drive.State.UNAUTHORIZED);
-        alert("Invalid token detected");
+        return self.refreshToken().fail(function() {
+          self.setState(App.Drive.State.UNAUTHORIZED);
+        });
       },
 
       scheduleOperation: function(operation) {
@@ -222,10 +221,21 @@
               deferred.resolve(user);
             },
             error: function(jqXHR, textStatus, error) {
-              deferred.reject(error);
               if (jqXHR.status == 401 ||
                   jqXHR.status == 403) {
-                self.handleInvalidToken();
+                self.handleInvalidToken().then(function() {
+
+                  self.user().then(function(user) {
+                    deferred.resolve(user);
+                  }).fail(function() {
+                    deferred.reject();
+                  });
+
+                }).fail(function() {
+                  deferred.reject(error);
+                });
+              } else {
+                deferred.reject(error);
               }
             }
           });
@@ -277,11 +287,6 @@
         return self.deferredProperty(App.Drive.Property.TOKEN);
       },
 
-      refreshToken: function() {
-        var self = this;
-        return self.deferredProperty(App.Drive.Property.REFRESH_TOKEN);
-      },
-
       authorize: function() {
         var self = this;
 
@@ -326,11 +331,11 @@
         return parameters;
       },
 
-      redeemTokenV3: function(code) {
+      redeemToken: function(code) {
         var self = this;
 
         var deferred = jQuery.Deferred();
-        self.track("redeemTokenV3", deferred.promise());
+        self.track("redeemToken", deferred.promise());
 
         self.loadSettings().then(function(settings) {
 
@@ -346,6 +351,7 @@
               "state": "100000"
             },
             success: function(token, textStatus, jqXHR) {
+              // TODO Do I need to handle responses other than 200 here?
               self.store.setProperty(App.Drive.DOMAIN, App.Drive.Property.TOKEN, token.access_token);
               self.store.setProperty(App.Drive.DOMAIN, App.Drive.Property.REFRESH_TOKEN, token.refresh_token);
               deferred.resolve();
@@ -364,6 +370,56 @@
         return deferred.promise();
 
       },
+
+      refreshToken: function() {
+        var self = this;
+
+        if (self.refreshDeferred !== undefined) {
+          return self.refreshDeferred;
+        }
+
+        var deferred = jQuery.Deferred();
+        self.track("refreshToken", deferred.promise());
+
+        self.refreshDeferred = deferred;
+        deferred.promise().always(function() {
+          self.refreshDeferred = undefined;
+        });
+
+        self.loadSettings().then(function(settings) {
+
+          self.deferredProperty(App.Drive.Property.REFRESH_TOKEN).then(function(refreshToken) {
+
+            $.ajax({
+              url: "https://www.googleapis.com/oauth2/v3/token",
+              type: "POST",
+              data: {
+                "refresh_token": refreshToken,
+                "client_id": settings.client_id,
+                "client_secret": settings.client_secret,
+                "grant_type": "refresh_token",
+              },
+              success: function(token, textStatus, jqXHR) {
+                // TODO Do I need to handle responses other than 200 here?
+                self.store.setProperty(App.Drive.DOMAIN, App.Drive.Property.TOKEN, token.access_token);
+                deferred.resolve();
+              },
+              error: function(jqXHR, textStatus, error) {
+                deferred.reject(error);
+              }
+            });
+
+          }).fail(function() {
+            deferred.reject();
+          });
+
+        }).fail(function() {
+          deferred.reject();
+        });
+
+        return deferred.promise();
+      },
+
 
       file: function(parent, title) {
         var self = this;
@@ -389,10 +445,21 @@
                 }
               },
               error: function(jqXHR, textStatus, error) {
-                deferred.reject(error);
                 if (jqXHR.status == 401 ||
                     jqXHR.status == 403) {
-                  self.handleInvalidToken();
+                  self.handleInvalidToken().then(function() {
+
+                    self.file(parent, title).then(function(file) {
+                      deferred.resolve(file);
+                    }).fail(function() {
+                      deferred.reject();
+                    });
+
+                  }).fail(function() {
+                    deferred.reject(error);
+                  });
+                } else {
+                  deferred.reject(error);
                 }
               }
             });
@@ -441,10 +508,21 @@
 
                 },
                 error: function(jqXHR, textStatus, error) {
-                  deferred.reject(error);
                   if (jqXHR.status == 401 ||
                       jqXHR.status == 403) {
-                    self.handleInvalidToken();
+                    self.handleInvalidToken().then(function() {
+
+                      self.files.then(function(files) {
+                        deferred.resolve(files);
+                      }).fail(function() {
+                        deferred.reject();
+                      });
+
+                    }).fail(function() {
+                      deferred.reject(error);
+                    });
+                  } else {
+                    deferred.reject(error);
                   }
                 }
               });
@@ -484,10 +562,13 @@
                 callback(base64);
               } else if (xhr.status == 401 ||
                          xhr.status == 403) {
-                deferred.reject();
-                self.handleInvalidToken();
+                self.handleInvalidToken().then(function() {
+                  self.downloadFileBase64(file, callback);
+                }).fail(function() {
+                  callback(null);
+                });
               } else {
-                deferred.reject();
+                callback(null);
               }
             };
             xhr.onerror = function() {
@@ -526,8 +607,17 @@
                 deferred.resolve(xhr.responseText);
               } else if (xhr.status == 401 ||
                          xhr.status == 403) {
-                deferred.reject();
-                self.handleInvalidToken();
+                self.handleInvalidToken().then(function() {
+
+                  self.downloadFile(file).then(function(data) {
+                    deferred.resolve(data);
+                  }).fail(function() {
+                    deferred.reject();
+                  });
+
+                }).fail(function() {
+                  deferred.reject();
+                });
               } else {
                 deferred.reject();
               }

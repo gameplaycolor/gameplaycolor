@@ -91,7 +91,7 @@
       self.redeem = new App.Controls.Button('#button-redeem', { touchUp: function() {
         $("#redeem-code").blur();
         var code = $("#redeem-code").val();
-        drive.redeemTokenV3(code).then(function() {
+        drive.redeemToken(code).then(function() {
           self.drive.authorize();
         }).fail(function() {
           alert("Unable to sign in.");
