@@ -80,12 +80,16 @@
 
       self.drive = App.Drive.Instance();
 
-      self.account = new App.Controls.Button('#button-account', { touchUp: function() {
-        if (confirm("Sign out of Google Drive?")) {
-          self.drive.signOut().fail(function(e) {
-            alert("Unable to sign out of Google Drive.\n" + e);
-          });
-        }
+      self.account = new App.Controls.Button('#button-account', { touchUpInside: function() {
+        // If we present a confirm dialog within the button event handler the final touch up gets lost and we find
+        // ourselves in an inconsistent state.
+        setTimeout(function() {
+          if (confirm("Sign out of Google Drive?")) {
+            self.drive.signOut().fail(function(e) {
+              alert("Unable to sign out of Google Drive.\n" + e);
+            });
+          }
+        }, 10);
       }});
 
       self.redeem = new App.Controls.Button('#button-redeem', { touchUp: function() {
