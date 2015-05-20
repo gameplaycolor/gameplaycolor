@@ -18,6 +18,21 @@
  
 (function($) {
 
+  jQuery.fn.selectText = function() {
+    var element = this[0], range, selection;
+    if (document.body.createTextRange) {
+        range = document.body.createTextRange();
+        range.moveToElementText(element);
+        range.select();
+    } else if (window.getSelection) {
+        selection = window.getSelection();
+        range = document.createRange();
+        range.selectNodeContents(element);
+        selection.removeAllRanges();
+        selection.addRange(range);
+    }
+  };
+
   App = {};
 
   App.Controller = function(device) {
@@ -92,7 +107,7 @@
         }, 10);
       }});
 
-      self.redeem = new App.Controls.Button('#button-redeem', { touchUp: function() {
+      self.redeem = new App.Controls.Button('#button-redeem', { touchUpInside: function() {
         $("#redeem-code").blur();
         var code = $("#redeem-code").val();
         drive.redeemToken(code).then(function() {
@@ -244,7 +259,18 @@
 
         console.log("Received authentication token: " + code);
         $("#screen-authorizing").show();
+        // $("#authorization-code").html(code);
         $("#authorization-code").val(code);
+
+        // var handler = function(e) {
+        //   var element = document.getElementById("authorization-code");
+        //   element.selectionStart = 0;
+        //   element.selectionEnd = 10;
+        //   e.preventDefault();
+        // };
+
+        // document.getElementById('authorization-code').addEventListener('touchstart', handler);
+        // document.getElementById('authorization-code').addEventListener('click', handler);
 
       } else {
 
