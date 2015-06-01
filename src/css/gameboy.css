@@ -558,6 +558,12 @@ body
   background-image: url(images/icon-large.png);
 }
 
+.apptitle
+{
+  font-size: 1.6em;
+  margin-top: 0;
+}
+
 .install-instructions
 {
   text-align: left;
@@ -572,13 +578,21 @@ body
 {
   color: #d9d9d9;
   text-align: center;
-  padding: 40px 40px;
+  padding: 20px 40px;
   margin: auto;
 }
 
 .screen-instructions .placeholder
 {
   background-color: #222;
+}
+
+hr {
+  border: 0;
+  background-color: #888;
+  height: 2px;
+  width: 80%;
+  border-radius: 2px;
 }
 
 .sign-in-button {
@@ -1307,6 +1321,10 @@ body
     border-radius: 0;
   }
 
+  .appicon {
+    display: none;
+  }
+
 }
 
 /* iPhone 6: Portrait */
@@ -1325,6 +1343,10 @@ body
   #element-options
   {
     bottom: 20px;
+  }
+
+  .apptitle {
+    display: none;
   }
 
 }
@@ -1363,6 +1385,10 @@ body
   {
     left: 0;
     bottom: 120px;
+  }
+
+  .appicon {
+    display: none;
   }
 
 }
