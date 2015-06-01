@@ -574,15 +574,20 @@ body
   margin-bottom: 10px;
 }
 
-.placeholder
+.placeholder, .placeholder-small
 {
   color: #d9d9d9;
   text-align: center;
-  padding: 40px 40px;
+  padding: 40px;
   margin: auto;
 }
 
-.screen-instructions .placeholder
+.placeholder-small
+{
+  padding: 20px;
+}
+
+.screen-instructions .placeholder, .screen-instructions .placeholder-small
 {
   background-color: #222;
 }
@@ -593,6 +598,7 @@ hr {
   height: 2px;
   width: 80%;
   border-radius: 2px;
+  margin-bottom: 18px;
 }
 
 .sign-in-button {
@@ -1095,6 +1101,7 @@ hr {
   border-radius: 6px;
   font-family: Courier, fixed;
   text-align: center;
+  max-width: 300px;
 }
 
 .input-code:focus
@@ -1168,6 +1175,11 @@ hr {
     bottom: -10px;
   }
 
+  .appicon
+  {
+    display: none;
+  }
+
 }
 
 /* iPhone 4: Landscape */
@@ -1224,6 +1236,11 @@ hr {
     border-radius: 0;
   }
 
+  .appicon, .apptitle
+  {
+    display: none;
+  }
+
 }
 
 /* iPhone 5: Portrait */
@@ -1263,6 +1280,14 @@ hr {
   #LCD-dropshadow
   {
     box-shadow:0 0 0 0, inset 0 0 0 0;
+  }
+
+  .appicon
+  {
+    width: 128px;
+    height: 128px;
+    background-size: 128px 128px;
+    border-radius: 26px;
   }
 
 }
@@ -1322,6 +1347,10 @@ hr {
   }
 
   .appicon {
+    display: none;
+  }
+
+  .apptitle {
     display: none;
   }
 
@@ -1389,6 +1418,32 @@ hr {
 
 }
 
+/* iPhone 6 Plus: Portrait */
+@media only screen and (width: 414px) and (height: 716px) {
+
+}
+
+/* iPhone 6 Plus: Landscape */
+@media only screen and (width: 736px) and (height: 414px) {
+
+  .appicon {
+    display: none;
+  }
+
+  #element-surround
+  {
+    top: 20px;
+  }
+
+  .surround
+  {
+    width: 346px;
+    height: 312px;
+  }
+
+}
+
+/* Large screen customizations */
 @media only screen and (min-width: 768px) {
 
   #display, .display, #LCD-dropshadow
