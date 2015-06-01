@@ -581,34 +581,12 @@ body
   background-color: #222;
 }
 
-.instructions
-{
-  text-align: left;
-  font-size: 0.8em;
-  counter-reset: numList;
-  list-style: none;
-  position: relative;
-}
-
-.instructions li:before {
-  counter-increment: numList;
-  content: counter(numList);
-  float: left;
-  position: absolute;
-  left: 0;
-  font: bold 16px sans-serif;
-  text-align: center;
-  color: #000;
-  line-height: 24px;
-  width: 24px;
-  height: 24px;
-  background-color: #fff;
-  border-radius: 999px
-}
-
-.instructions li
-{
-  padding: 4px 0;
+.sign-in-button {
+  background-size: 24px 24px;
+  background-image: url(images/drive.png);
+  background-repeat: no-repeat;
+  padding-left: 36px;
+  background-position: 20px center;
 }
 
 .body-grey
@@ -1093,12 +1071,22 @@ body
   margin: 8px 0;
   color: #fff;
   padding: 8px;
+
+  border: 0;
+  font-size: 20px;
+  background-color: #666;
+  margin: 8px 0;
+  color: #fff;
+  padding: 8px;
+  border-radius: 6px;
+  font-family: Courier, fixed;
+  text-align: center;
 }
 
 .input-code:focus
 {
   outline: none;
-  border: 3px solid red;
+  background-color: #888;
 }
 
 .auth-code

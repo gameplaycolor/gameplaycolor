@@ -8,12 +8,17 @@
   "build_systems":
   [
     {
-      "name": "jbmorley.co.uk",
-      "cmd": ["/bin/bash", "deploy.sh", "../settings/jbmorley.json"],
+      "name": "gameplaycolor.com - alpha",
+      "cmd": ["/bin/bash", "deploy.sh", "../settings/alpha.json"],
       "working_dir": "${project_path}"
     },
     {
-      "name": "gameplaycolor.com",
+      "name": "gameplaycolor.com - beta",
+      "cmd": ["/bin/bash", "deploy.sh", "../settings/beta.json"],
+      "working_dir": "${project_path}"
+    },
+    {
+      "name": "gameplaycolor.com - release",
       "cmd": ["/bin/bash", "deploy.sh", "../settings/gameplaycolor.json"],
       "working_dir": "${project_path}"
     }

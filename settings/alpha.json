@@ -1,0 +1,11 @@
+{
+    "remote": "zyloid:~/sites/gameplaycolor/alpha",
+    "client_id": "151379758364",
+    "client_secret": "jn3po_ZX5rmfMm9DZ3Z4yyLd",
+    "scopes": ["https://www.googleapis.com/auth/drive.readonly", "https://www.googleapis.com/auth/userinfo.email"],
+    "analytics": "UA-37991248-2",
+    "domain": "alpha.gameplaycolor.com",
+    "redirect_uri": "https://alpha.gameplaycolor.com/",
+    "icon": "icons/icon-alpha.png",
+    "debug": true
+}

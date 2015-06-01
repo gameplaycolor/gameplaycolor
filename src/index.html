@@ -128,18 +128,18 @@
     <div id="screen-account" class="screen-instructions" style="display: none">
       <div class="placeholder">
         <div class="appicon"></div>
-        <ol class="instructions">
-          <li>Sign in to Google Drive<br /><a class="simple-button" id="google-drive-auth" href="" target="_blank">Sign In</a></li>
-          <li>Enter the code you receive.<br /><input id="redeem-code" class="input-code" type="text" /></li>
-          <li>Click to continue.<br /><div class="simple-button" id="button-redeem">Continue</div></li>
-        </ol>
+        <div class="instructions">
+          <p><a class="simple-button sign-in-button" id="google-drive-auth" href="" target="_blank">Sign In</a></p>
+          <hr />
+          <p>Enter access code:<br /><input id="redeem-code" class="input-code" type="text" /><br /><div class="simple-button" id="button-redeem">Continue</div></p>
+        </div>
       </div>
     </div>
 
     <div id="screen-authorizing" class="screen-instructions" style="display: none">
       <div class="placeholder">
         <div class="appicon"></div>
-        <p>Copy and paste the code into <strong>Game Play Color</strong> then click <strong>Continue</strong>.</p>
+        <p>Copy and paste the access code into <strong>Game Play Color</strong> then click <strong>Continue</strong>.</p>
         <textarea readonly="yes" rows="6" id="authorization-code" class="auth-code" type="text" onFocus="this.selectionStart=0; this.selectionEnd=this.value.length;" onTouchEnd="this.selectionStart=0; this.selectionEnd=this.value.length;" onMouseUp="return false" />
         <p id="message-success" style="display: none">Success :)</p>
         <p id="message-failure" style="display: none">Failure =(</p>

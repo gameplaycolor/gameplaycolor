@@ -1,0 +1,11 @@
+{
+    "remote": "zyloid:~/sites/gameplaycolor/beta",
+    "client_id": "151379758364",
+    "client_secret": "jn3po_ZX5rmfMm9DZ3Z4yyLd",
+    "scopes": ["https://www.googleapis.com/auth/drive.readonly", "https://www.googleapis.com/auth/userinfo.email"],
+    "analytics": "UA-37991248-2",
+    "domain": "beta.gameplaycolor.com",
+    "redirect_uri": "https://beta.gameplaycolor.com/",
+    "icon": "icons/icon-beta.png",
+    "debug": false
+}
