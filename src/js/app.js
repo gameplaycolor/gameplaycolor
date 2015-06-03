@@ -259,18 +259,7 @@
 
         console.log("Received authentication token: " + code);
         $("#screen-authorizing").show();
-        // $("#authorization-code").html(code);
         $("#authorization-code").val(code);
-
-        // var handler = function(e) {
-        //   var element = document.getElementById("authorization-code");
-        //   element.selectionStart = 0;
-        //   element.selectionEnd = 10;
-        //   e.preventDefault();
-        // };
-
-        // document.getElementById('authorization-code').addEventListener('touchstart', handler);
-        // document.getElementById('authorization-code').addEventListener('click', handler);
 
       } else {
 
