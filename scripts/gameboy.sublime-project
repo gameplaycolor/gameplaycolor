@@ -19,7 +19,7 @@
     },
     {
       "name": "gameplaycolor.com - release",
-      "cmd": ["/bin/bash", "deploy.sh", "../settings/gameplaycolor.json"],
+      "cmd": ["/bin/bash", "deploy.sh", "../settings/release.json"],
       "working_dir": "${project_path}"
     }
   ]

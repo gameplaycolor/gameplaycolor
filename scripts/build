@@ -116,7 +116,6 @@ def main():
   images_dir = os.path.join(source_dir, "images")
   defaults_dir = os.path.join(source_dir, "defaults")
   manifest_file = os.path.join(build_dir, "cache.manifest")
-  settings_dest = os.path.join(build_dir, "settings.json")
 
   # Load the settings.
   settings = None
@@ -135,7 +134,8 @@ def main():
   html = lxml.html.fromstring(contents)
 
   print "Extracting JavaScript..."
-  script = extract_tags(html, "//script[@type='text/javascript']", "src", source_dir)
+  script = "window.config = %s;\n" % json.dumps(settings)
+  script += extract_tags(html, "//script[@type='text/javascript']", "src", source_dir)
   if not settings["debug"]:
     print "Minifying JavaScript..."
     script = yuicompressor(script, '.js')
@@ -165,9 +165,6 @@ def main():
   # defaults
   print "Copying defaults..."
   copy_image_directory(defaults_dir, build_dir)
-
-  # settings
-  shutil.copy(options.settings, settings_dest)
 
   # icon
   icon_file = os.path.join(project_dir, settings['icon'])

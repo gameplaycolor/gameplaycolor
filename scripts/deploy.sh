@@ -22,7 +22,6 @@ python "$root/scripts/build" "$root" "$configuration"
 rsync -avPe ssh \
     $build/*.{html,txt} \
     $build/*.manifest \
-    $build/*.json \
     $build/images \
     $build/defaults \
     "$remote"

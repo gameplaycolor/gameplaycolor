@@ -135,34 +135,6 @@
         return deferred.promise();
       },
 
-      loadSettings: function() {
-        var self = this;
-
-        if (self.settings) {
-          return self.settings.promise();
-        }
-
-        var deferred = new jQuery.Deferred();
-        self.track("loadSettings", deferred.promise());
-
-        deferred.promise().fail(function(e) {
-          self.settings = undefined;
-        });
-
-        self.settings = deferred;
-        if (navigator.onLine) {
-          jQuery.getJSON("settings.json", function(settings) {
-            deferred.resolve(settings);
-          }).fail(function() {
-            deferred.reject();
-          });
-        } else {
-          deferred.reject();
-        }
-
-        return deferred.promise();
-      },
-
       didLoadSDK: function() {
         var self = this;
         self.logging.info("Google Drive SDK loaded");
@@ -187,21 +159,13 @@
         var deferred = jQuery.Deferred();
         self.track("authURL", deferred.promise());
 
-        self.loadSettings().then(function(settings) {
-
-          var url = 'https://accounts.google.com/o/oauth2/auth' +
-                    '?redirect_uri=' + encodeURIComponent(settings.redirect_uri) +
-                    '&response_type=code' +
-                    '&client_id=' + settings.client_id +
-                    '&scope=' + settings.scopes.join(" ") +
-                    '&access_type=offline';
-          deferred.resolve(url);
-
-        }).fail(function() {
-
-          deferred.reject();
-
-        });
+        var url = 'https://accounts.google.com/o/oauth2/auth' +
+                  '?redirect_uri=' + encodeURIComponent(window.config.redirect_uri) +
+                  '&response_type=code' +
+                  '&client_id=' + window.config.client_id +
+                  '&scope=' + window.config.scopes.join(" ") +
+                  '&access_type=offline';
+        deferred.resolve(url);
 
         return deferred.promise();
       },
@@ -343,34 +307,26 @@
         var deferred = jQuery.Deferred();
         self.track("redeemToken", deferred.promise());
 
-        self.loadSettings().then(function(settings) {
-
-          $.ajax({
-            url: "https://www.googleapis.com/oauth2/v3/token",
-            type: "POST",
-            data: {
-              "code": code,
-              "client_id": settings.client_id,
-              "client_secret": settings.client_secret,
-              "redirect_uri": settings.redirect_uri,
-              "grant_type": "authorization_code",
-              "state": "100000"
-            },
-            success: function(token, textStatus, jqXHR) {
-              // TODO Do I need to handle responses other than 200 here?
-              self.store.setProperty(App.Drive.DOMAIN, App.Drive.Property.TOKEN, token.access_token);
-              self.store.setProperty(App.Drive.DOMAIN, App.Drive.Property.REFRESH_TOKEN, token.refresh_token);
-              deferred.resolve();
-            },
-            error: function(jqXHR, textStatus, error) {
-              deferred.reject(error);
-            }
-          });
-
-        }).fail(function() {
-
-          deferred.reject();
-
+        $.ajax({
+          url: "https://www.googleapis.com/oauth2/v3/token",
+          type: "POST",
+          data: {
+            "code": code,
+            "client_id": window.config.client_id,
+            "client_secret": window.config.client_secret,
+            "redirect_uri": window.config.redirect_uri,
+            "grant_type": "authorization_code",
+            "state": "100000"
+          },
+          success: function(token, textStatus, jqXHR) {
+            // TODO Do I need to handle responses other than 200 here?
+            self.store.setProperty(App.Drive.DOMAIN, App.Drive.Property.TOKEN, token.access_token);
+            self.store.setProperty(App.Drive.DOMAIN, App.Drive.Property.REFRESH_TOKEN, token.refresh_token);
+            deferred.resolve();
+          },
+          error: function(jqXHR, textStatus, error) {
+            deferred.reject(error);
+          }
         });
 
         return deferred.promise();
@@ -392,31 +348,25 @@
           self.refreshDeferred = undefined;
         });
 
-        self.loadSettings().then(function(settings) {
+        self.deferredProperty(App.Drive.Property.REFRESH_TOKEN).then(function(refreshToken) {
 
-          self.deferredProperty(App.Drive.Property.REFRESH_TOKEN).then(function(refreshToken) {
-
-            $.ajax({
-              url: "https://www.googleapis.com/oauth2/v3/token",
-              type: "POST",
-              data: {
-                "refresh_token": refreshToken,
-                "client_id": settings.client_id,
-                "client_secret": settings.client_secret,
-                "grant_type": "refresh_token",
-              },
-              success: function(token, textStatus, jqXHR) {
-                // TODO Do I need to handle responses other than 200 here?
-                self.store.setProperty(App.Drive.DOMAIN, App.Drive.Property.TOKEN, token.access_token);
-                deferred.resolve();
-              },
-              error: function(jqXHR, textStatus, error) {
-                deferred.reject(error);
-              }
-            });
-
-          }).fail(function() {
-            deferred.reject();
+          $.ajax({
+            url: "https://www.googleapis.com/oauth2/v3/token",
+            type: "POST",
+            data: {
+              "refresh_token": refreshToken,
+              "client_id": window.config.client_id,
+              "client_secret": window.config.client_secret,
+              "grant_type": "refresh_token",
+            },
+            success: function(token, textStatus, jqXHR) {
+              // TODO Do I need to handle responses other than 200 here?
+              self.store.setProperty(App.Drive.DOMAIN, App.Drive.Property.TOKEN, token.access_token);
+              deferred.resolve();
+            },
+            error: function(jqXHR, textStatus, error) {
+              deferred.reject(error);
+            }
           });
 
         }).fail(function() {
