@@ -111,16 +111,23 @@ def main():
   project_dir = os.path.abspath(options.project)
   source_dir = os.path.join(project_dir, "src")
   build_dir = os.path.join(project_dir, "build")
+  version_file = os.path.join(source_dir, "version.txt")
   input_file = os.path.join(source_dir, "index.html")
   output_file = os.path.join(build_dir, "index.html")
   images_dir = os.path.join(source_dir, "images")
   defaults_dir = os.path.join(source_dir, "defaults")
   manifest_file = os.path.join(build_dir, "cache.manifest")
 
+  # Read the version.
+  version = None
+  with open(version_file, 'r') as f:
+    version = f.read().strip()
+
   # Load the settings.
   settings = None
   with open(options.settings, 'r') as f:
     settings = json.load(f)
+  settings["version"] = version
 
   # build
   if os.path.exists(build_dir):

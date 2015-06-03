@@ -1,7 +1,1 @@
-Version 2.1.0
-
-UPDATING WILL REQUIRE YOU TO SIGN IN AGAIN. YOUR GAMES WILL NOT BE LOST.
-
-- Fixing bugs in Google Drive sign-in.
-- Showing details of current Google account.
-- Support for signing out of Google Drive.
+- Bug fixes

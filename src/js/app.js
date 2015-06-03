@@ -62,7 +62,7 @@
       self.device = device;
 
       self.logging = new App.Logging(App.Logging.Level.INFO, "app");
-      self.logging.info("Version: 2.1.0");
+      self.logging.info("Version: " + window.config.version);
       self.logging.info("Screen size: " + $(window).width() + " x " + $(window).height());
       self.logging.info("User Agent: " + navigator.userAgent);
 
@@ -204,7 +204,7 @@
       self.updateCheck = deferred;
 
       deferred.promise().then(function(details) {
-        alert("Update available.\nRelaunch the application to update.\n\n" + details);
+        alert("Update available.\nRelaunch the application to update.\n\nVersion " + window.config.version + "\n\n" + details);
       });
 
       if (window.applicationCache !== undefined && window.applicationCache !== null) {
