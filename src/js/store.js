@@ -36,7 +36,7 @@
       self.database = undefined;
       self.debug = false;
       self.size = size;
-      self.logging = new App.Logging(App.Logging.Level.WARNING, "store");
+      self.logging = new App.Logging(window.config.logging_level, "store");
     },
 
     /**

@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
- var gbologger = new App.Logging(App.Logging.Level.WARNING, "gbo");
+ var gbologger = new App.Logging(window.config.logging_level, "gbo");
 
 function cout(message, level) {
   var l = App.Logging.Level.INFO;
@@ -78,7 +78,7 @@ function base64ToArray(b64encoded) {
       self.library = library;
       self.state = App.GameBoy.State.IDLE;
       self.stateChangeCallbacks = [];
-      self.logging = new App.Logging(App.Logging.Level.WARNING, "gameboy");
+      self.logging = new App.Logging(window.config.logging_level, "gameboy");
 
       settings[App.GameBoy.Settings.ENABLE_SOUND] = true;
       settings[App.GameBoy.Settings.SOFTWARE_RESIZING] = false;

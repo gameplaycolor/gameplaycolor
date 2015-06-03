@@ -45,7 +45,7 @@
       self.store = store;
       self.fetches = {};
       self.callback = callback;
-      self.logging = new App.Logging(App.Logging.Level.WARNING, "library");
+      self.logging = new App.Logging(window.config.logging_level, "library");
       
       // Load the library.
       var library = localStorage.getItem('library');

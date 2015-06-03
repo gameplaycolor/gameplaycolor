@@ -7,5 +7,6 @@
     "domain": "gameplaycolor.com",
     "redirect_uri": "https://gameplaycolor.com/app/",
     "icon": "icons/icon.png",
-    "debug": false
+    "debug": false,
+    "logging_level": 30
 }

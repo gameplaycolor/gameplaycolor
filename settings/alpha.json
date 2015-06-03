@@ -7,5 +7,6 @@
     "domain": "alpha.gameplaycolor.com",
     "redirect_uri": "https://alpha.gameplaycolor.com/",
     "icon": "icons/icon-alpha.png",
-    "debug": true
+    "debug": true,
+    "logging_level": 20
 }

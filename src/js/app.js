@@ -61,7 +61,7 @@
 
       self.device = device;
 
-      self.logging = new App.Logging(App.Logging.Level.INFO, "app");
+      self.logging = new App.Logging(window.config.logging_level, "app");
       self.logging.info("Version: " + window.config.version);
       self.logging.info("Screen size: " + $(window).width() + " x " + $(window).height());
       self.logging.info("User Agent: " + navigator.userAgent);

@@ -48,7 +48,7 @@
         var self = this;
         self.state = App.Drive.State.UNINITIALIZED;
         self.stateChangeCallbacks = [];
-        self.logging = new App.Logging(App.Logging.Level.INFO, "drive");
+        self.logging = new App.Logging(window.config.logging_level, "drive");
         self.requestId = 0;
 
         self.store = new App.Store('com.gameplaycolor.drive', 1);

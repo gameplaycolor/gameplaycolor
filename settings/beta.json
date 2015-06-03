@@ -7,5 +7,6 @@
     "domain": "beta.gameplaycolor.com",
     "redirect_uri": "https://beta.gameplaycolor.com/",
     "icon": "icons/icon-beta.png",
-    "debug": false
+    "debug": false,
+    "logging_level": 20
 }
