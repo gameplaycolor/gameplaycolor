@@ -13,6 +13,10 @@ import lxml.etree
 import lxml.html
 
 
+SCRIPTS_DIR = os.path.dirname(os.path.abspath(__file__))
+ROOT_DIR = os.path.dirname(SCRIPTS_DIR)
+
+
 class Chdir():
 
   def __init__(self, path):
@@ -122,14 +126,12 @@ def copy_files(source, destination, files):
 
 def main():
   parser = argparse.ArgumentParser(description="Generate the minified Game Play HTML file")
-  parser.add_argument("project", help="root of the project")
   parser.add_argument("settings", help="settings file")
   options = parser.parse_args()
 
-  project_dir = os.path.abspath(options.project)
-  source_dir = os.path.join(project_dir, "src")
-  build_dir = os.path.join(project_dir, "build")
-  archives_dir = os.path.join(project_dir, "archives")
+  source_dir = os.path.join(ROOT_DIR, "src")
+  build_dir = os.path.join(ROOT_DIR, "build")
+  archives_dir = os.path.join(ROOT_DIR, "archives")
   version_file = os.path.join(source_dir, "version.txt")
   sha_file = os.path.join(build_dir, "sha.txt")
   input_file = os.path.join(source_dir, "index.html")
@@ -155,7 +157,7 @@ def main():
   os.mkdir(build_dir)
 
   # git sha
-  sha = git_sha(repository=project_dir)
+  sha = git_sha(repository=ROOT_DIR)
   with open(sha_file, "w") as f:
     f.write("%s\n" % sha)
 
@@ -199,7 +201,7 @@ def main():
   copy_image_directory(defaults_dir, build_dir)
 
   # icon
-  icon_file = os.path.join(project_dir, settings['icon'])
+  icon_file = os.path.join(ROOT_DIR, settings['icon'])
   pngcrush(icon_file, os.path.join(build_dir, "images", "icon.png"))
 
   # manifest
@@ -219,7 +221,7 @@ def main():
   # Archive the build.
   if not os.path.exists(archives_dir):
     os.makedirs(archives_dir)
-  with Chdir(project_dir):
+  with Chdir(ROOT_DIR):
     subprocess.check_call(["tar", "-zcf", os.path.join(archives_dir, "build-%s.tar.gz" % sha), "build"])
 
 if __name__ == '__main__':
