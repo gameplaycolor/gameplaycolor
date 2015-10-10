@@ -13,6 +13,24 @@ import lxml.etree
 import lxml.html
 
 
+class Chdir():
+
+  def __init__(self, path):
+    self._path = os.path.abspath(path)
+
+  def __enter__(self):
+    self._previous = os.getcwd()
+    os.chdir(self._path)
+
+  def __exit__(self, exc_type, exc_val, exc_tb):
+    os.chdir(self._previous)
+
+
+def git_sha(repository):
+  with Chdir(repository):
+    return subprocess.check_output(["git", "rev-parse", "HEAD"]).strip()
+
+
 def extract_javascript(html, root):
   scripts = ""
   transactions = html.xpath("//script[@type='text/javascript']")
@@ -112,11 +130,16 @@ def main():
   source_dir = os.path.join(project_dir, "src")
   build_dir = os.path.join(project_dir, "build")
   version_file = os.path.join(source_dir, "version.txt")
+  sha_file = os.path.join(build_dir, "sha.txt")
   input_file = os.path.join(source_dir, "index.html")
   output_file = os.path.join(build_dir, "index.html")
   images_dir = os.path.join(source_dir, "images")
   defaults_dir = os.path.join(source_dir, "defaults")
   manifest_file = os.path.join(build_dir, "cache.manifest")
+
+  # Get the git sha.
+  with open(sha_file, "w") as f:
+    f.write("%s\n" % git_sha(repository=project_dir))
 
   # Read the version.
   version = None
