@@ -9,17 +9,17 @@
   [
     {
       "name": "gameplaycolor.com - alpha",
-      "cmd": ["/bin/bash", "deploy.sh", "../settings/alpha.json"],
+      "cmd": ["/bin/bash", "deploy", "../settings/alpha.json"],
       "working_dir": "${project_path}"
     },
     {
       "name": "gameplaycolor.com - beta",
-      "cmd": ["/bin/bash", "deploy.sh", "../settings/beta.json"],
+      "cmd": ["/bin/bash", "deploy", "../settings/beta.json"],
       "working_dir": "${project_path}"
     },
     {
       "name": "gameplaycolor.com - release",
-      "cmd": ["/bin/bash", "deploy.sh", "../settings/release.json"],
+      "cmd": ["/bin/bash", "deploy", "../settings/release.json"],
       "working_dir": "${project_path}"
     }
   ]
