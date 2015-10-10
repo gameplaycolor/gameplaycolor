@@ -12,11 +12,12 @@ Game Play Color has the following dependencies:
 
 - yuicompressor
 - pngcrush
+- htmlcompressor
 
 Using [Homebrew](http://brew.sh), you can install these as follows:
 
 ```bash
-brew install yuicompressor pngcrush
+brew install yuicompressor pngcrush htmlcompressor
 ```
 
 You will also need to include the additional Python dependencies:
