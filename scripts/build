@@ -129,6 +129,7 @@ def main():
   project_dir = os.path.abspath(options.project)
   source_dir = os.path.join(project_dir, "src")
   build_dir = os.path.join(project_dir, "build")
+  archives_dir = os.path.join(project_dir, "archives")
   version_file = os.path.join(source_dir, "version.txt")
   sha_file = os.path.join(build_dir, "sha.txt")
   input_file = os.path.join(source_dir, "index.html")
@@ -136,10 +137,6 @@ def main():
   images_dir = os.path.join(source_dir, "images")
   defaults_dir = os.path.join(source_dir, "defaults")
   manifest_file = os.path.join(build_dir, "cache.manifest")
-
-  # Get the git sha.
-  with open(sha_file, "w") as f:
-    f.write("%s\n" % git_sha(repository=project_dir))
 
   # Read the version.
   version = None
@@ -156,6 +153,11 @@ def main():
   if os.path.exists(build_dir):
     shutil.rmtree(build_dir)
   os.mkdir(build_dir)
+
+  # git sha
+  sha = git_sha(repository=project_dir)
+  with open(sha_file, "w") as f:
+    f.write("%s\n" % sha)
 
   # index.html
   contents = None
@@ -214,6 +216,11 @@ def main():
   # We don't want the following files to be added to the manifest.
   copy_files(source_dir, build_dir, ["release.txt", "sizes.html"])
 
+  # Archive the build.
+  if not os.path.exists(archives_dir):
+    os.makedirs(archives_dir)
+  with Chdir(project_dir):
+    subprocess.check_call(["tar", "-zcf", os.path.join(archives_dir, "build-%s.tar.gz" % sha), "build"])
 
 if __name__ == '__main__':
   main()
