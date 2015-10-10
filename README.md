@@ -26,6 +26,19 @@ You will also need to include the additional Python dependencies:
 pip install --user -r requirements.txt
 ```
 
+Building
+--------
+
+Game Play Color is built using a custom Python build script which inlines and minifies HTML, CSS and JavaScript, and binds in the settings for a given deployment.
+
+For example, building the release version of Game Play Color as hosted on [gameplaycolor.com](https://gameplaycolor.com) can be done by running the following command from the root of the repository:
+
+```bash
+scripts/build settings/release.json
+```
+
+The build will be created in the `build` directory, and a corresponding *.tar.gz will be creatd in `archives`, tagged with the git sha and settings name (e.g., `build-168bd9d0d8d309a1efb1983bd61ec34ff22951b5-release.tar.gz`).
+
 Changelog
 ---------
 
