@@ -5,6 +5,26 @@ A JavaScript Game Boy Color emulator for iOS, based on the [GameBoy-Online](http
 
 If you just want to play Game Play Color, you can find it online at [https://gameplaycolor.com](https://gameplaycolor.com).
 
+Dependencies
+------------
+
+Game Play Color has the following dependencies:
+
+- yuicompressor
+- pngcrush
+
+Using [Homebrew](http://brew.sh), you can install these as follows:
+
+```bash
+brew install yuicompressor pngcrush
+```
+
+You will also need to include the additional Python dependencies:
+
+```bash
+pip install --user -r requirements.txt
+```
+
 Changelog
 ---------
 
