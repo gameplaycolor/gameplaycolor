@@ -5,6 +5,10 @@ set -u
 
 configuration=$1
 
+script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+root_dir=$( dirname "$script_dir" )
+build_dir="$root_dir/build"
+
 if [[ ! -f "$configuration" ]]; then
     echo "Unable to find configuration file '$1'."
     exit 1
@@ -14,14 +18,11 @@ remote=$( cat "$configuration" | python -c "import json; import sys; print json.
 
 echo "Uploading to '$remote'..."
 
-export root=".."
-export build="$root/build"
-
-python "$root/scripts/build" "$root" "$configuration"
+python "$script_dir/build" "$configuration"
 
 rsync -avPe ssh \
-    $build/*.{html,txt} \
-    $build/*.manifest \
-    $build/images \
-    $build/defaults \
+    "$build_dir"/*.{html,txt} \
+    "$build_dir"/*.manifest \
+    "$build_dir"/images \
+    "$build_dir"/defaults \
     "$remote"
