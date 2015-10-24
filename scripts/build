@@ -153,10 +153,17 @@ def main():
     settings = json.load(f)
   settings["version"] = version
 
-  # build
+  # Create/empty the build directory.
+  # We do not simply delete the directory so as not to break the development server which might be serving from here.
   if os.path.exists(build_dir):
-    shutil.rmtree(build_dir)
-  os.mkdir(build_dir)
+    for path in os.listdir(build_dir):
+      path = os.path.join(build_dir, path)
+      if os.path.isfile(path):
+        os.unlink(path)
+      else:
+        shutil.rmtree(path)
+  else:
+    os.mkdir(build_dir)
 
   # git sha
   sha = git_sha(repository=ROOT_DIR)
