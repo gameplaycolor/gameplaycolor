@@ -225,7 +225,7 @@ def main():
     f.write("*\n")
 
   # We don't want the following files to be added to the manifest.
-  copy_files(source_dir, build_dir, ["release.txt", "sizes.html"])
+  copy_files(source_dir, build_dir, ["version.txt", "release.txt", "sizes.html"])
 
   # Archive the build.
   if not os.path.exists(archives_dir):

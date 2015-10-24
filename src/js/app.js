@@ -204,7 +204,7 @@
       self.updateCheck = deferred;
 
       deferred.promise().then(function(details) {
-        alert("Update available.\nRelaunch the application to update.\n\nVersion " + window.config.version + "\n\n" + details);
+        alert("Update available.\nRelaunch the application to update.\n\nVersion " + details.version + "\n\n" + details.details);
       });
 
       if (window.applicationCache !== undefined && window.applicationCache !== null) {
@@ -212,11 +212,16 @@
         window.applicationCache.addEventListener('updateready', function(event) {
           self.logging.info("Application update received (status " + window.applicationCache.status + ")");
           if (window.applicationCache.status == 4) {
-            jQuery.get('release.txt', function(data) {
-              deferred.resolve(data);
+            jQuery.get('version.txt', function(version) {
+              jQuery.get('release.txt', function(data) {
+                deferred.resolve({"version": $.trim(version), "details": data});
+              }).fail(function() {
+                deferred.reject();
+              });              
             }).fail(function() {
               deferred.reject();
             });
+
           } else {
             deferred.reject();
           }
