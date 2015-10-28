@@ -253,9 +253,18 @@ body
   margin: auto;
 }
 
+.navigation-bar
+{
+  height: 44px;
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
 .navigation-button
 {
-  width: 50%;
   height: 44px;
   line-height: 44px;
   cursor: pointer;
@@ -266,24 +275,20 @@ body
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  position: relative;
+  margin: 0 12px;
+  flex-grow: 1;
 }
 
 .button-account
 {
-  position: absolute;
-  top: 0;
-  left: 0;
   text-align: left;
-  padding-left: 10px;
 }
 
 .button-done
 {
-  position: absolute;
-  top: 0;
-  right: 0;
   text-align: right;
-  padding-right: 34px;
+  padding-right: 22px;
 }
 
 .button-done:after, .button-done:before {
@@ -292,8 +297,7 @@ body
   height: 3px;
   background-color: #d9d9d9;
   position: absolute;
-  right: 8px;
-  top: 0;
+  right: 0;
 }
 
 .button-done:after {
@@ -327,13 +331,13 @@ body
   
 #screen-console
 {
-  transition: left 0.3s ease-in-out;
   width: 100%;
   height: 100%;
   top: 0;
   left: 0;
   background-image: url(images/noise.png);
   border-radius: 12px;
+  border: 0;
 }
 
 .grape 
