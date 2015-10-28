@@ -164,7 +164,8 @@
                   '&response_type=code' +
                   '&client_id=' + window.config.client_id +
                   '&scope=' + window.config.scopes.join(" ") +
-                  '&access_type=offline';
+                  '&approval_prompt=force' + // required for an access token
+                  '&access_type=offline'; // required for an access token
         deferred.resolve(url);
 
         return deferred.promise();
