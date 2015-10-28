@@ -1,1 +1,2 @@
-- Workaround for rendering issue on iOS 9
+- Fixing early Google Drive session expiry.
+- Minor UI tweaks.

@@ -42,6 +42,11 @@ The build will be created in the `build` directory, and a corresponding *.tar.gz
 Changelog
 ---------
 
+### Version 2.1.3
+
+- Fixing early Google Drive session expiry.
+- Minor UI tweaks.
+
 ### Version 2.0.13
 
 - Show release notes when informing users about updates.
