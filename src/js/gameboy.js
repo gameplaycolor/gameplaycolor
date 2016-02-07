@@ -88,6 +88,21 @@ function base64ToArray(b64encoded) {
 
     },
 
+    setSoundEnabled: function(enabled) {
+      var self = this;
+      if (enabled === true) {
+        settings[App.GameBoy.Settings.ENABLE_SOUND] = true;
+        if (gameboy) {
+          gameboy.initSound();
+        }
+      } else {
+        settings[App.GameBoy.Settings.ENABLE_SOUND] = false;
+        if (gameboy) {
+          gameboy.stopSound();
+        }
+      }
+    },
+
     onStateChange: function(callback) {
       var self = this;
       self.stateChangeCallbacks.push(callback);

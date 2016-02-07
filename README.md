@@ -42,6 +42,11 @@ The build will be created in the `build` directory, and a corresponding *.tar.gz
 Changelog
 ---------
 
+### Version 2.1.4
+
+- Moving the account sign out and 'Say Thanks' into a new settings dialog.
+- Adding the option to disable sound; use this to listen to your own music!
+
 ### Version 2.1.3
 
 - Fixing early Google Drive session expiry.

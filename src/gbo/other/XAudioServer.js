@@ -139,6 +139,11 @@ XAudioServer.prototype.initializeAudio = function () {
 		}
 	}
 }
+
+XAudioServer.prototype.disconnect = function() {
+	XAudioJSWebAudioAudioNode.disconnect(0);
+}
+
 XAudioServer.prototype.initializeMediaStream = function () {
 	this.audioHandleMediaStream = new Audio();
 	this.resetCallbackAPIAudioBuffer(XAudioJSMediaStreamSampleRate);

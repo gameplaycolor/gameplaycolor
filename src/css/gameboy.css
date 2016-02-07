@@ -473,16 +473,6 @@ body
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.74);
 }
 
-.element-thanks
-{
-  position: absolute;
-  bottom: 20px;
-  left: 0;
-  width: 100%;
-  height: 60px;
-  text-align: center;
-}
-
 .simple-button
 {
   border: 2px solid #fff;
@@ -501,32 +491,148 @@ body
   margin: 8px 0;
 }
 
-.button-thanks
-{
-  border: 2px solid #fff;
-  border-radius: 8px;
-  padding: 10px;
-  text-decoration: none;
-  color: #fff;
-}
-
-.button-thanks:hover
-{
-  background-color: #fff;
-  color: #000;
-}
-
 #screen-games
 {
-  width: 100%;
-  height: 100%;
   background-color: #272727;
   border-radius: 12px;
   background-size: 233px 133px;
 }
 
-#screen-empty
+#screen-settings
 {
+}
+
+#screen-settings.hidden
+{
+}
+
+.settings
+{
+  transition: background-color 150ms ease-in-out;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.settings.hidden
+{
+  transition: background-color 150ms ease-in-out;
+  background-color: rgba(0, 0, 0, 0.0);
+}
+
+.dialog
+{
+  transition: 150ms ease-in-out;
+  width: 300px;
+  margin: 8px auto;
+  border-radius: 16px;
+  position: relative;
+}
+
+.settings.hidden .dialog
+{
+  transition: 150ms ease-in-out;
+  opacity: 0.0;
+  transform: scale(1.1, 1.1);
+}
+
+.dialog-title, .dialog-button
+{
+  text-align: center;
+  padding: 12px;
+}
+
+.dialog-title, .dialog-row, .dialog-button
+{
+  background-color: rgba(255, 255, 255, 0.95);
+}
+
+.dialog-title
+{
+  font-weight: bold;
+  border-radius: 16px 16px 0 0;
+}
+
+.dialog-button
+{
+  color: #0076ff;
+}
+
+.dialog-button.default
+{
+  font-weight: bold;
+  border-radius: 0 0 16px 16px;
+}
+
+.dialog-button.pressed
+{
+  background-color: rgba(144, 142, 144, 0.9);
+}
+
+.dialog-divider
+{
+  height: 0.5px;
+}
+
+.dialog-row
+{
+  display: flex;
+  height: 42px;
+  line-height: 42px;
+}
+
+.dialog-row-label, .dialog-row-detail-label
+{
+  flex-grow: 1;
+  padding: 0 12px;
+}
+
+.dialog-row-label
+{
+  font-weight: bold;
+}
+
+.dialog-row-detail-label
+{
+  text-align: right;
+}
+
+.setting-switch
+{
+  transition: 300ms ease-in-out;
+  position: relative;
+  width: 46px;
+  height: 28px;
+  border-radius: 28px;
+  background-color: white;
+  border: 2px solid #E6E6E6;
+  display: inline-block;
+}
+
+.setting-switch:before
+{
+  transition: 300ms ease-in-out;
+  content: '';
+  display: block;
+  width: 28px;
+  height: 28px;
+  border-radius: 28px;
+  background-color: #fff;
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-shadow: 0 6px 4px rgba(0, 0, 0, 0.1), 0 -1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.setting-switch.on
+{
+  transition: 300ms ease-in-out;
+  background-color: #4CD964;
+  border: 2px solid #4CD964;
+}
+
+.setting-switch.on:before
+{
+  transition: 300ms ease-in-out;
+  left: 18px;
 }
 
 #screen-loading
@@ -627,6 +733,8 @@ hr {
   left: 0;
   width: 568px;
   height: 300px;
+  width: 100%;
+  height: 100%;
 }
 
 .title-button

@@ -33,8 +33,6 @@
     <title>Game Play</title>
   </head>
   <body style="background-color: black;">
-
-    <div id="border-top" style="height: 100px; background-color: white; width: 100%; position: absolute; top: 0;"></div>
     
     <div id="gameboy" style="width: 100%; height: 100%">
 
@@ -55,11 +53,30 @@
           </div>
         </div>
         <div id="navigation-bar" class="navigation-bar">
-          <div id="button-account" class="navigation-button button-account">Sign Out</div>
+          <div id="button-account" class="navigation-button button-account">Settings</div>
           <div id="button-done" class="navigation-button button-done">Console</div>
         </div>
-        <div class="element-thanks">
-          <a href="https://gameplaycolor.com/thanks/" target="_blank" class="button-thanks">&#x2764;&#xFE0E; Say Thanks</a>
+      </div>
+
+      <div id="screen-settings" class="settings screen hidden" style="display: none;">
+        <div id="screen-settings-dismiss" class="screen" />
+        <div class="dialog">
+          <div class="dialog-title">Settings</div>
+          <div class="dialog-divider"></div>
+          <div class="dialog-row">
+            <div class="dialog-row-label">Account</div>
+            <div id="account-details" class="dialog-row-detail-label"></div>
+          </div>
+          <div class="dialog-row">
+            <div class="dialog-row-label">Sound</div>
+            <div class="dialog-row-detail-label"><div id="switch" class="setting-switch"></div></div>
+          </div>
+          <div class="dialog-divider"></div>
+          <div id="screen-settings-sign-out" class="dialog-button">Sign out</div>
+          <div class="dialog-divider"></div>
+          <div id="screen-settings-say-thanks" class="dialog-button">Say thanks!</div>
+          <div class="dialog-divider"></div>
+          <div id="screen-settings-done" class="dialog-button default">Done</div>
         </div>
       </div>
 
@@ -171,7 +188,9 @@
     <script type="text/javascript" src="js/library.js"></script>
     <script type="text/javascript" src="js/games.js"></script>
     <script type="text/javascript" src="js/pad.js"></script>
+    <script type="text/javascript" src="js/settings.js"></script>
     <script type="text/javascript" src="js/button.js"></script>
+    <script type="text/javascript" src="js/switch.js"></script>
     <script type="text/javascript" src="js/gameboy.js"></script>
     <script type="text/javascript" src="js/grid.js"></script>
     <script type="text/javascript" src="js/store.js"></script>
