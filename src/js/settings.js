@@ -63,8 +63,7 @@
 
       onTouchEvent: function(state, position, timestamp) {
         var self = this;
-        if (state == App.Control.Touch.START ||
-            state == App.Control.Touch.END) {
+        if (state == App.Control.Touch.START) {
           self.hide();
         }
       },

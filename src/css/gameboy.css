@@ -523,7 +523,6 @@ body
   transition: 150ms ease-in-out;
   width: 300px;
   margin: 8px auto;
-  background-color: rgba(255, 255, 255, 0.95);
   border-radius: 16px;
   position: relative;
 }
@@ -541,9 +540,15 @@ body
   padding: 12px;
 }
 
+.dialog-title, .dialog-row, .dialog-button
+{
+  background-color: rgba(255, 255, 255, 0.95);
+}
+
 .dialog-title
 {
   font-weight: bold;
+  border-radius: 16px 16px 0 0;
 }
 
 .dialog-button
@@ -564,18 +569,25 @@ body
 
 .dialog-divider
 {
-  border-bottom: 0.5px solid rgba(0, 0, 0, 0.9);
+  height: 0.5px;
 }
 
 .dialog-row
 {
   display: flex;
+  height: 42px;
+  line-height: 42px;
 }
 
 .dialog-row-label, .dialog-row-detail-label
 {
   flex-grow: 1;
-  padding: 12px;
+  padding: 0 12px;
+}
+
+.dialog-row-label
+{
+  font-weight: bold;
 }
 
 .dialog-row-detail-label
@@ -591,8 +603,8 @@ body
   height: 28px;
   border-radius: 28px;
   background-color: white;
-  margin: 10px;
   border: 2px solid #E6E6E6;
+  display: inline-block;
 }
 
 .setting-switch:before
