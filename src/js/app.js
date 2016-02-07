@@ -94,17 +94,10 @@
       }, self.store);
 
       self.drive = App.Drive.Instance();
+      self.settings = new App.Settings(self.drive);
 
       self.account = new App.Controls.Button('#button-account', { touchUpInside: function() {
-        // If we present a confirm dialog within the button event handler the final touch up gets lost and we find
-        // ourselves in an inconsistent state.
-        setTimeout(function() {
-          if (confirm("Sign out of Google Drive?")) {
-            self.drive.signOut().fail(function(e) {
-              alert("Unable to sign out of Google Drive.\n" + e);
-            });
-          }
-        }, 10);
+        self.settings.show();
       }});
 
       self.redeem = new App.Controls.Button('#button-redeem', { touchUpInside: function() {
@@ -146,7 +139,7 @@
           $("#screen-account").hide();
           self.account.show();
           self.drive.user().then(function(user) {
-            self.account.setTitle(user.email);
+            $('#account-details').html(user.email);
           });
 
         }

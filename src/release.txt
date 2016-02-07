@@ -1,2 +1,1 @@
-- Fixing early Google Drive session expiry.
-- Minor UI tweaks.
+- Moving the account sign out and 'Say Thanks' into a new settings dialog.
