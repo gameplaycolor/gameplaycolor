@@ -18,16 +18,18 @@
 
 (function($) {
 
-  App.Settings = function(drive) {
-    this.init(drive);
+  App.Settings = function(drive, store, gameBoy) {
+    this.init(drive, store, gameBoy);
   };
   
   jQuery.extend(
     App.Settings.prototype, {
       
-      init: function(drive) {
+      init: function(drive, store, gameBoy) {
         var self = this;
         self.drive = drive;
+        self.store = store;
+        self.gameBoy = gameBoy;
         self.element = $('#screen-settings');
         self.done = new App.Controls.Button('#screen-settings-done', { touchUp: function() {
           self.hide();
@@ -59,6 +61,23 @@
           $a.remove();
 
         }});
+
+        self.sound = new App.Controls.Switch('#switch', function(target, selected) {
+          target.setSelected(selected);
+          self.store.setProperty(App.Controller.Domain.SETTINGS, App.Store.Property.SOUND, selected);
+          self.gameBoy.setSoundEnabled(selected !== 0);
+        });
+
+        self.store.property(App.Controller.Domain.SETTINGS, App.Store.Property.SOUND, function(sound) {
+          if (sound !== undefined) {
+            self.sound.setSelected(sound);
+            self.gameBoy.setSoundEnabled(sound !== 0);
+          } else {
+            self.sound.setSelected(1);
+            self.gameBoy.setSoundEnabled(true);
+          }
+        });
+
       },
 
       onTouchEvent: function(state, position, timestamp) {
