@@ -45,6 +45,7 @@ Changelog
 ### Version 2.1.4
 
 - Moving the account sign out and 'Say Thanks' into a new settings dialog.
+- Adding the option to disable sound; use this to listen to your own music!
 
 ### Version 2.1.3
 
