@@ -32,6 +32,9 @@
         self.done = new App.Controls.Button('#screen-settings-done', { touchUp: function() {
           self.hide();
         }});
+
+        self.touchListener = new App.TouchListener('#screen-settings-dismiss', self);
+
         self.signOut = new App.Controls.Button('#screen-settings-sign-out', { touchUp: function() {
           // If we present a confirm dialog within the button event handler the final touch up gets lost and we find
           // ourselves in an inconsistent state.
@@ -56,6 +59,14 @@
           $a.remove();
 
         }});
+      },
+
+      onTouchEvent: function(state, position, timestamp) {
+        var self = this;
+        if (state == App.Control.Touch.START ||
+            state == App.Control.Touch.END) {
+          self.hide();
+        }
       },
       
       hide: function() {
