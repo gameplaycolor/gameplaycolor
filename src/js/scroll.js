@@ -18,46 +18,35 @@
  
 (function($) {
 
-  App.Controls.Switch = function(identifier, callback) {
+  App.Controls.Scroll = function(identifier) {
     this.init(identifier);
-    this.callback = callback;
-    self.selected = 0;
   };
 
   jQuery.extend(
-    App.Controls.Switch.prototype,
+    App.Controls.Scroll.prototype,
     App.Control.prototype, {
 
     onCreate: function() {
       var self = this;
     },
 
-    setSelected: function(selected) {
-      var self = this;
-      self.selected = selected;
-      if (self.selected === 0) {
-        self.element.removeClass("on");
-      } else {
-        self.element.addClass("on");
-      }
-    },
-
     onTouchEvent: function(state, position, timestamp) {
       var self = this;
-      if (state == App.Control.Touch.END) {
-        if (position.x >= 0 &&
-            position.x < self.width() &&
-            position.y >= 0 &&
-            position.y < self.height()) {
-          var selected = self.selected;
-          if (selected === 0) {
-            selected = 1;
-          } else {
-            selected = 0;
-          }
-          self.callback(self, selected);
+      
+      if (state === App.Control.Touch.START) {
+        self.touchStart = position;
+        self.scrollLeft = self.element.scrollLeft();
+        self.scrollTop = self.element.scrollTop();
+        self.touchCount = 1;
+      } else if (state === App.Control.Touch.MOVE) {
+        if (self.touchCount > 0) {
+          self.element.scrollLeft(self.scrollLeft + self.touchStart.x - position.x);
+          self.element.scrollTop(self.scrollTop + self.touchStart.y - position.y);
         }
+      } else if (state === App.Control.Touch.END) {
+        self.touchCount = 0;
       }
+
     },
 
   });

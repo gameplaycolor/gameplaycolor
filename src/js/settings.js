@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2015 InSeven Limited.
+ * Copyright (C) 2012-2016 InSeven Limited.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -31,35 +31,31 @@
         self.store = store;
         self.gameBoy = gameBoy;
         self.element = $('#screen-settings');
-        self.done = new App.Controls.Button('#screen-settings-done', { touchUp: function() {
+        self.dialog = $('#dialog-settings');
+        self.done = new App.Controls.Button('#screen-settings-done', { touchUpInside: function() {
           self.hide();
         }});
+        self.scroll = new App.Controls.Scroll('#dialog-settings-body');
+
+        self.element.get(0).addEventListener('touchmove', function(e) {
+          e.preventDefault();
+        }, false);
+
+        $('#application-version').text(window.config.version);
 
         self.touchListener = new App.TouchListener('#screen-settings-dismiss', self);
 
-        self.signOut = new App.Controls.Button('#screen-settings-sign-out', { touchUp: function() {
-          // If we present a confirm dialog within the button event handler the final touch up gets lost and we find
-          // ourselves in an inconsistent state.
-          setTimeout(function() {
+        self.signOut = new App.Controls.Button('#screen-settings-sign-out', { touchUpInside: function() {
+          utilities.dispatch(function() {
             if (confirm("Sign out of Google Drive?")) {
               self.drive.signOut().fail(function(e) {
                 alert("Unable to sign out of Google Drive.\n" + e);
               });
             }
-          }, 10);
+          });
         }});
-        self.thanks = new App.Controls.Button('#screen-settings-say-thanks', { touchUp: function() {
-
-          // Code snippit from http://stackoverflow.com/questions/5423332/launch-mobile-safari-from-full-screen-web-app-on-iphone.
-          // Ensures we launch Mobile Safari when in standalone mode.
-          var $a = $('<a href="https://gameplaycolor.com/thanks/" target="_blank"/>');
-          $("body").append($a);
-          var a = $a.get(0);
-          var mouseEvent = a.ownerDocument.createEvent('MouseEvents');
-          mouseEvent.initMouseEvent('click');
-          a.dispatchEvent(mouseEvent);
-          $a.remove();
-
+        self.thanks = new App.Controls.Button('#screen-settings-say-thanks', { touchUpInside: function() {
+          utilities.open_new_window("https://gameplaycolor.com/thanks/");
         }});
 
         self.sound = new App.Controls.Switch('#switch', function(target, selected) {

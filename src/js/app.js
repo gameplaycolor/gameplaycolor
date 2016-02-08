@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2015 InSeven Limited.
+ * Copyright (C) 2012-2016 InSeven Limited.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -74,11 +74,6 @@
         }, 400);
       });
       self.gameBoy = new App.GameBoy(self.store, self.library);
-
-      document.addEventListener('touchmove', function(e) {
-        e.preventDefault();
-      }, false);
-      
       self.games = new App.Games(self.device, self.gameBoy, self.library);
 
       self.console = new App.Console(self.device, self.gameBoy, {

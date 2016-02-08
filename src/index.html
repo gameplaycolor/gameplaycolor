@@ -59,25 +59,41 @@
       </div>
 
       <div id="screen-settings" class="settings screen hidden" style="display: none;">
+
+        <div class="dialog-layout-container screen">
+
+          <div class="dialog-margin"></div>
+
+          <div id="dialog-settings" class="dialog">
+            <div class="dialog-title">Settings</div>
+            <div class="dialog-divider"></div>
+            <div id="dialog-settings-body" class="dialog-body">
+              <div class="dialog-row">
+                <div class="dialog-row-label">Account</div>
+                <div id="account-details" class="dialog-row-detail-label"></div>
+              </div>
+              <div class="dialog-row">
+                <div class="dialog-row-label">Sound</div>
+                <div class="dialog-row-detail-label"><div id="switch" class="setting-switch"></div></div>
+              </div>
+              <div class="dialog-row">
+                <div class="dialog-row-label">Version</div>
+                <div id="application-version" class="dialog-row-detail-label">0.0.0</div>
+              </div>
+              <div class="dialog-divider"></div>
+              <div id="screen-settings-sign-out" class="dialog-button">Sign out</div>
+              <div class="dialog-divider"></div>
+              <div id="screen-settings-say-thanks" class="dialog-button">Say thanks!</div>
+            </div>
+            <div class="dialog-divider"></div>
+            <div id="screen-settings-done" class="dialog-button default">Done</div>
+          </div>
+
+          <div class="dialog-margin"></div>
+
+        </div><!-- dialog-layout-container -->
+
         <div id="screen-settings-dismiss" class="screen" />
-        <div class="dialog">
-          <div class="dialog-title">Settings</div>
-          <div class="dialog-divider"></div>
-          <div class="dialog-row">
-            <div class="dialog-row-label">Account</div>
-            <div id="account-details" class="dialog-row-detail-label"></div>
-          </div>
-          <div class="dialog-row">
-            <div class="dialog-row-label">Sound</div>
-            <div class="dialog-row-detail-label"><div id="switch" class="setting-switch"></div></div>
-          </div>
-          <div class="dialog-divider"></div>
-          <div id="screen-settings-sign-out" class="dialog-button">Sign out</div>
-          <div class="dialog-divider"></div>
-          <div id="screen-settings-say-thanks" class="dialog-button">Say thanks!</div>
-          <div class="dialog-divider"></div>
-          <div id="screen-settings-done" class="dialog-button default">Done</div>
-        </div>
       </div>
 
       <div id="screen-console" class="screen grape">
@@ -191,6 +207,7 @@
     <script type="text/javascript" src="js/settings.js"></script>
     <script type="text/javascript" src="js/button.js"></script>
     <script type="text/javascript" src="js/switch.js"></script>
+    <script type="text/javascript" src="js/scroll.js"></script>
     <script type="text/javascript" src="js/gameboy.js"></script>
     <script type="text/javascript" src="js/grid.js"></script>
     <script type="text/javascript" src="js/store.js"></script>

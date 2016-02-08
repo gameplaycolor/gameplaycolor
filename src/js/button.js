@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2015 InSeven Limited.
+ * Copyright (C) 2012-2016 InSeven Limited.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -82,12 +82,17 @@
           self.touchDown();
           break;
         case App.Control.Touch.MOVE:
-          break;
-        case App.Control.Touch.END:
           if (position.x >= 0 &&
               position.x < self.width() &&
               position.y >= 0 &&
               position.y < self.height()) {
+            self.setPressed(true);
+          } else {
+            self.setPressed(false);
+          }
+          break;
+        case App.Control.Touch.END:
+          if (self.pressed === true) {
             self.touchUpInside();
           } else {
             self.touchUpOutside();

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2015 InSeven Limited.
+ * Copyright (C) 2012-2016 InSeven Limited.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -80,6 +80,10 @@
           } else if (state === App.GameBoy.State.ERROR) {
           }
         });
+
+        self.element.get(0).addEventListener('touchmove', function(e) {
+          e.preventDefault();
+        }, false);
 
         // D-Pad.
         self.pad = new App.Controls.Pad({

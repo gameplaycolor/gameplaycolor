@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2015 InSeven Limited.
+ * Copyright (C) 2012-2016 InSeven Limited.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -522,9 +522,9 @@ body
 {
   transition: 150ms ease-in-out;
   width: 300px;
-  margin: 8px auto;
-  border-radius: 16px;
+  margin: 0 auto;
   position: relative;
+  z-index: 10;
 }
 
 .settings.hidden .dialog
@@ -532,6 +532,17 @@ body
   transition: 150ms ease-in-out;
   opacity: 0.0;
   transform: scale(1.1, 1.1);
+}
+
+.dialog-layout-container
+{
+  display: flex;
+  flex-direction: column;
+}
+
+.dialog-margin
+{
+  flex-grow: 1;
 }
 
 .dialog-title, .dialog-button
@@ -549,6 +560,11 @@ body
 {
   font-weight: bold;
   border-radius: 16px 16px 0 0;
+}
+
+.dialog-body
+{
+  overflow-y: scroll;
 }
 
 .dialog-button
@@ -1357,6 +1373,10 @@ hr {
     display: none;
   }
 
+  .dialog-body {
+    max-height: 200px;
+  }
+
 }
 
 /* iPhone 5: Portrait */
@@ -1470,6 +1490,10 @@ hr {
     display: none;
   }
 
+  .dialog-body {
+    max-height: 220px;
+  }
+
 }
 
 /* iPhone 6: Portrait */
@@ -1530,6 +1554,10 @@ hr {
 
   .appicon {
     display: none;
+  }
+
+  .dialog-body {
+    max-height: 220px;
   }
 
 }

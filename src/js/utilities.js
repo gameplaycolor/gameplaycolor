@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2015 InSeven Limited.
+ * Copyright (C) 2012-2016 InSeven Limited.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -53,6 +53,25 @@ var utilities = {
       var u8_2 = new Uint8Array(window.atob(b64encoded).split("").map(function(c) {
         return c.charCodeAt(0); }));
       return u8_2;
-    }
+    },
+
+    /**
+     * Open a URL in a new window.
+     */
+    open_new_window: function(url) {
+      // Code snippit from http://stackoverflow.com/questions/5423332/launch-mobile-safari-from-full-screen-web-app-on-iphone.
+      // Ensures we launch Mobile Safari when in standalone mode.
+      var $a = $('<a href="' + url + '" target="_blank"/>');
+      $("body").append($a);
+      var a = $a.get(0);
+      var mouseEvent = a.ownerDocument.createEvent('MouseEvents');
+      mouseEvent.initMouseEvent('click');
+      a.dispatchEvent(mouseEvent);
+      $a.remove();
+    },
+
+    dispatch: function(func) {
+      setTimeout(func, 10);
+    },
 
 };
