@@ -81,6 +81,10 @@
           }
         });
 
+        self.element.get(0).addEventListener('touchmove', function(e) {
+          e.preventDefault();
+        }, false);
+
         // D-Pad.
         self.pad = new App.Controls.Pad({
           touchDownLeft  : function() { self.gameBoy.keyDown(Gameboy.Key.LEFT); },

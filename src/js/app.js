@@ -74,11 +74,6 @@
         }, 400);
       });
       self.gameBoy = new App.GameBoy(self.store, self.library);
-
-      document.addEventListener('touchmove', function(e) {
-        e.preventDefault();
-      }, false);
-      
       self.games = new App.Games(self.device, self.gameBoy, self.library);
 
       self.console = new App.Console(self.device, self.gameBoy, {

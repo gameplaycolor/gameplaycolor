@@ -31,9 +31,17 @@
         self.store = store;
         self.gameBoy = gameBoy;
         self.element = $('#screen-settings');
+        self.dialog = $('#dialog-settings');
         self.done = new App.Controls.Button('#screen-settings-done', { touchUp: function() {
           self.hide();
         }});
+        self.scroll = new App.Controls.Scroll('#dialog-settings-body');
+
+        self.element.get(0).addEventListener('touchmove', function(e) {
+          e.preventDefault();
+        }, false);
+
+        $('#application-version').text(window.config.version);
 
         self.touchListener = new App.TouchListener('#screen-settings-dismiss', self);
 
@@ -49,17 +57,7 @@
           }, 10);
         }});
         self.thanks = new App.Controls.Button('#screen-settings-say-thanks', { touchUp: function() {
-
-          // Code snippit from http://stackoverflow.com/questions/5423332/launch-mobile-safari-from-full-screen-web-app-on-iphone.
-          // Ensures we launch Mobile Safari when in standalone mode.
-          var $a = $('<a href="https://gameplaycolor.com/thanks/" target="_blank"/>');
-          $("body").append($a);
-          var a = $a.get(0);
-          var mouseEvent = a.ownerDocument.createEvent('MouseEvents');
-          mouseEvent.initMouseEvent('click');
-          a.dispatchEvent(mouseEvent);
-          $a.remove();
-
+          utilities.open_new_window("https://gameplaycolor.com/thanks/");
         }});
 
         self.sound = new App.Controls.Switch('#switch', function(target, selected) {
@@ -77,6 +75,16 @@
             self.gameBoy.setSoundEnabled(true);
           }
         });
+
+        // TODO This could perhaps be implemented better with a flexbox.
+        // var updateDimensions = function() {
+        //   console.log("Update dimensions: " + $(window).width() + ", " + $(window).height());
+        //   console.log("Element: " + self.dialog.width() + ", " + self.dialog.height());
+        //   console.log(self.dialog.get(0).getBoundingClientRect());
+        // };
+
+        // window.addEventListener("resize", updateDimensions);
+        // updateDimensions();
 
       },
 
