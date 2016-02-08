@@ -611,6 +611,46 @@ body
   text-align: right;
 }
 
+.segmented
+{
+  height: 36px;
+  line-height: 34px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.segmented li
+{
+  display: inline-block;
+  text-align: center;
+  padding: 0 8px;
+  border: 1px solid #0076ff;
+  border-right: 0.5px solid #0076ff;
+  border-left: 0.5px solid #0076ff;
+  color: #0076ff;
+  flex-grow: 1;
+}
+
+.segmented li:first-child
+{
+  border-radius: 8px 0 0 8px;
+  border-left: 1px solid #0076ff;
+}
+
+.segmented li:last-child
+{
+  border-radius: 0 8px 8px 0;
+  border-right: 1px solid #0076ff;
+}
+
+.segmented li.selected
+{
+  background-color: #0076ff;
+  color: white;
+}
+
 .setting-switch
 {
   transition: 300ms ease-in-out;
