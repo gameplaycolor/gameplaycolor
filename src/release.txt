@@ -1,2 +1,2 @@
-- Moving the account sign out and 'Say Thanks' into a new settings dialog.
-- Adding the option to disable sound; use this to listen to your own music!
+- Adding scrolling to the settings dialog on small screens.
+- Adding the version to the settings dialog.

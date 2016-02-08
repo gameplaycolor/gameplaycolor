@@ -42,6 +42,11 @@ The build will be created in the `build` directory, and a corresponding *.tar.gz
 Changelog
 ---------
 
+### Version 2.1.5
+
+- Adding scrolling to the settings dialog on small screens.
+- Adding the version to the settings dialog.
+
 ### Version 2.1.4
 
 - Moving the account sign out and 'Say Thanks' into a new settings dialog.
