@@ -70,4 +70,8 @@ var utilities = {
       $a.remove();
     },
 
+    dispatch: function(func) {
+      setTimeout(func, 10);
+    },
+
 };

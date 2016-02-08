@@ -32,7 +32,7 @@
         self.gameBoy = gameBoy;
         self.element = $('#screen-settings');
         self.dialog = $('#dialog-settings');
-        self.done = new App.Controls.Button('#screen-settings-done', { touchUp: function() {
+        self.done = new App.Controls.Button('#screen-settings-done', { touchUpInside: function() {
           self.hide();
         }});
         self.scroll = new App.Controls.Scroll('#dialog-settings-body');
@@ -45,18 +45,16 @@
 
         self.touchListener = new App.TouchListener('#screen-settings-dismiss', self);
 
-        self.signOut = new App.Controls.Button('#screen-settings-sign-out', { touchUp: function() {
-          // If we present a confirm dialog within the button event handler the final touch up gets lost and we find
-          // ourselves in an inconsistent state.
-          setTimeout(function() {
+        self.signOut = new App.Controls.Button('#screen-settings-sign-out', { touchUpInside: function() {
+          utilities.dispatch(function() {
             if (confirm("Sign out of Google Drive?")) {
               self.drive.signOut().fail(function(e) {
                 alert("Unable to sign out of Google Drive.\n" + e);
               });
             }
-          }, 10);
+          });
         }});
-        self.thanks = new App.Controls.Button('#screen-settings-say-thanks', { touchUp: function() {
+        self.thanks = new App.Controls.Button('#screen-settings-say-thanks', { touchUpInside: function() {
           utilities.open_new_window("https://gameplaycolor.com/thanks/");
         }});
 
