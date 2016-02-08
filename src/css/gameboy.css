@@ -1373,6 +1373,10 @@ hr {
     display: none;
   }
 
+  .dialog-body {
+    max-height: 200px;
+  }
+
 }
 
 /* iPhone 5: Portrait */
@@ -1486,6 +1490,10 @@ hr {
     display: none;
   }
 
+  .dialog-body {
+    max-height: 220px;
+  }
+
 }
 
 /* iPhone 6: Portrait */
@@ -1549,7 +1557,7 @@ hr {
   }
 
   .dialog-body {
-    max-height: 200px;
+    max-height: 220px;
   }
 
 }
