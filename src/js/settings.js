@@ -76,16 +76,6 @@
           }
         });
 
-        // TODO This could perhaps be implemented better with a flexbox.
-        // var updateDimensions = function() {
-        //   console.log("Update dimensions: " + $(window).width() + ", " + $(window).height());
-        //   console.log("Element: " + self.dialog.width() + ", " + self.dialog.height());
-        //   console.log(self.dialog.get(0).getBoundingClientRect());
-        // };
-
-        // window.addEventListener("resize", updateDimensions);
-        // updateDimensions();
-
       },
 
       onTouchEvent: function(state, position, timestamp) {
