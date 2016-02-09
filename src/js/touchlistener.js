@@ -18,17 +18,16 @@
 
 (function($) {
 
-  App.TouchListener = function(identifier, delegate) {
-    this.init(identifier, delegate);
+  App.TouchListener = function(element, delegate) {
+    this.init(element, delegate);
   };
   
   jQuery.extend(App.TouchListener.prototype, {
 
-    init: function (identifier, delegate) {
+    init: function (element, delegate) {
       var self = this;
-      self.identifier = identifier;
+      self.element = element;
       self.delegate = delegate;
-      self.element = $(self.identifier);
       self.recognizers = [];
 
       // Used for tracking the current touch interaction.
@@ -37,33 +36,33 @@
       // write more involved controls.
       self.touch = { x: 0, y: 0 };
 
-      document.querySelector(self.identifier).addEventListener('touchstart', function(e) {
+      self.element.get(0).addEventListener('touchstart', function(e) {
         self.dispatchEvent(App.Control.Touch.START, e);
       }, false);
 
-      document.querySelector(self.identifier).addEventListener('mousedown', function(e) {
+      self.element.get(0).addEventListener('mousedown', function(e) {
         self.dispatchEvent(App.Control.Touch.START, e);
       }, false);
 
-      document.querySelector(self.identifier).addEventListener('touchmove', function(e) {
+      self.element.get(0).addEventListener('touchmove', function(e) {
         self.dispatchEvent(App.Control.Touch.MOVE, e);
       }, false);
 
-      document.querySelector(self.identifier).addEventListener('mousemove', function(e) {
+      self.element.get(0).addEventListener('mousemove', function(e) {
         self.dispatchEvent(App.Control.Touch.MOVE, e);
       }, false);
 
-      document.querySelector(self.identifier).addEventListener('touchend', function(e) {
+      self.element.get(0).addEventListener('touchend', function(e) {
         e.preventDefault();
         self.onTouchEvent(App.Control.Touch.END, self.touch, e.timeStamp);
       }, false);
 
-      document.querySelector(self.identifier).addEventListener('mouseup', function(e) {
+      self.element.get(0).addEventListener('mouseup', function(e) {
         e.preventDefault();
         self.onTouchEvent(App.Control.Touch.END, self.touch, e.timeStamp);
       }, false);
 
-      document.querySelector(self.identifier).addEventListener('touchcancel', function(e) {
+      self.element.get(0).addEventListener('touchcancel', function(e) {
         e.preventDefault();
         self.onTouchEvent(App.Control.Touch.END, self.touch, e.timeStamp);
       }, false);

@@ -91,11 +91,11 @@
       self.drive = App.Drive.Instance();
       self.settings = new App.Settings(self.drive, self.store, self.gameBoy);
 
-      self.account = new App.Controls.Button('#button-account', { touchUpInside: function() {
+      self.account = new App.Controls.Button($('#button-account'), { touchUpInside: function() {
         self.settings.show();
       }});
 
-      self.redeem = new App.Controls.Button('#button-redeem', { touchUpInside: function() {
+      self.redeem = new App.Controls.Button($('#button-redeem'), { touchUpInside: function() {
         $("#redeem-code").blur();
         var code = $("#redeem-code").val();
         drive.redeemToken(code).then(function() {

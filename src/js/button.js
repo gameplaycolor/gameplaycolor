@@ -18,8 +18,8 @@
  
 (function($) {
 
-  App.Controls.Button = function(identifier, actions, keycode) {
-    this.init(identifier);
+  App.Controls.Button = function(element, actions, keycode) {
+    this.init(element);
     this.setKeyHandler(keycode);
     this.actions = actions;
   };

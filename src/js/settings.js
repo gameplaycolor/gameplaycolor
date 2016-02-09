@@ -32,10 +32,10 @@
         self.gameBoy = gameBoy;
         self.element = $('#screen-settings');
         self.dialog = $('#dialog-settings');
-        self.done = new App.Controls.Button('#screen-settings-done', { touchUpInside: function() {
+        self.done = new App.Controls.Button($('#screen-settings-done'), { touchUpInside: function() {
           self.hide();
         }});
-        self.scroll = new App.Controls.Scroll('#dialog-settings-body');
+        self.scroll = new App.Controls.Scroll($('#dialog-settings-body'));
 
         self.element.get(0).addEventListener('touchmove', function(e) {
           e.preventDefault();
@@ -43,9 +43,9 @@
 
         $('#application-version').text(window.config.version);
 
-        self.touchListener = new App.TouchListener('#screen-settings-dismiss', self);
+        self.touchListener = new App.TouchListener($('#screen-settings-dismiss'), self);
 
-        self.signOut = new App.Controls.Button('#screen-settings-sign-out', { touchUpInside: function() {
+        self.signOut = new App.Controls.Button($('#screen-settings-sign-out'), { touchUpInside: function() {
           utilities.dispatch(function() {
             if (confirm("Sign out of Google Drive?")) {
               self.drive.signOut().fail(function(e) {
@@ -55,29 +55,29 @@
           });
         }});
 
-        self.sound = new App.Controls.Switch('#switch', function(target, selected) {
+        self.sound = new App.Controls.Switch($('#switch'), function(target, selected) {
           target.setSelected(selected);
           self.store.setProperty(App.Controller.Domain.SETTINGS, App.Store.Property.SOUND, selected);
           self.gameBoy.setSoundEnabled(selected !== 0);
         });
 
-        self.thanks = new App.Controls.Button('#screen-settings-say-thanks', { touchUpInside: function() {
+        self.thanks = new App.Controls.Button($('#screen-settings-say-thanks'), { touchUpInside: function() {
           utilities.open_new_window("https://gameplaycolor.com/thanks/");
         }});
 
-        self.speed1 = new App.Controls.Button('#emulation-speed-1x', { touchUpInside: function() {
+        self.speed1 = new App.Controls.Button($('#emulation-speed-1x'), { touchUpInside: function() {
           self.gameBoy.setSpeed(1);
           $('#emulation-speed-1x').addClass("selected");
           $('#emulation-speed-2x').removeClass("selected");
           $('#emulation-speed-3x').removeClass("selected");
         }});
-        self.speed2 = new App.Controls.Button('#emulation-speed-2x', { touchUpInside: function() {
+        self.speed2 = new App.Controls.Button($('#emulation-speed-2x'), { touchUpInside: function() {
           self.gameBoy.setSpeed(2);
           $('#emulation-speed-1x').removeClass("selected");
           $('#emulation-speed-2x').addClass("selected");
           $('#emulation-speed-3x').removeClass("selected");
         }});
-        self.speed3 = new App.Controls.Button('#emulation-speed-3x', { touchUpInside: function() {
+        self.speed3 = new App.Controls.Button($('#emulation-speed-3x'), { touchUpInside: function() {
           self.gameBoy.setSpeed(3);
           $('#emulation-speed-1x').removeClass("selected");
           $('#emulation-speed-2x').removeClass("selected");

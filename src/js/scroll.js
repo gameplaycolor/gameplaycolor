@@ -18,8 +18,8 @@
  
 (function($) {
 
-  App.Controls.Scroll = function(identifier) {
-    this.init(identifier);
+  App.Controls.Scroll = function(element) {
+    this.init(element);
   };
 
   jQuery.extend(

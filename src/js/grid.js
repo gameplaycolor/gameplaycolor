@@ -71,7 +71,7 @@
         didLongPressItem: function(index, element) {}
       };
 
-      self.touchListener = new App.TouchListener(self.identifier, self);
+      self.touchListener = new App.TouchListener(self.element, self);
       self.touchStart = { x: 0, y: 0};
       self.touchStartTimestamp = 0;
       self.touchDidMove = false;
