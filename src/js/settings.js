@@ -65,24 +65,11 @@
           utilities.open_new_window("https://gameplaycolor.com/thanks/");
         }});
 
-        self.speed1 = new App.Controls.Button($('#emulation-speed-1x'), { touchUpInside: function() {
-          self.gameBoy.setSpeed(1);
-          $('#emulation-speed-1x').addClass("selected");
-          $('#emulation-speed-2x').removeClass("selected");
-          $('#emulation-speed-3x').removeClass("selected");
-        }});
-        self.speed2 = new App.Controls.Button($('#emulation-speed-2x'), { touchUpInside: function() {
-          self.gameBoy.setSpeed(2);
-          $('#emulation-speed-1x').removeClass("selected");
-          $('#emulation-speed-2x').addClass("selected");
-          $('#emulation-speed-3x').removeClass("selected");
-        }});
-        self.speed3 = new App.Controls.Button($('#emulation-speed-3x'), { touchUpInside: function() {
-          self.gameBoy.setSpeed(3);
-          $('#emulation-speed-1x').removeClass("selected");
-          $('#emulation-speed-2x').removeClass("selected");
-          $('#emulation-speed-3x').addClass("selected");
-        }});
+        self.speed = new App.Controls.Segmented($('#emulation-speed'), function(index) {
+          console.log(index);
+          self.gameBoy.setSpeed(index);
+          self.speed.setIndex(index);
+        });
 
         self.store.property(App.Controller.Domain.SETTINGS, App.Store.Property.SOUND, function(sound) {
           if (sound !== undefined) {
