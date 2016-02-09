@@ -107,7 +107,9 @@ function base64ToArray(b64encoded) {
     setSpeed: function(speed) {
       var self = this;
       self.speed = speed;
-      gameboy.setSpeed(speed);
+      if (gameboy) {
+        gameboy.setSpeed(speed);
+    }
     },
 
     onStateChange: function(callback) {

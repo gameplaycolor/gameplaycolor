@@ -61,16 +61,6 @@
           self.gameBoy.setSoundEnabled(selected !== 0);
         });
 
-        self.thanks = new App.Controls.Button($('#screen-settings-say-thanks'), { touchUpInside: function() {
-          utilities.open_new_window("https://gameplaycolor.com/thanks/");
-        }});
-
-        self.speed = new App.Controls.Segmented($('#emulation-speed'), function(index) {
-          console.log(index);
-          self.gameBoy.setSpeed(index);
-          self.speed.setIndex(index);
-        });
-
         self.store.property(App.Controller.Domain.SETTINGS, App.Store.Property.SOUND, function(sound) {
           if (sound !== undefined) {
             self.sound.setSelected(sound);
@@ -78,6 +68,46 @@
           } else {
             self.sound.setSelected(1);
             self.gameBoy.setSoundEnabled(true);
+          }
+        });
+
+        self.thanks = new App.Controls.Button($('#screen-settings-say-thanks'), { touchUpInside: function() {
+          utilities.open_new_window("https://gameplaycolor.com/thanks/");
+        }});
+
+        var indexToSpeed = function(index) {
+          if (index == 0) {
+            return 1.0;
+          } else if (index == 1) {
+            return 1.5;
+          } else if (index == 2) {
+            return 2.0;
+          }
+          return 1.0;
+        };
+
+        var speedToIndex = function (speed) {
+          if (speed == 1.0) {
+            return 0;
+          } else if (speed == 1.5) {
+            return 1;
+          } else if (speed == 2.0) {
+            return 2;
+          }
+          return 0;
+        }
+
+        self.speed = new App.Controls.Segmented($('#emulation-speed'), function(index) {
+          self.speed.setIndex(index);
+          var speed = indexToSpeed(index);
+          self.gameBoy.setSpeed(speed);
+          self.store.setProperty(App.Controller.Domain.SETTINGS, App.Store.Property.SPEED, speed);
+        });
+
+        self.store.property(App.Controller.Domain.SETTINGS, App.Store.Property.SPEED, function(speed) {
+          if (speed !== undefined) {
+            self.gameBoy.setSpeed(speed);
+            self.speed.setIndex(speedToIndex(speed));
           }
         });
 
