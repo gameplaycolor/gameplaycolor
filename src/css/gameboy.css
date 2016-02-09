@@ -652,6 +652,11 @@ body
   color: white;
 }
 
+.segmented li.pressed
+{
+  background-color: red;
+}
+
 .setting-switch
 {
   transition: 300ms ease-in-out;

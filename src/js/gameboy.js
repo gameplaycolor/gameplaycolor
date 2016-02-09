@@ -79,6 +79,7 @@ function base64ToArray(b64encoded) {
       self.state = App.GameBoy.State.IDLE;
       self.stateChangeCallbacks = [];
       self.logging = new App.Logging(window.config.logging_level, "gameboy");
+      self.speed = 1;
 
       settings[App.GameBoy.Settings.ENABLE_SOUND] = true;
       settings[App.GameBoy.Settings.SOFTWARE_RESIZING] = false;
@@ -101,6 +102,12 @@ function base64ToArray(b64encoded) {
           gameboy.stopSound();
         }
       }
+    },
+
+    setSpeed: function(speed) {
+      var self = this;
+      self.speed = speed;
+      gameboy.setSpeed(speed);
     },
 
     onStateChange: function(callback) {
@@ -170,6 +177,7 @@ function base64ToArray(b64encoded) {
       self.library.fetch(identifier).then(function(data) {
 
         self._insertCartridge(identifier, data).then(function() {
+          gameboy.setSpeed(self.speed);
           self.setState(App.GameBoy.State.RUNNING);
           deferred.resolve();
         }).fail(resetStateAndReject);

@@ -65,25 +65,20 @@
           utilities.open_new_window("https://gameplaycolor.com/thanks/");
         }});
 
-        $("input[name=emulation-speed]:radio").change(function() {
-          console.log($(this).val());
-          gameboy.setSpeed(parseInt($(this).val()));
-        });
-
         self.speed1 = new App.Controls.Button('#emulation-speed-1x', { touchUpInside: function() {
-          gameboy.setSpeed(1);
+          self.gameBoy.setSpeed(1);
           $('#emulation-speed-1x').addClass("selected");
           $('#emulation-speed-2x').removeClass("selected");
           $('#emulation-speed-3x').removeClass("selected");
         }});
         self.speed2 = new App.Controls.Button('#emulation-speed-2x', { touchUpInside: function() {
-          gameboy.setSpeed(2);
+          self.gameBoy.setSpeed(2);
           $('#emulation-speed-1x').removeClass("selected");
           $('#emulation-speed-2x').addClass("selected");
           $('#emulation-speed-3x').removeClass("selected");
         }});
         self.speed3 = new App.Controls.Button('#emulation-speed-3x', { touchUpInside: function() {
-          gameboy.setSpeed(3);
+          self.gameBoy.setSpeed(3);
           $('#emulation-speed-1x').removeClass("selected");
           $('#emulation-speed-2x').removeClass("selected");
           $('#emulation-speed-3x').addClass("selected");
