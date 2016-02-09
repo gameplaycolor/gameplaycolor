@@ -25,7 +25,8 @@ body
   -moz-user-select: none;
   user-select: none;
   background-color: #000;
-  font: 15px Helvetica, sans-serif;
+  font-family: -apple-system, Helvetica, sans-serif;
+  font-size: 15px;
   cursor: default;
 }
 
