@@ -614,12 +614,12 @@ body
 
 .segmented
 {
-  height: 36px;
-  line-height: 34px;
+  height: 28px;
+  line-height: 26px;
   list-style: none;
-  margin: 0;
   padding: 0;
   display: flex;
+  margin: 8px 0;
 }
 
 .segmented li
@@ -636,25 +636,25 @@ body
 
 .segmented li:first-child
 {
-  border-radius: 8px 0 0 8px;
+  border-radius: 4px 0 0 4px;
   border-left: 1px solid #0076ff;
 }
 
 .segmented li:last-child
 {
-  border-radius: 0 8px 8px 0;
+  border-radius: 0 4px 4px 0;
   border-right: 1px solid #0076ff;
+}
+
+.segmented li.pressed
+{
+  background-color: #d8ecff;
 }
 
 .segmented li.selected
 {
   background-color: #0076ff;
   color: white;
-}
-
-.segmented li.pressed
-{
-  background-color: red;
 }
 
 .setting-switch
