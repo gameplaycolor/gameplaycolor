@@ -44,11 +44,10 @@
 
   jQuery.extend(App.Control.prototype, {
 
-    init: function(identifier) {
+    init: function(element) {
       var self = this;
-      self.identifier = identifier;
-      self.element = $(self.identifier);
-      self.touchListener = new App.TouchListener(self.identifier, self);
+      self.element = element;
+      self.touchListener = new App.TouchListener(element, self);
       self.onCreate();
     },
 

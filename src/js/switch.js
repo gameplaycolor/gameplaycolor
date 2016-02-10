@@ -18,8 +18,8 @@
  
 (function($) {
 
-  App.Controls.Switch = function(identifier, callback) {
-    this.init(identifier);
+  App.Controls.Switch = function(element, callback) {
+    this.init(element);
     this.callback = callback;
     self.selected = 0;
   };

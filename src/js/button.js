@@ -18,8 +18,8 @@
  
 (function($) {
 
-  App.Controls.Button = function(identifier, actions, keycode) {
-    this.init(identifier);
+  App.Controls.Button = function(element, actions, keycode) {
+    this.init(element);
     this.setKeyHandler(keycode);
     this.actions = actions;
   };
@@ -35,6 +35,7 @@
 
     onCreate: function() {
       var self = this;
+      self.touchCount = 0;
       self.state = App.Controls.Button.State.UP;
     },
 
@@ -78,17 +79,20 @@
 
       switch(state) {
         case App.Control.Touch.START:
+          self.touchCount = 1;
           self.setPressed(true);
           self.touchDown();
           break;
         case App.Control.Touch.MOVE:
-          if (position.x >= 0 &&
-              position.x < self.width() &&
-              position.y >= 0 &&
-              position.y < self.height()) {
-            self.setPressed(true);
-          } else {
-            self.setPressed(false);
+          if (self.touchCount > 0) {
+            if (position.x >= 0 &&
+                position.x < self.width() &&
+                position.y >= 0 &&
+                position.y < self.height()) {
+              self.setPressed(true);
+            } else {
+              self.setPressed(false);
+            }
           }
           break;
         case App.Control.Touch.END:
@@ -99,6 +103,7 @@
           }
           self.touchUp();
           self.setPressed(false);
+          self.touchCount = 0;
           break;
       }
     },

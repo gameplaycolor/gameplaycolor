@@ -21,7 +21,7 @@
   App.Controls = {};
 
   App.Controls.Pad = function(actions) {
-    this.init('#dpad-touch-target');
+    this.init($('#dpad-touch-target'));
     this.actions = actions;
   };
 

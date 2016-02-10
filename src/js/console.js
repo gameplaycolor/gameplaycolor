@@ -98,41 +98,41 @@
         });
         
         // A.
-        self.a = new App.Controls.Button('#control-a', { touchDown : function() {
+        self.a = new App.Controls.Button($('#control-a'), { touchDown : function() {
           self.gameBoy.keyDown(Gameboy.Key.A);
         }, touchUp: function() {
           self.gameBoy.keyUp(Gameboy.Key.A);
         }}, 65 /* A */);
 
         // B.
-        self.b = new App.Controls.Button('#control-b', { touchDown : function() {
+        self.b = new App.Controls.Button($('#control-b'), { touchDown : function() {
           self.gameBoy.keyDown(Gameboy.Key.B);
         }, touchUp: function() {
           self.gameBoy.keyUp(Gameboy.Key.B);
         }}, 83 /* S */);
 
         // Start.
-        self.start = new App.Controls.Button('#control-start', { touchDown : function() {
+        self.start = new App.Controls.Button($('#control-start'), { touchDown : function() {
           self.gameBoy.keyDown(Gameboy.Key.START);
         }, touchUp: function() {
           self.gameBoy.keyUp(Gameboy.Key.START);
         }}, 13 /* Return */);
 
         // Select.
-        self.select = new App.Controls.Button('#control-select', { touchDown : function() {
+        self.select = new App.Controls.Button($('#control-select'), { touchDown : function() {
           self.gameBoy.keyDown(Gameboy.Key.SELECT);
         }, touchUp: function() {
           self.gameBoy.keyUp(Gameboy.Key.SELECT);
         }}, 16 /* Left Shift */);
 
         // Tapping the screen shows the game picker.
-        self.screen = new App.Controls.Button('#display', { touchUp: function() {
+        self.screen = new App.Controls.Button($('#display'), { touchUp: function() {
           self.logging.info("Show games");
           window.tracker.track('games');
           self.hide();
         }});
 
-        self.done = new App.Controls.Button('#button-done', { touchUp: function() {
+        self.done = new App.Controls.Button($('#button-done'), { touchUp: function() {
           self.logging.info("Show console");
           self.show();
         }});

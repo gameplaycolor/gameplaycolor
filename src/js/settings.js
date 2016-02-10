@@ -32,10 +32,10 @@
         self.gameBoy = gameBoy;
         self.element = $('#screen-settings');
         self.dialog = $('#dialog-settings');
-        self.done = new App.Controls.Button('#screen-settings-done', { touchUpInside: function() {
+        self.done = new App.Controls.Button($('#screen-settings-done'), { touchUpInside: function() {
           self.hide();
         }});
-        self.scroll = new App.Controls.Scroll('#dialog-settings-body');
+        self.scroll = new App.Controls.Scroll($('#dialog-settings-body'));
 
         self.element.get(0).addEventListener('touchmove', function(e) {
           e.preventDefault();
@@ -43,9 +43,9 @@
 
         $('#application-version').text(window.config.version);
 
-        self.touchListener = new App.TouchListener('#screen-settings-dismiss', self);
+        self.touchListener = new App.TouchListener($('#screen-settings-dismiss'), self);
 
-        self.signOut = new App.Controls.Button('#screen-settings-sign-out', { touchUpInside: function() {
+        self.signOut = new App.Controls.Button($('#screen-settings-sign-out'), { touchUpInside: function() {
           utilities.dispatch(function() {
             if (confirm("Sign out of Google Drive?")) {
               self.drive.signOut().fail(function(e) {
@@ -54,11 +54,8 @@
             }
           });
         }});
-        self.thanks = new App.Controls.Button('#screen-settings-say-thanks', { touchUpInside: function() {
-          utilities.open_new_window("https://gameplaycolor.com/thanks/");
-        }});
 
-        self.sound = new App.Controls.Switch('#switch', function(target, selected) {
+        self.sound = new App.Controls.Switch($('#switch'), function(target, selected) {
           target.setSelected(selected);
           self.store.setProperty(App.Controller.Domain.SETTINGS, App.Store.Property.SOUND, selected);
           self.gameBoy.setSoundEnabled(selected !== 0);
@@ -71,6 +68,50 @@
           } else {
             self.sound.setSelected(1);
             self.gameBoy.setSoundEnabled(true);
+          }
+        });
+
+        self.thanks = new App.Controls.Button($('#screen-settings-say-thanks'), { touchUpInside: function() {
+          utilities.open_new_window("https://gameplaycolor.com/thanks/");
+        }});
+
+        var indexToSpeed = function(index) {
+          if (index == 0) {
+            return 1.0;
+          } else if (index == 1) {
+            return 1.5;
+          } else if (index == 2) {
+            return 2.0;
+          } else if (index == 3) {
+            return 3.0;
+          }
+          return 1.0;
+        };
+
+        var speedToIndex = function (speed) {
+          if (speed == 1.0) {
+            return 0;
+          } else if (speed == 1.5) {
+            return 1;
+          } else if (speed == 2.0) {
+            return 2;
+          } else if (speed == 3.0) {
+            return 3;
+          }
+          return 0;
+        }
+
+        self.speed = new App.Controls.Segmented($('#emulation-speed'), function(index) {
+          self.speed.setIndex(index);
+          var speed = indexToSpeed(index);
+          self.gameBoy.setSpeed(speed);
+          self.store.setProperty(App.Controller.Domain.SETTINGS, App.Store.Property.SPEED, speed);
+        });
+
+        self.store.property(App.Controller.Domain.SETTINGS, App.Store.Property.SPEED, function(speed) {
+          if (speed !== undefined) {
+            self.gameBoy.setSpeed(speed);
+            self.speed.setIndex(speedToIndex(speed));
           }
         });
 

@@ -1,2 +1,1 @@
-- Adding scrolling to the settings dialog on small screens.
-- Adding the version to the settings dialog.
+- Adding support for different emulation speeds.

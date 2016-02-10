@@ -18,35 +18,37 @@
  
 (function($) {
 
-  App.Controls.Scroll = function(element) {
+  App.Controls.Segmented = function(element, callback) {
     this.init(element);
+    this.callback = callback;
+    self.index = 0;
   };
 
   jQuery.extend(
-    App.Controls.Scroll.prototype,
+    App.Controls.Segmented.prototype,
     App.Control.prototype, {
 
     onCreate: function() {
       var self = this;
+      self.buttons = $.map(self.element.children(), function(child, index) {
+        return new App.Controls.Button($(child), { touchUpInside: function() {
+          self.callback(index);
+        }});
+      });
     },
 
-    onTouchEvent: function(state, position, timestamp) {
+    setIndex: function(index) {
       var self = this;
-      
-      if (state === App.Control.Touch.START) {
-        self.touchStart = position;
-        self.scrollLeft = self.element.scrollLeft();
-        self.scrollTop = self.element.scrollTop();
-        self.touchCount = 1;
-      } else if (state === App.Control.Touch.MOVE) {
-        if (self.touchCount > 0) {
-          self.element.scrollLeft(self.scrollLeft + self.touchStart.x - position.x);
-          self.element.scrollTop(self.scrollTop + self.touchStart.y - position.y);
-        }
-      } else if (state === App.Control.Touch.END) {
-        self.touchCount = 0;
+      if (self.index != index) {
+        self.index = index;
+        self.element.children().each(function(i, child) {
+          if (i == index) {
+            $(child).addClass("selected");
+          } else {
+            $(child).removeClass("selected");
+          }
+        });
       }
-
     },
 
   });
