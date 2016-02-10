@@ -42,6 +42,10 @@ The build will be created in the `build` directory, and a corresponding *.tar.gz
 Changelog
 ---------
 
+### Version 2.1.6
+
+- Adding support for different emulation speeds.
+
 ### Version 2.1.5
 
 - Adding scrolling to the settings dialog on small screens.
