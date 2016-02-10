@@ -82,6 +82,8 @@
             return 1.5;
           } else if (index == 2) {
             return 2.0;
+          } else if (index == 3) {
+            return 3.0;
           }
           return 1.0;
         };
@@ -93,6 +95,8 @@
             return 1;
           } else if (speed == 2.0) {
             return 2;
+          } else if (speed == 3.0) {
+            return 3;
           }
           return 0;
         }
