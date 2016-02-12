@@ -4986,7 +4986,7 @@ GameBoyCore.prototype.recomputeDimension = function () {
 	//Cache some dimension info:
 	// this.onscreenWidth = this.canvas.width;
 	// this.onscreenHeight = this.canvas.height;
-	if (window && window.mozRequestAnimationFrame) {
+	if (window && window.mozRequestAnimationFrame || (navigator.userAgent.toLowerCase().indexOf("gecko") != -1 && navigator.userAgent.toLowerCase().indexOf("like gecko") == -1)) {
 		//Firefox slowness hack:
 		this.canvas.width = this.onscreenWidth = (!settings[12]) ? 160 : this.canvas.width;
 		this.canvas.height = this.onscreenHeight = (!settings[12]) ? 144 : this.canvas.height;
@@ -7895,12 +7895,20 @@ GameBoyCore.prototype.memoryReadJumpCompile = function () {
 						return 0x8F | parentObj.memory[0xFF75];
 					}
 					break;
-				case 0xFF76:
-				case 0xFF77:
-					this.memoryHighReader[index & 0xFF] = this.memoryReader[index] = function (parentObj, address) {
-						return 0;
-					}
-					break;
+                case 0xFF76:
+                    //Undocumented realtime PCM amplitude readback:
+                    this.memoryHighReader[0x76] = this.memoryReader[0xFF76] = function (parentObj, address) {
+                        parentObj.audioJIT();
+                        return (parentObj.channel2envelopeVolume << 4) | parentObj.channel1envelopeVolume;
+                    }
+                    break;
+                case 0xFF77:
+                    //Undocumented realtime PCM amplitude readback:
+                    this.memoryHighReader[0x77] = this.memoryReader[0xFF77] = function (parentObj, address) {
+                        parentObj.audioJIT();
+                        return (parentObj.channel4envelopeVolume << 4) | parentObj.channel3envelopeVolume;
+                    }
+                    break;
 				case 0xFF78:
 				case 0xFF79:
 				case 0xFF7A:
