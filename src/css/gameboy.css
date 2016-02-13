@@ -1321,12 +1321,19 @@ hr {
   left: 0;
 }
 
+#screen-console-container
+{
+  overflow: hidden;
+}
+
+#screen-console
+{
+  transition: left 0.3s ease-in-out;
+}
+
 #screen-console.open
 {
-  /* Unfortunately there seems to be some race in iOS 9 which means that the slide out transition animation sometimes
-     causes the view to scale inspite of us explicitly asking it not to. We therefore don't bother animating for the 
-     time being. */
-  display: none;
+  left: 100%;
 }
 
 .input-code

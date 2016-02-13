@@ -121,7 +121,7 @@
               <div id="screen-settings-say-thanks" class="dialog-button">Say thanks!</div>
 
             </div>
-            
+
             <div class="dialog-divider"></div>
             <div id="screen-settings-done" class="dialog-button default">Done</div>
 
@@ -134,54 +134,56 @@
         <div id="screen-settings-dismiss" class="screen" />
       </div>
 
-      <div id="screen-console" class="screen grape">
+      <div id="screen-console-container">
+        <div id="screen-console" class="screen grape">
 
-        <div id="moulding">
-          <div id="moulding-left"></div>
-          <div id="moulding-center"></div>
-          <div id="moulding-right"></div>
-        </div>
-        <div id="element-surround" class="element-surround">
-          <div id="surround" class="surround"></div>
-        </div>
-        <div id="element-screen">
-          <div id="display">
-            <canvas id="LCD" class="display" width="160" height="144"></canvas>
-            <div id="LCD-idle" class="display"></div>
-            <div id="LCD-loading" class="display" style="display: none"></div>
-            <div id="LCD-dropshadow"></div>
+          <div id="moulding">
+            <div id="moulding-left"></div>
+            <div id="moulding-center"></div>
+            <div id="moulding-right"></div>
           </div>
-        </div>
-        <div id="element-dpad">
-          <div id="dpad-touch-target" class="dpad-touch-target">
-            <div id="dpad" class="dpad">
-              <div id="dpad-up" class="element up top arrow"></div>
-              <div id="dpad-left" class="element left middle arrow"></div>
-              <div id="dpad-down" class="element down bottom arrow"></div>
-              <div id="dpad-right" class="element right middle arrow"></div>
-              <div class="element center middle"></div>
+          <div id="element-surround" class="element-surround">
+            <div id="surround" class="surround"></div>
+          </div>
+          <div id="element-screen">
+            <div id="display">
+              <canvas id="LCD" class="display" width="160" height="144"></canvas>
+              <div id="LCD-idle" class="display"></div>
+              <div id="LCD-loading" class="display" style="display: none"></div>
+              <div id="LCD-dropshadow"></div>
             </div>
           </div>
-        </div>
-        <div id="element-options">
-          <div id="group-options">
-            <div class="button-option-group top left">
-              <div id="control-select" class="button-option"></div>
-              <div class="button-label">Select</div>
-            </div>
-            <div class="button-option-group top right">
-              <div id="control-start" class="button-option"></div>
-              <div class="button-label">Start</div>
+          <div id="element-dpad">
+            <div id="dpad-touch-target" class="dpad-touch-target">
+              <div id="dpad" class="dpad">
+                <div id="dpad-up" class="element up top arrow"></div>
+                <div id="dpad-left" class="element left middle arrow"></div>
+                <div id="dpad-down" class="element down bottom arrow"></div>
+                <div id="dpad-right" class="element right middle arrow"></div>
+                <div class="element center middle"></div>
+              </div>
             </div>
           </div>
-        </div>
-        <div id="element-buttons">
-          <div id="group-buttons">
-            <div id="control-a" class="button"><div class="control-text">A</div></div>
-            <div id="control-b" class="button"><div class="control-text">B</div></div>
+          <div id="element-options">
+            <div id="group-options">
+              <div class="button-option-group top left">
+                <div id="control-select" class="button-option"></div>
+                <div class="button-label">Select</div>
+              </div>
+              <div class="button-option-group top right">
+                <div id="control-start" class="button-option"></div>
+                <div class="button-label">Start</div>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+          <div id="element-buttons">
+            <div id="group-buttons">
+              <div id="control-a" class="button"><div class="control-text">A</div></div>
+              <div id="control-b" class="button"><div class="control-text">B</div></div>
+            </div>
+          </div>
+        </div><!-- screen-console -->
+      </div><!-- screen-console-container -->
 
       <div id="DEBUG" style="display: none"></div>
       <div id="DEBUGGER"></div>
