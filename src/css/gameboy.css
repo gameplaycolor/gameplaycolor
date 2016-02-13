@@ -52,7 +52,7 @@ body
 #moulding
 {
   position: absolute;
-  top: 0;
+  top: 42px;
   left: 0;
   display: -webkit-flex;
   width: 100%;
@@ -83,7 +83,7 @@ body
 .element-surround
 {
   position: absolute;
-  top: 0;
+  top: 42px;
   left: 0;
   width: 100%;
   height: 100%;
@@ -98,7 +98,6 @@ body
   margin: 0 auto;
   height: 338px;
   box-shadow: 0 2px 2px rgba(255, 255, 255, 0.08), inset 0 -2px 3px rgba(255, 255, 255, 0.03);
-  border-radius: 12px;
 }
 
 #LCD
@@ -281,9 +280,17 @@ body
   flex-grow: 1;
 }
 
-.button-account
+.button-account, .button-back
 {
   text-align: left;
+}
+
+.button-library
+{
+  opacity: 0.3;
+  text-shadow: 0 -1px #777;
+  text-transform: uppercase;
+  color: black;
 }
 
 .button-done
@@ -311,8 +318,29 @@ body
     top: 25.25px;
 }
 
-.button-done.pressed
-{
+.button-back {
+  padding-left: 22px;
+}
+
+.button-back:after, .button-back:before {
+  content: "";
+  width: 16px;
+  height: 3px;
+  background-color: black;
+  position: absolute;
+  left: 0;
+}
+
+.button-back:after {
+    -webkit-transform:rotate(-45deg);
+    top: 15.75px;
+    box-shadow: 1px -1px #777;
+}
+
+.button-back:before {
+    -webkit-transform:rotate(45deg);
+    top: 25.25px;
+    box-shadow: 0 -1px #777;
 }
 
 #debug
@@ -337,8 +365,15 @@ body
   top: 0;
   left: 0;
   background-image: url(images/noise.png);
-  border-radius: 12px;
   border: 0;
+  transition: left 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  box-shadow: 0 0 32px rgba(0, 0, 0, 0.8);
+}
+
+#screen-console.open
+{
+  left: 100%;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0.8);
 }
 
 .grape 
@@ -495,15 +530,10 @@ body
 #screen-games
 {
   background-color: #272727;
-  border-radius: 12px;
   background-size: 233px 133px;
 }
 
 #screen-settings
-{
-}
-
-#screen-settings.hidden
 {
 }
 
@@ -1326,16 +1356,6 @@ hr {
   overflow: hidden;
 }
 
-#screen-console
-{
-  transition: left 0.3s ease-in-out;
-}
-
-#screen-console.open
-{
-  left: 100%;
-}
-
 .input-code
 {
   width: 80%;
@@ -1624,7 +1644,7 @@ hr {
 
   #element-screen
   {
-    top: 24px;
+    top: 66px;
   }
 
   #element-buttons

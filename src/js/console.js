@@ -124,8 +124,7 @@
           self.gameBoy.keyUp(Gameboy.Key.SELECT);
         }}, 16 /* Left Shift */);
 
-        // Tapping the screen shows the game picker.
-        self.screen = new App.Controls.Button($('#display'), { touchUp: function() {
+      self.back = new App.Controls.Button($('#button-library'), { touchUp: function() {
           self.logging.info("Show games");
           window.tracker.track('games');
           self.hide();
