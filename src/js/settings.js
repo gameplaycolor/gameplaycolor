@@ -61,13 +61,25 @@
           self.gameBoy.setSoundEnabled(selected !== 0);
         });
 
+        var setSoundEnabled = function(enabled) {
+          if (enabled === true) {
+            var audio = document.getElementById('silent');
+            audio.addEventListener('ended', function() {
+              self.gameBoy.setSoundEnabled(true);
+            });
+            audio.play();
+          } else {
+            self.gameBoy.setSoundEnabled(false);
+          }
+        }
+
         self.store.property(App.Controller.Domain.SETTINGS, App.Store.Property.SOUND, function(sound) {
           if (sound !== undefined) {
             self.sound.setSelected(sound);
-            self.gameBoy.setSoundEnabled(sound !== 0);
+            setSoundEnabled(sound !== 0);
           } else {
             self.sound.setSelected(1);
-            self.gameBoy.setSoundEnabled(true);
+            setSoundEnabled(true);
           }
         });
 
