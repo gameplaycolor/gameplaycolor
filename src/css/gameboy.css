@@ -1306,7 +1306,7 @@ hr {
 
 .dpad.pressed-up > .center:before
 {
-    top: 7px;
+    top: 6px;
 }
 .dpad.pressed-down > .center:before
 {
