@@ -144,6 +144,8 @@
         self.store.property(App.Controller.Domain.SETTINGS, App.Store.Property.COLOR, function(color) {
           if (color !== undefined) {
             self.color.setIndex(colors.indexOf(color));
+          } else {
+            self.color.setIndex(0);
           }
         });
 
