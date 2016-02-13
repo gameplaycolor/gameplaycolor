@@ -75,7 +75,7 @@ body {
 
 .element-surround {
     position: absolute;
-    top: 46px;
+    top: 42px;
     left: 0;
     width: 100%;
     height: 100%;
@@ -256,8 +256,8 @@ body {
 }
 
 .button-library {
-    opacity: 0.3;
-    text-shadow: 0 -1px #777;
+    opacity: 0.5;
+    text-shadow: 0 -1px #888;
     text-transform: uppercase;
     color: black;
 }
@@ -302,13 +302,13 @@ body {
 .button-back:after {
     -webkit-transform:rotate(-45deg);
     top: 15.75px;
-    box-shadow: 1px -1px #777;
+    box-shadow: 1px -1px #888;
 }
 
 .button-back:before {
     -webkit-transform:rotate(45deg);
     top: 25.25px;
-    box-shadow: 0 -1px #777;
+    box-shadow: 0 -1px #888;
 }
 
 #debug {
@@ -1456,7 +1456,7 @@ hr {
 @media only screen and (width: 375px) and (height: 647px) {
 
     #element-screen {
-        top: 66px;
+        top: 64px;
     }
 
     #element-buttons {
