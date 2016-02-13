@@ -75,7 +75,7 @@ body {
 
 .element-surround {
     position: absolute;
-    top: 42px;
+    top: 46px;
     left: 0;
     width: 100%;
     height: 100%;
@@ -87,8 +87,10 @@ body {
     border: 1px solid #000;
     border-bottom: 1.5px solid #000;
     margin: 0 auto;
-    height: 338px;
+    height: 326px;
     box-shadow: 0 2px 2px rgba(255, 255, 255, 0.08), inset 0 -2px 3px rgba(255, 255, 255, 0.03);
+    width: 370px;
+    border-radius: 12px;
 }
 
 #LCD {
@@ -330,13 +332,16 @@ body {
     left: 0;
     background-image: url(images/noise.png);
     border: 0;
-    transition: left 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    /*transition: left 0.3s ease-in-out, box-shadow 0.3s ease-in-out;*/
     box-shadow: 0 0 32px rgba(0, 0, 0, 0.8);
+    border-radius: 12px;
+    box-shadow: inset 0 0 4px rgba(255, 255, 2555, 0.5);
 }
 
 #screen-console.open {
-    left: 100%;
-    box-shadow: 0 0 0 rgba(0, 0, 0, 0.8);
+    /*left: 100%;*/
+    /*box-shadow: 0 0 0 rgba(0, 0, 0, 0.8);*/
+    display: none;
 }
 
 .grape {
@@ -473,6 +478,7 @@ body {
 #screen-games {
     background-color: #272727;
     background-size: 233px 133px;
+    border-radius: 12px;
 }
 
 .settings {
@@ -786,7 +792,7 @@ hr {
     left: 0;
     width: 568px;
     height: 300px;
-    width: 100%;
+    width: 375px;
     height: 100%;
 }
 
@@ -1208,6 +1214,7 @@ hr {
 
 #screen-console-container {
     overflow: hidden;
+    width: 375px;
 }
 
 .input-code {
