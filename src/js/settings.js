@@ -18,18 +18,19 @@
 
 (function($) {
 
-  App.Settings = function(drive, store, gameBoy) {
-    this.init(drive, store, gameBoy);
+  App.Settings = function(drive, store, gameBoy, console) {
+    this.init(drive, store, gameBoy, console);
   };
   
   jQuery.extend(
     App.Settings.prototype, {
       
-      init: function(drive, store, gameBoy) {
+      init: function(drive, store, gameBoy, console) {
         var self = this;
         self.drive = drive;
         self.store = store;
         self.gameBoy = gameBoy;
+        self.console = console;
         self.element = $('#screen-settings');
         self.dialog = $('#dialog-settings');
         self.done = new App.Controls.Button($('#screen-settings-done'), { touchUpInside: function() {
@@ -87,6 +88,8 @@
           utilities.open_new_window("https://gameplaycolor.com/thanks/");
         }});
 
+        // Speed
+
         var indexToSpeed = function(index) {
           if (index == 0) {
             return 1.0;
@@ -113,6 +116,7 @@
           return 0;
         }
 
+
         self.speed = new App.Controls.Segmented($('#emulation-speed'), function(index) {
           self.speed.setIndex(index);
           var speed = indexToSpeed(index);
@@ -124,6 +128,22 @@
           if (speed !== undefined) {
             self.gameBoy.setSpeed(speed);
             self.speed.setIndex(speedToIndex(speed));
+          }
+        });
+
+        // Color
+
+        var colors = ["grape", "cherry", "teal", "lime", "yellow"];
+
+        self.color = new App.Controls.Segmented($('#console-color'), function(index) {
+          self.color.setIndex(index);
+          self.console.setColor(colors[index]);
+          self.store.setProperty(App.Controller.Domain.SETTINGS, App.Store.Property.COLOR, colors[index]);
+        });
+
+        self.store.property(App.Controller.Domain.SETTINGS, App.Store.Property.COLOR, function(color) {
+          if (color !== undefined) {
+            self.color.setIndex(colors.indexOf(color));
           }
         });
 
