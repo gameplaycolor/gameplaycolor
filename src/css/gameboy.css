@@ -16,8 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-body
-{
+body {
   padding: 0;
   margin: 0;
   -webkit-user-select: none;
@@ -30,16 +29,14 @@ body
   cursor: default;
 }
 
-#display
-{
+#display {
   position: relative;
   margin: auto;
   width: 320px;
   height: 288px;
 }
 
-.display
-{
+.display {
   position: absolute;
   top: 0;
   left: 0;
@@ -49,8 +46,7 @@ body
   background-size: 320px 288px;
 }
 
-#moulding
-{
+#moulding {
   position: absolute;
   top: 42px;
   left: 0;
@@ -60,28 +56,24 @@ body
   background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.16)));
 }
 
-#moulding-left
-{
+#moulding-left {
   -webkit-flex-grow: 1;
   height: 100%;
   background-image: -webkit-gradient(linear, left top, right top, from(rgba(255, 255, 255, 0)), to(rgba(255, 255, 255, 0.04)));
 }
 
-#moulding-center
-{
+#moulding-center {
   -webkit-flex-grow: 3;
   height: 100%;
 }
 
-#moulding-right
-{
+#moulding-right {
   -webkit-flex-grow: 1;
   height: 100%;
   background-image: -webkit-gradient(linear, right top, left top, from(rgba(255, 255, 255, 0)), to(rgba(255, 255, 255, 0.04)));
 }
 
-.element-surround
-{
+.element-surround {
   position: absolute;
   top: 42px;
   left: 0;
@@ -90,8 +82,7 @@ body
   text-align: center;
 }
 
-.surround
-{
+.surround {
   background-color: #222222;
   border: 1px solid #000;
   border-bottom: 1.5px solid #000;
@@ -100,13 +91,11 @@ body
   box-shadow: 0 2px 2px rgba(255, 255, 255, 0.08), inset 0 -2px 3px rgba(255, 255, 255, 0.03);
 }
 
-#LCD
-{
+#LCD {
   image-rendering: -webkit-optimize-contrast;
 }
 
-#LCD-dropshadow
-{
+#LCD-dropshadow {
   position: absolute;
   top: 0;
   left: 0;
@@ -115,13 +104,11 @@ body
   box-shadow: 0 0.5px 0.5px #ffffff, inset 0px 3px 10px #222;
 }
 
-#STATUS
-{
+#STATUS {
   display: none;
 }
 
-.button
-{
+.button {
   width: 58px;
   height: 58px;
   cursor: pointer;
@@ -140,42 +127,35 @@ body
   border-top: 1px solid black;
 }
 
-.button.pressed
-{
+.button.pressed {
   box-shadow: 0 1px 4px rgba(27, 27, 27, 0.72), inset 0 2px 3px rgba(103, 103, 103, 0.59);
 }
 
-.button-option-group
-{
+.button-option-group {
   width: 60px;
 }
 
-.left
-{
+.left {
   position: absolute;
   left: 0;
 }
 
-.right
-{
+.right {
   position: absolute;
   right: 0;
 }
 
-.top
-{
+.top {
   position: absolute;
   top: 0;
 }
 
-.bottom
-{
+.bottom {
   position: absolute;
   bottom: 0;
 }
 
-.button-option
-{
+.button-option {
   margin: 0 auto;
   width: 40px;
   height: 16px;
@@ -186,13 +166,11 @@ body
   border-top: 1px solid black;
 }
 
-.button-option.pressed
-{
+.button-option.pressed {
   box-shadow: 0 -1px 3px #1b1b1b, inset 0 4px 8px rgba(103, 103, 103, 0.39);
 }
 
-.button-label
-{
+.button-label {
   opacity: 0.3;
   text-shadow: 0 -1px #777;
   font-size: 14px;
@@ -202,8 +180,7 @@ body
   text-align: center;
 }
 
-#group-buttons
-{
+#group-buttons {
   position: relative;
   height: 115px;
   width: 142px;
@@ -211,50 +188,43 @@ body
   margin: auto;
 }
 
-#group-options
-{
+#group-options {
   position: relative;
   width: 140px;
   height: 50px;
   margin: auto;
 }
 
-#control-a
-{
+#control-a {
   position: absolute;
   top: 5px;
   right: 3px;
 }
 
-#control-b
-{
+#control-b {
   position: absolute;
   bottom: 9px;
   left: 3px;
 }
 
-.control-text
-{
+.control-text {
   position: absolute;
   bottom: 6px;
   left: 14px;
 }
 
-.button.pressed .control-text
-{
+.button.pressed .control-text {
   bottom: 8px;
 }
 
-#control-dpad
-{
+#control-dpad {
   width: 128px;
   height: 128px;
   background-size: 128px 128px;
   margin: auto;
 }
 
-.navigation-bar
-{
+.navigation-bar {
   height: 44px;
   display: flex;
   position: absolute;
@@ -263,8 +233,7 @@ body
   width: 100%;
 }
 
-.navigation-button
-{
+.navigation-button {
   height: 44px;
   line-height: 44px;
   cursor: pointer;
@@ -280,21 +249,18 @@ body
   flex-grow: 1;
 }
 
-.button-account, .button-back
-{
+.button-account, .button-back {
   text-align: left;
 }
 
-.button-library
-{
+.button-library {
   opacity: 0.3;
   text-shadow: 0 -1px #777;
   text-transform: uppercase;
   color: black;
 }
 
-.button-done
-{
+.button-done {
   text-align: right;
   padding-right: 22px;
 }
@@ -343,8 +309,7 @@ body
     box-shadow: 0 -1px #777;
 }
 
-#debug
-{
+#debug {
   height: 20px;
   width: 100px;
   position: absolute;
@@ -358,8 +323,7 @@ body
   width: 568px;
 }
   
-#screen-console
-{
+#screen-console {
   width: 100%;
   height: 100%;
   top: 0;
@@ -370,39 +334,32 @@ body
   box-shadow: 0 0 32px rgba(0, 0, 0, 0.8);
 }
 
-#screen-console.open
-{
+#screen-console.open {
   left: 100%;
   box-shadow: 0 0 0 rgba(0, 0, 0, 0.8);
 }
 
-.grape 
-{
+.grape {
   background-color: #27358B;
 }
 
-.cherry
-{
+.cherry {
   background-color: #D81E57;
 }
 
-.teal
-{
+.teal {
   background-color: #007FA0;
 }
 
-.lime
-{
+.lime {
   background-color: #A0D02E;
 }
 
-.yellow
-{
+.yellow {
   background-color: #FECF41;
 }
 
-#list-games
-{
+#list-games {
   position: absolute;
   margin: 0;
   padding: 0;
@@ -411,8 +368,7 @@ body
   height: 100%;
 }
 
-.content
-{
+.content {
   position: absolute;
   top: 0;
   left: 0;
@@ -420,8 +376,7 @@ body
   width: 100%;
 }
   
-#list-games-content
-{
+#list-games-content {
   position: absolute;
   top: 0;
   left: 0;
@@ -429,8 +384,7 @@ body
   height: 100%;
 }
 
-#list-games-page-control
-{
+#list-games-page-control {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -441,8 +395,7 @@ body
   -webkit-box-pack: center;
 }
 
-.page
-{
+.page {
   width: 6px;
   height: 6px;
   background-color: white;
@@ -451,19 +404,16 @@ body
   margin: 5px;
 }
 
-.page.active
-{
+.page.active {
   opacity: 1.0;
 }
   
-.game
-{
+.game {
   position: absolute;
   text-align: center;
 }
 
-.game-title
-{
+.game-title {
   word-wrap: break-word;
   font-size: 16px;
   color: #444;
@@ -478,13 +428,11 @@ body
   opacity: 0.2;
 }
 
-.downloaded > .game-title
-{
+.downloaded > .game-title {
   opacity: 1.0;
 }
 
-.game-thumbnail
-{
+.game-thumbnail {
   position: absolute;
   top: 0;
   left: 0;
@@ -494,13 +442,11 @@ body
   opacity: 0.2;
 }
 
-.downloaded > .game-thumbnail
-{
+.downloaded > .game-thumbnail {
   opacity: 1.0;
 }
 
-.game-overlay
-{
+.game-overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -509,8 +455,7 @@ body
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.74);
 }
 
-.simple-button
-{
+.simple-button {
   border: 2px solid #fff;
   border-radius: 8px;
   padding: 10px;
@@ -519,38 +464,28 @@ body
   cursor: pointer;
   display: block;
   margin: 4px;
-
-  /* TODO: Check this */
   display: inline-block;
   min-width: 100px;
   text-align: center;
   margin: 8px 0;
 }
 
-#screen-games
-{
+#screen-games {
   background-color: #272727;
   background-size: 233px 133px;
 }
 
-#screen-settings
-{
-}
-
-.settings
-{
+.settings {
   transition: background-color 150ms ease-in-out;
   background-color: rgba(0, 0, 0, 0.4);
 }
 
-.settings.hidden
-{
+.settings.hidden {
   transition: background-color 150ms ease-in-out;
   background-color: rgba(0, 0, 0, 0.0);
 }
 
-.dialog
-{
+.dialog {
   transition: 150ms ease-in-out;
   width: 300px;
   margin: 0 auto;
@@ -558,92 +493,78 @@ body
   z-index: 10;
 }
 
-.settings.hidden .dialog
-{
+.settings.hidden .dialog {
   transition: 150ms ease-in-out;
   opacity: 0.0;
   transform: scale(1.1, 1.1);
 }
 
-.dialog-layout-container
-{
+.dialog-layout-container {
   display: flex;
   flex-direction: column;
 }
 
-.dialog-margin
-{
+.dialog-margin {
   flex-grow: 1;
 }
 
-.dialog-title, .dialog-button
-{
+.dialog-title, .dialog-button {
   text-align: center;
   padding: 12px;
 }
 
-.dialog-title, .dialog-row, .dialog-button
-{
+.dialog-title, .dialog-row, .dialog-button {
   background-color: rgba(255, 255, 255, 0.95);
 }
 
-.dialog-title
-{
+.dialog-title {
   font-weight: bold;
   border-radius: 16px 16px 0 0;
 }
 
-.dialog-body
-{
+.dialog-body {
   overflow-y: scroll;
 }
 
-.dialog-button
-{
+.dialog-button {
   color: #0076ff;
 }
 
-.dialog-button.default
-{
+.dialog-button.default {
   font-weight: bold;
   border-radius: 0 0 16px 16px;
 }
 
-.dialog-button.pressed
-{
+.dialog-button.pressed {
   background-color: rgba(144, 142, 144, 0.9);
 }
 
-.dialog-divider
-{
+.dialog-divider {
   height: 0.5px;
 }
 
-.dialog-row
-{
+.dialog-row {
   display: flex;
   height: 42px;
   line-height: 42px;
 }
 
-.dialog-row-label, .dialog-row-detail-label
-{
+.dialog-row-label, .dialog-row-detail-label {
   flex-grow: 1;
   padding: 0 12px;
 }
 
-.dialog-row-label
-{
+.dialog-row-label {
   font-weight: bold;
 }
 
-.dialog-row-detail-label
-{
+.dialog-row-detail-label {
   text-align: right;
 }
 
-.segmented
-{
+/* Segmented control */
+
+.segmented {
   height: 28px;
   line-height: 26px;
   list-style: none;
@@ -652,8 +573,7 @@ body
   margin: 8px 0;
 }
 
-.segmented li
-{
+.segmented li {
   display: inline-block;
   text-align: center;
   padding: 0 8px;
@@ -664,31 +584,28 @@ body
   flex-grow: 1;
 }
 
-.segmented li:first-child
-{
+.segmented li:first-child {
   border-radius: 4px 0 0 4px;
   border-left: 1px solid #0076ff;
 }
 
-.segmented li:last-child
-{
+.segmented li:last-child {
   border-radius: 0 4px 4px 0;
   border-right: 1px solid #0076ff;
 }
 
-.segmented li.pressed
-{
+.segmented li.pressed {
   background-color: #d8ecff;
 }
 
-.segmented li.selected
-{
+.segmented li.selected {
   background-color: #0076ff;
   color: white;
 }
 
-#console-color li, #console-color li:first-child, #console-color li:last-child
-{
+/* Color picker */
+
+#console-color li, #console-color li:first-child, #console-color li:last-child {
   border-radius: 2px;
   margin: 2px 4px;
   border: 2px solid transparent;
@@ -696,69 +613,58 @@ body
   border: 0;
 }
 
-#console-color li:last-child
-{
+#console-color li:last-child {
   margin-right: 2px;
 }
 
-#console-color li:first-child
-{
+#console-color li:first-child {
   margin-left: 2px;
 }
 
-#console-color li.selected, #console-color li.pressed
-{
+#console-color li.selected, #console-color li.pressed {
   border-radius: 4px;
   margin: 0 2px;
 }
 
-#console-color li.pressed
-{
+#console-color li.pressed {
   border: 2px solid #d8ecff;
 }
 
-#console-color li.selected
-{
+#console-color li.selected {
   border: 2px solid #0076ff;
 }
 
-#console-color li:last-child.selected, #console-color li:last-child.pressed
-{
+#console-color li:last-child.selected, #console-color li:last-child.pressed {
   margin-right: 0;
 }
 
-#console-color li:first-child.selected, #console-color li:first-child.pressed
-{
+#console-color li:first-child.selected, #console-color li:first-child.pressed {
   margin-left: 0;
 }
 
-#console-color li.grape.selected, #console-color li.grape.pressed
-{
+#console-color li.grape.selected, #console-color li.grape.pressed {
   background-color: #27358B;
 }
 
-#console-color li.cherry.selected, #console-color li.cherry.pressed
-{
+#console-color li.cherry.selected, #console-color li.cherry.pressed {
   background-color: #D81E57;
 }
 
-#console-color li.teal.selected, #console-color li.teal.pressed
-{
+#console-color li.teal.selected, #console-color li.teal.pressed {
   background-color: #007FA0;
 }
 
-#console-color li.lime.selected, #console-color li.lime.pressed
-{
+#console-color li.lime.selected, #console-color li.lime.pressed {
   background-color: #A0D02E;
 }
 
-#console-color li.yellow.selected, #console-color li.yellow.pressed
-{
+#console-color li.yellow.selected, #console-color li.yellow.pressed {
   background-color: #FECF41;
 }
 
-.setting-switch
-{
+/* Switch */
+
+.setting-switch {
   transition: 300ms ease-in-out;
   position: relative;
   width: 46px;
@@ -769,8 +675,7 @@ body
   display: inline-block;
 }
 
-.setting-switch:before
-{
+.setting-switch:before {
   transition: 300ms ease-in-out;
   content: '';
   display: block;
@@ -784,27 +689,23 @@ body
   box-shadow: 0 6px 4px rgba(0, 0, 0, 0.1), 0 -1px 2px rgba(0, 0, 0, 0.1);
 }
 
-.setting-switch.on
-{
+.setting-switch.on {
   transition: 300ms ease-in-out;
   background-color: #4CD964;
   border: 2px solid #4CD964;
 }
 
-.setting-switch.on:before
-{
+.setting-switch.on:before {
   transition: 300ms ease-in-out;
   left: 18px;
 }
 
-#screen-loading
-{
+#screen-loading {
   width: 100%;
   height: 100%;
 }
 
-.screen-splash, .screen-instructions
-{
+.screen-splash, .screen-instructions {
   position: absolute;
   top: 0;
   left: 0;
@@ -813,15 +714,13 @@ body
   background-color: #000;
 }
 
-.screen-instructions
-{
+.screen-instructions {
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
   font-size: 22px;
   background-color: #222;
 }
 
-.appicon
-{
+.appicon {
   width: 200px;
   height: 200px;
   margin-bottom: 12px;
@@ -832,37 +731,31 @@ body
   background-image: url(images/icon-large.png);
 }
 
-.apptitle
-{
+.apptitle {
   font-size: 1.6em;
   margin-top: 0;
 }
 
-.install-instructions
-{
+.install-instructions {
   text-align: left;
 }
 
-.install-instructions > li
-{
+.install-instructions > li {
   margin-bottom: 10px;
 }
 
-.placeholder, .placeholder-small
-{
+.placeholder, .placeholder-small {
   color: #d9d9d9;
   text-align: center;
   padding: 40px;
   margin: auto;
 }
 
-.placeholder-small
-{
+.placeholder-small {
   padding: 20px;
 }
 
-.screen-instructions .placeholder, .screen-instructions .placeholder-small
-{
+.screen-instructions .placeholder, .screen-instructions .placeholder-small {
   background-color: #222;
 }
 
@@ -883,13 +776,11 @@ hr {
   background-position: 20px center;
 }
 
-.body-grey
-{
+.body-grey {
   background-color: #222;
 }
 
-.screen
-{
+.screen {
   position: absolute;
   top: 0;
   left: 0;
@@ -899,8 +790,7 @@ hr {
   height: 100%;
 }
 
-.title-button
-{
+.title-button {
   background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#707070), to(#1C1C1C));
   border-radius: 4px;
   border: 1px solid black;
@@ -908,8 +798,7 @@ hr {
   width: 598px;
 }
 
-.title
-{
+.title {
   background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#4A4A4A), to(#000000));
   position: absolute;
   top: 0;
@@ -919,13 +808,11 @@ hr {
   z-index: 20;
 }
 
-.title h3
-{
+.title h3 {
   margin-top: 11px;
 }
 
-#control-games-scroll
-{
+#control-games-scroll {
   position: absolute;
   top: 44px;
   left: 0;
@@ -933,49 +820,42 @@ hr {
   width: 300px;
 }
 
-#control-games-list
-{
+#control-games-list {
   position: absolute;
   top: 0;
   left: 0;
   width: 300px;
 }
 
-.table
-{
+.table {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.table li
-{
+.table li {
   height: 88px;
   border-bottom: 1px solid #ccc;
 }
 
-#instructions
-{
+#instructions {
   color: white;
   text-shadow: 0 1px #000;
   padding: 40px;
   text-align: center;
 }
 
-#instructions a
-{
+#instructions a {
   color: #666;
   text-decoration: none;
 }
 
-.license
-{
+.license {
   color: #666;
   text-decoration: none;
 }
 
-#update-button
-{
+#update-button {
   position: absolute;
   background-color: rgb(64, 64, 189);
   color: white;
@@ -990,20 +870,23 @@ hr {
   font-size: 11px;
 }
 
-#LCD-loading { background-image: url(images/loading.png); }
-#LCD-idle { background-image: url(images/idle.png); }
+#LCD-loading {
+  background-image: url(images/loading.png);
+}
+
+#LCD-idle {
+  background-image: url(images/idle.png);
+}
 
 /* D-Pad */
 
-.dpad-touch-target
-{
+.dpad-touch-target {
     width: 160px;
     height: 160px;
     position: relative;
 }
 
-.dpad
-{
+.dpad {
     position: absolute;
     top: 18px;
     left: 18px;
@@ -1011,8 +894,7 @@ hr {
     height: 124px;
 }
 
-.dpad > .element
-{
+.dpad > .element {
     position: absolute;
     width: 40px;
     height: 40px;
@@ -1021,23 +903,19 @@ hr {
     border-top: 1px solid black;
 }
 
-.dpad > .top
-{
+.dpad > .top {
     background-image: -webkit-linear-gradient(top, #2D2D2D, #1E1E1E);
 }
 
-.dpad > .middle
-{
+.dpad > .middle {
     background-image: -webkit-linear-gradient(top, #1E1E1E, #0A0A0A);
 }
 
-.dpad > .bottom
-{
+.dpad > .bottom {
     background-image: -webkit-linear-gradient(top, #0A0A0A, #000000);
 }
 
-.dpad > .up
-{
+.dpad > .up {
     top: 0;
     left: 40px;
     border-radius: 6px 6px 0 0;
@@ -1045,28 +923,23 @@ hr {
     box-shadow: 0 3px 7px 0 #1b1b1b, inset 0 3px 2px 0 #676767;
 }
 
-.dpad.pressed-up > .up
-{
+.dpad.pressed-up > .up {
     box-shadow: 0 3px 4px 0 #1b1b1b, inset 0 0 2px -1px #676767;
 }
 
-.dpad.pressed-down > .up
-{
+.dpad.pressed-down > .up {
     box-shadow: 0 3px 9px #1b1b1b, inset -1px 9px 2px -1px #676767;
 }
 
-.dpad.pressed-left > .up
-{
+.dpad.pressed-left > .up {
     box-shadow: 1px 3px 7px 0 #1b1b1b, inset -2px 3px 2px 0 #676767;
 }
 
-.dpad.pressed-right > .up
-{
+.dpad.pressed-right > .up {
     box-shadow: -1px 3px 7px 0 #1b1b1b, inset 2px 3px 2px 0 #676767;
 }
 
-.dpad > .down
-{
+.dpad > .down {
     bottom: 0;
     left: 40px;
     border-radius: 0 0 6px 6px;
@@ -1074,28 +947,23 @@ hr {
     box-shadow: 0 3px 7px 0 #1b1b1b, inset 0 -2px 2px 0 #676767;
 }
 
-.dpad.pressed-up > .down
-{
+.dpad.pressed-up > .down {
     box-shadow: 0 3px 11px 0 #1b1b1b, inset 0 -6px 2px 0 #676767;
 }
 
-.dpad.pressed-down > .down
-{
+.dpad.pressed-down > .down {
     box-shadow: 0 0 7px 0 #1b1b1b, inset 0 0 2px 0 #676767;
 }
 
-.dpad.pressed-left > .down
-{
+.dpad.pressed-left > .down {
     box-shadow: 1px 3px 7px 0 #1b1b1b, inset -2px -2px 2px 0 #676767;
 }
 
-.dpad.pressed-right > .down
-{
+.dpad.pressed-right > .down {
     box-shadow: -1px 3px 7px 0 #1b1b1b, inset 2px -2px 2px 0 #676767;
 }
 
-.dpad > .left
-{
+.dpad > .left {
     top: 40px;
     left: 0;
     border-radius: 12px 0 0 12px;
@@ -1103,29 +971,24 @@ hr {
     box-shadow: 0 3px 7px 0 #1b1b1b, inset 1px 3px 2px -1px #676767;
 }
 
-.dpad.pressed-up > .left
-{
+.dpad.pressed-up > .left {
     box-shadow: 0 3px 9px 0 #1b1b1b, inset 1px -2px 2px -1px #676767;
 }
 
-.dpad.pressed-down > .left
-{
+.dpad.pressed-down > .left {
     box-shadow: 0 3px 4px 0 #1b1b1b, inset 1px 5px 2px -1px #676767;
 }
 
-.dpad.pressed-left > .left
-{
+.dpad.pressed-left > .left {
     box-shadow: 2px 1px 7px 0 #1b1b1b, inset 0 3px 1px -1px #676767;
 }
 
-.dpad.pressed-right > .left
-{
+.dpad.pressed-right > .left {
     box-shadow: 2px 3px 7px 0 #1b1b1b, inset 5px 3px 2px -1px #676767;
     width: 42px;
 }
 
-.dpad > .right
-{
+.dpad > .right {
     top: 40px;
     right: 0;
     border-radius: 0 12px 12px 0;
@@ -1133,29 +996,24 @@ hr {
     box-shadow: 0 3px 7px #1b1b1b, inset -1px 3px 2px -1px #676767;
 }
 
-.dpad.pressed-up > .right
-{
+.dpad.pressed-up > .right {
     box-shadow: 0 3px 9px #1b1b1b, inset -1px -2px 2px -1px #676767;
 }
 
-.dpad.pressed-down > .right
-{
+.dpad.pressed-down > .right {
     box-shadow: 0 3px 4px #1b1b1b, inset -1px 5px 2px -1px #676767;
 }
 
-.dpad.pressed-left > .right
-{
+.dpad.pressed-left > .right {
     box-shadow: -2px 3px 7px #1b1b1b, inset -5px 3px 1px -1px #676767;
     width: 42px;
 }
 
-.dpad.pressed-right > .right
-{
+.dpad.pressed-right > .right {
     box-shadow: -2px 1px 7px #1b1b1b, inset 0 3px 2px -1px #676767;
 }
 
-.dpad > .arrow:before
-{
+.dpad > .arrow:before {
     position: absolute;
     content:"";
     left: 0;
@@ -1170,108 +1028,88 @@ hr {
     text-align: center;
 }
 
-.dpad > .up:before
-{
+.dpad > .up:before {
     content: "\25B2\FE0E";
 }
 
-.dpad.pressed-up > .up:before
-{
+.dpad.pressed-up > .up:before {
     top: -2px;
 }
 
-.dpad.pressed-down > .up:before
-{
+.dpad.pressed-down > .up:before {
     top: 2px;
 }
 
-.dpad.pressed-left > .up:before
-{
+.dpad.pressed-left > .up:before {
     left: -1px;
 }
-.dpad.pressed-right > .up:before
-{
+
+.dpad.pressed-right > .up:before {
     left: 1px;
 }
 
-.dpad > .down:before
-{
+.dpad > .down:before {
     content:"\25BC\FE0E";
 }
 
-.dpad.pressed-up > .down:before
-{
+.dpad.pressed-up > .down:before {
     top: -2px;
     text-shadow: 0 1px #aaa;
 }
 
-.dpad.pressed-down > .down:before
-{
+.dpad.pressed-down > .down:before {
     top: 2px;
 }
 
-.dpad.pressed-left > .down:before
-{
+.dpad.pressed-left > .down:before {
     left: -1px;
 }
 
-.dpad.pressed-right > .down:before
-{
+.dpad.pressed-right > .down:before {
     left: 1px;
 }
 
-.dpad > .left:before
-{
+.dpad > .left:before {
     content:"\25C0\FE0E";
 }
 
-.dpad.pressed-up > .left:before
-{
+.dpad.pressed-up > .left:before {
     top: -1px;
 }
 
-.dpad.pressed-down > .left:before
-{
+.dpad.pressed-down > .left:before {
     top: 1px;
 }
 
-.dpad.pressed-left > .left:before
-{
+.dpad.pressed-left > .left:before {
     left: -2px;
 }
 
-.dpad.pressed-right > .left:before
-{
+.dpad.pressed-right > .left:before {
     left: 2px;
 }
 
-.dpad > .right:before
-{
+.dpad > .right:before {
     content:"\25B6\FE0E";
 }
 
-.dpad.pressed-up > .right:before
-{
+.dpad.pressed-up > .right:before {
     top: -1px;
 }
 
-.dpad.pressed-down > .right:before
-{
+.dpad.pressed-down > .right:before {
     top: 1px;
 }
 
-.dpad.pressed-left > .right:before
-{
+.dpad.pressed-left > .right:before {
     left: -2px;
 }
 
-.dpad.pressed-right > .right:before
-{
+.dpad.pressed-right > .right:before {
     left: 2px;
 }
 
-.dpad > .center
-{
+.dpad > .center {
     top: 33%;
     left: 40px;
     border: 0;
@@ -1279,8 +1117,7 @@ hr {
     height: 42px;
 }
 
-.dpad > .center:before
-{
+.dpad > .center:before {
     position: absolute;
     height: 24px;
     width: 24px;
@@ -1293,71 +1130,59 @@ hr {
     opacity: 0.2;
 }
 
-.dpad.pressed-left > .center
-{
+.dpad.pressed-left > .center {
     width: 40px;
 }
 
-.dpad.pressed-right > .center
-{
+.dpad.pressed-right > .center {
     width: 40px;
     left: 42px;
 }
 
-.dpad.pressed-up > .center:before
-{
+.dpad.pressed-up > .center:before {
     top: 6px;
 }
-.dpad.pressed-down > .center:before
-{
+.dpad.pressed-down > .center:before {
     top: 9px;
 }
-.dpad.pressed-left > .center:before
-{
+.dpad.pressed-left > .center:before {
     left: 7px;
 }
-.dpad.pressed-right > .center:before
-{
+.dpad.pressed-right > .center:before {
     left: 9px;
 }
 
-#element-dpad
-{
+#element-dpad {
   position: absolute;
   left: 8px;
   bottom: 100px;
 }
 
-#element-buttons
-{
+#element-buttons {
   position: absolute;
   right: 20px;
   bottom: 120px;
 }
 
-#element-options
-{
+#element-options {
   position: absolute;
   width: 100%;
   bottom: 10px;
   left: 0;
 }
 
-#element-screen
-{
+#element-screen {
   position: absolute;
   width: 100%;
   top: 30px;
   left: 0;
 }
 
-#screen-console-container
-{
+#screen-console-container {
   overflow: hidden;
 }
 
-.input-code
-{
+.input-code {
   width: 80%;
   font-size: 30px;
   border: 3px solid #fff;
@@ -1379,14 +1204,12 @@ hr {
   max-width: 300px;
 }
 
-.input-code:focus
-{
+.input-code:focus {
   outline: none;
   background-color: #888;
 }
 
-.auth-code
-{
+.auth-code {
   font-size: 20px;
   background-color: #666;
   margin: 8px 0;
@@ -1404,54 +1227,45 @@ hr {
   border: 0;
 }
 
-.auth-code:focus
-{
+.auth-code:focus {
   outline: none;
 }
 
 /* iPhone 4: Portrait */
 @media only screen and (width: 320px) and (height: 460px) {
 
-  #element-screen
-  {
+  #element-screen {
     top: 0;
   }
 
-  .surround
-  {
+  .surround {
     height: 287px;
     border-radius: 0;
   }
 
-  #LCD-dropshadow
-  {
+  #LCD-dropshadow {
     box-shadow:0 0 0 0, inset 0 0 0 0;
   }
 
-  #screen-console
-  {
+  #screen-console {
     border-radius: 0;
   }
 
-  #element-dpad
-  {
+  #element-dpad {
     left: 0;
     bottom: 40px;
   }
 
-  #element-buttons
-  {
+  #element-buttons {
     right: 10px;
     bottom: 60px;
   }
 
-  #element-options
-  {
+  #element-options {
     bottom: -10px;
   }
 
-  .appicon
-  {
+  .appicon {
     display: none;
   }
 
@@ -1460,59 +1274,48 @@ hr {
 /* iPhone 4: Landscape */
 @media only screen and (width: 480px) and (height: 320px) {
 
-  #element-screen
-  {
+  #element-screen {
     top: 0;
   }
 
-  #element-options
-  {
+  #element-options {
     bottom: 10px;
   }
 
-  #element-surround
-  {
+  #element-surround {
   }
 
-  #element-options
-  {
+  #element-options {
     bottom: -4px;
   }
 
-  #element-buttons
-  {
+  #element-buttons {
     right: 8px;
   }
 
-  #group-buttons
-  {
+  #group-buttons {
     width: 132px;
   }
 
-  #element-dpad
-  {
+  #element-dpad {
     left: -4px;
   }
 
-  #group-options
-  {
+  #group-options {
     width: 460px;
   }
 
-  #LCD-dropshadow
-  {
+  #LCD-dropshadow {
     box-shadow:0 0 0 0, inset 0 0 0 0;
   }
 
-  .surround
-  {
+  .surround {
     height: 287px;
     width: 321px;
     border-radius: 0;
   }
 
-  .appicon, .apptitle
-  {
+  .appicon, .apptitle {
     display: none;
   }
 
@@ -1525,44 +1328,36 @@ hr {
 /* iPhone 5: Portrait */
 @media only screen and (width: 320px) and (height: 548px) {
 
-  #element-screen
-  {
+  #element-screen {
     top: 0;
   }
 
-  #element-dpad
-  {
+  #element-dpad {
     left: 0;
   }
 
-  #element-buttons 
-  {
+  #element-buttons  {
     right: 10px;
   }
 
-  .surround
-  {
+  .surround {
     height: 287px;
     border-radius: 0;
   }
 
-  #screen-console
-  {
+  #screen-console {
     border-radius: 0;
   }
 
-  #screen-games
-  {
+  #screen-games {
     border-radius: 0;
   }
 
-  #LCD-dropshadow
-  {
+  #LCD-dropshadow {
     box-shadow:0 0 0 0, inset 0 0 0 0;
   }
 
-  .appicon
-  {
+  .appicon {
     width: 128px;
     height: 128px;
     background-size: 128px 128px;
@@ -1574,52 +1369,42 @@ hr {
 /* iPhone 5: Landscape */
 @media only screen and (width: 568px) and (height: 320px) {
 
-  #element-screen
-  {
+  #element-screen {
     top: 0;
   }
 
-  #element-options
-  {
+  #element-options {
     bottom: 10px;
   }
 
-  #element-surround
-  {
+  #element-surround {
   }
 
-  #element-options
-  {
+  #element-options {
     bottom: -4px;
   }
 
-  #element-buttons
-  {
+  #element-buttons {
     right: 8px;
   }
 
-  #group-buttons
-  {
+  #group-buttons {
     width: 132px;
   }
 
-  #element-dpad
-  {
+  #element-dpad {
     left: -4px;
   }
 
-  #group-options
-  {
+  #group-options {
     width: 500px;
   }
 
-  #LCD-dropshadow
-  {
+  #LCD-dropshadow {
     box-shadow:0 0 0 0, inset 0 0 0 0;
   }
 
-  .surround
-  {
+  .surround {
     height: 287px;
     width: 321px;
     border-radius: 0;
@@ -1642,18 +1427,15 @@ hr {
 /* iPhone 6: Portrait */
 @media only screen and (width: 375px) and (height: 647px) {
 
-  #element-screen
-  {
+  #element-screen {
     top: 66px;
   }
 
-  #element-buttons
-  {
+  #element-buttons {
     right: 20px;
   }
 
-  #element-options
-  {
+  #element-options {
     bottom: 20px;
   }
 
@@ -1662,35 +1444,29 @@ hr {
 /* iPhone 6: Landscape */
 @media only screen and (width: 667px) and (height: 375px) {
 
-  #element-screen
-  {
+  #element-screen {
     top: 12px;
   }
 
-  #element-options
-  {
+  #element-options {
     bottom: 10px;
   }
 
-  .surround
-  {
+  .surround {
     width: 346px;
     height: 312px;
   }
 
-  #element-options
-  {
+  #element-options {
     bottom: -4px;
   }
 
-  #element-buttons
-  {
+  #element-buttons {
     right: 8px;
     bottom: 140px;
   }
 
-  #element-dpad
-  {
+  #element-dpad {
     left: 0;
     bottom: 120px;
   }
@@ -1717,13 +1493,11 @@ hr {
     display: none;
   }
 
-  #element-surround
-  {
+  #element-surround {
     top: 20px;
   }
 
-  .surround
-  {
+  .surround {
     width: 346px;
     height: 312px;
   }
@@ -1733,38 +1507,38 @@ hr {
 /* Large screen customizations */
 @media only screen and (min-width: 768px) {
 
-  #display, .display, #LCD-dropshadow
-  {
+  #display, .display, #LCD-dropshadow {
     width: 640px;
     height: 576px;
     background-size: 640px 576px;
   }
 
-  .surround
-  {
+  .surround {
     height: 638px;
   }
 
-  #LCD-loading { background-image: url(images/loading-large.png); }
-  #LCD-idle { background-image: url(images/idle-large.png); }
+  #LCD-loading {
+    background-image: url(images/loading-large.png);
+  }
+
+  #LCD-idle {
+    background-image: url(images/idle-large.png);
+  }
 
 }
 
 /* iPad: Portrait */
 @media only screen and (width: 768px) and (height: 1004px) {
 
-  #group-buttons
-  {
+  #group-buttons {
     width: 152px;
   }
 
-  #element-buttons
-  {
+  #element-buttons {
     right: 52px;
   }
 
-  #element-dpad
-  {
+  #element-dpad {
     left: 40px;
   }
 
@@ -1773,36 +1547,30 @@ hr {
 /* iPad: Landscape */
 @media only screen and (width: 1024px) and (height: 748px) {
 
-  #element-buttons
-  {
+  #element-buttons {
     bottom: 280px;
     width: 152px;
     height: 132px;
   }
 
-  #group-buttons
-  {
+  #group-buttons {
     width: 152px;
   }
 
-  #element-dpad
-  {
+  #element-dpad {
     bottom: 280px;
     left: 4px;
   }
 
-  #element-screen
-  {
+  #element-screen {
     top: 50px;
   }
 
-  #element-surround
-  {
+  #element-surround {
     top: 20px;
   }
 
-  .surround
-  {
+  .surround {
     height: 636px;
     width: 700px;
   }
