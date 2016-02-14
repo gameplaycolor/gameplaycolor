@@ -1,2 +1,2 @@
-- Setting for console color.
-- Work-around for audio playback issues on iPhone 6.
+- Support for diagonal directions using the d-pad.
+- Improved scrolling in the game library.

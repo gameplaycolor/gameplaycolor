@@ -37,6 +37,9 @@
       var self = this;
       self.touchCount = 0;
       self.state = App.Controls.Button.State.UP;
+      self.cancelOnMove = false;
+      self.preventDefault = true;
+      self.longPressTimeoutIdentifier = undefined;
     },
 
     setKeyHandler: function(keycode) {
@@ -74,26 +77,57 @@
       self.pressed = pressed;
     },
 
-    onTouchEvent: function(state, position, timestamp) {
+    onTouchEvent: function(state, position, timestamp, event) {
       var self = this;
+
+      if (self.preventDefault) {
+        event.preventDefault();
+      }
 
       switch(state) {
         case App.Control.Touch.START:
           self.touchCount = 1;
           self.setPressed(true);
           self.touchDown();
+
+          // Set the long press timeout.
+          if (self.actions.longPress !== undefined) {
+
+            self.longPressTimeoutIdentifier = setTimeout(function() {
+              if (self.longPressActive !== false) {
+                self.actions.longPress();
+                self.longPressTimeoutIdentifier = undefined;
+                self.touchCount = 0;
+                self.setPressed(false);
+              }
+            }, 1000);
+
+          }
+
           break;
         case App.Control.Touch.MOVE:
           if (self.touchCount > 0) {
-            if (position.x >= 0 &&
-                position.x < self.width() &&
-                position.y >= 0 &&
-                position.y < self.height()) {
-              self.setPressed(true);
-            } else {
+            if (self.cancelOnMove) {
               self.setPressed(false);
+              self.touchCount = 0;
+            } else {
+              if (position.x >= 0 &&
+                  position.x < self.width() &&
+                  position.y >= 0 &&
+                  position.y < self.height()) {
+                self.setPressed(true);
+              } else {
+                self.setPressed(false);
+              }
             }
           }
+
+          // Cancel the long press timeout.
+          if (self.longPressTimeoutIdentifier !== undefined) {
+            clearTimeout(self.longPressTimeoutIdentifier);
+            self.longPressTimeoutIdentifier = undefined;
+          }
+
           break;
         case App.Control.Touch.END:
           if (self.pressed === true) {
@@ -104,6 +138,13 @@
           self.touchUp();
           self.setPressed(false);
           self.touchCount = 0;
+
+          // Cancel the long press timeout.
+          if (self.longPressTimeoutIdentifier !== undefined) {
+            clearTimeout(self.longPressTimeoutIdentifier);
+            self.longPressTimeoutIdentifier = undefined;
+          }
+
           break;
       }
     },

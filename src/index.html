@@ -34,13 +34,11 @@
   </head>
   <body style="background-color: black;">
     
-    <div id="gameboy" style="width: 100%; height: 100%">
+    <div id="gameboy">
 
-      <div id="screen-games" class="screen">
-        <div id="list-games" class="content">
-          <div id="list-games-content"></div>
-          <div id="list-games-page-control"></div>
-        </div>
+      <div class="screen-games-background" />
+      <div id="screen-games">
+        <div id="list-games" class="content" />
         <div id="screen-loading" class="content" style="display: none">
           <div class="placeholder">
             <p>Loading&hellip;</p>
@@ -52,7 +50,7 @@
             <p>Add Game Boy ROMs with the .gb or .gbc file extension to see them here.</p>
           </div>
         </div>
-        <div id="navigation-bar" class="navigation-bar">
+        <div id="library-navigation-bar" class="navigation-bar library-navigation-bar">
           <div id="button-account" class="navigation-button button-account">Settings</div>
           <div id="button-done" class="navigation-button button-done">Console</div>
         </div>
@@ -130,12 +128,10 @@
           <div class="dialog-margin"></div>
 
         </div><!-- dialog-layout-container -->
-
-        <div id="screen-settings-dismiss" class="screen" />
       </div>
 
       <div id="screen-console-container">
-        <div id="screen-console" class="screen grape theme-gbc">
+        <div id="screen-console" class="screen grape theme-gbc hidden">
 
           <div id="moulding">
             <div id="moulding-left"></div>
@@ -265,7 +261,6 @@
     <script type="text/javascript" src="js/grid.js"></script>
     <script type="text/javascript" src="js/store.js"></script>
     <script type="text/javascript" src="js/touchlistener.js"></script>
-    <script type="text/javascript" src="js/gesturerecognizer.js"></script>
     <script type="text/javascript" src="js/device.js"></script>
     <script type="text/javascript" src="js/tracker.js"></script>
     <script type="text/javascript" src="js/drive.js"></script>

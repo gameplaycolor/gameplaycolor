@@ -33,28 +33,14 @@
         self.console = console;
         self.element = $('#screen-settings');
         self.dialog = $('#dialog-settings');
-        self.done = new App.Controls.Button($('#screen-settings-done'), { touchUpInside: function() {
-          self.hide();
-        }});
+
         self.scroll = new App.Controls.Scroll($('#dialog-settings-body'));
 
         self.element.get(0).addEventListener('touchmove', function(e) {
           e.preventDefault();
         }, false);
 
-        $('#application-version').text(window.config.version);
-
-        self.touchListener = new App.TouchListener($('#screen-settings-dismiss'), self);
-
-        self.signOut = new App.Controls.Button($('#screen-settings-sign-out'), { touchUpInside: function() {
-          utilities.dispatch(function() {
-            if (confirm("Sign out of Google Drive?")) {
-              self.drive.signOut().fail(function(e) {
-                alert("Unable to sign out of Google Drive.\n" + e);
-              });
-            }
-          });
-        }});
+        // Sound
 
         self.sound = new App.Controls.Switch($('#switch'), function(target, selected) {
           target.setSelected(selected);
@@ -84,42 +70,13 @@
           }
         });
 
-        self.thanks = new App.Controls.Button($('#screen-settings-say-thanks'), { touchUpInside: function() {
-          utilities.open_new_window("https://gameplaycolor.com/thanks/");
-        }});
-
         // Speed
 
-        var indexToSpeed = function(index) {
-          if (index == 0) {
-            return 1.0;
-          } else if (index == 1) {
-            return 1.5;
-          } else if (index == 2) {
-            return 2.0;
-          } else if (index == 3) {
-            return 3.0;
-          }
-          return 1.0;
-        };
-
-        var speedToIndex = function (speed) {
-          if (speed == 1.0) {
-            return 0;
-          } else if (speed == 1.5) {
-            return 1;
-          } else if (speed == 2.0) {
-            return 2;
-          } else if (speed == 3.0) {
-            return 3;
-          }
-          return 0;
-        }
-
+        var speeds = [1.0, 1.5, 2.0, 3.0];
 
         self.speed = new App.Controls.Segmented($('#emulation-speed'), function(index) {
           self.speed.setIndex(index);
-          var speed = indexToSpeed(index);
+          var speed = speeds[index];
           self.gameBoy.setSpeed(speed);
           self.store.setProperty(App.Controller.Domain.SETTINGS, App.Store.Property.SPEED, speed);
         });
@@ -127,7 +84,7 @@
         self.store.property(App.Controller.Domain.SETTINGS, App.Store.Property.SPEED, function(speed) {
           if (speed !== undefined) {
             self.gameBoy.setSpeed(speed);
-            self.speed.setIndex(speedToIndex(speed));
+            self.speed.setIndex(speeds.indexOf(speed));
           }
         });
 
@@ -149,20 +106,42 @@
           }
         });
 
-      },
+        // Version
 
-      onTouchEvent: function(state, position, timestamp) {
-        var self = this;
-        if (state == App.Control.Touch.START) {
+        $('#application-version').text(window.config.version);
+
+        // Sign out
+
+        self.signOut = new App.Controls.Button($('#screen-settings-sign-out'), { touchUpInside: function() {
+          utilities.dispatch(function() {
+            if (confirm("Sign out of Google Drive?")) {
+              self.drive.signOut().fail(function(e) {
+                alert("Unable to sign out of Google Drive.\n" + e);
+              });
+            }
+          });
+        }});
+
+        // Thanks
+
+        self.thanks = new App.Controls.Button($('#screen-settings-say-thanks'), { touchUpInside: function() {
+          utilities.open_new_window("https://gameplaycolor.com/thanks/");
+        }});
+
+        // Done
+
+        self.done = new App.Controls.Button($('#screen-settings-done'), { touchUpInside: function() {
           self.hide();
-        }
+        }});
+
       },
       
       hide: function() {
         var self = this;
         self.element.addClass('hidden');
         setTimeout(function() {
-          self.element.css('display', 'none');  
+          self.element.css('display', 'none');
+          document.getElementsByTagName('body')[0].style.overflow = ''; // Allow scrolling.
         }, 200);
       },
       
@@ -171,6 +150,7 @@
         self.element.css('display', 'block');
         setTimeout(function() {
           self.element.removeClass('hidden');
+          document.getElementsByTagName('body')[0].style.overflow = 'hidden'; // Prevent scrolling.
         }, 0);
         
       }

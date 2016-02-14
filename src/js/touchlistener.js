@@ -53,38 +53,34 @@
       }, false);
 
       self.element.get(0).addEventListener('touchend', function(e) {
-        e.preventDefault();
-        self.onTouchEvent(App.Control.Touch.END, self.touch, e.timeStamp);
+        self.onTouchEvent(App.Control.Touch.END, self.touch, e.timeStamp, e);
       }, false);
 
       self.element.get(0).addEventListener('mouseup', function(e) {
-        e.preventDefault();
-        self.onTouchEvent(App.Control.Touch.END, self.touch, e.timeStamp);
+        self.onTouchEvent(App.Control.Touch.END, self.touch, e.timeStamp, e);
       }, false);
 
       self.element.get(0).addEventListener('touchcancel', function(e) {
-        e.preventDefault();
-        self.onTouchEvent(App.Control.Touch.END, self.touch, e.timeStamp);
+        self.onTouchEvent(App.Control.Touch.END, self.touch, e.timeStamp, e);
       }, false);
 
     },
 
-    onTouchEvent: function(state, position, timestamp) {
+    onTouchEvent: function(state, position, timestamp, event) {
       var self = this;
       for (var i=0; i<self.recognizers.length; i++) {
         var recognizer = self.recognizers[i];
-        self.recognizers[i].onTouchEvent(state, position, timestamp);
+        self.recognizers[i].onTouchEvent(state, position, timestamp, event);
       }
-      self.delegate.onTouchEvent(state, position, timestamp);
+      self.delegate.onTouchEvent(state, position, timestamp, event);
     },
 
     dispatchEvent: function(state, event) {
       var self = this;
-      event.preventDefault();
       var touchEvent = self.getEvent(event);
       if (touchEvent !== undefined) {
         self.touch = self.convert(touchEvent);
-        self.onTouchEvent(state, self.touch, event.timeStamp);
+        self.onTouchEvent(state, self.touch, event.timeStamp, event);
       }
     },
 

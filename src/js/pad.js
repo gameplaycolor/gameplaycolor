@@ -98,8 +98,9 @@
       return self.element.height();
     },
 
-    onTouchEvent: function(state, position, timestamp) {
+    onTouchEvent: function(state, position, timestamp, event) {
       var self = this;
+      event.preventDefault();
 
       if (state === App.Control.Touch.START) {
         self.touches = 1;
