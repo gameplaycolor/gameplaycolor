@@ -97,7 +97,7 @@ def pngcrush(source_file, destination_file):
   subprocess.check_call(['pngcrush', source_file, destination_file])
 
 
-def list(directory):
+def find_files(directory):
   result = []
   for root, subdirs, files in os.walk(directory):
     for file in files:
@@ -106,15 +106,15 @@ def list(directory):
   return result
 
 
-def copy_image_directory(source_dir, output_dir):
+def copy_diretory(source_dir, output_dir, task=shutil.copy):
   name = os.path.basename(os.path.abspath(source_dir))
   destination_dir = os.path.join(output_dir, name)
   os.mkdir(destination_dir)
-  files = list(source_dir)
+  files = find_files(source_dir)
   for file in files:
     image_name = os.path.basename(os.path.abspath(file))
     destination_file = os.path.join(destination_dir, image_name)
-    pngcrush(os.path.join(source_dir, file), destination_file)
+    task(os.path.join(source_dir, file), destination_file)
 
 
 def copy_files(source, destination, files):
@@ -137,6 +137,7 @@ def main():
   input_file = os.path.join(source_dir, "index.html")
   output_file = os.path.join(build_dir, "index.html")
   images_dir = os.path.join(source_dir, "images")
+  assets_dir = os.path.join(source_dir, "assets")
   defaults_dir = os.path.join(source_dir, "defaults")
   manifest_file = os.path.join(build_dir, "cache.manifest")
 
@@ -203,18 +204,22 @@ def main():
 
   # images
   print "Copying images..."
-  copy_image_directory(images_dir, build_dir)
+  copy_diretory(images_dir, build_dir, pngcrush)
+
+  # images
+  print "Copying assets..."
+  copy_diretory(assets_dir, build_dir)
 
   # defaults
   print "Copying defaults..."
-  copy_image_directory(defaults_dir, build_dir)
+  copy_diretory(defaults_dir, build_dir, pngcrush)
 
   # icon
   icon_file = os.path.join(ROOT_DIR, settings['icon'])
   pngcrush(icon_file, os.path.join(build_dir, "images", "icon.png"))
 
   # manifest
-  manifest = list(build_dir)
+  manifest = find_files(build_dir)
   with open(manifest_file, 'w') as f:
     f.write("CACHE MANIFEST\n")
     f.write("# %s\n" % str(datetime.datetime.now()))

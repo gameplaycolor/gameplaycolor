@@ -89,7 +89,7 @@
       }, self.store);
 
       self.drive = App.Drive.Instance();
-      self.settings = new App.Settings(self.drive, self.store, self.gameBoy);
+      self.settings = new App.Settings(self.drive, self.store, self.gameBoy, self.console);
 
       self.account = new App.Controls.Button($('#button-account'), { touchUpInside: function() {
         self.settings.show();

@@ -24,5 +24,6 @@ rsync -avPe ssh \
     "$build_dir"/*.{html,txt} \
     "$build_dir"/*.manifest \
     "$build_dir"/images \
+    "$build_dir"/assets \
     "$build_dir"/defaults \
     "$remote"

@@ -62,8 +62,7 @@
         self.element = $('#screen-console');
         self.displayIdle = $('#LCD-idle');
         self.displayLoading = $('#LCD-loading');
-        self.colors = ["grape", "cherry", "teal", "lime", "yellow"];
-        self.color = "teal";
+        self.color = "grape";
 
         window.tracker.track('console');
 
@@ -137,46 +136,10 @@
           self.show();
         }});
 
-        // Shake to set color.
         self.restoreColor().always(function(color) {
-          self.onShake(function() {
-            self.shuffleColor();
-          });
           $('#screen-splash').css("display", "none");
         });
 
-      },
-
-      shuffleColor: function() {
-        var self = this;
-        self.logging.info("Shuffle color");
-        var index = Math.floor(Math.random() * (self.colors.length - 1));
-        var color = self.colors[index];
-        if (color == self.color) {
-          color = self.colors[index + 1];
-        }
-        self.setColor(color);
-      },
-
-      onShake: function(callback) {
-        var self = this;
-        self.logging.info("Registering shake listener");
-        var lastShakeTime = new Date().getTime();
-        window.addEventListener('devicemotion', function (e) {
-          var x = e.accelerationIncludingGravity.x;
-          var y = e.accelerationIncludingGravity.y;
-          var z = e.accelerationIncludingGravity.z;
-          var xy = Math.sqrt((x * x) + (y * y));
-          var xyz = Math.sqrt((xy * xy) + (z * z));
-          var now = new Date().getTime();
-          var timeSinceLastShake = now - lastShakeTime;
-          if (timeSinceLastShake > App.Console.SHAKE_TIMEOUT_MS &&
-              xyz > App.Console.SHAKE_THRESHOLD) {
-            self.logging.info("Shake occurred");
-            callback();
-            lastShakeTime = now;
-          }
-        }, false);
       },
 
       restoreColor: function() {
@@ -203,7 +166,6 @@
           self.logging.info("Ignoring set to current color: " + color);
           return;
         }
-        self.store.setProperty(App.Controller.Domain.SETTINGS, App.Store.Property.COLOR, color);
         self.element.addClass(color);
         self.element.removeClass(self.color);
         self.color = color;

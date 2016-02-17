@@ -657,6 +657,76 @@ body
   color: white;
 }
 
+#console-color li, #console-color li:first-child, #console-color li:last-child
+{
+  border-radius: 2px;
+  margin: 2px 4px;
+  border: 2px solid transparent;
+  width: 20px;
+  border: 0;
+}
+
+#console-color li:last-child
+{
+  margin-right: 2px;
+}
+
+#console-color li:first-child
+{
+  margin-left: 2px;
+}
+
+#console-color li.selected, #console-color li.pressed
+{
+  border-radius: 4px;
+  margin: 0 2px;
+}
+
+#console-color li.pressed
+{
+  border: 2px solid #d8ecff;
+}
+
+#console-color li.selected
+{
+  border: 2px solid #0076ff;
+}
+
+#console-color li:last-child.selected, #console-color li:last-child.pressed
+{
+  margin-right: 0;
+}
+
+#console-color li:first-child.selected, #console-color li:first-child.pressed
+{
+  margin-left: 0;
+}
+
+#console-color li.grape.selected, #console-color li.grape.pressed
+{
+  background-color: #27358B;
+}
+
+#console-color li.cherry.selected, #console-color li.cherry.pressed
+{
+  background-color: #D81E57;
+}
+
+#console-color li.teal.selected, #console-color li.teal.pressed
+{
+  background-color: #007FA0;
+}
+
+#console-color li.lime.selected, #console-color li.lime.pressed
+{
+  background-color: #A0D02E;
+}
+
+#console-color li.yellow.selected, #console-color li.yellow.pressed
+{
+  background-color: #FECF41;
+}
+
 .setting-switch
 {
   transition: 300ms ease-in-out;

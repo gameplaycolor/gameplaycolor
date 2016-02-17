@@ -1,1 +1,2 @@
-- Adding support for different emulation speeds.
+- Setting for console color.
+- Work-around for audio playback issues on iPhone 6.

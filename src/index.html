@@ -72,10 +72,14 @@
                 <div class="dialog-row-label">Account</div>
                 <div id="account-details" class="dialog-row-detail-label"></div>
               </div>
+
+              <!-- Sound -->
               <div class="dialog-row">
                 <div class="dialog-row-label">Sound</div>
                 <div class="dialog-row-detail-label"><div id="switch" class="setting-switch"></div></div>
               </div>
+
+              <!-- Speed -->
               <div class="dialog-row">
                 <div class="dialog-row-label">Speed</div>
                 <div class="dialog-row-detail-label">
@@ -87,17 +91,40 @@
                   </ol>
                 </div>
               </div>
+
+              <!-- Color -->
+              <div class="dialog-row">
+                <div class="dialog-row-label">Color</div>
+                <div class="dialog-row-detail-label">
+                  <ol id="console-color" class="segmented">
+                    <li class="grape selected"></li>
+                    <li class="cherry"></li>
+                    <li class="teal"></li>
+                    <li class="lime"></li>
+                    <li class="yellow"></li>
+                  </ol>
+                </div>
+              </div>
+
+              <!-- Version -->
               <div class="dialog-row">
                 <div class="dialog-row-label">Version</div>
                 <div id="application-version" class="dialog-row-detail-label">0.0.0</div>
               </div>
+
+              <!-- Sign out -->
               <div class="dialog-divider"></div>
               <div id="screen-settings-sign-out" class="dialog-button">Sign out</div>
+
+              <!-- Say thanks! -->
               <div class="dialog-divider"></div>
               <div id="screen-settings-say-thanks" class="dialog-button">Say thanks!</div>
+
             </div>
+            
             <div class="dialog-divider"></div>
             <div id="screen-settings-done" class="dialog-button default">Done</div>
+
           </div>
 
           <div class="dialog-margin"></div>
@@ -196,6 +223,10 @@
         <textarea readonly="yes" rows="6" id="authorization-code" class="auth-code" type="text" onFocus="this.selectionStart=0; this.selectionEnd=this.value.length;" onTouchEnd="this.selectionStart=0; this.selectionEnd=this.value.length;" onMouseUp="return false" />
       </div>
     </div>
+
+    <audio id="silent">
+      <source src="assets/silent.mp3" type="audio/mpeg">
+    </audio>
 
     <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
 
