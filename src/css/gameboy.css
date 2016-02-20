@@ -1360,19 +1360,25 @@ hr {
 @media only screen and (width: 320px) and (height: 548px) {
 
     #element-screen {
-        top: 0;
+        top: 42px;
     }
 
     #element-dpad {
         left: 0;
+        bottom: 66px;
     }
 
     #element-buttons  {
         right: 10px;
+        bottom: 90px;
+    }
+
+    .element-surround {
+        top: 40px;
     }
 
     .surround {
-        height: 287px;
+        height: 289px;
         border-radius: 0;
     }
 
