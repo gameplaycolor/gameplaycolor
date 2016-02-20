@@ -792,7 +792,7 @@ hr {
     left: 0;
     width: 568px;
     height: 300px;
-    width: 375px;
+    width: 100%;
     height: 100%;
 }
 
@@ -1472,17 +1472,25 @@ hr {
 /* iPhone 6: Landscape */
 @media only screen and (width: 667px) and (height: 375px) {
 
-    #element-screen {
-        top: 12px;
+    #moulding {
+        top: 0;
     }
 
-    #element-options {
-        bottom: 10px;
+    #element-surround {
+        top: 4px;
     }
 
     .surround {
         width: 346px;
         height: 312px;
+    }
+
+    #element-screen {
+        top: 16px;
+    }
+
+    #element-options {
+        bottom: 10px;
     }
 
     #element-options {
