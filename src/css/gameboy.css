@@ -1208,7 +1208,7 @@ hr {
 #element-screen {
     position: absolute;
     width: 100%;
-    top: 30px;
+    top: 62px;
     left: 0;
 }
 
@@ -1454,10 +1454,6 @@ hr {
 
 /* iPhone 6: Portrait */
 @media only screen and (width: 375px) and (height: 647px) {
-
-    #element-screen {
-        top: 64px;
-    }
 
     #element-buttons {
         right: 20px;
