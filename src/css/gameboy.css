@@ -1412,8 +1412,16 @@ hr {
 /* iPhone 5: Landscape */
 @media only screen and (width: 568px) and (height: 320px) {
 
+    #element-surround {
+        top: 12px;
+    }
+
+    .surround {
+        height: 287px;
+    }
+
     #element-screen {
-        top: 0;
+        top: 14px;
     }
 
     #element-options {
@@ -1544,6 +1552,10 @@ hr {
     .surround {
         width: 346px;
         height: 312px;
+    }
+
+    #element-screen {
+        top: 34px;
     }
 
 }
