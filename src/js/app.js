@@ -180,7 +180,6 @@
       var self = this;
       self.gameBoy.reset();
       self.store.deleteProperty(App.Controller.Domain.SETTINGS, App.Store.Property.GAME);
-      self.console.setTitle("Console");
     },
 
     checkForUpdate: function() {
