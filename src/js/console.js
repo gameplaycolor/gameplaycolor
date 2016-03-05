@@ -102,16 +102,22 @@
         self.navigationBarTimeout = undefined;
         self.navigation = $('#console-navigation-bar');
         self.screen = new App.Controls.Button($('#element-screen'), { touchUpInside: function() {
-          self.navigation.removeClass('hidden');
 
           if (self.navigationBarTimeout !== undefined) {
+
             clearTimeout(self.navigationBarTimeout);
             self.navigationBarTimeout = undefined;
-          }
-
-          self.navigationBarTimeout = setTimeout(function() {
             self.navigation.addClass('hidden');
-          }, 2000);
+
+          } else {
+
+            self.navigation.removeClass('hidden');
+            self.navigationBarTimeout = setTimeout(function() {
+              self.navigation.addClass('hidden');
+              self.navigationBarTimeout = undefined;
+            }, 2000);
+
+          }
 
         }});
         
