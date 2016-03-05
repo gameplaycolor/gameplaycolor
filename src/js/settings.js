@@ -118,6 +118,7 @@
               self.drive.signOut().fail(function(e) {
                 alert("Unable to sign out of Google Drive.\n" + e);
               });
+              self.hide();
             }
           });
         }});
