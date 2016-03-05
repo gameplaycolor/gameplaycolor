@@ -1545,6 +1545,10 @@ hr {
 /* iPhone 6 Plus: Landscape */
 @media only screen and (width: 736px) and (height: 414px) {
 
+    #moulding {
+        top: 0;
+    }
+
     .appicon {
         display: none;
     }
