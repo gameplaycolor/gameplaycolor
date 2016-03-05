@@ -98,6 +98,22 @@
           touchDownDown  : function() { self.gameBoy.keyDown(Gameboy.Key.DOWN); },
           touchUpDown    : function() { self.gameBoy.keyUp(Gameboy.Key.DOWN); }
         });
+
+        self.navigationBarTimeout = undefined;
+        self.navigation = $('#console-navigation-bar');
+        self.screen = new App.Controls.Button($('#element-screen'), { touchUpInside: function() {
+          self.navigation.removeClass('hidden');
+
+          if (self.navigationBarTimeout !== undefined) {
+            clearTimeout(self.navigationBarTimeout);
+            self.navigationBarTimeout = undefined;
+          }
+
+          self.navigationBarTimeout = setTimeout(function() {
+            self.navigation.addClass('hidden');
+          }, 2000);
+
+        }});
         
         // A.
         self.a = new App.Controls.Button($('#control-a'), { touchDown : function() {
@@ -179,6 +195,11 @@
         var self = this;
         if (self.state != App.Console.State.HIDDEN) {
 
+          if (self.navigationBarTimeout !== undefined) {
+            clearTimeout(self.navigationBarTimeout);
+            self.navigationBarTimeout = undefined;
+          }
+
           self.event('willHide');
           self.state = App.Console.State.HIDDEN;
           setTimeout(function() {
@@ -200,6 +221,7 @@
           self.state = App.Console.State.VISIBLE;
           self.element.removeClass("hidden");
           setTimeout(function() {
+            self.navigation.addClass('hidden');
             self.event('didShow');
           }, 400);
           window.addEventListener("scroll", this.scrollBlocker);

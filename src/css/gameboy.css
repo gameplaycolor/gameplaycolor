@@ -227,6 +227,7 @@ body {
 }
 
 .navigation-bar {
+    position: absolute;
     height: 44px;
     display: flex;
     top: 0;
@@ -1279,7 +1280,8 @@ hr {
     }
 
     .surround {
-        height: 287px;
+        top: 0;
+        height: 246px;
         border-radius: 0;
     }
 
@@ -1307,6 +1309,17 @@ hr {
 
     .appicon {
         display: none;
+    }
+
+    .console-navigation-bar {
+        box-sizing: border-box;
+        background-color: rgba(0, 0, 0, 0.6);
+        transition: top 0.3s ease-in-out;
+    }
+
+    .console-navigation-bar.hidden {
+        top: -100%;
+        transition: top 0.3s ease-in-out;
     }
 
 }
@@ -1577,8 +1590,13 @@ hr {
         background-size: 640px 576px;
     }
 
+    #moulding {
+        top: 0;
+    }
+
     .surround {
-        height: 638px;
+        height: 614px;
+        width: 678px;
     }
 
     #LCD-loading {
@@ -1631,12 +1649,7 @@ hr {
     }
 
     #element-surround {
-        top: 20px;
-    }
-
-    .surround {
-        height: 636px;
-        width: 700px;
+        top: 30px;
     }
 
 }
