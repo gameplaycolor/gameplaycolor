@@ -1412,6 +1412,10 @@ hr {
 /* iPhone 5: Landscape */
 @media only screen and (width: 568px) and (height: 320px) {
 
+    #moulding {
+        top: 0;
+    }
+
     #element-surround {
         top: 12px;
     }
