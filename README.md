@@ -1,9 +1,15 @@
 Game Play Color
 ===============
 
-A JavaScript Game Boy Color emulator for iOS, based on the [GameBoy-Online](https://github.com/grantgalitz/GameBoy-Online) emulator core.
+A JavaScript Game Boy Color emulator for iOS, based on the [GameBoy-Online](https://github.com/taisel/GameBoy-Online) emulator core.
 
 If you just want to play Game Play Color, you can find it online at [https://gameplaycolor.com](https://gameplaycolor.com).
+
+Screenshots
+-----------
+
+<img title="Console" src="/screenshots/console.png" width="375" height="667" />
+<img title="Library" src="/screenshots/library.png" width="375" height="667" />
 
 Dependencies
 ------------
@@ -46,6 +52,11 @@ Changelog
 
 - Support for diagonal directions using the d-pad.
 - Improved scrolling in the game library.
+
+### Version 2.1.7
+
+- Setting for console color.
+- Work-around for audio playback issues on iPhone 6.
 
 ### Version 2.1.6
 
