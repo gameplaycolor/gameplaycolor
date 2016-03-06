@@ -210,10 +210,11 @@
           self.state = App.Console.State.HIDDEN;
           setTimeout(function() {
             self.element.addClass("hidden");
-            self.event('didHide');
+            setTimeout(function() {
+              document.getElementsByTagName('body')[0].style.overflow = ''; // Allow scrolling.
+              self.event('didHide');
+            }, 300);
           }, 10);
-
-          document.getElementsByTagName('body')[0].style.overflow = ''; // Allow scrolling.
 
         }
       },
