@@ -42,6 +42,11 @@ The build will be created in the `build` directory, and a corresponding *.tar.gz
 Changelog
 ---------
 
+### Version 2.2.0
+
+- Support for diagonal directions using the d-pad.
+- Improved scrolling in the game library.
+
 ### Version 2.1.6
 
 - Adding support for different emulation speeds.
