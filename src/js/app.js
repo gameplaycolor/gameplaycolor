@@ -141,6 +141,7 @@
           self.drive.user().then(function(user) {
             $('#account-details').html(user.email);
           });
+          self.games.update();
 
         }
       });
