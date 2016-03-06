@@ -98,8 +98,9 @@
       return self.element.height();
     },
 
-    onTouchEvent: function(state, position, timestamp) {
+    onTouchEvent: function(state, position, timestamp, event) {
       var self = this;
+      event.preventDefault();
 
       if (state === App.Control.Touch.START) {
         self.touches = 1;
@@ -118,64 +119,28 @@
     processTouchEvent: function(state, position, timestamp) {
       var self = this;
 
-      var halfWidth = self.element.width() / 2;
-      var halfHeight = self.element.height() / 2;
+      var x = Math.floor(position.x / (self.element.width() / 3));
+      var y = Math.floor(position.y / (self.element.width() / 3));
 
-      // Mapping this into a less than obvious coordinate space because it seemed
-      // a good idea at the time.
-      var x = (halfWidth - position.x) * -1;
-      var y = halfHeight - position.y;
-
-      // Check for the corners (diagonal movement).
-      var diagonal = false;
-      if ((Math.abs(x) >= (halfWidth - App.Controls.Pad.DIAGONAL_THRESHOLD)) &&
-          (Math.abs(y) >= (halfHeight - App.Controls.Pad.DIAGONAL_THRESHOLD))) {
-        diagonal = true;
-      }
-
-      if (x < 0) {
-        // Left half.
-        if (y < 0) {
-          // Bottom-left quadrant.
-          if (diagonal) {
-            self.setState(App.Controls.Pad.State.DOWNLEFT);
-          } else if (Math.abs(y) < Math.abs(x)) {
-            self.setState(App.Controls.Pad.State.LEFT);
-          } else {
-            self.setState(App.Controls.Pad.State.DOWN);
-          }
-        } else {
-          // Top-left quadrant.
-          if (diagonal) {
-            self.setState(App.Controls.Pad.State.UPLEFT);
-          } else if (Math.abs(y) < Math.abs(x)) {
-            self.setState(App.Controls.Pad.State.LEFT);
-          } else {
-            self.setState(App.Controls.Pad.State.UP);
-          }
-
-        }
-      } else {
-        // Right half.
-        if (y < 0) {
-          // Bottom-right quadrant.
-          if (diagonal) {
-            self.setState(App.Controls.Pad.State.DOWNRIGHT);
-          } else if (Math.abs(y) < Math.abs(x)) {
-            self.setState(App.Controls.Pad.State.RIGHT);
-          } else {
-            self.setState(App.Controls.Pad.State.DOWN);
-          }
-        } else {
-          // Top-right quadrant.
-          if (diagonal) {
-            self.setState(App.Controls.Pad.State.UPRIGHT);
-          } else if (Math.abs(y) < Math.abs(x)) {
-            self.setState(App.Controls.Pad.State.RIGHT);
-          } else {
-            self.setState(App.Controls.Pad.State.UP);
-          }
-        }
+      switch (y) {
+        case 0:
+          switch (x) {
+            case 0: self.setState(App.Controls.Pad.State.UPLEFT); break;
+            case 1: self.setState(App.Controls.Pad.State.UP); break;
+            case 2: self.setState(App.Controls.Pad.State.UPRIGHT); break;
+          } break;
+        case 1:
+          switch (x) {
+            case 0: self.setState(App.Controls.Pad.State.LEFT); break;
+            case 1: self.setState(App.Controls.Pad.State.DEFAULT); break;
+            case 2: self.setState(App.Controls.Pad.State.RIGHT); break;
+          } break;
+        case 2:
+          switch (x) {
+            case 0: self.setState(App.Controls.Pad.State.DOWNLEFT); break;
+            case 1: self.setState(App.Controls.Pad.State.DOWN); break;
+            case 2: self.setState(App.Controls.Pad.State.DOWNRIGHT); break;
+          } break;
       }
 
     },

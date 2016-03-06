@@ -33,7 +33,7 @@
       self.element = $('#screen-games');
       self.empty = $('#screen-empty');
       self.loading = $('#screen-loading');
-      self.grid = new App.Grid(device);
+      self.grid = new App.Grid();
       self.items = [];
 
       self.library.onStateChange(function(state) {

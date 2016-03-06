@@ -58,11 +58,14 @@
         self.gameBoy = gameBoy;
         self.events = events;
         self.store = store;
-        self.state = App.Console.State.VISIBLE;
+        self.state = App.Console.State.HIDDEN;
         self.element = $('#screen-console');
         self.displayIdle = $('#LCD-idle');
         self.displayLoading = $('#LCD-loading');
         self.color = "grape";
+        self.scrollBlocker = function(event) {
+          event.preventDefault();
+        };
 
         window.tracker.track('console');
 
@@ -95,6 +98,28 @@
           touchDownDown  : function() { self.gameBoy.keyDown(Gameboy.Key.DOWN); },
           touchUpDown    : function() { self.gameBoy.keyUp(Gameboy.Key.DOWN); }
         });
+
+        self.navigationBarTimeout = undefined;
+        self.navigation = $('#console-navigation-bar');
+        self.screen = new App.Controls.Button($('#element-screen'), { touchUpInside: function() {
+
+          if (self.navigationBarTimeout !== undefined) {
+
+            clearTimeout(self.navigationBarTimeout);
+            self.navigationBarTimeout = undefined;
+            self.navigation.addClass('hidden');
+
+          } else {
+
+            self.navigation.removeClass('hidden');
+            self.navigationBarTimeout = setTimeout(function() {
+              self.navigation.addClass('hidden');
+              self.navigationBarTimeout = undefined;
+            }, 2000);
+
+          }
+
+        }});
         
         // A.
         self.a = new App.Controls.Button($('#control-a'), { touchDown : function() {
@@ -124,16 +149,10 @@
           self.gameBoy.keyUp(Gameboy.Key.SELECT);
         }}, 16 /* Left Shift */);
 
-        // Tapping the screen shows the game picker.
-        self.screen = new App.Controls.Button($('#display'), { touchUp: function() {
+        self.back = new App.Controls.Button($('#button-library'), { touchUp: function() {
           self.logging.info("Show games");
           window.tracker.track('games');
           self.hide();
-        }});
-
-        self.done = new App.Controls.Button($('#button-done'), { touchUp: function() {
-          self.logging.info("Show console");
-          self.show();
         }});
 
         self.restoreColor().always(function(color) {
@@ -181,32 +200,43 @@
       hide: function() {
         var self = this;
         if (self.state != App.Console.State.HIDDEN) {
+
+          if (self.navigationBarTimeout !== undefined) {
+            clearTimeout(self.navigationBarTimeout);
+            self.navigationBarTimeout = undefined;
+          }
+
           self.event('willHide');
           self.state = App.Console.State.HIDDEN;
           setTimeout(function() {
-            self.element.addClass("open");
-            self.event('didHide');
+            self.element.addClass("hidden");
+            setTimeout(function() {
+              document.getElementsByTagName('body')[0].style.overflow = ''; // Allow scrolling.
+              self.event('didHide');
+            }, 300);
           }, 10);
+
         }
       },
       
       show: function() {
         var self = this;
         if (self.state != App.Console.State.VISIBLE) {
+
           window.tracker.track('console');
           self.event('willShow');
           self.state = App.Console.State.VISIBLE;
-          self.element.removeClass("open");
+          self.element.removeClass("hidden");
           setTimeout(function() {
+            self.navigation.addClass('hidden');
             self.event('didShow');
           }, 400);
+          window.addEventListener("scroll", this.scrollBlocker);
+
+          document.getElementsByTagName('body')[0].style.overflow = 'hidden'; // Prevent scrolling.
+
         }
       },
-
-      setTitle: function(title)  {
-        var self = this;
-        self.done.setTitle(title);
-      }
       
   });
 

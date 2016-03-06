@@ -91,8 +91,13 @@
       self.drive = App.Drive.Instance();
       self.settings = new App.Settings(self.drive, self.store, self.gameBoy, self.console);
 
-      self.account = new App.Controls.Button($('#button-account'), { touchUpInside: function() {
+      self.settingsButton = new App.Controls.Button($('#button-account'), { touchUpInside: function() {
         self.settings.show();
+      }});
+
+      self.consoleButton = new App.Controls.Button($('#button-done'), { touchUp: function() {
+        self.logging.info("Show console");
+        self.console.show();
       }});
 
       self.redeem = new App.Controls.Button($('#button-redeem'), { touchUpInside: function() {
@@ -113,10 +118,10 @@
         } else if (state == App.Drive.State.UNAUTHORIZED) {
 
           self.logging.info("Google Drive state unauthorized.");
-          self.account.hide();
-
+          self.settingsButton.hide();
+          self.consoleButton.hide();
           self.reset();
-          self.console.show();
+          self.console.hide();
 
           if (window.navigator.onLine === true) {
             self.drive.authURL().then(function(url) {
@@ -132,10 +137,11 @@
 
           self.logging.info("Google Drive state authorized.");
           $("#screen-account").hide();
-          self.account.show();
+          self.settingsButton.show();
           self.drive.user().then(function(user) {
             $('#account-details').html(user.email);
           });
+          self.games.update();
 
         }
       });
@@ -143,7 +149,12 @@
 
       self.checkForUpdate();
 
-      self.loadPreviousGame();
+      // Load the previous game.
+      self.store.property(App.Controller.Domain.SETTINGS, App.Store.Property.GAME, function(identifier) {
+        if (identifier !== undefined) {
+          self.load(identifier);
+        }
+      });
 
       setInterval(function() {
         autoSave();
@@ -151,26 +162,18 @@
 
     },
 
-    loadPreviousGame: function() {
-      var self = this;
-      self.store.property(App.Controller.Domain.SETTINGS, App.Store.Property.GAME, function(identifier) {
-        if (identifier === undefined) {
-          return;
-        }
-        self.load(identifier);
-      });
-    },
-
     load: function(identifier) {
       var self = this;
       var title = self.library.titleForIdentifier(identifier);
       self.gameBoy.load(identifier).then(function() {
         self.store.setProperty(App.Controller.Domain.SETTINGS, App.Store.Property.GAME, identifier);
-        self.console.setTitle(title);
+        self.consoleButton.setTitle(title);
+        self.consoleButton.show();
+        self.console.show();
       }).fail(function(e) {
         alert("Unable to load ROM\n" + e);
         self.store.deleteProperty(App.Controller.Domain.SETTINGS, App.Store.Property.GAME);
-        self.console.setTitle("Console");
+        self.consoleButton.hide();
       });
     },
 
@@ -178,7 +181,6 @@
       var self = this;
       self.gameBoy.reset();
       self.store.deleteProperty(App.Controller.Domain.SETTINGS, App.Store.Property.GAME);
-      self.console.setTitle("Console");
     },
 
     checkForUpdate: function() {

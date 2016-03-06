@@ -42,8 +42,9 @@
       }
     },
 
-    onTouchEvent: function(state, position, timestamp) {
+    onTouchEvent: function(state, position, timestamp, event) {
       var self = this;
+      event.preventDefault();
       if (state == App.Control.Touch.END) {
         if (position.x >= 0 &&
             position.x < self.width() &&

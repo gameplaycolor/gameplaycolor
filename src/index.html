@@ -34,13 +34,11 @@
   </head>
   <body style="background-color: black;">
     
-    <div id="gameboy" style="width: 100%; height: 100%">
+    <div id="gameboy">
 
-      <div id="screen-games" class="screen">
-        <div id="list-games" class="content">
-          <div id="list-games-content"></div>
-          <div id="list-games-page-control"></div>
-        </div>
+      <div class="screen-games-background" />
+      <div id="screen-games">
+        <div id="list-games" class="content" />
         <div id="screen-loading" class="content" style="display: none">
           <div class="placeholder">
             <p>Loading&hellip;</p>
@@ -52,7 +50,7 @@
             <p>Add Game Boy ROMs with the .gb or .gbc file extension to see them here.</p>
           </div>
         </div>
-        <div id="navigation-bar" class="navigation-bar">
+        <div id="library-navigation-bar" class="navigation-bar library-navigation-bar">
           <div id="button-account" class="navigation-button button-account">Settings</div>
           <div id="button-done" class="navigation-button button-done">Console</div>
         </div>
@@ -121,7 +119,7 @@
               <div id="screen-settings-say-thanks" class="dialog-button">Say thanks!</div>
 
             </div>
-            
+
             <div class="dialog-divider"></div>
             <div id="screen-settings-done" class="dialog-button default">Done</div>
 
@@ -130,58 +128,66 @@
           <div class="dialog-margin"></div>
 
         </div><!-- dialog-layout-container -->
-
-        <div id="screen-settings-dismiss" class="screen" />
       </div>
 
-      <div id="screen-console" class="screen grape">
+      <div id="screen-console-container">
+        <div id="screen-console" class="screen grape theme-gbc hidden">
 
-        <div id="moulding">
-          <div id="moulding-left"></div>
-          <div id="moulding-center"></div>
-          <div id="moulding-right"></div>
-        </div>
-        <div id="element-surround" class="element-surround">
-          <div id="surround" class="surround"></div>
-        </div>
-        <div id="element-screen">
-          <div id="display">
-            <canvas id="LCD" class="display" width="160" height="144"></canvas>
-            <div id="LCD-idle" class="display"></div>
-            <div id="LCD-loading" class="display" style="display: none"></div>
-            <div id="LCD-dropshadow"></div>
+          <div id="moulding">
+            <div id="moulding-left"></div>
+            <div id="moulding-center"></div>
+            <div id="moulding-right"></div>
           </div>
-        </div>
-        <div id="element-dpad">
-          <div id="dpad-touch-target" class="dpad-touch-target">
-            <div id="dpad" class="dpad">
-              <div id="dpad-up" class="element up top arrow"></div>
-              <div id="dpad-left" class="element left middle arrow"></div>
-              <div id="dpad-down" class="element down bottom arrow"></div>
-              <div id="dpad-right" class="element right middle arrow"></div>
-              <div class="element center middle"></div>
+
+          <div id="element-surround" class="element-surround">
+            <div id="surround" class="surround"></div>
+          </div>
+
+          <div id="element-screen">
+            <div id="display">
+              <canvas id="LCD" class="display" width="160" height="144"></canvas>
+              <div id="LCD-idle" class="display"></div>
+              <div id="LCD-loading" class="display" style="display: none"></div>
+              <div id="LCD-dropshadow"></div>
             </div>
           </div>
-        </div>
-        <div id="element-options">
-          <div id="group-options">
-            <div class="button-option-group top left">
-              <div id="control-select" class="button-option"></div>
-              <div class="button-label">Select</div>
-            </div>
-            <div class="button-option-group top right">
-              <div id="control-start" class="button-option"></div>
-              <div class="button-label">Start</div>
+
+          <div id="console-navigation-bar" class="navigation-bar console-navigation-bar">
+            <div id="button-library" class="navigation-button button-back button-library">Library</div>
+            <div class="navigation-button"></div>
+          </div>
+
+          <div id="element-dpad">
+            <div id="dpad-touch-target" class="dpad-touch-target">
+              <div id="dpad" class="dpad">
+                <div id="dpad-up" class="element up top arrow"></div>
+                <div id="dpad-left" class="element left middle arrow"></div>
+                <div id="dpad-down" class="element down bottom arrow"></div>
+                <div id="dpad-right" class="element right middle arrow"></div>
+                <div class="element center middle"></div>
+              </div>
             </div>
           </div>
-        </div>
-        <div id="element-buttons">
-          <div id="group-buttons">
-            <div id="control-a" class="button"><div class="control-text">A</div></div>
-            <div id="control-b" class="button"><div class="control-text">B</div></div>
+          <div id="element-options">
+            <div id="group-options">
+              <div class="button-option-group top left">
+                <div id="control-select" class="button-option"></div>
+                <div class="button-label">Select</div>
+              </div>
+              <div class="button-option-group top right">
+                <div id="control-start" class="button-option"></div>
+                <div class="button-label">Start</div>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+          <div id="element-buttons">
+            <div id="group-buttons">
+              <div id="control-a" class="button"><div class="control-text">A</div></div>
+              <div id="control-b" class="button"><div class="control-text">B</div></div>
+            </div>
+          </div>
+        </div><!-- screen-console -->
+      </div><!-- screen-console-container -->
 
       <div id="DEBUG" style="display: none"></div>
       <div id="DEBUGGER"></div>
@@ -220,7 +226,7 @@
       <div class="placeholder">
         <div class="appicon"></div>
         <p>Copy and paste the access code into <strong>Game Play Color</strong> then click <strong>Continue</strong>.</p>
-        <textarea readonly="yes" rows="6" id="authorization-code" class="auth-code" type="text" onFocus="this.selectionStart=0; this.selectionEnd=this.value.length;" onTouchEnd="this.selectionStart=0; this.selectionEnd=this.value.length;" onMouseUp="return false" />
+        <textarea readonly="yes" rows="6" id="authorization-code" class="authorization-code" type="text" onFocus="this.selectionStart=0; this.selectionEnd=this.value.length;" onTouchEnd="this.selectionStart=0; this.selectionEnd=this.value.length;" onMouseUp="return false" />
       </div>
     </div>
 
@@ -255,7 +261,6 @@
     <script type="text/javascript" src="js/grid.js"></script>
     <script type="text/javascript" src="js/store.js"></script>
     <script type="text/javascript" src="js/touchlistener.js"></script>
-    <script type="text/javascript" src="js/gesturerecognizer.js"></script>
     <script type="text/javascript" src="js/device.js"></script>
     <script type="text/javascript" src="js/tracker.js"></script>
     <script type="text/javascript" src="js/drive.js"></script>
