@@ -53,6 +53,11 @@ Changelog
 - Support for diagonal directions using the d-pad.
 - Improved scrolling in the game library.
 
+### Version 2.1.7
+
+- Setting for console color.
+- Work-around for audio playback issues on iPhone 6.
+
 ### Version 2.1.6
 
 - Adding support for different emulation speeds.
