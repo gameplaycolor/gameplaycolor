@@ -730,7 +730,6 @@ body {
 }
 
 .screen-instructions {
-    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
     font-size: 22px;
     background-color: #222;
 }
@@ -1250,7 +1249,7 @@ hr {
     background-color: #888;
 }
 
-.auth-code {
+.authorization-code {
     font-size: 20px;
     background-color: #666;
     margin: 8px 0;
@@ -1266,9 +1265,10 @@ hr {
     -moz-user-select: text;
     user-select: text;
     border: 0;
+    width: 200px;
 }
 
-.auth-code:focus {
+.authorization-code:focus {
     outline: none;
 }
 
