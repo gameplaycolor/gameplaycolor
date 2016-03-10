@@ -146,8 +146,6 @@
           <div id="element-screen">
             <div id="display">
               <canvas id="LCD" class="display" width="160" height="144"></canvas>
-              <div id="LCD-idle" class="display"></div>
-              <div id="LCD-loading" class="display" style="display: none"></div>
               <div id="LCD-dropshadow"></div>
             </div>
           </div>
@@ -188,6 +186,18 @@
           </div>
         </div><!-- screen-console -->
       </div><!-- screen-console-container -->
+
+      <div id="screen-menu" class="screen screen-menu hidden" style="display: none;">
+        <div id="game-menu" class="menu hidden" style="display: none">
+          <ul>
+            <li id="menu-button-a-b-start-select">A + B + Start + Select</li>
+            <li id="menu-button-reset">Reset</li>
+          </ul>
+          <ul>
+            <li id="menu-button-cancel" class="default">Cancel</li>
+          </ul>
+        </div>
+      </div><!-- screen-menu -->
 
       <div id="DEBUG" style="display: none"></div>
       <div id="DEBUGGER"></div>
@@ -253,6 +263,7 @@
     <script type="text/javascript" src="js/games.js"></script>
     <script type="text/javascript" src="js/pad.js"></script>
     <script type="text/javascript" src="js/settings.js"></script>
+    <script type="text/javascript" src="js/menu.js"></script>
     <script type="text/javascript" src="js/button.js"></script>
     <script type="text/javascript" src="js/switch.js"></script>
     <script type="text/javascript" src="js/segmented.js"></script>

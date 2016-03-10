@@ -67,7 +67,7 @@
       self.logging.info("User Agent: " + navigator.userAgent);
 
       self.library = new App.Library(self.store, function(identifier) {
-        self.gameBoy.clear();
+        self.console.clear();
         self.console.show();
         setTimeout(function() {
           self.load(identifier);
@@ -76,17 +76,9 @@
       self.gameBoy = new App.GameBoy(self.store, self.library);
       self.games = new App.Games(self.device, self.gameBoy, self.library);
 
-      self.console = new App.Console(self.device, self.gameBoy, {
-        'willHide': function() {
-          self.gameBoy.pause();
-        },
-        'didHide': function() {
-          self.games.update();
-        },
-        'didShow': function() {
-          self.gameBoy.run();
-        }
-      }, self.store);
+      self.console = new App.Console(self.device, self.gameBoy, { 'didHide': function() {
+        self.games.update();
+      }}, self.store);
 
       self.drive = App.Drive.Instance();
       self.settings = new App.Settings(self.drive, self.store, self.gameBoy, self.console);
@@ -120,7 +112,7 @@
           self.logging.info("Google Drive state unauthorized.");
           self.settingsButton.hide();
           self.consoleButton.hide();
-          self.reset();
+          self.clear();
           self.console.hide();
 
           if (window.navigator.onLine === true) {
@@ -177,9 +169,9 @@
       });
     },
 
-    reset: function() {
+    clear: function() {
       var self = this;
-      self.gameBoy.reset();
+      self.console.clear();
       self.store.deleteProperty(App.Controller.Domain.SETTINGS, App.Store.Property.GAME);
     },
 

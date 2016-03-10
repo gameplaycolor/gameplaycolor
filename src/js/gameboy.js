@@ -156,13 +156,13 @@ function base64ToArray(b64encoded) {
     clear: function() {
       var self = this;
       clearLastEmulation();
-      self.setState(App.GameBoy.State.LOADING);
+      self.data = undefined;
+      self.setState(App.GameBoy.State.IDLE);
     },
 
     reset: function() {
       var self = this;
-      clearLastEmulation();
-      self.setState(App.GameBoy.State.IDLE);
+      return self._insertCartridge(self.identifier, self.data);
     },
 
     load: function(identifier) {
@@ -175,15 +175,10 @@ function base64ToArray(b64encoded) {
         deferred.reject(e);
       };
 
-      self.setState(App.GameBoy.State.LOADING);
       self.library.fetch(identifier).then(function(data) {
-
         self._insertCartridge(identifier, data).then(function() {
-          gameboy.setSpeed(self.speed);
-          self.setState(App.GameBoy.State.RUNNING);
           deferred.resolve();
         }).fail(resetStateAndReject);
-
       }).fail(resetStateAndReject);
 
       return deferred.promise();
@@ -192,8 +187,14 @@ function base64ToArray(b64encoded) {
     _insertCartridge: function(identifier, data) {
       var self = this;
       var deferred = $.Deferred();
+      self.identifier = identifier;
+      self.data = data;
       start(identifier, document.getElementById('LCD'), data).then(function() {
         setTimeout(function() {
+          if (gameboy) {
+            gameboy.setSpeed(self.speed);
+          }
+          self.setState(App.GameBoy.State.RUNNING);
           deferred.resolve();
         }, 100);
       }).fail(function(e) {

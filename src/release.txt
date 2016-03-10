@@ -1,2 +1,3 @@
-- Support for diagonal directions using the d-pad.
-- Improved scrolling in the game library.
+- New in-game menu.
+- Menu option for resetting the current game.
+- Menu option for Zelda fans: A + B + Select + Start.

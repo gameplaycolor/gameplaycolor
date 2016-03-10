@@ -55,13 +55,11 @@
         
         self.logging = new App.Logging(window.config.logging_level, "console");
         self.device = device;
-        self.gameBoy = gameBoy;
+        self.core = gameBoy;
         self.events = events;
         self.store = store;
         self.state = App.Console.State.HIDDEN;
         self.element = $('#screen-console');
-        self.displayIdle = $('#LCD-idle');
-        self.displayLoading = $('#LCD-loading');
         self.color = "grape";
         self.scrollBlocker = function(event) {
           event.preventDefault();
@@ -69,34 +67,20 @@
 
         window.tracker.track('console');
 
-        self.gameBoy.onStateChange(function(state) {
-          if (state === App.GameBoy.State.IDLE) {
-            self.displayIdle.show();
-            self.displayLoading.hide();
-          } else if (state === App.GameBoy.State.LOADING) {
-            self.displayLoading.show();
-            self.displayIdle.hide();
-          } else if (state === App.GameBoy.State.RUNNING) {
-            self.displayLoading.hide();
-            self.displayIdle.hide();
-          } else if (state === App.GameBoy.State.ERROR) {
-          }
-        });
-
         self.element.get(0).addEventListener('touchmove', function(e) {
           e.preventDefault();
         }, false);
 
         // D-Pad.
         self.pad = new App.Controls.Pad({
-          touchDownLeft  : function() { self.gameBoy.keyDown(Gameboy.Key.LEFT); },
-          touchUpLeft    : function() { self.gameBoy.keyUp(Gameboy.Key.LEFT); },
-          touchDownRight : function() { self.gameBoy.keyDown(Gameboy.Key.RIGHT); },
-          touchUpRight   : function() { self.gameBoy.keyUp(Gameboy.Key.RIGHT); },
-          touchDownUp    : function() { self.gameBoy.keyDown(Gameboy.Key.UP); },
-          touchUpUp      : function() { self.gameBoy.keyUp(Gameboy.Key.UP); },
-          touchDownDown  : function() { self.gameBoy.keyDown(Gameboy.Key.DOWN); },
-          touchUpDown    : function() { self.gameBoy.keyUp(Gameboy.Key.DOWN); }
+          touchDownLeft  : function() { self.core.keyDown(Gameboy.Key.LEFT); },
+          touchUpLeft    : function() { self.core.keyUp(Gameboy.Key.LEFT); },
+          touchDownRight : function() { self.core.keyDown(Gameboy.Key.RIGHT); },
+          touchUpRight   : function() { self.core.keyUp(Gameboy.Key.RIGHT); },
+          touchDownUp    : function() { self.core.keyDown(Gameboy.Key.UP); },
+          touchUpUp      : function() { self.core.keyUp(Gameboy.Key.UP); },
+          touchDownDown  : function() { self.core.keyDown(Gameboy.Key.DOWN); },
+          touchUpDown    : function() { self.core.keyUp(Gameboy.Key.DOWN); }
         });
 
         self.navigationBarTimeout = undefined;
@@ -123,34 +107,34 @@
         
         // A.
         self.a = new App.Controls.Button($('#control-a'), { touchDown : function() {
-          self.gameBoy.keyDown(Gameboy.Key.A);
+          self.core.keyDown(Gameboy.Key.A);
         }, touchUp: function() {
-          self.gameBoy.keyUp(Gameboy.Key.A);
+          self.core.keyUp(Gameboy.Key.A);
         }}, 65 /* A */);
 
         // B.
         self.b = new App.Controls.Button($('#control-b'), { touchDown : function() {
-          self.gameBoy.keyDown(Gameboy.Key.B);
+          self.core.keyDown(Gameboy.Key.B);
         }, touchUp: function() {
-          self.gameBoy.keyUp(Gameboy.Key.B);
+          self.core.keyUp(Gameboy.Key.B);
         }}, 83 /* S */);
 
         // Start.
         self.start = new App.Controls.Button($('#control-start'), { touchDown : function() {
-          self.gameBoy.keyDown(Gameboy.Key.START);
+          self.core.keyDown(Gameboy.Key.START);
         }, touchUp: function() {
-          self.gameBoy.keyUp(Gameboy.Key.START);
+          self.core.keyUp(Gameboy.Key.START);
         }}, 13 /* Return */);
 
         // Select.
         self.select = new App.Controls.Button($('#control-select'), { touchDown : function() {
-          self.gameBoy.keyDown(Gameboy.Key.SELECT);
+          self.core.keyDown(Gameboy.Key.SELECT);
         }, touchUp: function() {
-          self.gameBoy.keyUp(Gameboy.Key.SELECT);
+          self.core.keyUp(Gameboy.Key.SELECT);
         }}, 16 /* Left Shift */);
 
-        self.back = new App.Controls.Button($('#button-library'), { touchUp: function() {
-          self.logging.info("Show games");
+        self.back = new App.Controls.Button($('#button-library'), { touchUpInside: function() {
+          self.logging.info("Show library");
           window.tracker.track('games');
           self.hide();
         }});
@@ -158,6 +142,39 @@
         self.restoreColor().always(function(color) {
           $('#screen-splash').css("display", "none");
         });
+
+        self.menu = new App.Menu(function() {
+          self.core.pause();
+        }, function() {
+          self.core.run();
+        });
+
+        self.menu.onReset = function() {
+          self.core.reset();
+          self.menu.hide();
+        };
+
+        self.menu.onABStartSelect = function() {
+          self.menu.hide();
+          setTimeout(function() {
+            self.core.keyDown(Gameboy.Key.A);
+            self.core.keyDown(Gameboy.Key.B);
+            self.core.keyDown(Gameboy.Key.START);
+            self.core.keyDown(Gameboy.Key.SELECT);
+            setTimeout(function() {
+              self.core.keyUp(Gameboy.Key.A);
+              self.core.keyUp(Gameboy.Key.B);
+              self.core.keyUp(Gameboy.Key.START);
+              self.core.keyUp(Gameboy.Key.SELECT);
+            }, 40);
+          }, 400);
+        };
+
+        self.game = new App.Controls.Button($('#button-game'), { touchUpInside: function() {
+          self.logging.info("Show game menu");
+          window.tracker.track('menu');
+          self.menu.show();
+        }});
 
       },
 
@@ -189,6 +206,21 @@
         self.element.removeClass(self.color);
         self.color = color;
       },
+
+      pause: function() {
+        var self = this;
+        self.core.pause();
+      },
+
+      run: function() {
+        var self = this;
+        self.core.run();
+      },
+
+      clear: function() {
+        var self = this;
+        self.core.clear();
+      },
       
       event: function(id) {
         var self = this;
@@ -206,7 +238,7 @@
             self.navigationBarTimeout = undefined;
           }
 
-          self.event('willHide');
+          self.pause();
           self.state = App.Console.State.HIDDEN;
           setTimeout(function() {
             self.element.addClass("hidden");
@@ -229,7 +261,7 @@
           self.element.removeClass("hidden");
           setTimeout(function() {
             self.navigation.addClass('hidden');
-            self.event('didShow');
+            self.run();
           }, 400);
           window.addEventListener("scroll", this.scrollBlocker);
 

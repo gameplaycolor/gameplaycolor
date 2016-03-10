@@ -142,16 +142,16 @@
         self.element.addClass('hidden');
         setTimeout(function() {
           self.element.css('display', 'none');
-          document.getElementsByTagName('body')[0].style.overflow = ''; // Allow scrolling.
+            document.getElementsByTagName('body')[0].style.overflow = ''; // Allow scrolling.
         }, 200);
       },
       
       show: function() {
         var self = this;
+        document.getElementsByTagName('body')[0].style.overflow = 'hidden'; // Prevent scrolling.
         self.element.css('display', 'block');
         setTimeout(function() {
           self.element.removeClass('hidden');
-          document.getElementsByTagName('body')[0].style.overflow = 'hidden'; // Prevent scrolling.
         }, 0);
         
       }
