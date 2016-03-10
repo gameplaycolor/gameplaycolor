@@ -261,6 +261,10 @@ body {
     text-align: left;
 }
 
+.button-right {
+    text-align: right;
+}
+
 .button-library {
     opacity: 0.5;
     text-shadow: 0 -1px #888;
@@ -269,7 +273,6 @@ body {
 }
 
 .button-done {
-    text-align: right;
     padding-right: 22px;
 }
 
