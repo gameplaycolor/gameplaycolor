@@ -42,6 +42,12 @@ The build will be created in the `build` directory, and a corresponding *.tar.gz
 Changelog
 ---------
 
+### Version 2.2.1
+
+- New in-game menu.
+- Menu option for resetting the current game.
+- Menu option for Zelda fans: A + B + Select + Start.
+
 ### Version 2.2.0
 
 - Support for diagonal directions using the d-pad.
