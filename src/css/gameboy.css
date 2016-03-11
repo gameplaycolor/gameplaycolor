@@ -261,6 +261,10 @@ body {
     text-align: left;
 }
 
+.button-right {
+    text-align: right;
+}
+
 .button-library {
     opacity: 0.5;
     text-shadow: 0 -1px #888;
@@ -269,7 +273,6 @@ body {
 }
 
 .button-done {
-    text-align: right;
     padding-right: 22px;
 }
 
@@ -489,6 +492,76 @@ body {
     background-color: #272727;
     border-radius: 12px;
 }
+
+/* Game menu */
+
+.screen-menu {
+    transition: background-color 150ms ease-in-out;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.screen-menu.hidden {
+    transition: background-color 150ms ease-in-out;
+    background-color: rgba(0, 0, 0, 0.0);
+}
+
+.menu {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    transition: 150ms ease-in-out;
+    overflow: hidden;
+    height: 188px;
+}
+
+.menu.hidden {
+    transition: 150ms ease-in-out;
+    height: 0;
+}
+
+.menu ul {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.menu li {
+    background-color: rgba(255, 255, 255, 0.95);
+    box-sizing: border-box;
+    width: 100%;
+    text-align: center;
+    height: 56px;
+    line-height: 56px;
+    margin: 0 10px;
+    flex-grow: 1;
+    color: #0076ff;
+    font-size: 18px;
+    border-bottom: 1px solid #aaa;
+}
+
+.menu li.default {
+    font-weight: bold;
+}
+
+.menu li.pressed {
+    background-color: rgba(144, 142, 144, 0.9);
+}
+
+.menu li:first-child {
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.menu li:last-child {
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    margin-bottom: 10px;
+    border-bottom: 0;
+}
+
+/* Settings dialog */
 
 .settings {
     transition: background-color 150ms ease-in-out;
@@ -880,14 +953,6 @@ hr {
     bottom: 12px;
     text-transform: uppercase;
     font-size: 11px;
-}
-
-#LCD-loading {
-    background-image: url(images/loading.png);
-}
-
-#LCD-idle {
-    background-image: url(images/idle.png);
 }
 
 /* D-Pad */
@@ -1616,14 +1681,6 @@ hr {
     .surround {
         height: 614px;
         width: 678px;
-    }
-
-    #LCD-loading {
-        background-image: url(images/loading-large.png);
-    }
-
-    #LCD-idle {
-        background-image: url(images/idle-large.png);
     }
 
 }
