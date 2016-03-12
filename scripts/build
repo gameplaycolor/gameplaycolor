@@ -63,6 +63,14 @@ def extract_tags(html, tag, key, root):
   return scripts
 
 
+def build_javascript_files(root, files):
+  result = ""
+  for file in [os.path.join(root, file) for file in files]:
+    with open(file, 'r') as f:
+      result = result + "\n" + f.read();
+  return result
+
+
 def append_javascript(html, script):
   body = html.find('body')
   source = "<script type='text/javascript' type='text/css'>" + script + "</script>"
@@ -213,6 +221,14 @@ def main():
   # defaults
   print "Copying defaults..."
   copy_diretory(defaults_dir, build_dir, pngcrush)
+
+  # Build the game boy javascript.
+  contents = build_javascript_files(source_dir, ["gbo/GameBoyIO.js",
+                                                 "gbo/GameBoyCore.js",
+                                                 "js/utilities.js",
+                                                 "js/worker.js"])
+  with open(os.path.join(build_dir, "worker.js"), 'w') as f:
+    f.write(contents)
 
   # icon
   icon_file = os.path.join(ROOT_DIR, settings['icon'])

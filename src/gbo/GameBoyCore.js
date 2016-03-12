@@ -4986,15 +4986,17 @@ GameBoyCore.prototype.recomputeDimension = function () {
 	//Cache some dimension info:
 	// this.onscreenWidth = this.canvas.width;
 	// this.onscreenHeight = this.canvas.height;
-	if (window && window.mozRequestAnimationFrame || (navigator.userAgent.toLowerCase().indexOf("gecko") != -1 && navigator.userAgent.toLowerCase().indexOf("like gecko") == -1)) {
-		//Firefox slowness hack:
-		this.canvas.width = this.onscreenWidth = (!settings[12]) ? 160 : this.canvas.width;
-		this.canvas.height = this.onscreenHeight = (!settings[12]) ? 144 : this.canvas.height;
-	}
-	else {
-		this.onscreenWidth = this.canvas.width;
-		this.onscreenHeight = this.canvas.height;
-	}
+	// if (window && window.mozRequestAnimationFrame || (navigator.userAgent.toLowerCase().indexOf("gecko") != -1 && navigator.userAgent.toLowerCase().indexOf("like gecko") == -1)) {
+	// 	//Firefox slowness hack:
+	// 	this.canvas.width = this.onscreenWidth = (!settings[12]) ? 160 : this.canvas.width;
+	// 	this.canvas.height = this.onscreenHeight = (!settings[12]) ? 144 : this.canvas.height;
+	// }
+	// else {
+		// this.onscreenWidth = this.canvas.width;
+		// this.onscreenHeight = this.canvas.height;
+	// }
+	this.onscreenWidth = 160;
+	this.onscreenHeight = 144;
 	this.offscreenWidth = (!settings[12]) ? 160 : this.canvas.width;
 	this.offscreenHeight = (!settings[12]) ? 144 : this.canvas.height;
 	this.offscreenRGBCount = this.offscreenWidth * this.offscreenHeight * 4;
@@ -5010,22 +5012,28 @@ GameBoyCore.prototype.initLCD = function () {
 		this.resizer = null;
 	}
 	try {
-		this.canvasOffscreen = document.createElement("canvas");
-		this.canvasOffscreen.width = this.offscreenWidth;
-		this.canvasOffscreen.height = this.offscreenHeight;
-		this.drawContextOffscreen = this.canvasOffscreen.getContext("2d");
-		this.drawContextOnscreen = this.canvas.getContext("2d");
-		this.drawContextOffscreen.webkitImageSmoothingEnabled  = settings[13];
-		this.drawContextOffscreen.mozImageSmoothingEnabled = settings[13];
+		// this.canvasOffscreen = document.createElement("canvas");
+		// this.canvasOffscreen.width = this.offscreenWidth;
+		// this.canvasOffscreen.height = this.offscreenHeight;
+		// this.drawContextOffscreen = this.canvasOffscreen.getContext("2d");
+		// this.drawContextOnscreen = this.canvas.getContext("2d");
+		// this.drawContextOffscreen.webkitImageSmoothingEnabled  = settings[13];
+		// this.drawContextOffscreen.mozImageSmoothingEnabled = settings[13];
 
 		//Get a CanvasPixelArray buffer:
-		try {
-			this.canvasBuffer = this.drawContextOffscreen.createImageData(this.offscreenWidth, this.offscreenHeight);
-		}
-		catch (error) {
-			cout("Falling back to the getImageData initialization (Error \"" + error.message + "\").", 1);
-			this.canvasBuffer = this.drawContextOffscreen.getImageData(0, 0, this.offscreenWidth, this.offscreenHeight);
-		}
+		// try {
+		// 	this.canvasBuffer = this.drawContextOffscreen.createImageData(this.offscreenWidth, this.offscreenHeight);
+		// }
+		// catch (error) {
+		// 	cout("Falling back to the getImageData initialization (Error \"" + error.message + "\").", 1);
+		// 	this.canvasBuffer = this.drawContextOffscreen.getImageData(0, 0, this.offscreenWidth, this.offscreenHeight);
+		// }
+
+		// this.canvasBuffer = {};
+		// this.canvasBuffer.data = new Uint8Array(160 * 144 * 4);
+
+		this.canvasBuffer = new ImageData(160, 144);
+
 		var index = this.offscreenRGBCount;
 		while (index > 0) {
 			this.canvasBuffer.data[index -= 4] = 0xF8;
@@ -5034,7 +5042,7 @@ GameBoyCore.prototype.initLCD = function () {
 			this.canvasBuffer.data[index + 3] = 0xFF;
 		}
 		this.graphicsBlit();
-		this.canvas.style.visibility = "visible";
+		// this.canvas.style.visibility = "visible";
 		if (this.swizzledFrame == null) {
 			this.swizzledFrame = this.getTypedArray(69120, 0xFF, "uint8");
 		}
@@ -5047,7 +5055,7 @@ GameBoyCore.prototype.initLCD = function () {
 	}
 }
 GameBoyCore.prototype.graphicsBlit = function () {
-	this.drawContextOnscreen.putImageData(this.canvasBuffer, 0, 0);
+	postMessage({'cmd': 'put_image_data', 'data': this.canvasBuffer});
 }
 GameBoyCore.prototype.JoyPadEvent = function (key, down) {
 	if (down) {
@@ -5078,8 +5086,14 @@ GameBoyCore.prototype.initSound = function () {
 	this.audioResamplerFirstPassFactor = Math.max(Math.min(Math.floor(this.clocksPerSecond / 44100), Math.floor(0xFFFF / 0x1E0)), 1);
 	this.downSampleInputDivider = 1 / (this.audioResamplerFirstPassFactor * 0xF0);
 	if (settings[0]) {
-		this.audioHandle = new XAudioServer(2, this.clocksPerSecond / this.audioResamplerFirstPassFactor, 0, Math.max(this.baseCPUCyclesPerIteration * settings[8] / this.audioResamplerFirstPassFactor, 8192) << 1, null, settings[3], function () {
-			settings[0] = false;
+		postMessage({
+			'cmd': 'new_audio_server',
+			'channels': 2,
+			'sample_rate': this.clocksPerSecond / this.audioResamplerFirstPassFactor,
+			'min_buffer_size': 0,
+			'max_buffer_size': Math.max(this.baseCPUCyclesPerIteration * settings[8] / this.audioResamplerFirstPassFactor, 8192) << 1,
+			'under_run_callback': null,
+			'volume': settings[3]
 		});
 		this.initAudioBuffer();
 	}
@@ -5165,7 +5179,7 @@ GameBoyCore.prototype.intializeWhiteNoise = function () {
 }
 GameBoyCore.prototype.audioUnderrunAdjustment = function () {
 	if (settings[0]) {
-		var underrunAmount = this.audioHandle.remainingBuffer();
+		var underrunAmount = /* this.audioHandle.remainingBuffer(); */ remainingAudioBuffer;
 		if (typeof underrunAmount == "number") {
 			underrunAmount = this.bufferContainAmount - Math.max(underrunAmount, 0);
 			if (underrunAmount > 0) {
@@ -5254,7 +5268,7 @@ GameBoyCore.prototype.outputAudio = function () {
 	this.audioBuffer[this.audioDestinationPosition++] = (this.downsampleInput >>> 16) * this.downSampleInputDivider - 1;
 	this.audioBuffer[this.audioDestinationPosition++] = (this.downsampleInput & 0xFFFF) * this.downSampleInputDivider - 1;
 	if (this.audioDestinationPosition == this.numSamplesTotal) {
-		this.audioHandle.writeAudioNoCallback(this.audioBuffer);
+		postMessage({'cmd': 'write_audio', 'data': this.audioBuffer});
 		this.audioDestinationPosition = 0;
 	}
 	this.downsampleInput = 0;

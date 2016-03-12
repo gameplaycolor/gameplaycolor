@@ -21,6 +21,7 @@ var saveStateContext;
 var saveState = {};
 
 function loadSaveStateContext(context) {
+	return;
 
 	saveStateContext = context;
 	saveState = {};
@@ -34,7 +35,7 @@ function loadSaveStateContext(context) {
       }
     }
 
-		deferred.resolve();
+	deferred.resolve();
 	});
 	return deferred.promise();
 }
@@ -43,13 +44,13 @@ function setValue(key, value) {
 	var previous = saveState[key];
 	if (previous !== value) {
 		saveState[key] = value;
-		window.app.setValue(saveStateContext, key, value);
+		// window.app.setValue(saveStateContext, key, value);
 	}
 }
 
 function deleteValue(key) {
 	delete saveState[key];
-	window.app.deleteValue(saveStateContext, key);
+	// window.app.deleteValue(saveStateContext, key);
 }
 
 function findValue(key) {
@@ -57,21 +58,20 @@ function findValue(key) {
 }
 
 function start(identifier, canvas, ROM) {
-	var deferred = jQuery.Deferred();
-	loadSaveStateContext("game-" + identifier).then(function() {
-		try {
-			clearLastEmulation();
-			gameboy = new GameBoyCore(canvas, ROM);
-			gameboy.openMBC = openSRAM;
-			gameboy.openRTC = openRTC;
-			gameboy.start();
-			run();
-			deferred.resolve();
-		} catch (e) {
-			deferred.reject(e);
-		}
-	});
-	return deferred.promise();
+	cout("Log message");
+	// loadSaveStateContext("game-" + identifier).then(function() {
+	try {
+		clearLastEmulation();
+		gameboy = new GameBoyCore(canvas, ROM);
+		gameboy.openMBC = openSRAM;
+		gameboy.openRTC = openRTC;
+		gameboy.start();
+		run();
+		postMessage({'cmd': 'start_complete'});
+	} catch (e) {
+		cout('It went wrong!');
+		postMessage(e.message);
+	}
 }
 function run() {
 	if (GameBoyEmulatorInitialized()) {
@@ -82,9 +82,7 @@ function run() {
 			gameboy.firstIteration = dateObj.getTime();
 			gameboy.iterations = 0;
 			gbRunInterval = setInterval(function () {
-				if (!document.hidden && !document.msHidden && !document.mozHidden && !document.webkitHidden) {
-					gameboy.run();
-				}
+				gameboy.run();
 			}, settings[6]);
 		}
 		else {

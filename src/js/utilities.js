@@ -27,11 +27,11 @@ var utilities = {
     },
 
     btoa: function(input) {
-      return window.btoa(utilities.encode_utf8(input));
+      return btoa(utilities.encode_utf8(input));
     },
 
     atob: function(input) {
-      return utilities.decode_utf8(window.atob(input));
+      return utilities.decode_utf8(atob(input));
     },
 
     arrayToBase64: function(u8Arr) {
@@ -46,11 +46,11 @@ var utilities = {
         result += String.fromCharCode.apply(null, slice);
         index += CHUNK_SIZE;
       }
-      return window.btoa(result);
+      return btoa(result);
     },
 
     base64ToArray: function(b64encoded) {
-      var u8_2 = new Uint8Array(window.atob(b64encoded).split("").map(function(c) {
+      var u8_2 = new Uint8Array(atob(b64encoded).split("").map(function(c) {
         return c.charCodeAt(0); }));
       return u8_2;
     },

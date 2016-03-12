@@ -149,7 +149,7 @@
       });
 
       setInterval(function() {
-        autoSave();
+        self.gameBoy.autoSave();
       }, 1000);
 
     },

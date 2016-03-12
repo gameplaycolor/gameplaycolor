@@ -65,7 +65,7 @@ XAudioServer.prototype.writeAudioNoCallback = function (buffer) {
 			this.callbackBasedWriteAudioNoCallback(buffer);
 			break;
 		default:
-			this.failureCallback();
+			this.failureCallback("writeAudioNoCallback failure");
 	}
 }
 //Developer can use this to see how many samples to write (example: minimum buffer allotment minus remaining samples left returned from this function to make sure maximum buffering is done...)
@@ -80,7 +80,7 @@ XAudioServer.prototype.remainingBuffer = function () {
 		case 3:
 			return (Math.floor((XAudioJSResampledSamplesLeft() * XAudioJSResampleControl.ratioWeight) / XAudioJSChannelsAllocated) * XAudioJSChannelsAllocated) + XAudioJSAudioBufferSize;
 		default:
-			this.failureCallback();
+			this.failureCallback("Failed to calculate remaining audio buffer");
 			return null;
 	}
 }
@@ -120,6 +120,7 @@ XAudioServer.prototype.initializeAudio = function () {
 		this.initializeWebAudio();
 	}
 	catch (error) {
+		console.log(error);
 		try {
 			this.initializeMozAudio();
 		}
@@ -133,7 +134,7 @@ XAudioServer.prototype.initializeAudio = function () {
 				}
 				catch (error) {
 					this.audioType = -1;
-					this.failureCallback();
+					this.failureCallback("Audio setup failure");
 				}
 			}
 		}

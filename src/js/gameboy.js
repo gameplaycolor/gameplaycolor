@@ -18,20 +18,6 @@
 
  var gbologger = new App.Logging(window.config.logging_level, "gbo");
 
-function cout(message, level) {
-  var l = App.Logging.Level.INFO;
-  if (level === 0) {
-    l = App.Logging.Level.DEBUG;
-  } else if (level === 1) {
-    l = App.Logging.Level.INFO;
-  } else if (level === 2) {
-    l = App.Logging.Level.WARNING;
-  } else {
-    l = App.Logging.Level.ERROR;
-  }
-  gbologger.log(l, message);
-}
-
 function arrayToBase64(u8Arr) {
   return utilities.arrayToBase64(u8Arr);
 }
@@ -39,6 +25,9 @@ function arrayToBase64(u8Arr) {
 function base64ToArray(b64encoded) {
   return utilities.base64ToArray(b64encoded);
 }
+
+var canvas = document.getElementById('LCD');
+var drawContextOnscreen = canvas.getContext("2d");
 
 (function($) {
 
@@ -81,26 +70,55 @@ function base64ToArray(b64encoded) {
       self.logging = new App.Logging(window.config.logging_level, "gameboy");
       self.speed = 1;
 
-      settings[App.GameBoy.Settings.ENABLE_SOUND] = true;
-      settings[App.GameBoy.Settings.SOFTWARE_RESIZING] = false;
-      settings[App.GameBoy.Settings.ENABLE_COLORIZATION] = false;
-      settings[App.GameBoy.Settings.RESIZE_SMOOTHING] = false;
-      settings[App.GameBoy.Settings.EMULATOR_LOOP_INTERVAL] = 12;
+      self.worker = new Worker('worker.js');
+      self.worker.addEventListener('message', function(e) {
+        var data = e.data;
+        switch (data.cmd) {
+          case 'log':
+            console.log(data.message);
+            break;
+          case 'put_image_data':
+            drawContextOnscreen.putImageData(data.data, 0, 0);
+            if (self.audioHandle) {
+              self.worker.postMessage({'cmd': 'remaining_audio_buffer', 'length': self.audioHandle.remainingBuffer()});
+            }
+            break;
+          case 'start_complete':
+            self.startDeferred.resolve();
+            self.startDeferred = undefined;
+            break;
+          case 'new_audio_server':
+            self.audioHandle = new XAudioServer(data.channels, data.sample_rate, data.min_buffer_size, data.max_buffer_size, data.under_run_callback, data.volume, function(error) {
+              console.log("AUDIO FAILURE -> " + error);
+            });
+            self.worker.postMessage({'cmd': 'remaining_audio_buffer', 'length': self.audioHandle.remainingBuffer()});
+            break;
+          case 'write_audio':
+            self.audioHandle.writeAudioNoCallback(data.data);
+            break;
+        }
+      }, false);
 
+      self.set(App.GameBoy.Settings.ENABLE_SOUND, true);
+      self.set(App.GameBoy.Settings.SOFTWARE_RESIZING, false);
+      self.set(App.GameBoy.Settings.ENABLE_COLORIZATION, false);
+      self.set(App.GameBoy.Settings.RESIZE_SMOOTHING, false);
+      self.set(App.GameBoy.Settings.EMULATOR_LOOP_INTERVAL, 12);
+    },
+
+    set: function(key, value) {
+      var self = this;
+      self.worker.postMessage({'cmd': 'set', 'key': key, 'value': value});
     },
 
     setSoundEnabled: function(enabled) {
       var self = this;
       if (enabled === true) {
-        settings[App.GameBoy.Settings.ENABLE_SOUND] = true;
-        if (gameboy) {
-          gameboy.initSound();
-        }
+        self.set(App.GameBoy.Settings.ENABLE_SOUND, true);
+        self.worker.postMessage({'cmd': 'init_sound'});
       } else {
-        settings[App.GameBoy.Settings.ENABLE_SOUND] = false;
-        if (gameboy) {
-          gameboy.stopSound();
-        }
+        self.set(App.GameBoy.Settings.ENABLE_SOUND, false);
+        self.worker.postMessage({'cmd': 'stop_sound'});
       }
     },
 
@@ -132,30 +150,27 @@ function base64ToArray(b64encoded) {
 
     pause: function() {
       var self = this;
-      pause();
+      self.worker.postMessage({'cmd': 'pause'});
     },
 
     run: function() {
       var self = this;
-      // Do not attempt to run unless we have been in the running state.
-      if (self.state === App.GameBoy.State.RUNNING) {
-        run();
-      }
+      self.worker.postMessage({'cmd': 'run'});
     },
 
     keyDown: function(keycode) {
       var self = this;
-      GameBoyKeyDown(keycode);
+      self.worker.postMessage({'cmd': 'key_down', 'key': keycode});
     },
 
     keyUp: function(keycode) {
       var self = this;
-      GameBoyKeyUp(keycode);
+      self.worker.postMessage({'cmd': 'key_up', 'key': keycode});
     },
 
     clear: function() {
       var self = this;
-      clearLastEmulation();
+      self.worker.postMessage({'cmd': 'clear_last_emulation'});
       self.data = undefined;
       self.setState(App.GameBoy.State.IDLE);
     },
@@ -189,18 +204,25 @@ function base64ToArray(b64encoded) {
       var deferred = $.Deferred();
       self.identifier = identifier;
       self.data = data;
-      start(identifier, document.getElementById('LCD'), data).then(function() {
-        setTimeout(function() {
-          if (gameboy) {
-            gameboy.setSpeed(self.speed);
-          }
-          self.setState(App.GameBoy.State.RUNNING);
-          deferred.resolve();
-        }, 100);
-      }).fail(function(e) {
-        deferred.reject(e);
-      });
+      self.worker.postMessage({'cmd': 'start', 'identifier': identifier, 'data': data});
+      self.startDeferred = deferred;
+      // start(identifier, document.getElementById('LCD'), data).then(function() {
+      //   setTimeout(function() {
+      //     if (gameboy) {
+      //       gameboy.setSpeed(self.speed);
+      //     }
+      //     self.setState(App.GameBoy.State.RUNNING);
+      //     deferred.resolve();
+      //   }, 100);
+      // }).fail(function(e) {
+      //   deferred.reject(e);
+      // });
       return deferred.promise();
+    },
+
+    autoSave: function() {
+      var self = this;
+      self.worker.postMessage({'cmd': 'auto_save'});
     }
 
   });
