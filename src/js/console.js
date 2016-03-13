@@ -27,23 +27,6 @@
     HIDDEN:  1,
   };
   
-  App.Console.Orientation = {
-    PORTRAIT:  0,
-    LANDSCAPE: 1,
-  };
-  
-  App.Console.Dimensions = {
-  
-    SHOW_TOP:            0,
-    HIDE_TOP_PORTRAIT:  -504,
-    HIDE_TOP_LANDSCAPE: -256,
-    
-    DEVICE_WIDTH: 320,
-
-    TITLEBAR_HEIGHT: 42
-    
-  };
-
   App.Console.SHAKE_THRESHOLD = 24;
   App.Console.SHAKE_TIMEOUT_MS = 800;
 
@@ -60,6 +43,7 @@
         self.store = store;
         self.state = App.Console.State.HIDDEN;
         self.element = $('#screen-console');
+        self.screen = $('#LCD');
         self.color = "grape";
         self.scrollBlocker = function(event) {
           event.preventDefault();
