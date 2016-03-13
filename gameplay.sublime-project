@@ -1,27 +1,32 @@
 {
-        "folders":
-  [
-    {
-      "path": ".",
-      "folder_exclude_patterns": ["build"]
-    }
-  ],
-  "build_systems":
-  [
-    {
-      "name": "game play - alpha",
-      "cmd": ["scripts/build", "settings/alpha.json"],
-      "working_dir": "${project_path}"
-    },
-    {
-      "name": "game play - beta",
-      "cmd": ["scripts/build", "settings/beta.json"],
-      "working_dir": "${project_path}"
-    },
-    {
-      "name": "game play - release",
-      "cmd": ["scripts/build", "settings/release.json"],
-      "working_dir": "${project_path}"
-    }
-  ]
+    "folders":
+    [
+        {
+        "path": ".",
+        "folder_exclude_patterns": ["build"]
+        }
+    ],
+    "settings":
+        {
+            "tabSize": 4,
+            "translateTabsToSpaces": true
+        },
+    "build_systems":
+    [
+        {
+            "name": "game play - alpha",
+            "cmd": ["scripts/build", "settings/alpha.json"],
+            "working_dir": "${project_path}"
+        },
+        {
+            "name": "game play - beta",
+            "cmd": ["scripts/build", "settings/beta.json"],
+            "working_dir": "${project_path}"
+        },
+        {
+            "name": "game play - release",
+            "cmd": ["scripts/build", "settings/release.json"],
+            "working_dir": "${project_path}"
+        }
+    ]
 }
