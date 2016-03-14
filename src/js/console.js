@@ -151,7 +151,6 @@ KEYCODE_SHIFT_LEFT = 16;
         }, touchUp: function() {
           self.core.keyUp(keyEvent);
         }}, keyCode);
-        button.animate = false;
         return button;
       },
 
