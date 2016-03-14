@@ -40,11 +40,13 @@
           if (self.onReset !== undefined) {
             self.onReset();
           }
+          self.hide();
         }});
         self.ABStartSelect = new App.Controls.Button($('#menu-button-a-b-start-select'), { touchUpInside: function () {
           if (self.onABStartSelect !== undefined) {
             self.onABStartSelect();
           }
+          self.hide();
         }});
       },
       

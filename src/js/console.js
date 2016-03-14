@@ -112,11 +112,9 @@ KEYCODE_SHIFT_LEFT = 16;
 
         self.menu.onReset = function() {
           self.core.reset();
-          self.menu.hide();
         };
 
         self.menu.onABStartSelect = function() {
-          self.menu.hide();
           setTimeout(function() {
             self.core.keyDown(Gameboy.Key.A);
             self.core.keyDown(Gameboy.Key.B);
