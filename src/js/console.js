@@ -54,13 +54,12 @@ KEYCODE_SHIFT_LEFT = 16;
           event.preventDefault();
         };
 
-        window.tracker.track('console');
-
         self.element.get(0).addEventListener('touchmove', function(e) {
           e.preventDefault();
         }, false);
 
-        // D-Pad.
+        // Controls.
+
         self.pad = new App.Controls.Pad({
           touchDownLeft  : function() { self.core.keyDown(Gameboy.Key.LEFT); },
           touchUpLeft    : function() { self.core.keyUp(Gameboy.Key.LEFT); },
@@ -72,32 +71,28 @@ KEYCODE_SHIFT_LEFT = 16;
           touchUpDown    : function() { self.core.keyUp(Gameboy.Key.DOWN); }
         });
 
+        self.button_a = configureButton($('#control-a'), Gameboy.Key.A, KEYCODE_A);
+        self.button_b = configureButton($('#control-b'), Gameboy.Key.B, KEYCODE_S);
+        self.button_start = configureButton($('#control-start'), Gameboy.Key.START, KEYCODE_RETURN);
+        self.button_select = configureButton($('#control-select'), Gameboy.Key.SELECT, KEYCODE_SHIFT_LEFT);
+
+        // Navigation.
+
         self.navigationBarTimeout = undefined;
         self.navigation = $('#console-navigation-bar');
         self.screen = new App.Controls.Button($('#element-screen'), { touchUpInside: function() {
-
           if (self.navigationBarTimeout !== undefined) {
-
             clearTimeout(self.navigationBarTimeout);
             self.navigationBarTimeout = undefined;
             self.navigation.addClass('hidden');
-
           } else {
-
             self.navigation.removeClass('hidden');
             self.navigationBarTimeout = setTimeout(function() {
               self.navigation.addClass('hidden');
               self.navigationBarTimeout = undefined;
             }, 2000);
-
           }
-
         }});
-
-        self.button_a = configureButton($('#control-a'), Gameboy.Key.A, KEYCODE_A);
-        self.button_b = configureButton($('#control-b'), Gameboy.Key.B, KEYCODE_S);
-        self.button_start = configureButton($('#control-start'), Gameboy.Key.START, KEYCODE_RETURN);
-        self.button_select = configureButton($('#control-select'), Gameboy.Key.SELECT, KEYCODE_SHIFT_LEFT);
         
         self.navigation_back = new App.Controls.Button($('#button-library'), { touchUpInside: function() {
           self.logging.info("Show library");
