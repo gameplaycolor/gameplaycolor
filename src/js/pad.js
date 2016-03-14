@@ -23,6 +23,7 @@
   App.Controls.Pad = function(actions) {
     this.init($('#dpad-touch-target'));
     this.actions = actions;
+    this.animate = true;
   };
 
   App.Controls.Pad.State = {
@@ -219,6 +220,9 @@
         } else {
           self.action("touchUpUp");
         }
+        if (self.animate !== true) {
+          return;
+        }
         if (state) {
           self.pad.addClass("pressed-up");
         } else {
@@ -235,6 +239,9 @@
           self.action("touchDownDown");
         } else {
           self.action("touchUpDown");
+        }
+        if (self.animate !== true) {
+          return;
         }
         if (state) {
           self.pad.addClass("pressed-down");
@@ -253,6 +260,9 @@
         } else {
           self.action("touchUpLeft");
         }
+        if (self.animate !== true) {
+          return;
+        }
         if (state) {
           self.pad.addClass("pressed-left");
         } else {
@@ -269,6 +279,9 @@
           self.action("touchDownRight");
         } else {
           self.action("touchUpRight");
+        }
+        if (self.animate !== true) {
+          return;
         }
         if (state) {
           self.pad.addClass("pressed-right");
