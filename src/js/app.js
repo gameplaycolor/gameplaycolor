@@ -169,7 +169,7 @@ Promise.prototype.always = function(onAlways) {
           if (identifier !== undefined) {
             self.load(identifier).then(function() {
               resolve();
-            }).catch(function(error) {
+            }, function(error) {
               reject(error);
             });
           } else {
@@ -189,7 +189,7 @@ Promise.prototype.always = function(onAlways) {
           self.consoleButton.show();
           self.console.show().then(function() {
             resolve();
-          }).catch(function(error) {
+          }, function(error) {
             reject(error);
           });
         }).fail(function(e) {
