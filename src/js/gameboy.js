@@ -16,7 +16,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
- var gbologger = new App.Logging(window.config.logging_level, "gbo");
+Gameboy = {};
+
+Gameboy.Key = {
+  START: 7,
+  SELECT: 6,
+  A: 4,
+  B: 5,
+  UP: 2,
+  DOWN: 3,
+  LEFT: 1,
+  RIGHT: 0
+};
+
+var gbologger = new App.Logging(window.config.logging_level, "gbo");
 
 function cout(message, level) {
   var l = App.Logging.Level.INFO;
@@ -145,12 +158,12 @@ function base64ToArray(b64encoded) {
 
     keyDown: function(keycode) {
       var self = this;
-      GameBoyKeyDown(keycode);
+      GameBoyJoyPadEvent(keycode, true);
     },
 
     keyUp: function(keycode) {
       var self = this;
-      GameBoyKeyUp(keycode);
+      GameBoyJoyPadEvent(keycode, false);
     },
 
     clear: function() {
@@ -206,16 +219,3 @@ function base64ToArray(b64encoded) {
   });
 
 })(jQuery);
-
-Gameboy = {};
-
-Gameboy.Key = {
-  START: "start",
-  SELECT: "select",
-  A: "a",
-  B: "b",
-  UP: "up",
-  DOWN: "down",
-  LEFT: "left",
-  RIGHT: "right"
-};
