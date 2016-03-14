@@ -94,34 +94,11 @@ KEYCODE_SHIFT_LEFT = 16;
 
         }});
 
-        // Buttons.
+        self.button_a = configureButton($('#control-a'), Gameboy.Key.A, KEYCODE_A);
+        self.button_b = configureButton($('#control-b'), Gameboy.Key.B, KEYCODE_S);
+        self.button_start = configureButton($('#control-start'), Gameboy.Key.START, KEYCODE_RETURN);
+        self.button_select = configureButton($('#control-select'), Gameboy.Key.SELECT, KEYCODE_SHIFT_LEFT);
         
-        self.button_a = new App.Controls.Button($('#control-a'), { touchDown : function() {
-          self.core.keyDown(Gameboy.Key.A);
-        }, touchUp: function() {
-          self.core.keyUp(Gameboy.Key.A);
-        }}, KEYCODE_A);
-
-        self.button_b = new App.Controls.Button($('#control-b'), { touchDown : function() {
-          self.core.keyDown(Gameboy.Key.B);
-        }, touchUp: function() {
-          self.core.keyUp(Gameboy.Key.B);
-        }}, KEYCODE_S);
-
-        self.button_start = new App.Controls.Button($('#control-start'), { touchDown : function() {
-          self.core.keyDown(Gameboy.Key.START);
-        }, touchUp: function() {
-          self.core.keyUp(Gameboy.Key.START);
-        }}, KEYCODE_RETURN);
-
-        self.button_select = new App.Controls.Button($('#control-select'), { touchDown : function() {
-          self.core.keyDown(Gameboy.Key.SELECT);
-        }, touchUp: function() {
-          self.core.keyUp(Gameboy.Key.SELECT);
-        }}, KEYCODE_SHIFT_LEFT);
-
-        // Navigation.
-
         self.navigation_back = new App.Controls.Button($('#button-library'), { touchUpInside: function() {
           self.logging.info("Show library");
           window.tracker.track('games');
@@ -165,6 +142,25 @@ KEYCODE_SHIFT_LEFT = 16;
           self.menu.show();
         }});
 
+      },
+
+      /**
+       * Create a new button.
+       *
+       * @param element DOM element.
+       * @param keyEvent The key event to inject into the emulator core.
+       * @param keyCode The browser key code to bind to.
+       *
+       * @return The newly created button. 
+       */
+      configureButton: function(element, keyEvent, keyCode) {
+        var self = this;
+        var button = new App.Controls.Button(element, { touchDown : function() {
+          self.core.keyDown(keyEvent);
+        }, touchUp: function() {
+          self.core.keyUp(keyEvent);
+        }}, keyCode);
+        return button;
       },
 
       restoreColor: function() {
