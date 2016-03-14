@@ -216,9 +216,12 @@
         self.up = state;
         if (state) {
           self.action("touchDownUp");
-          self.pad.addClass("pressed-up");
         } else {
           self.action("touchUpUp");
+        }
+        if (state) {
+          self.pad.addClass("pressed-up");
+        } else {
           self.pad.removeClass("pressed-up");
         }
       }
@@ -230,9 +233,12 @@
         self.down = state;
         if (state) {
           self.action("touchDownDown");
-          self.pad.addClass("pressed-down");
         } else {
           self.action("touchUpDown");
+        }
+        if (state) {
+          self.pad.addClass("pressed-down");
+        } else {
           self.pad.removeClass("pressed-down");
         }
       }
@@ -244,9 +250,12 @@
         self.left = state;
         if (state) {
           self.action("touchDownLeft");
-          self.pad.addClass("pressed-left");
         } else {
           self.action("touchUpLeft");
+        }
+        if (state) {
+          self.pad.addClass("pressed-left");
+        } else {
           self.pad.removeClass("pressed-left");
         }
       }
@@ -258,9 +267,12 @@
         self.right = state;
         if (state) {
           self.action("touchDownRight");
-          self.pad.addClass("pressed-right");
         } else {
           self.action("touchUpRight");
+        }
+        if (state) {
+          self.pad.addClass("pressed-right");
+        } else {
           self.pad.removeClass("pressed-right");
         }
       }
