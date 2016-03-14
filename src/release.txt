@@ -1,1 +1,2 @@
 - Don't animate the console when restoring games.
+- Temporarily disabling button animations to improve audio performance.

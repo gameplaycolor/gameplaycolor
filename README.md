@@ -45,6 +45,7 @@ Changelog
 ### Version 2.2.2
 
 - Don't animate the console when restoring games.
+- Temporarily disabling button animations to improve audio performance.
 
 ### Version 2.2.1
 
