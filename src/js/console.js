@@ -71,10 +71,10 @@ KEYCODE_SHIFT_LEFT = 16;
           touchUpDown    : function() { self.core.keyUp(Gameboy.Key.DOWN); }
         });
 
-        self.button_a = configureButton($('#control-a'), Gameboy.Key.A, KEYCODE_A);
-        self.button_b = configureButton($('#control-b'), Gameboy.Key.B, KEYCODE_S);
-        self.button_start = configureButton($('#control-start'), Gameboy.Key.START, KEYCODE_RETURN);
-        self.button_select = configureButton($('#control-select'), Gameboy.Key.SELECT, KEYCODE_SHIFT_LEFT);
+        self.button_a = self.configureButton($('#control-a'), Gameboy.Key.A, KEYCODE_A);
+        self.button_b = self.configureButton($('#control-b'), Gameboy.Key.B, KEYCODE_S);
+        self.button_start = self.configureButton($('#control-start'), Gameboy.Key.START, KEYCODE_RETURN);
+        self.button_select = self.configureButton($('#control-select'), Gameboy.Key.SELECT, KEYCODE_SHIFT_LEFT);
 
         // Navigation.
 
