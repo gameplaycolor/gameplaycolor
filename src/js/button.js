@@ -22,6 +22,7 @@
     this.init(element);
     this.setKeyHandler(keycode);
     this.actions = actions;
+    self.animate = true;
   };
 
   App.Controls.Button.State = {
@@ -69,12 +70,15 @@
       if (self.pressed === pressed) {
         return;
       }
+      self.pressed = pressed;
+      if (self.animate === false) {
+        return;
+      }
       if (pressed) {
         self.element.addClass("pressed");
       } else {
         self.element.removeClass("pressed");
       }
-      self.pressed = pressed;
     },
 
     onTouchEvent: function(state, position, timestamp, event) {

@@ -1,3 +1,2 @@
-- New in-game menu.
-- Menu option for resetting the current game.
-- Menu option for Zelda fans: A + B + Select + Start.
+- Don't animate the console when restoring games.
+- Temporarily disabling button animations to improve audio performance.
