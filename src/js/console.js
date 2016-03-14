@@ -100,6 +100,7 @@ KEYCODE_SHIFT_LEFT = 16;
           window.tracker.track('games');
           self.hide();
         }});
+        self.navigation_back.animate = false;
 
         self.restoreColor();
 
@@ -133,6 +134,7 @@ KEYCODE_SHIFT_LEFT = 16;
           window.tracker.track('menu');
           self.menu.show();
         }});
+        self.game.animate = false;
 
       },
 
