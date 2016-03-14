@@ -16,6 +16,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+KEYCODE_A = 65;
+KEYCODE_S = 83;
+KEYCODE_RETURN = 13;
+KEYCODE_SHIFT_LEFT = 16;
+
 (function($) {
 
   App.Console = function(device, gameBoy, events, store) {
@@ -88,36 +93,36 @@
           }
 
         }});
+
+        // Buttons.
         
-        // A.
-        self.a = new App.Controls.Button($('#control-a'), { touchDown : function() {
+        self.button_a = new App.Controls.Button($('#control-a'), { touchDown : function() {
           self.core.keyDown(Gameboy.Key.A);
         }, touchUp: function() {
           self.core.keyUp(Gameboy.Key.A);
-        }}, 65 /* A */);
+        }}, KEYCODE_A);
 
-        // B.
-        self.b = new App.Controls.Button($('#control-b'), { touchDown : function() {
+        self.button_b = new App.Controls.Button($('#control-b'), { touchDown : function() {
           self.core.keyDown(Gameboy.Key.B);
         }, touchUp: function() {
           self.core.keyUp(Gameboy.Key.B);
-        }}, 83 /* S */);
+        }}, KEYCODE_S);
 
-        // Start.
-        self.start = new App.Controls.Button($('#control-start'), { touchDown : function() {
+        self.button_start = new App.Controls.Button($('#control-start'), { touchDown : function() {
           self.core.keyDown(Gameboy.Key.START);
         }, touchUp: function() {
           self.core.keyUp(Gameboy.Key.START);
-        }}, 13 /* Return */);
+        }}, KEYCODE_RETURN);
 
-        // Select.
-        self.select = new App.Controls.Button($('#control-select'), { touchDown : function() {
+        self.button_select = new App.Controls.Button($('#control-select'), { touchDown : function() {
           self.core.keyDown(Gameboy.Key.SELECT);
         }, touchUp: function() {
           self.core.keyUp(Gameboy.Key.SELECT);
-        }}, 16 /* Left Shift */);
+        }}, KEYCODE_SHIFT_LEFT);
 
-        self.back = new App.Controls.Button($('#button-library'), { touchUpInside: function() {
+        // Navigation.
+
+        self.navigation_back = new App.Controls.Button($('#button-library'), { touchUpInside: function() {
           self.logging.info("Show library");
           window.tracker.track('games');
           self.hide();
