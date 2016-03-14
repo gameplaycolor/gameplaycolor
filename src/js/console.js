@@ -100,9 +100,7 @@ KEYCODE_SHIFT_LEFT = 16;
           self.hide();
         }});
 
-        self.restoreColor().always(function(color) {
-          $('#screen-splash').css("display", "none");
-        });
+        self.restoreColor();
 
         self.menu = new App.Menu(function() {
           self.core.pause();
@@ -159,19 +157,12 @@ KEYCODE_SHIFT_LEFT = 16;
 
       restoreColor: function() {
         var self = this;
-        var deferred = new jQuery.Deferred();
-        self.logging.info("Attempting to restore the previous color");
         self.store.property(App.Controller.Domain.SETTINGS, App.Store.Property.COLOR, function(color) {
           if (color === undefined) {
-            self.logging.warning("No previous color to load");
-            deferred.reject();
             return;
           }
-          self.logging.info("Loaded previous color '" + color + "'");
           self.setColor(color);
-          deferred.resolve(color);
         });
-        return deferred.promise();
       },
 
       setColor: function(color) {
@@ -232,21 +223,24 @@ KEYCODE_SHIFT_LEFT = 16;
       
       show: function() {
         var self = this;
-        if (self.state != App.Console.State.VISIBLE) {
+        return new Promise(function(resolve, reject) {
 
-          window.tracker.track('console');
-          self.event('willShow');
-          self.state = App.Console.State.VISIBLE;
-          self.element.removeClass("hidden");
-          setTimeout(function() {
-            self.navigation.addClass('hidden');
-            self.run();
-          }, 400);
-          window.addEventListener("scroll", this.scrollBlocker);
+          if (self.state != App.Console.State.VISIBLE) {
+            window.tracker.track('console');
+            self.state = App.Console.State.VISIBLE;
+            self.element.removeClass("hidden");
+            setTimeout(function() {
+              self.navigation.addClass('hidden');
+              self.run();
+              resolve();
+            }, 400);
+            window.addEventListener("scroll", this.scrollBlocker);
+            document.getElementsByTagName('body')[0].style.overflow = 'hidden'; // Prevent scrolling.
+          } else {
+            reject();
+          }
 
-          document.getElementsByTagName('body')[0].style.overflow = 'hidden'; // Prevent scrolling.
-
-        }
+        });
       },
       
   });

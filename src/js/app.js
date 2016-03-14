@@ -15,6 +15,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+
+Promise.prototype.always = function(onAlways) {
+  return this.then(onAlways, onAlways);
+};
  
 (function($) {
 
@@ -141,11 +145,8 @@
 
       self.checkForUpdate();
 
-      // Load the previous game.
-      self.store.property(App.Controller.Domain.SETTINGS, App.Store.Property.GAME, function(identifier) {
-        if (identifier !== undefined) {
-          self.load(identifier);
-        }
+      self.restorePrevious().always(function() {
+        $('#screen-splash').css("display", "none");
       });
 
       setInterval(function() {
@@ -154,18 +155,49 @@
 
     },
 
+    /**
+     * Restores the previous ROM and game state if one was present.
+     *
+     * If the ROM was successfully loaded, the returned Promise will resolved; otherwise it will rejected.
+     *
+     * @return Returns a Promise indicating.
+     */
+    restorePrevious: function() {
+      var self = this;
+      return new Promise(function(resolve, reject) {
+        self.store.property(App.Controller.Domain.SETTINGS, App.Store.Property.GAME, function(identifier) {
+          if (identifier !== undefined) {
+            self.load(identifier).then(function() {
+              resolve();
+            }).catch(function(error) {
+              reject(error);
+            });
+          } else {
+            reject();
+          }
+        });
+      });
+    },
+
     load: function(identifier) {
       var self = this;
-      var title = self.library.titleForIdentifier(identifier);
-      self.gameBoy.load(identifier).then(function() {
-        self.store.setProperty(App.Controller.Domain.SETTINGS, App.Store.Property.GAME, identifier);
-        self.consoleButton.setTitle(title);
-        self.consoleButton.show();
-        self.console.show();
-      }).fail(function(e) {
-        alert("Unable to load ROM\n" + e);
-        self.store.deleteProperty(App.Controller.Domain.SETTINGS, App.Store.Property.GAME);
-        self.consoleButton.hide();
+      return new Promise(function(resolve, reject) {
+        var title = self.library.titleForIdentifier(identifier);
+        self.gameBoy.load(identifier).then(function() {
+          self.store.setProperty(App.Controller.Domain.SETTINGS, App.Store.Property.GAME, identifier);
+          self.consoleButton.setTitle(title);
+          self.consoleButton.show();
+          self.console.show().then(function() {
+            resolve();
+          }).catch(function(error) {
+            reject(error);
+          });
+        }).fail(function(e) {
+          alert("Unable to load ROM\n" + e);
+          self.store.deleteProperty(App.Controller.Domain.SETTINGS, App.Store.Property.GAME);
+          self.consoleButton.hide();
+          reject(e);
+        });
       });
     },
 
