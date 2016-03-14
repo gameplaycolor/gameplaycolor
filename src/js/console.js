@@ -70,6 +70,7 @@ KEYCODE_SHIFT_LEFT = 16;
           touchDownDown  : function() { self.core.keyDown(Gameboy.Key.DOWN); },
           touchUpDown    : function() { self.core.keyUp(Gameboy.Key.DOWN); }
         });
+        self.pad.animate = false;
 
         self.button_a = self.configureButton($('#control-a'), Gameboy.Key.A, KEYCODE_A);
         self.button_b = self.configureButton($('#control-b'), Gameboy.Key.B, KEYCODE_S);
@@ -151,6 +152,7 @@ KEYCODE_SHIFT_LEFT = 16;
         }, touchUp: function() {
           self.core.keyUp(keyEvent);
         }}, keyCode);
+        button.animate = false;
         return button;
       },
 
