@@ -44,11 +44,18 @@ function loadSaveStateContext(context) {
 }
 
 function setValue(key, value) {
+
+	// JSON-encode the RTC as this cannot be stored in its default form.
+	if (key.substring(0, 4) === "RTC_") {
+		value = JSON.stringify(value);
+	}
+
 	var previous = saveState[key];
 	if (previous !== value) {
 		saveState[key] = value;
 		window.app.setValue(saveStateContext, key, value);
 	}
+
 }
 
 function deleteValue(key) {
@@ -57,7 +64,15 @@ function deleteValue(key) {
 }
 
 function findValue(key) {
-	return saveState[key];
+
+	var value = saveState[key];
+
+	// JSON-decode the RTC.
+	if (value !== undefined && key.substring(0, 4) === "RTC_") {
+		value = JSON.parse(value);
+	}
+
+	return value;
 }
 
 function startWrapper(identifier, canvas, ROM) {
@@ -186,8 +201,7 @@ function saveRTC() {	//Execute this when SRAM is being saved as well.
 		if (gameboy.cTIMER) {
 			try {
 				cout("Saving the RTC...", 0);
-				var rtcState = JSON.stringify(gameboy.saveRTCState());
-				setValue("RTC_" + gameboy.name, rtcState);
+				setValue("RTC_" + gameboy.name, gameboy.saveRTCState());
 			}
 			catch (error) {
 				cout("Could not save the RTC of the current emulation state(\"" + error.message + "\").", 2);
@@ -228,8 +242,7 @@ function openRTC(filename) {
 	try {
 		if (findValue("RTC_" + filename) != null) {
 			cout("Found a previous RTC state (Will attempt to load).", 0);
-			var rtcState = findValue("RTC_" + filename);
-			return $.parseJSON(rtcState);
+			return findValue("RTC_" + filename);
 		}
 		else {
 			cout("Could not find any previous RTC copy for the current ROM.", 0);
