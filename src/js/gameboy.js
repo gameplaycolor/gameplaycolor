@@ -202,7 +202,7 @@ function base64ToArray(b64encoded) {
       var deferred = $.Deferred();
       self.identifier = identifier;
       self.data = data;
-      start(identifier, document.getElementById('LCD'), data).then(function() {
+      startWrapper(identifier, document.getElementById('LCD'), data).then(function() {
         setTimeout(function() {
           if (gameboy) {
             gameboy.setSpeed(self.speed);

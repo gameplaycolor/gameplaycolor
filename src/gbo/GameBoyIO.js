@@ -17,6 +17,8 @@ var settings = [						//Some settings.
 	true								//Use image smoothing based scaling?
 ];
 
+// Game Play modifications.
+
 var saveStateContext;
 var saveState = {};
 
@@ -56,22 +58,31 @@ function findValue(key) {
 	return saveState[key];
 }
 
-function start(identifier, canvas, ROM) {
+function startWrapper(identifier, canvas, ROM) {
 	var deferred = jQuery.Deferred();
 	loadSaveStateContext("game-" + identifier).then(function() {
 		try {
-			clearLastEmulation();
-			gameboy = new GameBoyCore(canvas, ROM);
-			gameboy.openMBC = openSRAM;
-			gameboy.openRTC = openRTC;
-			gameboy.start();
-			run();
+			start(canvas, ROM, true);
 			deferred.resolve();
 		} catch (e) {
 			deferred.reject(e);
 		}
 	});
 	return deferred.promise();
+}
+
+// GameBoy-Online original code.
+
+function start(canvas, ROM, skipAutoSave) {
+	clearLastEmulation();
+	if (skipAutoSave === undefined || skipAutoSave === false) {
+		autoSave();	//If we are about to load a new game, then save the last one...
+	}
+	gameboy = new GameBoyCore(canvas, ROM);
+	gameboy.openMBC = openSRAM;
+	gameboy.openRTC = openRTC;
+	gameboy.start();
+	run();
 }
 function run() {
 	if (GameBoyEmulatorInitialized()) {
@@ -95,10 +106,12 @@ function run() {
 		cout("GameBoy core cannot run while it has not been initialized.", 1);
 	}
 }
-function pause() {
+function pause(skipAutoSave) {
 	if (GameBoyEmulatorInitialized()) {
 		if (GameBoyEmulatorPlaying()) {
-			autoSave();
+			if (skipAutoSave === undefined || skipAutoSave === false) {
+				autoSave();
+			}
 			clearLastEmulation();
 		}
 		else {
@@ -160,7 +173,7 @@ function saveSRAM() {
 			}
 		}
 		else {
-			cout("Cannot save a game that does not have battery backed SRAM specified.", 0);
+			cout("Cannot save a game that does not have battery backed SRAM specified.", 1);
 		}
 		saveRTC();
 	}
