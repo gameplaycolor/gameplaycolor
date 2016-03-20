@@ -1,3 +1,4 @@
+"use strict";
 var gameboy = null;						//GameBoyCore object.
 var gbRunInterval = null;				//GameBoyCore Timer
 var settings = [						//Some settings.

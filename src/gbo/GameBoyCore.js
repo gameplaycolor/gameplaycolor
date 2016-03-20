@@ -1,3 +1,4 @@
+"use strict";
 /* 
  * JavaScript GameBoy Color Emulator
  * Copyright (C) 2010 - 2012 Grant Galitz
