@@ -124,7 +124,7 @@ body {
     position: relative;
     text-align: center;
     font-size: 34px;
-    box-shadow: 0 3px 7px #1b1b1b, inset 0 2px 3px #676767;
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.35), inset 0 2px 3px #676767;
     border: 2px solid black;
     border-top: 1px solid black;
 }
@@ -343,9 +343,8 @@ body {
     background-image: url(images/noise.png);
     border: 0;
     transition: left 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    box-shadow: 0 0 32px rgba(0, 0, 0, 0.8);
     border-radius: 12px;
-    box-shadow: inset 0 0 4px rgba(255, 255, 2555, 0.5);
+    box-shadow: inset 0 0 4px rgba(255, 255, 2555, 0.2);
 }
 
 #screen-console.hidden {
