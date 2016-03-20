@@ -8,21 +8,12 @@ If you just want to play Game Play Color, you can find it online at [https://gam
 Dependencies
 ------------
 
-Game Play Color has the following dependencies:
-
-- yuicompressor
-- pngcrush
-- htmlcompressor
-
-Using [Homebrew](http://brew.sh), you can install these as follows:
+Check out the project, update the submodules, install the brew-based dependencies, and install the additional Python dependencies:
 
 ```bash
-brew install yuicompressor pngcrush htmlcompressor
-```
-
-You will also need to include the additional Python dependencies:
-
-```bash
+git clone git@github.com:jbmorley/gameplay.git
+git submodule update --init --recursive
+cat brew.txt | xargs brew install
 pip install --user -r requirements.txt
 ```
 
