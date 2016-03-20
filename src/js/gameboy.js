@@ -30,6 +30,8 @@ Gameboy.Key = {
 };
 
 var gbologger = new App.Logging(window.config.logging_level, "gbo");
+var saveStateContext;
+var saveState = {};
 
 function cout(message, level) {
   var l = App.Logging.Level.INFO;
@@ -51,6 +53,70 @@ function arrayToBase64(u8Arr) {
 
 function base64ToArray(b64encoded) {
   return utilities.base64ToArray(b64encoded);
+}
+
+function loadSaveStateContext(context) {
+
+  saveStateContext = context;
+  saveState = {};
+
+  var deferred = new jQuery.Deferred();
+  window.app.store.propertiesForDomain(saveStateContext, function(properties) {
+
+    for (var key in properties) {
+      if (properties.hasOwnProperty(key)) {
+        saveState[key] = properties[key];
+      }
+    }
+
+    deferred.resolve();
+  });
+  return deferred.promise();
+}
+
+function setValue(key, value) {
+
+  // JSON-encode the RTC as this cannot be stored in its default form.
+  if (key.substring(0, 4) === "RTC_") {
+    value = JSON.stringify(value);
+  }
+
+  var previous = saveState[key];
+  if (previous !== value) {
+    saveState[key] = value;
+    window.app.setValue(saveStateContext, key, value);
+  }
+
+}
+
+function deleteValue(key) {
+  delete saveState[key];
+  window.app.deleteValue(saveStateContext, key);
+}
+
+function findValue(key) {
+
+  var value = saveState[key];
+
+  // JSON-decode the RTC.
+  if (value !== undefined && key.substring(0, 4) === "RTC_") {
+    value = JSON.parse(value);
+  }
+
+  return value;
+}
+
+function startWrapper(identifier, canvas, ROM) {
+  var deferred = jQuery.Deferred();
+  loadSaveStateContext("game-" + identifier).then(function() {
+    try {
+      start(canvas, ROM, true);
+      deferred.resolve();
+    } catch (e) {
+      deferred.reject(e);
+    }
+  });
+  return deferred.promise();
 }
 
 (function($) {
