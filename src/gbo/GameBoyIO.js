@@ -107,12 +107,10 @@ function run() {
 		cout("GameBoy core cannot run while it has not been initialized.", 1);
 	}
 }
-function pause(skipAutoSave) {
+function pause() {
 	if (GameBoyEmulatorInitialized()) {
 		if (GameBoyEmulatorPlaying()) {
-			if (skipAutoSave === undefined || skipAutoSave === false) {
-				autoSave();
-			}
+			autoSave();
 			clearLastEmulation();
 		}
 		else {
