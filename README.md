@@ -12,6 +12,7 @@ Check out the project, update the submodules, install the brew-based dependencie
 
 ```bash
 git clone git@github.com:jbmorley/gameplay.git
+cd gameplay
 git submodule update --init --recursive
 cat brew.txt | xargs brew install
 pip install --user -r requirements.txt
