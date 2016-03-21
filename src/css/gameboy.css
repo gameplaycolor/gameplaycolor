@@ -229,7 +229,6 @@ body {
     cursor: pointer;
     font-size: 16px;
     color: #d9d9d9;
-    text-shadow: 0 1px 0 #4a4a4a;
     opacity: 0.6;
     white-space: nowrap;
     overflow: hidden;
@@ -255,7 +254,6 @@ body {
 
 .button-library {
     opacity: 0.5;
-    text-shadow: 0 -1px #888;
     text-transform: uppercase;
     color: black;
 }
@@ -299,13 +297,11 @@ body {
 .button-back:after {
     -webkit-transform:rotate(-45deg);
     top: 15.75px;
-    box-shadow: 1px -1px #888;
 }
 
 .button-back:before {
     -webkit-transform:rotate(45deg);
     top: 25.25px;
-    box-shadow: 0 -1px #888;
 }
 
 #debug {
