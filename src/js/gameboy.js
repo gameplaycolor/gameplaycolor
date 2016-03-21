@@ -161,8 +161,8 @@ function startWrapper(identifier, canvas, ROM) {
       self.speed = 1;
 
       settings[App.GameBoy.Settings.ENABLE_SOUND] = true;
-      settings[App.GameBoy.Settings.SOFTWARE_RESIZING] = false;
       settings[App.GameBoy.Settings.ENABLE_COLORIZATION] = false;
+      settings[App.GameBoy.Settings.SOFTWARE_RESIZING] = false;
       settings[App.GameBoy.Settings.RESIZE_SMOOTHING] = false;
       settings[App.GameBoy.Settings.EMULATOR_LOOP_INTERVAL] = 12;
 
