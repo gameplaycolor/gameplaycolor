@@ -129,10 +129,6 @@ body {
     border-top: 1px solid black;
 }
 
-.button.pressed {
-    box-shadow: 0 1px 4px rgba(27, 27, 27, 0.72), inset 0 2px 3px rgba(103, 103, 103, 0.59);
-}
-
 .button-option-group {
     width: 60px;
 }
@@ -166,10 +162,6 @@ body {
     box-shadow: 0 -1px 3px #1b1b1b, inset 0 4px 8px rgba(103, 103, 103, 0.51);
     border: 2px solid black;
     border-top: 1px solid black;
-}
-
-.button-option.pressed {
-    box-shadow: 0 -1px 3px #1b1b1b, inset 0 4px 8px rgba(103, 103, 103, 0.39);
 }
 
 .button-label {
@@ -213,10 +205,6 @@ body {
     position: absolute;
     bottom: 6px;
     left: 14px;
-}
-
-.button.pressed .control-text {
-    bottom: 8px;
 }
 
 #control-dpad {
@@ -1004,14 +992,6 @@ hr {
     left: 40px;
 }
 
-
-.dpad.pressed-up > .up,
-.dpad.pressed-down > .down,
-.dpad.pressed-left > .left,
-.dpad.pressed-right > .right {
-    background-color: red;
-}
-
 /* GBC */
 
 #screen-console.theme-gbc .dpad > .top {
@@ -1032,42 +1012,10 @@ hr {
     box-shadow: 0 3px 7px 0 #1b1b1b, inset 0 3px 2px 0 #676767;
 }
 
-#screen-console.theme-gbc .dpad.pressed-up > .up {
-    box-shadow: 0 3px 4px 0 #1b1b1b, inset 0 0 2px -1px #676767;
-}
-
-#screen-console.theme-gbc .dpad.pressed-down > .up {
-    box-shadow: 0 3px 9px #1b1b1b, inset -1px 9px 2px -1px #676767;
-}
-
-#screen-console.theme-gbc .dpad.pressed-left > .up {
-    box-shadow: 1px 3px 7px 0 #1b1b1b, inset -2px 3px 2px 0 #676767;
-}
-
-#screen-console.theme-gbc .dpad.pressed-right > .up {
-    box-shadow: -1px 3px 7px 0 #1b1b1b, inset 2px 3px 2px 0 #676767;
-}
-
 #screen-console.theme-gbc .dpad > .down {
     border-radius: 0 0 6px 6px;
     border-top: 0;
     box-shadow: 0 3px 7px 0 #1b1b1b, inset 0 -2px 2px 0 #676767;
-}
-
-#screen-console.theme-gbc .dpad.pressed-up > .down {
-    box-shadow: 0 3px 11px 0 #1b1b1b, inset 0 -6px 2px 0 #676767;
-}
-
-#screen-console.theme-gbc .dpad.pressed-down > .down {
-    box-shadow: 0 0 7px 0 #1b1b1b, inset 0 0 2px 0 #676767;
-}
-
-#screen-console.theme-gbc .dpad.pressed-left > .down {
-    box-shadow: 1px 3px 7px 0 #1b1b1b, inset -2px -2px 2px 0 #676767;
-}
-
-#screen-console.theme-gbc .dpad.pressed-right > .down {
-    box-shadow: -1px 3px 7px 0 #1b1b1b, inset 2px -2px 2px 0 #676767;
 }
 
 #screen-console.theme-gbc .dpad > .left {
@@ -1076,44 +1024,10 @@ hr {
     box-shadow: 0 3px 7px 0 #1b1b1b, inset 1px 3px 2px -1px #676767;
 }
 
-#screen-console.theme-gbc .dpad.pressed-up > .left {
-    box-shadow: 0 3px 9px 0 #1b1b1b, inset 1px -2px 2px -1px #676767;
-}
-
-#screen-console.theme-gbc .dpad.pressed-down > .left {
-    box-shadow: 0 3px 4px 0 #1b1b1b, inset 1px 5px 2px -1px #676767;
-}
-
-#screen-console.theme-gbc .dpad.pressed-left > .left {
-    box-shadow: 2px 1px 7px 0 #1b1b1b, inset 0 3px 1px -1px #676767;
-}
-
-#screen-console.theme-gbc .dpad.pressed-right > .left {
-    box-shadow: 2px 3px 7px 0 #1b1b1b, inset 5px 3px 2px -1px #676767;
-    width: 42px;
-}
-
 #screen-console.theme-gbc .dpad > .right {
     border-radius: 0 12px 12px 0;
     border-left: 0;
     box-shadow: 0 3px 7px #1b1b1b, inset -1px 3px 2px -1px #676767;
-}
-
-#screen-console.theme-gbc .dpad.pressed-up > .right {
-    box-shadow: 0 3px 9px #1b1b1b, inset -1px -2px 2px -1px #676767;
-}
-
-#screen-console.theme-gbc .dpad.pressed-down > .right {
-    box-shadow: 0 3px 4px #1b1b1b, inset -1px 5px 2px -1px #676767;
-}
-
-#screen-console.theme-gbc .dpad.pressed-left > .right {
-    box-shadow: -2px 3px 7px #1b1b1b, inset -5px 3px 1px -1px #676767;
-    width: 42px;
-}
-
-#screen-console.theme-gbc .dpad.pressed-right > .right {
-    box-shadow: -2px 1px 7px #1b1b1b, inset 0 3px 2px -1px #676767;
 }
 
 #screen-console.theme-gbc .dpad > .arrow:before {
@@ -1135,81 +1049,16 @@ hr {
     content: "\25B2\FE0E";
 }
 
-#screen-console.theme-gbc .dpad.pressed-up > .up:before {
-    top: -2px;
-}
-
-#screen-console.theme-gbc .dpad.pressed-down > .up:before {
-    top: 2px;
-}
-
-#screen-console.theme-gbc .dpad.pressed-left > .up:before {
-    left: -1px;
-}
-
-#screen-console.theme-gbc .dpad.pressed-right > .up:before {
-    left: 1px;
-}
-
 #screen-console.theme-gbc .dpad > .down:before {
     content:"\25BC\FE0E";
-}
-
-#screen-console.theme-gbc .dpad.pressed-up > .down:before {
-    top: -2px;
-    text-shadow: 0 1px #aaa;
-}
-
-#screen-console.theme-gbc .dpad.pressed-down > .down:before {
-    top: 2px;
-}
-
-#screen-console.theme-gbc .dpad.pressed-left > .down:before {
-    left: -1px;
-}
-
-#screen-console.theme-gbc .dpad.pressed-right > .down:before {
-    left: 1px;
 }
 
 #screen-console.theme-gbc .dpad > .left:before {
     content:"\25C0\FE0E";
 }
 
-#screen-console.theme-gbc .dpad.pressed-up > .left:before {
-    top: -1px;
-}
-
-#screen-console.theme-gbc .dpad.pressed-down > .left:before {
-    top: 1px;
-}
-
-#screen-console.theme-gbc .dpad.pressed-left > .left:before {
-    left: -2px;
-}
-
-#screen-console.theme-gbc .dpad.pressed-right > .left:before {
-    left: 2px;
-}
-
 #screen-console.theme-gbc .dpad > .right:before {
     content:"\25B6\FE0E";
-}
-
-#screen-console.theme-gbc .dpad.pressed-up > .right:before {
-    top: -1px;
-}
-
-#screen-console.theme-gbc .dpad.pressed-down > .right:before {
-    top: 1px;
-}
-
-#screen-console.theme-gbc .dpad.pressed-left > .right:before {
-    left: -2px;
-}
-
-#screen-console.theme-gbc .dpad.pressed-right > .right:before {
-    left: 2px;
 }
 
 #screen-console.theme-gbc .dpad > .center {
@@ -1229,31 +1078,6 @@ hr {
     background-image: -webkit-linear-gradient(top, #000, #888);
     box-shadow: 0 2px 0 #ccc;
     opacity: 0.2;
-}
-
-#screen-console.theme-gbc .dpad.pressed-left > .center {
-    width: 40px;
-}
-
-#screen-console.theme-gbc .dpad.pressed-right > .center {
-    width: 40px;
-    left: 42px;
-}
-
-#screen-console.theme-gbc .dpad.pressed-up > .center:before {
-    top: 6px;
-}
-
-#screen-console.theme-gbc .dpad.pressed-down > .center:before {
-    top: 9px;
-}
-
-#screen-console.theme-gbc .dpad.pressed-left > .center:before {
-    left: 7px;
-}
-
-#screen-console.theme-gbc .dpad.pressed-right > .center:before {
-    left: 9px;
 }
 
 #element-dpad {
