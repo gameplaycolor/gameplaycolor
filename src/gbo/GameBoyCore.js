@@ -4985,8 +4985,8 @@ GameBoyCore.prototype.MBCRAMUtilized = function () {
 GameBoyCore.prototype.recomputeDimension = function () {
 	initNewCanvas();
 	//Cache some dimension info:
-	// this.onscreenWidth = this.canvas.width;
-	// this.onscreenHeight = this.canvas.height;
+	this.onscreenWidth = this.canvas.width;
+	this.onscreenHeight = this.canvas.height;
 	if (window && window.mozRequestAnimationFrame || (navigator.userAgent.toLowerCase().indexOf("gecko") != -1 && navigator.userAgent.toLowerCase().indexOf("like gecko") == -1)) {
 		//Firefox slowness hack:
 		this.canvas.width = this.onscreenWidth = (!settings[12]) ? 160 : this.canvas.width;
@@ -5053,7 +5053,13 @@ GameBoyCore.prototype.initLCD = function () {
 	}
 }
 GameBoyCore.prototype.graphicsBlit = function () {
-	this.drawContextOnscreen.putImageData(this.canvasBuffer, 0, 0);
+	if (!settings[12] || (this.offscreenWidth == this.onscreenWidth && this.offscreenHeight == this.onscreenHeight)) {
+		this.drawContextOnscreen.putImageData(this.canvasBuffer, 0, 0);
+	}
+	else {
+		this.drawContextOffscreen.putImageData(this.canvasBuffer, 0, 0);
+		this.drawContextOnscreen.drawImage(this.canvasOffscreen, 0, 0, this.onscreenWidth, this.onscreenHeight);
+	}
 }
 GameBoyCore.prototype.JoyPadEvent = function (key, down) {
 	if (down) {
