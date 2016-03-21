@@ -1009,25 +1009,25 @@ hr {
 #screen-console.theme-gbc .dpad > .up {
     border-radius: 6px 6px 0 0;
     border-bottom: 0;
-    box-shadow: 0 3px 7px 0 #1b1b1b, inset 0 3px 2px 0 #676767;
+    box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.35), inset 0 3px 2px 0 #676767;
 }
 
 #screen-console.theme-gbc .dpad > .down {
     border-radius: 0 0 6px 6px;
     border-top: 0;
-    box-shadow: 0 3px 7px 0 #1b1b1b, inset 0 -2px 2px 0 #676767;
+    box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.35), inset 0 -2px 2px 0 #676767;
 }
 
 #screen-console.theme-gbc .dpad > .left {
     border-radius: 12px 0 0 12px;
     border-right: 0;
-    box-shadow: 0 3px 7px 0 #1b1b1b, inset 1px 3px 2px -1px #676767;
+    box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.35), inset 1px 3px 2px -1px #676767;
 }
 
 #screen-console.theme-gbc .dpad > .right {
     border-radius: 0 12px 12px 0;
     border-left: 0;
-    box-shadow: 0 3px 7px #1b1b1b, inset -1px 3px 2px -1px #676767;
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.35), inset -1px 3px 2px -1px #676767;
 }
 
 #screen-console.theme-gbc .dpad > .arrow:before {
