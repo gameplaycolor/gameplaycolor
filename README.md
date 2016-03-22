@@ -37,6 +37,7 @@ Changelog
 ### Version 2.2.3
 
 - Catching up to upstream GameBoy-Online.
+- Some UI improvements.
 
 ### Version 2.2.2
 

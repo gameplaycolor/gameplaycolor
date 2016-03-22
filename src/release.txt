@@ -1,1 +1,2 @@
 - Catching up to upstream GameBoy-Online.
+- Some UI improvements.
