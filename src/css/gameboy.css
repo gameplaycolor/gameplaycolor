@@ -1225,6 +1225,14 @@ hr {
         transition: top 0.3s ease-in-out;
     }
 
+    .navigation-button {
+        color: #fff;
+    }
+
+    .button-back:after, .button-back:before {
+        background-color: #fff;
+    }
+
 }
 
 /* iPhone 4: Landscape */
@@ -1289,6 +1297,14 @@ hr {
     .console-navigation-bar.hidden {
         top: -100%;
         transition: top 0.3s ease-in-out;
+    }
+
+    .navigation-button {
+        color: #fff;
+    }
+
+    .button-back:after, .button-back:before {
+        background-color: #fff;
     }
 
 }
@@ -1434,6 +1450,7 @@ hr {
     .surround {
         width: 346px;
         height: 312px;
+        border-radius: 12px;
     }
 
     #element-screen {
@@ -1491,6 +1508,7 @@ hr {
     .surround {
         width: 346px;
         height: 312px;
+        border-radius: 12px;
     }
 
     #element-screen {
@@ -1513,7 +1531,7 @@ hr {
     }
 
     .surround {
-        height: 614px;
+        height: 624px;
         width: 678px;
     }
 
