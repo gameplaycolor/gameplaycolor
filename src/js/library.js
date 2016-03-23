@@ -138,29 +138,64 @@
       var identifier = self.identifierForIndex(index);
       var title = self.titleForIndex(index);
 
-      var element = $('<div class="game">');
-      element.spinner = false;
+      var element = $(' \
+<div class="cartridge-container unavailable"> \
+  <div class="cartridge"> \
+      <div class="top"></div> \
+      <div class="logo"></div> \
+      <div class="lines"> \
+          <div class="bar left one"></div> \
+          <div class="bar left two"></div> \
+          <div class="bar left three"></div> \
+          <div class="bar left four"></div> \
+          <div class="bar right one"></div> \
+          <div class="bar right two"></div> \
+          <div class="bar right three"></div> \
+          <div class="bar right four"></div> \
+      </div> \
+      <div class="inset"> \
+          <div class="label"> \
+              <div class="info-title info right"></div> \
+              <div class="info left">This Side Out</div> \
+              <img class="cover" /> \
+          </div> \
+      </div> \
+      <div class="edge left"></div> \
+      <div class="edge right"></div> \
+      <div class="arrow"></div> \
+  </div> \
+</div> \
+');
 
-      var gameTitle = $('<div class="game-title">');
-      gameTitle.html(title);
-      element.append(gameTitle);
+      var cartridge = $(element.get(0).getElementsByClassName('cartridge')[0]);
+      var lowerCaseTitle = title.toLowerCase();
+      if (lowerCaseTitle.indexOf("yellow") > -1) {
+        cartridge.addClass("orange");
+      } else if (lowerCaseTitle.indexOf("red") > -1) {
+        cartridge.addClass("red");
+      } else if (lowerCaseTitle.indexOf("blue") > -1) {
+        cartridge.addClass("blue");
+      } else if (lowerCaseTitle.indexOf("gold") > -1) {
+        cartridge.addClass("gold");
+      } else if (lowerCaseTitle.indexOf("crystal") > -1) {
+        cartridge.addClass("crystal");
+      }
 
-      var gameImg = $('<img class="game-thumbnail">');
-      element.append(gameImg);
+      var titleElement = element.get(0).getElementsByClassName('info-title')[0];
+      $(titleElement).html(title);
 
-      var gameOverlay = $('<div class="game-overlay">');
-      element.append(gameOverlay);
-
-      self.store.hasProperty(App.Controller.Domain.GAMES, identifier).then(function(result) {
-        if (result) {
-          element.addClass('downloaded');
+      var cover = element.get(0).getElementsByClassName('cover')[0];
+      self.thumbnailForIndex(index, function(thumbnail) {
+        if (thumbnail !== undefined) {
+          $(cover).attr("src", thumbnail);
         }
       });
 
-      self.thumbnailForIndex(index, function(thumbnail) {
-        if (thumbnail !== undefined) {
-          gameImg.attr("src", thumbnail);
-          gameTitle.css('display', 'none');
+      element.spinner = false;
+
+      self.store.hasProperty(App.Controller.Domain.GAMES, identifier).then(function(result) {
+        if (result) {
+          element.removeClass('unavailable');
         }
       });
 
@@ -196,7 +231,7 @@
           self.fetch(identifier).then(function(data) {
 
             self.logging.info("Received identifier '" + identifier + "'");
-            element.addClass("downloaded");
+            element.removeClass("unavailable");
 
           }).fail(function() {
 
@@ -222,7 +257,7 @@
         if (found) {
           if (confirm("Remove '" + title + "' from your device?")) {
             self.store.deleteProperty(App.Controller.Domain.GAMES, identifier);
-            element.removeClass("downloaded");
+            element.addClass("unavailable");
           }
         }
       });

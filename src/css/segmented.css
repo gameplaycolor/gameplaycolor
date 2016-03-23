@@ -1,0 +1,56 @@
+/*
+ * Copyright (C) 2012-2016 InSeven Limited.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
+.segmented {
+    height: 28px;
+    line-height: 26px;
+    list-style: none;
+    padding: 0;
+    display: flex;
+    margin: 8px 0;
+}
+
+.segmented li {
+    display: inline-block;
+    text-align: center;
+    padding: 0 8px;
+    border: 1px solid #0076ff;
+    border-right: 0.5px solid #0076ff;
+    border-left: 0.5px solid #0076ff;
+    color: #0076ff;
+    flex-grow: 1;
+}
+
+.segmented li:first-child {
+    border-radius: 4px 0 0 4px;
+    border-left: 1px solid #0076ff;
+}
+
+.segmented li:last-child {
+    border-radius: 0 4px 4px 0;
+    border-right: 1px solid #0076ff;
+}
+
+.segmented li.pressed {
+    background-color: #d8ecff;
+}
+
+.segmented li.selected {
+    background-color: #0076ff;
+    color: white;
+}

@@ -23,9 +23,12 @@
   };
   
   App.Grid.Cell = {
-    WIDTH:  150,
-    HEIGHT: 150,
-    MARGIN: 20
+    WIDTH:  140,
+    HEIGHT: 152,
+    MARGIN: {
+      X: 30,
+      Y: 36,
+    }
   };
 
   App.Grid.Margin = {
@@ -84,17 +87,17 @@
     add: function(index) {
       var self = this;
       
-      var columns = Math.floor((self.containerWidth() - App.Grid.Margin.LEFT - App.Grid.Margin.RIGHT + App.Grid.Cell.MARGIN) / (App.Grid.Cell.WIDTH + App.Grid.Cell.MARGIN));
-      var rows = Math.floor((self.containerHeight() - App.Grid.Margin.TOP - App.Grid.Margin.BOTTOM + App.Grid.Cell.MARGIN) / (App.Grid.Cell.HEIGHT + App.Grid.Cell.MARGIN));
+      var columns = Math.floor((self.containerWidth() - App.Grid.Margin.LEFT - App.Grid.Margin.RIGHT + App.Grid.Cell.MARGIN.X) / (App.Grid.Cell.WIDTH + App.Grid.Cell.MARGIN.X));
+      var rows = Math.floor((self.containerHeight() - App.Grid.Margin.TOP - App.Grid.Margin.BOTTOM + App.Grid.Cell.MARGIN.Y) / (App.Grid.Cell.HEIGHT + App.Grid.Cell.MARGIN.Y));
 
       var row = Math.floor(self.items.length / columns);
       var col = self.items.length % columns;
 
-      var contentWidth = ((App.Grid.Cell.MARGIN + App.Grid.Cell.WIDTH) * columns) - App.Grid.Cell.MARGIN;
+      var contentWidth = ((App.Grid.Cell.MARGIN.X + App.Grid.Cell.WIDTH) * columns) - App.Grid.Cell.MARGIN.X;
       var offsetLeft = Math.floor((self.containerWidth() - contentWidth) / 2);
 
-      var y = App.Grid.Margin.TOP + ((App.Grid.Cell.HEIGHT + App.Grid.Cell.MARGIN) * row);
-      var x = offsetLeft + ((App.Grid.Cell.WIDTH + App.Grid.Cell.MARGIN) * col);
+      var y = App.Grid.Margin.TOP + ((App.Grid.Cell.HEIGHT + App.Grid.Cell.MARGIN.Y) * row);
+      var x = offsetLeft + ((App.Grid.Cell.WIDTH + App.Grid.Cell.MARGIN.X) * col);
 
       var element = self.dataSource.elementForIndex(index);
       element.css('top', y);
@@ -124,7 +127,7 @@
       });
 
       self.element.append(element);
-      self.element.css('height', y + App.Grid.Cell.HEIGHT + App.Grid.Cell.MARGIN);
+      self.element.css('height', y + App.Grid.Cell.HEIGHT + App.Grid.Cell.MARGIN.Y);
       
     },
 
