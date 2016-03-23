@@ -110,6 +110,14 @@ KEYCODE_SHIFT_LEFT = 16;
           self.core.run();
         });
 
+        self.menu.onSave = function() {
+          console.log('Save');
+        };
+
+        self.menu.onRestore = function() {
+          console.log('Restore');
+        };
+
         self.menu.onReset = function() {
           self.core.reset();
         };

@@ -28,12 +28,24 @@
       init: function(willShow, didHide) {
         var self = this;
         self.onReset = undefined;
-        self.onABStartSelect = undefined;
+        self.onaBStartSelect = undefined;
         self.willShow = willShow;
         self.didHide = didHide;
         self.screen = $('#screen-menu');
         self.element = $('#game-menu');
         self.cancel = new App.Controls.Button($('#menu-button-cancel'), { touchUpInside: function() {
+          self.hide();
+        }});
+        self.save = new App.Controls.Button($('#menu-button-save'), { touchUpInside: function () {
+          if (self.onSave !== undefined) {
+            self.onSave();
+          }
+          self.hide();
+        }});
+        self.restore = new App.Controls.Button($('#menu-button-restore'), { touchUpInside: function () {
+          if (self.onRestore !== undefined) {
+            self.onRestore();
+          }
           self.hide();
         }});
         self.reset = new App.Controls.Button($('#menu-button-reset'), { touchUpInside: function() {
@@ -42,7 +54,7 @@
           }
           self.hide();
         }});
-        self.ABStartSelect = new App.Controls.Button($('#menu-button-a-b-start-select'), { touchUpInside: function () {
+        self.aBStartSelect = new App.Controls.Button($('#menu-button-a-b-start-select'), { touchUpInside: function () {
           if (self.onABStartSelect !== undefined) {
             self.onABStartSelect();
           }
