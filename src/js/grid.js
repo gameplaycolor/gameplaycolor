@@ -22,21 +22,36 @@
     this.init();
   };
   
-  App.Grid.Cell = {
-    WIDTH:  140,
-    HEIGHT: 152,
-    MARGIN: {
-      X: 30,
-      Y: 36,
+  App.Grid.Cell = {};
+  App.Grid.Margin = {};
+
+  var updateSizes = function() {
+
+    App.Grid.Cell = {
+      WIDTH:  140,
+      HEIGHT: 152,
+      MARGIN: {
+        X: 30,
+        Y: 36,
+      }
+    };
+
+    App.Grid.Margin = {
+      TOP: 46,
+      LEFT: 20,
+      BOTTOM: 100,
+      RIGHT: 20,
+    };
+
+    if ($(window).width() == 320 || $(window).height() == 320) {
+      App.Grid.Cell.MARGIN.X = 16;
+      App.Grid.Cell.MARGIN.Y = 26;
+      App.Grid.Margin.LEFT = App.Grid.Margin.RIGHT = 10;
     }
+
   };
 
-  App.Grid.Margin = {
-    TOP: 46,
-    LEFT: 20,
-    BOTTOM: 100,
-    RIGHT: 20,
-  };
+  updateSizes();
 
   jQuery.extend(App.Grid.prototype, {
 
@@ -64,6 +79,8 @@
     
     reloadData: function() {
       var self = this;
+
+      updateSizes();
       
       self.items = [];
       self.element.html("");
