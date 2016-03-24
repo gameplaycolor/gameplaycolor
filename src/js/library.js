@@ -157,6 +157,7 @@
           <div class="label"> \
               <div class="info-title info right"></div> \
               <div class="info left">This Side Out</div> \
+              <div class="title-large"></div> \
               <img class="cover" /> \
           </div> \
       </div> \
@@ -181,12 +182,16 @@
         cartridge.addClass("crystal");
       }
 
-      var titleElement = element.get(0).getElementsByClassName('info-title')[0];
-      $(titleElement).html(title);
+      var infoTitleElement = element.get(0).getElementsByClassName('info-title')[0];
+      $(infoTitleElement).html(title);
+
+      var titleLargeElement = element.get(0).getElementsByClassName('title-large')[0];
+      $(titleLargeElement).html(title);
 
       var cover = element.get(0).getElementsByClassName('cover')[0];
       self.thumbnailForIndex(index, function(thumbnail) {
         if (thumbnail !== undefined) {
+          $(titleLargeElement).hide();
           $(cover).attr("src", thumbnail);
         }
       });

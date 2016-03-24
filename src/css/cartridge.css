@@ -162,6 +162,12 @@
     text-overflow: ellipsis;
 }
 
+.cartridge > .inset > .label > .title-large {
+    margin: 4px 10px;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
 .cartridge > .inset > .label > .info {
     position: absolute;
     top: 40px;
