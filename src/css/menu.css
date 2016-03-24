@@ -1,0 +1,83 @@
+/*
+ * Copyright (C) 2012-2016 InSeven Limited.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
+.screen-menu {
+    transition: background-color 150ms ease-in-out;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.screen-menu.hidden {
+    transition: background-color 150ms ease-in-out;
+    background-color: rgba(0, 0, 0, 0.0);
+}
+
+.menu {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    transition: 150ms ease-in-out;
+    overflow: hidden;
+    height: 188px;
+}
+
+.menu.hidden {
+    transition: 150ms ease-in-out;
+    height: 0;
+}
+
+.menu ul {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.menu li {
+    background-color: rgba(255, 255, 255, 0.95);
+    box-sizing: border-box;
+    width: 100%;
+    text-align: center;
+    height: 56px;
+    line-height: 56px;
+    margin: 0 10px;
+    flex-grow: 1;
+    color: #0076ff;
+    font-size: 18px;
+    border-bottom: 1px solid #aaa;
+}
+
+.menu li.default {
+    font-weight: bold;
+}
+
+.menu li.pressed {
+    background-color: rgba(144, 142, 144, 0.9);
+}
+
+.menu li:first-child {
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.menu li:last-child {
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    margin-bottom: 10px;
+    border-bottom: 0;
+}

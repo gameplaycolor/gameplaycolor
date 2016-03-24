@@ -1,0 +1,296 @@
+/*
+ * Copyright (C) 2012-2016 InSeven Limited.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
+.cartridge-container {
+    width: 140px;
+    height: 152px;
+    position: absolute;
+ }
+
+.cartridge {
+    width: 140px;
+    height: 152px;
+    background-color: #848086;
+    position: absolute;
+    box-shadow:
+        0 0 5px rgba(0, 0, 0, 0.6),
+        inset 0 1px 1px rgba(255, 255, 255, 0.6);
+    margin-top: 8px;
+    transition: opacity 150ms ease-in-out;
+}
+
+.unavailable > .cartridge {
+    transition: opacity 150ms ease-in-out;
+    opacity: 0.2;
+}
+
+.cartridge.orange, .cartridge.orange > .top {
+    background-color: #E6AE18;
+}
+
+.cartridge.red, .cartridge.red > .top {
+    background-color: #C62220;
+}
+
+.cartridge.blue, .cartridge.blue > .top {
+    background-color: #18358D;
+}
+
+.cartridge.gold, .cartridge.gold > .top {
+    background-color: #A48027;
+}
+
+.cartridge.crystal, .cartridge.crystal > .top {
+    background-color: #678FB2;
+}
+
+.cartridge > .logo {
+    box-sizing: border-box;
+    position: absolute;
+    top: 4px;
+    left: 15px;
+    width: 110px;
+    height: 28px;
+    border-radius: 100px;
+    background: linear-gradient(top,
+                                rgba(0, 0, 0, 0.2),
+                                rgba(255, 255, 255, 0.2));
+    background: -moz-linear-gradient(top,
+                                     rgba(0, 0, 0, 0.2),
+                                     rgba(255, 255, 255, 0.2));
+    background: -webkit-linear-gradient(top,
+                                        rgba(0, 0, 0, 0.2),
+                                        rgba(255, 255, 255, 0.2));
+    box-shadow:
+        0 1px 1px rgba(255, 255, 255, 0.5),
+        inset 0 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+.cartridge > .top {
+    box-sizing: border-box;
+    position: absolute;
+    content: "";
+    top: -8px;
+    left: 0;
+    background-color: #848086;
+    height: 10px;
+    box-shadow:
+        inset 0 1px 1px rgba(255, 255, 255, 0.6);
+    width: 90%;
+}
+
+.cartridge > .arrow {
+    box-sizing: border-box;
+    content: "";
+    position: absolute;
+    left: 60px;
+    bottom: 4px;
+    width: 19px;
+    height: 12px;
+    border-top: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.cartridge > .arrow:before, .cartridge > .arrow:after {
+    content: "";
+    width: 14px;
+    height: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    position: absolute;
+    top: 4px;
+}
+
+.cartridge > .arrow:before {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    left: -2px;
+}
+
+.cartridge > .arrow:after {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    left: 7px;
+}
+
+.cartridge > .inset {
+    content: "";
+    position: absolute;
+    bottom: 20px;
+    left: 15px;
+    height: 92px;
+    width: 110px;
+    box-sizing: border-box;
+    border-radius: 3px;
+    box-shadow:
+        0 1px 1px rgba(255, 255, 255, 0.5),
+        inset 0 1px 1px rgba(0, 0, 0, 0.5);
+    padding: 2px;
+}
+
+.cartridge > .inset > .label {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(top,
+                                rgba(200, 200, 200, 1.0),
+                                rgba(170, 170, 170, 1.0));
+    background: -moz-linear-gradient(top,
+                                     rgba(200, 200, 200, 1.0),
+                                     rgba(170, 170, 170, 1.0));
+    background: -webkit-linear-gradient(top,
+                                        rgba(200, 200, 200, 1.0),
+                                        rgba(170, 170, 170, 1.0));
+    text-align: center;
+    border-radius: 1px;
+    box-shadow: inset 0 0 2px rgba(255, 255, 255, 0.4);
+    position: relative;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cartridge > .inset > .label > .title-large {
+    margin: 4px 10px;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+.cartridge > .inset > .label > .info {
+    position: absolute;
+    top: 40px;
+    font-size: 6px;
+    text-transform: uppercase;
+    font-family: Helvetica;
+    width: 106px;
+    text-align: center;
+}
+
+.cartridge > .inset > .label > .info.left {
+    transform: rotate(-90deg);
+    -webkit-transform: rotate(-90deg);
+    left: 45%;
+}
+
+.cartridge > .inset > .label > .info.right {
+    transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    left: -45%;
+}
+
+.cartridge > .inset > .label > img {
+    height: 100%;
+}
+
+.cartridge > .edge {
+    box-sizing: border-box;
+    position: absolute;
+    bottom: 0;
+    width: 4px;
+    height: 86px;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.cartridge > .edge.left {
+    left: 0;
+    background: linear-gradient(left,
+                                rgba(0, 0, 0, 0.4),
+                                rgba(0, 0, 0, 0.2));
+    background: -moz-linear-gradient(left,
+                                     rgba(0, 0, 0, 0.4),
+                                     rgba(0, 0, 0, 0.2));
+    background: -webkit-linear-gradient(left,
+                                        rgba(0, 0, 0, 0.4),
+                                        rgba(0, 0, 0, 0.2));
+}
+
+.cartridge > .edge.right {
+    right: 0;
+    background: linear-gradient(right,
+                                rgba(0, 0, 0, 0.4),
+                                rgba(0, 0, 0, 0.2));
+    background: -moz-linear-gradient(right,
+                                     rgba(0, 0, 0, 0.4),
+                                     rgba(0, 0, 0, 0.2));
+    background: -webkit-linear-gradient(right,
+                                        rgba(0, 0, 0, 0.4),
+                                        rgba(0, 0, 0, 0.2));
+}
+
+.cartridge > .lines {
+    box-sizing: border-box;
+    position: absolute;
+    width: 100%;
+    height: 30px;
+    top: 6px;
+    left: 0;
+    overflow: hidden;
+}
+
+.cartridge > .lines > .bar {
+    box-sizing: border-box;
+    position: absolute;
+    width: 20px;
+    height: 4px;
+    box-shadow:
+        0 1px 1px rgba(255, 255, 255, 0.5),
+        inset 0 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+.cartridge > .lines > .bar.left {
+    left: -4px;
+}
+
+.cartridge > .lines > .bar.right {
+    right: -4px;
+}
+
+.cartridge > .lines > .bar.one {
+    top: 0;
+}
+
+.cartridge > .lines > .bar.two {
+    top: 7px;
+    width: 16px;
+}
+
+.cartridge > .lines > .bar.three {
+    top: 14px;
+    width: 16px;
+}
+
+.cartridge > .lines > .bar.four {
+    top: 21px;
+}
+
+.cartridge > .lines > .bar.left.one,
+.cartridge > .lines > .bar.right.four {
+    transform: skew(-55deg);
+}
+
+.cartridge > .lines > .bar.left.two,
+.cartridge > .lines > .bar.right.three {
+     transform: skew(-12deg);   
+}
+
+.cartridge > .lines > .bar.left.three,
+.cartridge > .lines > .bar.right.two {
+    transform: skew(12deg);
+}
+
+.cartridge > .lines > .bar.left.four,
+.cartridge > .lines > .bar.right.one {
+    transform: skew(55deg);
+}
