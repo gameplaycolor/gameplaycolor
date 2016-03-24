@@ -31,7 +31,7 @@ Gameboy.Key = {
 
 var gbologger = new App.Logging(window.config.logging_level, "gbo");
 var saveStateContext;
-var saveState = {};
+var saveStateCache = {};
 
 function cout(message, level) {
   var l = App.Logging.Level.INFO;
@@ -50,14 +50,14 @@ function cout(message, level) {
 function loadSaveStateContext(context) {
 
   saveStateContext = context;
-  saveState = {};
+  saveStateCache = {};
 
   var deferred = new jQuery.Deferred();
   window.app.store.propertiesForDomain(saveStateContext, function(properties) {
 
     for (var key in properties) {
       if (properties.hasOwnProperty(key)) {
-        saveState[key] = properties[key];
+        saveStateCache[key] = properties[key];
       }
     }
 
@@ -68,30 +68,30 @@ function loadSaveStateContext(context) {
 
 function setValue(key, value) {
 
-  // JSON-encode the RTC as this cannot be stored in its default form.
-  if (key.substring(0, 4) === "RTC_") {
+  // JSON-encode some fields.
+  if (key.startsWith("RTC") || key.startsWith("FREEZE")) {
     value = JSON.stringify(value);
   }
 
-  var previous = saveState[key];
+  var previous = saveStateCache[key];
   if (previous !== value) {
-    saveState[key] = value;
+    saveStateCache[key] = value;
     window.app.setValue(saveStateContext, key, value);
   }
 
 }
 
 function deleteValue(key) {
-  delete saveState[key];
+  delete saveStateCache[key];
   window.app.deleteValue(saveStateContext, key);
 }
 
 function findValue(key) {
 
-  var value = saveState[key];
+  var value = saveStateCache[key];
 
-  // JSON-decode the RTC.
-  if (value !== undefined && key.substring(0, 4) === "RTC_") {
+  // JSON-decode some fields.
+  if (value !== undefined && (key.startsWith("RTC") || key.startsWith("FREEZE"))) {
     value = JSON.parse(value);
   }
 
@@ -212,6 +212,16 @@ function startWrapper(identifier, canvas, ROM) {
       if (self.state === App.GameBoy.State.RUNNING) {
         run();
       }
+    },
+
+    save: function() {
+      var self = this;
+      saveState("FREEZE");
+    },
+
+    restore: function() {
+      var self = this;
+      openState("FREEZE", document.getElementById('LCD'));
     },
 
     keyDown: function(keycode) {

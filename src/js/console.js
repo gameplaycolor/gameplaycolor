@@ -111,11 +111,11 @@ KEYCODE_SHIFT_LEFT = 16;
         });
 
         self.menu.onSave = function() {
-          console.log('Save');
+          self.core.save();
         };
 
         self.menu.onRestore = function() {
-          console.log('Restore');
+          self.core.restore();
         };
 
         self.menu.onReset = function() {
