@@ -8,5 +8,5 @@
     "redirect_uri": "https://gameplaycolor.com/app/",
     "icon": "icons/icon.png",
     "debug": false,
-    "logging_level": 30
+    "logging_level": 20
 }

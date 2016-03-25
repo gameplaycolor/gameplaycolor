@@ -460,6 +460,7 @@
                   if (result.nextPageToken) {
                     retrievePageOfFiles(result.nextPageToken);
                   } else {
+                    self.logging.info("Found " + files.length + " files");
                     deferred.resolve(files);
                   }
 
