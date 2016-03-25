@@ -244,7 +244,7 @@ function findValue(key) {
           deferred.resolve();
         } else {
           try {
-            start(document.getElementById('LCD'), ROM, true);
+            start(document.getElementById('LCD'), data, true);
             setTimeout(function() {
               if (gameboy) {
                 gameboy.setSpeed(self.speed);
