@@ -98,19 +98,6 @@ function findValue(key) {
   return value;
 }
 
-function startWrapper(identifier, canvas, ROM) {
-  var deferred = jQuery.Deferred();
-  loadSaveStateContext("game-" + identifier).then(function() {
-    try {
-      start(canvas, ROM, true);
-      deferred.resolve();
-    } catch (e) {
-      deferred.reject(e);
-    }
-  });
-  return deferred.promise();
-}
-
 (function($) {
 
   App.GameBoy = function(store, library) {
@@ -250,16 +237,26 @@ function startWrapper(identifier, canvas, ROM) {
       self.identifier = identifier;
       self.title = self.library.titleForIdentifier(identifier);
       self.data = data;
-      startWrapper(identifier, document.getElementById('LCD'), data).then(function() {
-        setTimeout(function() {
-          if (gameboy) {
-            gameboy.setSpeed(self.speed);
-          }
+
+      loadSaveStateContext("game-" + identifier).then(function() {
+        if (findValue("FREEZE")) {
+          self.restore();
           deferred.resolve();
-        }, 100);
-      }).fail(function(e) {
-        deferred.reject(e);
+        } else {
+          try {
+            start(document.getElementById('LCD'), ROM, true);
+            setTimeout(function() {
+              if (gameboy) {
+                gameboy.setSpeed(self.speed);
+              }
+              deferred.resolve();
+            }, 100);
+          } catch (e) {
+            deferred.reject(e);
+          }
+        }
       });
+
       return deferred.promise();
     }
 
