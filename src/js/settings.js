@@ -129,6 +129,14 @@
           utilities.open_new_window("https://gameplaycolor.com/thanks/");
         }});
 
+        // Logs
+
+        self.logs = new App.Controls.Button($('#screen-settings-send-logs'), { touchUpInside: function() {
+          setTimeout(function() {
+            sendLogs();
+          }, 0);
+        }});
+
         // Done
 
         self.done = new App.Controls.Button($('#screen-settings-done'), { touchUpInside: function() {
