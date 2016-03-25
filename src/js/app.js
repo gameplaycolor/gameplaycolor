@@ -226,7 +226,7 @@ Promise.prototype.always = function(onAlways) {
         self.logging.info("Checking for application update (status " + window.applicationCache.status + ")");
         window.applicationCache.addEventListener('updateready', function(event) {
           self.logging.info("Application update received (status " + window.applicationCache.status + ")");
-          if (window.applicationCache.status == 4) {
+          if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
             jQuery.get('version.txt', function(version) {
               jQuery.get('release.txt', function(data) {
                 deferred.resolve({"version": $.trim(version), "details": data});
@@ -236,7 +236,6 @@ Promise.prototype.always = function(onAlways) {
             }).fail(function() {
               deferred.reject();
             });
-
           } else {
             deferred.reject();
           }
@@ -308,24 +307,16 @@ window.onerror = function(message, url, linenumber) {
   logging.error(message + " " + message + " " + linenumber);
 
   var handleError = function() {
-    // Present a dialog asking users if they wish to report other errors.
     if (confirm('Game Play encountered an error.\nSend crash report?')) {
       window.location.href = 'mailto:crashes@inseven.co.uk?subject=Crash Report: Game Play Color&body=Description:%0A%0APlease describe what you were doing at the time.%0A%0AError:%0A%0A' + encodeURIComponent(message) + '%0A' + encodeURIComponent(url) + '%0A' + encodeURIComponent(linenumber) + '%0A%0ALogs:%0A%0A' + encodeURIComponent(App.Logging.logs());
     }
   };
 
-  // Defer error handling if there is an on-going update.
-  // N.B. We only show the error if there's new release as we're optimistic enough to assume that the bug has already
-  // been fixed in the new release.
-  if (window.app !== undefined) {
-    window.app.checkForUpdate().fail(handleError);
-  } else {
+  if (window.applicationCache.status == window.applicationCache.IDLE) {
     handleError();
   }
 
-  // Defer to the default handler.
   return false;
-
 };
 
 window.onmessage = function(message) {
