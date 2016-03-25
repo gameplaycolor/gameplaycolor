@@ -111,9 +111,20 @@ KEYCODE_SHIFT_LEFT = 16;
         });
 
         self.menu.onSave = function() {
-          self.core.save(function(title, state) {
-            App.Drive.Instance().createFile({"title": title + ".SAV", "mimeType": "application/octet-stream"}, state);
-          });
+
+          var save = function() {
+            self.core.save(function(title, state) {
+              App.Drive.Instance().createFile({"title": title + ".SAV", "mimeType": "application/octet-stream"}, state);
+            });
+          };
+
+          if (findValue("FREEZE") !== undefined) {
+            if (confirm("Overwrite existing save?")) {
+              save();
+            }
+          } else {
+            save();
+          }
         };
 
         self.menu.onRestore = function() {
