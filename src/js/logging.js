@@ -54,7 +54,7 @@
         output = self.tag + ": " + message;
       }
       var date = new Date();
-      output = "[" + date.toISOString() + "] " + output;
+      output = "[" + date.toISOString() + "] [" + level + "] " + output;
 
       if (level >= self.level) {
         console.log(output);
