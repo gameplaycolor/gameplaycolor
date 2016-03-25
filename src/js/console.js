@@ -111,7 +111,9 @@ KEYCODE_SHIFT_LEFT = 16;
         });
 
         self.menu.onSave = function() {
-          self.core.save();
+          self.core.save(function(title, state) {
+            App.Drive.Instance().createFile({"title": title + ".SAV", "mimeType": "application/octet-stream"}, state);
+          });
         };
 
         self.menu.onRestore = function() {

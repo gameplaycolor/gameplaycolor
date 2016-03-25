@@ -214,9 +214,12 @@ function startWrapper(identifier, canvas, ROM) {
       }
     },
 
-    save: function() {
+    save: function(callback) {
       var self = this;
       saveState("FREEZE");
+      if (callback !== undefined) {
+        callback(self.title, base64(generateBlob("SRAM", findValue("FREEZE"))));
+      }
     },
 
     restore: function() {
@@ -269,6 +272,7 @@ function startWrapper(identifier, canvas, ROM) {
       var self = this;
       var deferred = $.Deferred();
       self.identifier = identifier;
+      self.title = self.library.titleForIdentifier(identifier);
       self.data = data;
       startWrapper(identifier, document.getElementById('LCD'), data).then(function() {
         setTimeout(function() {

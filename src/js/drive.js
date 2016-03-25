@@ -498,6 +498,34 @@
         return deferred.promise();
       },
 
+      createFile: function(metadata, content) {
+        var self = this;
+        self.token().then(function(token) {
+
+          var boundary = 287032396531387;
+          var parts = [];
+          parts.push('--' + boundary);
+          parts.push('Content-Type: application/json');
+          parts.push('');
+          parts.push(JSON.stringify(metadata));
+          parts.push('--' + boundary);
+          parts.push('Content-Type: application/octet-stream');
+          parts.push('Content-Transfer-Encoding: base64');
+          parts.push('');
+          parts.push(content);
+          parts.push('--' + boundary + '--');
+
+          var xhr = new XMLHttpRequest();
+          xhr.open("POST", "https://www.googleapis.com/upload/drive/v2/files?uploadType=multipart", true);
+          xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+          xhr.setRequestHeader("Content-Type", "multipart/mixed; boundary=" + boundary);
+          xhr.onload = function(e) {
+              console.log("DRIVE OK", this, e);
+          };
+          xhr.send(parts.join("\r\n"));
+        });
+      },
+
       downloadFileBase64: function(file, callback) {
         var self = this;
         self.token().then(function(token) {
