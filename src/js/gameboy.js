@@ -47,14 +47,6 @@ function cout(message, level) {
   gbologger.log(l, message);
 }
 
-function arrayToBase64(u8Arr) {
-  return utilities.arrayToBase64(u8Arr);
-}
-
-function base64ToArray(b64encoded) {
-  return utilities.base64ToArray(b64encoded);
-}
-
 function loadSaveStateContext(context) {
 
   saveStateContext = context;
