@@ -146,6 +146,7 @@ Promise.prototype.always = function(onAlways) {
       self.checkForUpdate();
 
       self.restorePrevious().always(function() {
+        self.console.setAnimationEnabled(true);
         $('#screen-splash').css("display", "none");
       });
 

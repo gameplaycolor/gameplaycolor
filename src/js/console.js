@@ -218,10 +218,29 @@ KEYCODE_SHIFT_LEFT = 16;
             setTimeout(function() {
               document.getElementsByTagName('body')[0].style.overflow = ''; // Allow scrolling.
               self.event('didHide');
-            }, 300);
+            }, self.animationDuration());
           }, 10);
 
         }
+      },
+
+      setAnimationEnabled: function(enabled) {
+        var self = this;
+        if (enabled) {
+          self.element.removeClass("disable-animation");
+        } else {
+          self.element.addClass("disable-animation");
+        }
+      },
+
+      isAnimationEnabled: function() {
+        var self = this;
+        return (self.element.hasClass("disable-animation") === false);
+      },
+
+      animationDuration: function() {
+        var self = this;
+        return self.isAnimationEnabled() ? 400 : 10;
       },
       
       show: function() {
@@ -236,7 +255,7 @@ KEYCODE_SHIFT_LEFT = 16;
               self.navigation.addClass('hidden');
               self.run();
               resolve();
-            }, 400);
+            }, self.animationDuration());
             window.addEventListener("scroll", this.scrollBlocker);
             document.getElementsByTagName('body')[0].style.overflow = 'hidden'; // Prevent scrolling.
           } else {

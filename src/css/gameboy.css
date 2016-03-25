@@ -118,7 +118,9 @@ body {
     left: 0;
     width: 320px;
     height: 288px;
-    box-shadow: 0 0.5px 0.5px rgba(0, 0, 0, 0.4), inset 0px 3px 10px rgba(0, 0, 0, 0.4);
+    box-shadow:
+        0 0.5px 0.5px rgba(0, 0, 0, 0.4),
+        inset 0px 3px 10px rgba(0, 0, 0, 0.4);
 }
 
 #STATUS {
@@ -139,7 +141,9 @@ body {
     position: relative;
     text-align: center;
     font-size: 34px;
-    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.35), inset 0 2px 0 #676767;
+    box-shadow:
+        0 3px 7px rgba(0, 0, 0, 0.35),
+        inset 0 2px 0 #676767;
     border: 2px solid black;
     border-top: 1px solid black;
 }
@@ -174,7 +178,9 @@ body {
     height: 16px;
     background: black;
     border-radius: 45%;
-    box-shadow: 0 -1px 3px #1b1b1b, inset 0 4px 8px rgba(103, 103, 103, 0.51);
+    box-shadow:
+        0 -1px 3px #1b1b1b,
+        inset 0 4px 8px rgba(103, 103, 103, 0.51);
     border: 2px solid black;
     border-top: 1px solid black;
 }
@@ -346,10 +352,13 @@ body {
     box-shadow: inset 0 0 4px rgba(255, 255, 2555, 0.2);
 }
 
+#screen-console.disable-animation {
+    transition: 0;
+}
+
 #screen-console.hidden {
     left: 100%;
     box-shadow: 0 0 0 rgba(0, 0, 0, 0.8);
-    /*display: none;*/
 }
 
 .grape {
@@ -590,44 +599,6 @@ body {
 
 #console-color li.yellow.selected, #console-color li.yellow.pressed {
     background-color: #FECF41;
-}
-
-/* Switch */
-
-.setting-switch {
-    transition: 300ms ease-in-out;
-    position: relative;
-    width: 46px;
-    height: 28px;
-    border-radius: 28px;
-    background-color: white;
-    border: 2px solid #E6E6E6;
-    display: inline-block;
-}
-
-.setting-switch:before {
-    transition: 300ms ease-in-out;
-    content: '';
-    display: block;
-    width: 28px;
-    height: 28px;
-    border-radius: 28px;
-    background-color: #fff;
-    position: absolute;
-    top: 0;
-    left: 0;
-    box-shadow: 0 6px 4px rgba(0, 0, 0, 0.1), 0 -1px 2px rgba(0, 0, 0, 0.1);
-}
-
-.setting-switch.on {
-    transition: 300ms ease-in-out;
-    background-color: #4CD964;
-    border: 2px solid #4CD964;
-}
-
-.setting-switch.on:before {
-    transition: 300ms ease-in-out;
-    left: 18px;
 }
 
 #screen-loading {
@@ -1015,352 +986,6 @@ hr {
     outline: none;
 }
 
-/* iPhone 4: Portrait */
-@media only screen and (width: 320px) and (height: 460px) {
-
-    #element-screen {
-        top: 0;
-    }
-
-    #element-surround {
-        top: 0;
-    }
-
-    .surround {
-        border-radius: 0;
-        width: 320px;
-        height: 287px;
-    }
-
-    #LCD-dropshadow {
-        box-shadow:0 0 0 0, inset 0 0 0 0;
-    }
-
-    #screen-console {
-        border-radius: 0;
-    }
-
-    #element-dpad {
-        left: 0;
-        bottom: 40px;
-    }
-
-    #element-buttons {
-        right: 10px;
-        bottom: 60px;
-    }
-
-    #element-options {
-        bottom: -10px;
-    }
-
-    .appicon {
-        display: none;
-    }
-
-    .console-navigation-bar {
-        box-sizing: border-box;
-        background-color: rgba(0, 0, 0, 0.6);
-        transition: top 0.3s ease-in-out;
-    }
-
-    .console-navigation-bar.hidden {
-        top: -100%;
-        transition: top 0.3s ease-in-out;
-    }
-
-    .navigation-button {
-        color: #fff;
-    }
-
-    .button-back:after, .button-back:before {
-        background-color: #fff;
-    }
-
-}
-
-/* iPhone 4: Landscape */
-@media only screen and (width: 480px) and (height: 320px) {
-
-    #element-screen {
-        top: 16px;
-    }
-
-    #element-surround {
-        top: 14px;
-    }
-
-    #element-options {
-        bottom: 10px;
-    }
-
-    #element-options {
-        bottom: -4px;
-    }
-
-    #element-buttons {
-        right: 8px;
-    }
-
-    #group-buttons {
-        width: 132px;
-    }
-
-    #element-dpad {
-        left: -4px;
-    }
-
-    #group-options {
-        width: 460px;
-    }
-
-    #LCD-dropshadow {
-        box-shadow:0 0 0 0, inset 0 0 0 0;
-    }
-
-    .surround {
-        height: 289px;
-        width: 321px;
-        border-radius: 0;
-    }
-
-    .appicon, .apptitle {
-        display: none;
-    }
-
-    .dialog-body {
-        max-height: 200px;
-    }
-
-    .console-navigation-bar {
-        box-sizing: border-box;
-        background-color: rgba(0, 0, 0, 0.6);
-        transition: top 0.3s ease-in-out;
-    }
-
-    .console-navigation-bar.hidden {
-        top: -100%;
-        transition: top 0.3s ease-in-out;
-    }
-
-    .navigation-button {
-        color: #fff;
-    }
-
-    .button-back:after, .button-back:before {
-        background-color: #fff;
-    }
-
-}
-
-/* iPhone 5: Portrait */
-@media only screen and (width: 320px) and (height: 548px) {
-
-    #element-screen {
-        top: 42px;
-    }
-
-    #element-dpad {
-        left: 0;
-        bottom: 66px;
-    }
-
-    #element-buttons  {
-        right: 10px;
-        bottom: 90px;
-    }
-
-    .element-surround {
-        top: 40px;
-    }
-
-    .surround {
-        height: 289px;
-        border-radius: 0;
-    }
-
-    #screen-console {
-        border-radius: 0;
-    }
-
-    #screen-games {
-        border-radius: 0;
-    }
-
-    #LCD-dropshadow {
-        box-shadow:0 0 0 0, inset 0 0 0 0;
-    }
-
-    .appicon {
-        width: 128px;
-        height: 128px;
-        background-size: 128px 128px;
-        border-radius: 26px;
-    }
-
-}
-
-/* iPhone 5: Landscape */
-@media only screen and (width: 568px) and (height: 320px) {
-
-    #moulding {
-        top: 0;
-    }
-
-    #element-surround {
-        top: 12px;
-    }
-
-    .surround {
-        height: 287px;
-    }
-
-    #element-screen {
-        top: 14px;
-    }
-
-    #element-options {
-        bottom: 10px;
-    }
-
-    #element-options {
-        bottom: -4px;
-    }
-
-    #element-buttons {
-        right: 8px;
-    }
-
-    #group-buttons {
-        width: 132px;
-    }
-
-    #element-dpad {
-        left: -4px;
-    }
-
-    #group-options {
-        width: 500px;
-    }
-
-    #LCD-dropshadow {
-        box-shadow:0 0 0 0, inset 0 0 0 0;
-    }
-
-    .surround {
-        height: 287px;
-        width: 321px;
-        border-radius: 0;
-    }
-
-    .appicon {
-        display: none;
-    }
-
-    .apptitle {
-        display: none;
-    }
-
-    .dialog-body {
-        max-height: 220px;
-    }
-
-}
-
-/* iPhone 6: Portrait */
-@media only screen and (width: 375px) and (height: 647px) {
-
-    #element-buttons {
-        right: 20px;
-    }
-
-    #element-options {
-        bottom: 20px;
-    }
-
-}
-
-/* iPhone 6: Landscape */
-@media only screen and (width: 667px) and (height: 375px) {
-
-    #moulding {
-        top: 0;
-    }
-
-    #element-surround {
-        top: 4px;
-    }
-
-    .surround {
-        width: 346px;
-        height: 312px;
-        border-radius: 12px;
-    }
-
-    #element-screen {
-        top: 16px;
-    }
-
-    #element-options {
-        bottom: 10px;
-    }
-
-    #element-options {
-        bottom: -4px;
-    }
-
-    #element-buttons {
-        right: 8px;
-        bottom: 140px;
-    }
-
-    #element-dpad {
-        left: 0;
-        bottom: 120px;
-    }
-
-    .appicon {
-        display: none;
-    }
-
-    .dialog-body {
-        max-height: 220px;
-    }
-
-}
-
-/* iPhone 6 Plus: Portrait */
-@media only screen and (width: 414px) and (height: 716px) {
-
-}
-
-/* iPhone 6 Plus: Landscape */
-@media only screen and (width: 736px) and (height: 414px) {
-
-    #moulding {
-        top: 0;
-    }
-
-    .appicon {
-        display: none;
-    }
-
-    #element-surround {
-        top: 20px;
-    }
-
-    .surround {
-        width: 346px;
-        height: 312px;
-        border-radius: 12px;
-    }
-
-    #element-screen {
-        top: 34px;
-    }
-
-}
-
 /* Large screen customizations */
 @media only screen and (min-width: 768px) {
 
@@ -1377,51 +1002,6 @@ hr {
     .surround {
         height: 624px;
         width: 678px;
-    }
-
-}
-
-/* iPad: Portrait */
-@media only screen and (width: 768px) and (height: 1004px) {
-
-    #group-buttons {
-        width: 152px;
-    }
-
-    #element-buttons {
-        right: 52px;
-    }
-
-    #element-dpad {
-        left: 40px;
-    }
-
-}
-
-/* iPad: Landscape */
-@media only screen and (width: 1024px) and (height: 748px) {
-
-    #element-buttons {
-        bottom: 280px;
-        width: 152px;
-        height: 132px;
-    }
-
-    #group-buttons {
-        width: 152px;
-    }
-
-    #element-dpad {
-        bottom: 280px;
-        left: 4px;
-    }
-
-    #element-screen {
-        top: 50px;
-    }
-
-    #element-surround {
-        top: 30px;
     }
 
 }

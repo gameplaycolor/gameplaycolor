@@ -1,0 +1,53 @@
+/*
+ * Copyright (C) 2012-2016 InSeven Limited.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
+.setting-switch {
+    transition: 300ms ease-in-out;
+    position: relative;
+    width: 46px;
+    height: 28px;
+    border-radius: 28px;
+    background-color: white;
+    border: 2px solid #E6E6E6;
+    display: inline-block;
+}
+
+.setting-switch:before {
+    transition: 300ms ease-in-out;
+    content: '';
+    display: block;
+    width: 28px;
+    height: 28px;
+    border-radius: 28px;
+    background-color: #fff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-shadow: 0 6px 4px rgba(0, 0, 0, 0.1), 0 -1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.setting-switch.on {
+    transition: 300ms ease-in-out;
+    background-color: #4CD964;
+    border: 2px solid #4CD964;
+}
+
+.setting-switch.on:before {
+    transition: 300ms ease-in-out;
+    left: 18px;
+}
