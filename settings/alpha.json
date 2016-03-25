@@ -1,8 +1,8 @@
 {
     "remote": "zyloid:~/sites/gameplaycolor/alpha",
-    "client_id": "151379758364",
-    "client_secret": "jn3po_ZX5rmfMm9DZ3Z4yyLd",
-    "scopes": ["https://www.googleapis.com/auth/drive.readonly", "https://www.googleapis.com/auth/userinfo.email"],
+    "client_id": "120628660145-tntqsjaide837f558r310khf5t1q55b6.apps.googleusercontent.com",
+    "client_secret": "kopqwS5I1xejde8me0PQlPVQ",
+    "scopes": ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/userinfo.email"],
     "analytics": "UA-37991248-2",
     "domain": "alpha.gameplaycolor.com",
     "redirect_uri": "https://alpha.gameplaycolor.com/",
