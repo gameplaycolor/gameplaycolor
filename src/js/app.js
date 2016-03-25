@@ -299,7 +299,7 @@ function bootstrap() {
 }
 
 function sendLogs() {
-  window.location.href = 'mailto:supper@inseven.co.uk?subject=Game Play Color Logs&body=Description:%0A%0APlease describe the issue you are seeing.%0A%0ALogs:%0A%0A' + encodeURIComponent(App.Logging.logs());
+  window.location.href = 'mailto:support@inseven.co.uk?subject=Game Play Color Logs&body=Description:%0A%0APlease describe the issue you are seeing.%0A%0ALogs:%0A%0A' + encodeURIComponent(App.Logging.logs());
 }
 
 window.onerror = function(message, url, linenumber) {
