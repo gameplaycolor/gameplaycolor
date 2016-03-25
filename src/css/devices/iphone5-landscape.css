@@ -1,0 +1,83 @@
+/*
+ * Copyright (C) 2012-2016 InSeven Limited.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
+@media only screen and (width: 568px) and (height: 320px) {
+
+    #moulding {
+        top: 0;
+    }
+
+    #element-surround {
+        top: 12px;
+    }
+
+    .surround {
+        height: 287px;
+    }
+
+    #element-screen {
+        top: 14px;
+    }
+
+    #element-options {
+        bottom: 10px;
+    }
+
+    #element-options {
+        bottom: -4px;
+    }
+
+    #element-buttons {
+        right: 8px;
+    }
+
+    #group-buttons {
+        width: 132px;
+    }
+
+    #element-dpad {
+        left: -4px;
+    }
+
+    #group-options {
+        width: 500px;
+    }
+
+    #LCD-dropshadow {
+        box-shadow:0 0 0 0, inset 0 0 0 0;
+    }
+
+    .surround {
+        height: 287px;
+        width: 321px;
+        border-radius: 0;
+    }
+
+    .appicon {
+        display: none;
+    }
+
+    .apptitle {
+        display: none;
+    }
+
+    .dialog-body {
+        max-height: 220px;
+    }
+
+}

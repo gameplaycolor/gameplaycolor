@@ -1,0 +1,90 @@
+/*
+ * Copyright (C) 2012-2016 InSeven Limited.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
+@media only screen and (width: 480px) and (height: 320px) {
+
+    #element-screen {
+        top: 16px;
+    }
+
+    #element-surround {
+        top: 14px;
+    }
+
+    #element-options {
+        bottom: 10px;
+    }
+
+    #element-options {
+        bottom: -4px;
+    }
+
+    #element-buttons {
+        right: 8px;
+    }
+
+    #group-buttons {
+        width: 132px;
+    }
+
+    #element-dpad {
+        left: -4px;
+    }
+
+    #group-options {
+        width: 460px;
+    }
+
+    #LCD-dropshadow {
+        box-shadow:0 0 0 0, inset 0 0 0 0;
+    }
+
+    .surround {
+        height: 289px;
+        width: 321px;
+        border-radius: 0;
+    }
+
+    .appicon, .apptitle {
+        display: none;
+    }
+
+    .dialog-body {
+        max-height: 200px;
+    }
+
+    .console-navigation-bar {
+        box-sizing: border-box;
+        background-color: rgba(0, 0, 0, 0.6);
+        transition: top 0.3s ease-in-out;
+    }
+
+    .console-navigation-bar.hidden {
+        top: -100%;
+        transition: top 0.3s ease-in-out;
+    }
+
+    .navigation-button {
+        color: #fff;
+    }
+
+    .button-back:after, .button-back:before {
+        background-color: #fff;
+    }
+
+}
