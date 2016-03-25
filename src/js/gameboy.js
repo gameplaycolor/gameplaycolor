@@ -147,7 +147,6 @@ function startWrapper(identifier, canvas, ROM) {
       var self = this;
       self.store = store;
       self.library = library;
-      self.state = App.GameBoy.State.IDLE;
       self.stateChangeCallbacks = [];
       self.logging = new App.Logging(window.config.logging_level, "gameboy");
       self.speed = 1;
@@ -183,24 +182,6 @@ function startWrapper(identifier, canvas, ROM) {
       }
     },
 
-    onStateChange: function(callback) {
-      var self = this;
-      self.stateChangeCallbacks.push(callback);
-    },
-
-    setState: function(state) {
-      var self = this;
-      if (self.state !== state) {
-        self.state = state;
-
-        // Fire the state change callbacks.
-        for (var i = 0; i < self.stateChangeCallbacks.length; i++) {
-          var callback = self.stateChangeCallbacks[i];
-          callback(state);
-        }
-      }
-    },
-
     pause: function() {
       var self = this;
       pause();
@@ -208,10 +189,7 @@ function startWrapper(identifier, canvas, ROM) {
 
     run: function() {
       var self = this;
-      // Do not attempt to run unless we have been in the running state.
-      if (self.state === App.GameBoy.State.RUNNING) {
-        run();
-      }
+      run();
     },
 
     save: function(callback) {
@@ -241,7 +219,6 @@ function startWrapper(identifier, canvas, ROM) {
       var self = this;
       clearLastEmulation();
       self.data = undefined;
-      self.setState(App.GameBoy.State.IDLE);
     },
 
     reset: function() {
@@ -253,17 +230,16 @@ function startWrapper(identifier, canvas, ROM) {
       var self = this;
       var deferred = $.Deferred();
 
-      var resetStateAndReject = function(e) {
+      var reject = function(e) {
         self.logging.warning("Unable to load game");
-        self.setState(App.GameBoy.State.IDLE);
         deferred.reject(e);
       };
 
       self.library.fetch(identifier).then(function(data) {
         self._insertCartridge(identifier, data).then(function() {
           deferred.resolve();
-        }).fail(resetStateAndReject);
-      }).fail(resetStateAndReject);
+        }).fail(reject);
+      }).fail(reject);
 
       return deferred.promise();
     },
@@ -279,7 +255,6 @@ function startWrapper(identifier, canvas, ROM) {
           if (gameboy) {
             gameboy.setSpeed(self.speed);
           }
-          self.setState(App.GameBoy.State.RUNNING);
           deferred.resolve();
         }, 100);
       }).fail(function(e) {
