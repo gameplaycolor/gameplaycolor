@@ -232,11 +232,16 @@ KEYCODE_SHIFT_LEFT = 16;
             window.tracker.track('console');
             self.state = App.Console.State.VISIBLE;
             self.element.removeClass("hidden");
+            var showDuration = 400;
+            if (self.element.hasClass("disable-animation")) {
+              showDuration = 10;
+            }
             setTimeout(function() {
+              self.element.removeClass("disable-animation");
               self.navigation.addClass('hidden');
               self.run();
               resolve();
-            }, 400);
+            }, showDuration);
             window.addEventListener("scroll", this.scrollBlocker);
             document.getElementsByTagName('body')[0].style.overflow = 'hidden'; // Prevent scrolling.
           } else {
