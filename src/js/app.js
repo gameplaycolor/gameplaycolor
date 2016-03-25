@@ -304,6 +304,9 @@ function sendLogs() {
 
 window.onerror = function(message, url, linenumber) {
 
+  var logging = new App.Logging(window.config.logging_level, "error");
+  logging.error(message + " " + message + " " + linenumber);
+
   var handleError = function() {
     // Present a dialog asking users if they wish to report other errors.
     if (confirm('Game Play encountered an error.\nSend crash report?')) {
