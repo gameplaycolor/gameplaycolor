@@ -1,1 +1,1 @@
-- New improved game library.
+- Adding a mechanism to email logs.
