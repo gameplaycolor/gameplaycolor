@@ -295,6 +295,7 @@ function bootstrap() {
   var device = new App.Device();
   window.tracker = new App.Tracker();
   window.app = new App.Controller(device);
+  window.applicationRunning = true;
 }
 
 function sendLogs() {
@@ -312,7 +313,8 @@ window.onerror = function(message, url, linenumber) {
     }
   };
 
-  if (window.applicationCache.status == window.applicationCache.IDLE) {
+  if (window.applicationCache.status == window.applicationCache.IDLE &&
+      (window.navigator.standalone === true || window.applicationRunning === true)) {
     handleError();
   }
 
