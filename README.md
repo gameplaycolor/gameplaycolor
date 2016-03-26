@@ -34,6 +34,11 @@ The build will be created in the `build` directory, and a corresponding *.tar.gz
 Changelog
 ---------
 
+### Version 2.3.2
+
+- Fixing a small bug in artwork lookup.
+- Minor improvements to logging.
+
 ### Version 2.3.1
 
 - Adding a mechanism to email logs.

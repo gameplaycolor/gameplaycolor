@@ -1,1 +1,2 @@
-- Adding a mechanism to email logs.
+- Fixing a small bug in artwork lookup.
+- Minor improvements to logging.
