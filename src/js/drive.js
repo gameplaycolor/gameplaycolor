@@ -391,7 +391,7 @@
               type: "GET",
               data: {
                 'maxResults': '1',
-                'q': "trashed = false and '" + parent + "' in parents and title = '" + title.replace("'", "\\'") + "'",
+                'q': "trashed = false and '" + parent + "' in parents and title contains '" + title.replace("'", "\\'") + "'",
                 "access_token": token
               },
               success: function(result, textStatus, jqXHR) {
