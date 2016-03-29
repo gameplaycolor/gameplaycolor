@@ -425,7 +425,8 @@
         var file = files[i];
         if (file !== undefined &&
             file.fileExtension !== undefined &&
-            (file.fileExtension === 'gb' || file.fileExtension === 'gbc')) {
+            (file.fileExtension.toLowerCase() === 'gb' ||
+             file.fileExtension.toLowerCase() === 'gbc')) {
           self.items.push(file);
           if (file.id in deleted) {
             if (deleted[file.id] != file.title) {
