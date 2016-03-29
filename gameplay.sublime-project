@@ -3,7 +3,7 @@
     [
         {
         "path": ".",
-        "folder_exclude_patterns": ["build"]
+        "folder_exclude_patterns": ["build", "archives"]
         }
     ],
     "settings":
