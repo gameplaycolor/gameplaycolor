@@ -171,6 +171,7 @@
       var cartridgeColors = {
         "yellow": "orange",
         "jaune": "orange",
+        "amarillo": "orange",
         "red": "red",
         "blue": "blue",
         "gold": "gold",
