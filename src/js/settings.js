@@ -123,12 +123,6 @@
           });
         }});
 
-        // Thanks
-
-        self.thanks = new App.Controls.Button($('#screen-settings-say-thanks'), { touchUpInside: function() {
-          utilities.open_new_window("https://gameplaycolor.com/thanks/");
-        }});
-
         // Logs
 
         self.logs = new App.Controls.Button($('#screen-settings-send-logs'), { touchUpInside: function() {
