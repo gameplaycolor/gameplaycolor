@@ -13,6 +13,6 @@ for line in sys.stdin:
     color = ""
     if "SUCCESS" in line:
         color = GREEN
-    elif "FAIL" in line:
+    elif "FAIL" in line or "error:" in line:
         color = RED
     print "%s%s%s" % (color, line, RESET)
