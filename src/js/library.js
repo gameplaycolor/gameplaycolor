@@ -170,10 +170,12 @@
 
       var cartridgeColors = {
         "yellow": "orange",
+        "jaune": "orange",
         "red": "red",
         "blue": "blue",
         "gold": "gold",
         "crystal": "crystal",
+        "cristal": "crystal",
       }
 
       var cartridge = $(element.get(0).getElementsByClassName('cartridge')[0]);
