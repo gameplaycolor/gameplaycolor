@@ -168,31 +168,35 @@
 </div> \
 ');
 
-      var cartridge = $(element.get(0).getElementsByClassName('cartridge')[0]);
-      var lowerCaseTitle = title.toLowerCase();
-      if (lowerCaseTitle.indexOf("yellow") > -1) {
-        cartridge.addClass("orange");
-      } else if (lowerCaseTitle.indexOf("red") > -1) {
-        cartridge.addClass("red");
-      } else if (lowerCaseTitle.indexOf("blue") > -1) {
-        cartridge.addClass("blue");
-      } else if (lowerCaseTitle.indexOf("gold") > -1) {
-        cartridge.addClass("gold");
-      } else if (lowerCaseTitle.indexOf("crystal") > -1) {
-        cartridge.addClass("crystal");
+      var cartridgeColors = {
+        "yellow": "orange",
+        "red": "red",
+        "blue": "blue",
+        "gold": "gold",
+        "crystal": "crystal",
       }
 
-      var infoTitleElement = element.get(0).getElementsByClassName('info-title')[0];
-      $(infoTitleElement).html(title);
+      var cartridge = $(element.get(0).getElementsByClassName('cartridge')[0]);
+      var infoTitleElement = $(element.get(0).getElementsByClassName('info-title')[0]);
+      var titleLargeElement = $(element.get(0).getElementsByClassName('title-large')[0]);
+      var cover = $(element.get(0).getElementsByClassName('cover')[0]);
 
-      var titleLargeElement = element.get(0).getElementsByClassName('title-large')[0];
-      $(titleLargeElement).html(title);
+      var lowerCaseTitle = title.toLowerCase();
+      for (var key in cartridgeColors) {
+        if (cartridgeColors.hasOwnProperty(key)) {
+          if (lowerCaseTitle.indexOf(key) > -1) {
+            cartridge.addClass(cartridgeColors[key]);
+          }
+        }
+      }
 
-      var cover = element.get(0).getElementsByClassName('cover')[0];
+      infoTitleElement.html(title);
+      titleLargeElement.html(title);
+
       self.thumbnailForIndex(index, function(thumbnail) {
         if (thumbnail !== undefined) {
-          $(titleLargeElement).hide();
-          $(cover).attr("src", thumbnail);
+          titleLargeElement.hide();
+          cover.attr("src", thumbnail);
         }
       });
 
