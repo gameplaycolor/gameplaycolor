@@ -125,7 +125,7 @@
 
         // Logs
 
-        self.logs = new App.Controls.Button($('#screen-settings-send-logs'), { touchUpInside: function() {
+        self.feedback = new App.Controls.Button($('#screen-settings-send-feedback'), { touchUpInside: function() {
           setTimeout(function() {
             sendLogs();
           }, 0);
