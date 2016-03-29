@@ -470,7 +470,7 @@
                       jqXHR.status == 403) {
                     self.handleInvalidToken().then(function() {
 
-                      self.files.then(function(files) {
+                      self.files().then(function(files) {
                         deferred.resolve(files);
                       }).fail(function() {
                         deferred.reject();
