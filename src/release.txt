@@ -1,2 +1,2 @@
-- Fixing a small bug in artwork lookup.
-- Minor improvements to logging.
+- Re-enable crash reporting.
+- Bug fixes.
