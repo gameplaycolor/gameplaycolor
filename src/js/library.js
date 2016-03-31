@@ -379,13 +379,19 @@
           return;
         }
 
-        file = self.fileForIdentifier(identifier);
-        var parents = file.parents[0];
-        if (parents === undefined) {
+        var file = self.fileForIdentifier(identifier);
+        if (file === undefined) {
+          callback();
+          return;
+        }
+
+        var parents = file.parents;
+        if (parents === undefined || parents.length < 1) {
+          callback();
           return;
         }
         
-        var parent = file.parents[0].id;
+        var parent = parents[0].id;
         var title = self.stripExtension(file.title) + "." + App.Library.THUMBNAIL_TYPE;
 
         self.logging.info("Searching for thumbnail '" + title + "' ...");
