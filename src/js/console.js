@@ -113,9 +113,7 @@ KEYCODE_SHIFT_LEFT = 16;
         self.menu.onSave = function() {
 
           var save = function() {
-            self.core.save(function(title, state) {
-              App.Drive.Instance().createFile({"title": title + ".SAV", "mimeType": "application/octet-stream"}, state);
-            });
+            self.core.save();
           };
 
           if (findValue("FREEZE") !== undefined) {
