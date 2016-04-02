@@ -162,6 +162,7 @@ Many thanks to:
 - [Pedro Ladaria](http://www.codebase.es/) for writing the JSGB core.
 - [David McLeod](http://twitter.com/Mucx) for graphical inspiration on [Dribbble](http://dribbble.com/mucx) and for letting me know about MicrogrammaD-MediExte.
 - [Paul Ledger](http://www.flexicoder.com) for suggesting the name 'Game Play'.
+- [Pavlos Vinieratos](https://github.com/pvinis) for help and suggestions testing early builds.
 
 Legal
 -----
