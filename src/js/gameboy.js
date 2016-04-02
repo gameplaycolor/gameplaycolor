@@ -192,6 +192,16 @@ function findValue(key) {
       openState("FREEZE", document.getElementById('LCD'));
     },
 
+    delete: function() {
+      var self = this;
+      deleteValue("FREEZE");
+    },
+
+    hasSave: function() {
+      var self = this;
+      return (findValue("FREEZE") !== undefined);
+    },
+
     keyDown: function(keycode) {
       var self = this;
       GameBoyJoyPadEvent(keycode, true);

@@ -116,17 +116,26 @@ KEYCODE_SHIFT_LEFT = 16;
             self.core.save();
           };
 
-          if (findValue("FREEZE") !== undefined) {
+          if (self.core.hasSave()) {
             if (confirm("Overwrite existing save?")) {
               save();
             }
           } else {
             save();
           }
+
         };
 
         self.menu.onRestore = function() {
           self.core.restore();
+        };
+
+        self.menu.onDelete = function() {
+
+          if (confirm("Delete save?")) {
+            self.core.delete();
+          }
+
         };
 
         self.menu.onReset = function() {
