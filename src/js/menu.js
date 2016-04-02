@@ -55,6 +55,7 @@
 
         self.save = new App.Controls.Button($('#menu-button-save'), handler(function() { return self.onSave; }));
         self.restore = new App.Controls.Button($('#menu-button-restore'), handler(function() { return self.onRestore; }));
+        self.restore = new App.Controls.Button($('#menu-button-delete'), handler(function() { return self.onDelete; }));
         self.reset = new App.Controls.Button($('#menu-button-reset'), handler(function() { return self.onReset; }));
         self.aBStartSelect = new App.Controls.Button($('#menu-button-a-b-start-select'), handler(function() { return self.onABStartSelect; }));
 
