@@ -34,6 +34,10 @@ The build will be created in the `build` directory, and a corresponding *.tar.gz
 Changelog
 ---------
 
+### Version 2.3.4
+
+- Fixing some crashes.
+
 ### Version 2.3.3
 
 - Re-enable crash reporting.

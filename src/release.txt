@@ -1,2 +1,1 @@
-- Re-enable crash reporting.
-- Bug fixes.
+- Fixing some crashes.
