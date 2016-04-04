@@ -345,7 +345,6 @@ body {
     height: 100%;
     top: 0;
     left: 0;
-    background-image: url(images/noise.png);
     border: 0;
     transition: left 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     border-radius: 12px;
