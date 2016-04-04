@@ -6,11 +6,15 @@ import json
 import os
 import os.path
 import shutil
+import SimpleHTTPServer
+import SocketServer
 import subprocess
 import tempfile
 
 import lxml.etree
 import lxml.html
+
+import paths
 
 
 SCRIPTS_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -124,10 +128,7 @@ def copy_files(source, destination, files):
     shutil.copy(source_file, destination_file)
 
 
-def main():
-  parser = argparse.ArgumentParser(description="Generate the minified Game Play HTML file")
-  parser.add_argument("settings", help="settings file")
-  options = parser.parse_args()
+def build(options):
 
   source_dir = os.path.join(ROOT_DIR, "src")
   build_dir = os.path.join(ROOT_DIR, "build")
@@ -238,6 +239,38 @@ def main():
   settings_name = os.path.splitext(os.path.basename(settings_file))[0]
   with Chdir(ROOT_DIR):
     subprocess.check_call(["tar", "-zcf", os.path.join(archives_dir, "build-%s-%s.tar.gz" % (sha, settings_name)), "build"])
+
+
+def command_build(parser):
+  parser.add_argument("settings", help="settings file")
+  return build;
+
+
+def command_serve(parser):
+    parser.add_argument("--port", default=8000, type=int, help="Listening port.")
+
+    def inner(options):
+      httpd = SocketServer.TCPServer(("", options.port), SimpleHTTPServer.SimpleHTTPRequestHandler)
+      print "Serving on http://127.0.0.1:%d..." % options.port
+      os.chdir(paths.BUILD_DIR)
+      httpd.serve_forever()
+
+    return inner
+
+
+def add_command(subparsers, name, command, help=""):
+  parser = subparsers.add_parser(name, help=help)
+  fn = command(parser)
+  parser.set_defaults(fn=fn)
+
+
+def main():
+  parser = argparse.ArgumentParser(description="Build script for Game Play.")
+  subparsers = parser.add_subparsers(help="Command to run.")
+  add_command(subparsers, name="build", command=command_build, help="Build the project.")
+  add_command(subparsers, name="serve", command=command_serve, help="Run a local server.")
+  options = parser.parse_args()
+  options.fn(options)
 
 if __name__ == '__main__':
   main()
