@@ -1,1 +1,1 @@
-- Fixing some crashes.
+- Fixing the icon on the sign in page.
