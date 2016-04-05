@@ -1,5 +1,4 @@
 {
-    "remote": "zyloid:~/sites/gameplaycolor/beta",
     "client_id": "151379758364",
     "client_secret": "jn3po_ZX5rmfMm9DZ3Z4yyLd",
     "scopes": ["https://www.googleapis.com/auth/drive.readonly", "https://www.googleapis.com/auth/userinfo.email"],
