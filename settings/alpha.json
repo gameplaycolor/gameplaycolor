@@ -8,5 +8,9 @@
     "redirect_uri": "https://alpha.gameplaycolor.com/",
     "icon": "icons/icon-alpha.png",
     "debug": true,
-    "logging_level": 20
+    "logging_level": 20,
+    "deploy": {
+        "domain": "alpha.gameplaycolor.com",
+        "confirm": false
+    }
 }

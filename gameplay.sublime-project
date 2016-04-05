@@ -15,17 +15,17 @@
     [
         {
             "name": "game play - alpha",
-            "cmd": ["scripts/build", "settings/alpha.json"],
+            "cmd": ["scripts/build", "build", "settings/alpha.json"],
             "working_dir": "${project_path}"
         },
         {
             "name": "game play - beta",
-            "cmd": ["scripts/build", "settings/beta.json"],
+            "cmd": ["scripts/build", "build", "settings/beta.json"],
             "working_dir": "${project_path}"
         },
         {
             "name": "game play - release",
-            "cmd": ["scripts/build", "settings/release.json"],
+            "cmd": ["scripts/build", "build", "settings/release.json"],
             "working_dir": "${project_path}"
         }
     ]
