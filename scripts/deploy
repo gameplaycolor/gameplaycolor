@@ -18,7 +18,7 @@ remote=$( cat "$configuration" | python -c "import json; import sys; print json.
 
 echo "Uploading to '$remote'..."
 
-python "$script_dir/build" "$configuration"
+python "$script_dir/build" build "$configuration"
 
 rsync -avPe ssh \
     "$build_dir"/*.{html,txt} \
