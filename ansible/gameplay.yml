@@ -1,0 +1,45 @@
+---
+
+- name: game play
+  hosts: gameplay
+  vars:
+    port: 80
+    admin: support@inseven.co.uk
+    build_dir: ../build
+
+  tasks:
+
+    - name: install packages
+      apt: name={{ item }} update_cache=yes state=latest
+      with_items:
+        - apache2
+      notify:
+        - restart apache2
+      become: yes
+
+    - name: create site directory
+      file: path="/var/www/{{ domain }}" state=directory owner="{{ ansible_user_id }}" group="{{ ansible_user_id }}"
+      become: yes
+
+    - name: synchronize jbmorley.co.uk
+      synchronize: src="{{ build_dir }}/" dest="/var/www/{{ domain }}/" delete=yes
+
+    - name: create virtual host file
+      template: src=virtualhost.conf dest="/etc/apache2/sites-available/{{ domain }}.conf"
+      notify:
+        - restart apache2
+      become: yes
+
+    - name: enable site
+      command: a2ensite "{{ domain }}"
+      args:
+        creates: "/etc/apache2/sites-enabled/{{ domain }}.conf"
+      notify:
+        - restart apache2
+      become: yes
+
+  handlers:
+
+    - name: restart apache2
+      service: name=apache2 state=restarted
+      become: yes

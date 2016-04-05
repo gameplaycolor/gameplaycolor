@@ -17,10 +17,6 @@ import lxml.html
 import paths
 
 
-SCRIPTS_DIR = os.path.dirname(os.path.abspath(__file__))
-ROOT_DIR = os.path.dirname(SCRIPTS_DIR)
-
-
 class Chdir():
 
   def __init__(self, path):
@@ -128,47 +124,44 @@ def copy_files(source, destination, files):
     shutil.copy(source_file, destination_file)
 
 
-def build(options):
-
-  source_dir = os.path.join(ROOT_DIR, "src")
-  build_dir = os.path.join(ROOT_DIR, "build")
-  archives_dir = os.path.join(ROOT_DIR, "archives")
-  version_file = os.path.join(source_dir, "version.txt")
-  sha_file = os.path.join(build_dir, "sha.txt")
-  input_file = os.path.join(source_dir, "index.html")
-  output_file = os.path.join(build_dir, "index.html")
-  images_dir = os.path.join(source_dir, "images")
-  assets_dir = os.path.join(source_dir, "assets")
-  defaults_dir = os.path.join(source_dir, "defaults")
-  manifest_file = os.path.join(build_dir, "cache.manifest")
-
-  settings_file = os.path.abspath(options.settings)
-
-  # Read the version.
+def load_settings(path):
   version = None
-  with open(version_file, 'r') as f:
+  with open(paths.VERSION_FILE, 'r') as f:
     version = f.read().strip()
-
-  # Load the settings.
   settings = None
-  with open(settings_file, 'r') as f:
+  with open(path, 'r') as f:
     settings = json.load(f)
   settings["version"] = version
+  return settings
+
+
+def build(options):
+  paths.BUILD_DIR = os.path.join(paths.ROOT_DIR, "build")
+  archives_dir = os.path.join(paths.ROOT_DIR, "archives")
+  sha_file = os.path.join(paths.BUILD_DIR, "sha.txt")
+  input_file = os.path.join(paths.SOURCE_DIR, "index.html")
+  output_file = os.path.join(paths.BUILD_DIR, "index.html")
+  images_dir = os.path.join(paths.SOURCE_DIR, "images")
+  assets_dir = os.path.join(paths.SOURCE_DIR, "assets")
+  defaults_dir = os.path.join(paths.SOURCE_DIR, "defaults")
+  manifest_file = os.path.join(paths.BUILD_DIR, "cache.manifest")
+
+  settings = load_settings(path=os.path.abspath(options.settings))
 
   # Create/empty the build directory.
   # We do not simply delete the directory so as not to break the development server which might be serving from here.
-  if os.path.exists(build_dir):
-    for path in os.listdir(build_dir):
-      path = os.path.join(build_dir, path)
+  if os.path.exists(paths.BUILD_DIR):
+    for path in os.listdir(paths.BUILD_DIR):
+      path = os.path.join(paths.BUILD_DIR, path)
       if os.path.isfile(path):
         os.unlink(path)
       else:
         shutil.rmtree(path)
   else:
-    os.mkdir(build_dir)
+    os.mkdir(paths.BUILD_DIR)
 
   # git sha
-  sha = git_sha(repository=ROOT_DIR)
+  sha = git_sha(repository=paths.ROOT_DIR)
   with open(sha_file, "w") as f:
     f.write("%s\n" % sha)
 
@@ -180,14 +173,14 @@ def build(options):
 
   print "Extracting JavaScript..."
   script = "window.config = %s;\n" % json.dumps(settings)
-  script += extract_tags(html, "//script[@type='text/javascript']", "src", source_dir)
+  script += extract_tags(html, "//script[@type='text/javascript']", "src", paths.SOURCE_DIR)
   if not settings["debug"]:
     print "Minifying JavaScript..."
     script = yuicompressor(script, '.js')
   append_javascript(html, script)
 
   print "Exctracting CSS..."
-  style = extract_tags(html, "//link[@type='text/css']", "href", source_dir)
+  style = extract_tags(html, "//link[@type='text/css']", "href", paths.SOURCE_DIR)
   if not settings["debug"]:
     print "Minifying CSS..."
     style = yuicompressor(style, '.css')
@@ -205,22 +198,22 @@ def build(options):
 
   # images
   print "Copying images..."
-  copy_diretory(images_dir, build_dir, pngcrush)
+  copy_diretory(images_dir, paths.BUILD_DIR, pngcrush)
 
   # images
   print "Copying assets..."
-  copy_diretory(assets_dir, build_dir)
+  copy_diretory(assets_dir, paths.BUILD_DIR)
 
   # defaults
   print "Copying defaults..."
-  copy_diretory(defaults_dir, build_dir, pngcrush)
+  copy_diretory(defaults_dir, paths.BUILD_DIR, pngcrush)
 
   # icon
-  icon_file = os.path.join(ROOT_DIR, settings['icon'])
-  pngcrush(icon_file, os.path.join(build_dir, "images", "icon.png"))
+  icon_file = os.path.join(paths.ROOT_DIR, settings['icon'])
+  pngcrush(icon_file, os.path.join(paths.BUILD_DIR, "images", "icon.png"))
 
   # manifest
-  manifest = find_files(build_dir)
+  manifest = find_files(paths.BUILD_DIR)
   with open(manifest_file, 'w') as f:
     f.write("CACHE MANIFEST\n")
     f.write("# %s\n" % str(datetime.datetime.now()))
@@ -231,13 +224,13 @@ def build(options):
     f.write("*\n")
 
   # We don't want the following files to be added to the manifest.
-  copy_files(source_dir, build_dir, ["version.txt", "release.txt", "sizes.html"])
+  copy_files(paths.SOURCE_DIR, paths.BUILD_DIR, ["version.txt", "release.txt", "sizes.html"])
 
   # Archive the build.
   if not os.path.exists(archives_dir):
     os.makedirs(archives_dir)
-  settings_name = os.path.splitext(os.path.basename(settings_file))[0]
-  with Chdir(ROOT_DIR):
+  settings_name = os.path.splitext(os.path.basename(options.settings))[0]
+  with Chdir(paths.ROOT_DIR):
     subprocess.check_call(["tar", "-zcf", os.path.join(archives_dir, "build-%s-%s.tar.gz" % (sha, settings_name)), "build"])
 
 
@@ -258,6 +251,26 @@ def command_serve(parser):
     return inner
 
 
+def command_deploy(parser):
+  parser.add_argument("settings", help="settings file")
+
+  def inner(options):
+    build(options)
+    settings = load_settings(path=os.path.abspath(options.settings))
+
+    if (settings["deploy"]["confirm"]):
+      print "Deploy to '%s'? [y/N]" % settings["deploy"]["domain"]
+      choice = raw_input().lower()
+      if choice != "y":
+        exit("Abort.")
+
+    with Chdir(paths.ANSIBLE_DIR):
+      subprocess.check_call(["ansible-playbook", "gameplay.yml",
+                             "--extra-vars", json.dumps(settings["deploy"])])
+
+  return inner
+
+
 def add_command(subparsers, name, command, help=""):
   parser = subparsers.add_parser(name, help=help)
   fn = command(parser)
@@ -269,6 +282,7 @@ def main():
   subparsers = parser.add_subparsers(help="Command to run.")
   add_command(subparsers, name="build", command=command_build, help="Build the project.")
   add_command(subparsers, name="serve", command=command_serve, help="Run a local server.")
+  add_command(subparsers, name="deploy", command=command_deploy, help="Deploy the project.")
   options = parser.parse_args()
   options.fn(options)
 
