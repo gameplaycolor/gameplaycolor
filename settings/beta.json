@@ -8,5 +8,12 @@
     "redirect_uri": "https://beta.gameplaycolor.com/",
     "icon": "icons/icon-beta.png",
     "debug": false,
-    "logging_level": 20
+    "logging_level": 20,
+    "deploy": {
+        "domain": "beta.gameplaycolor.com",
+        "aliases": [
+          "beta2.gameplaycolor.com"
+        ],
+        "confirm": true
+    }
 }

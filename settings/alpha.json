@@ -11,6 +11,6 @@
     "logging_level": 20,
     "deploy": {
         "domain": "alpha.gameplaycolor.com",
-        "confirm": true
+        "confirm": false
     }
 }
