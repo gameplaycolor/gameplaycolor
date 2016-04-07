@@ -605,6 +605,19 @@ body {
     height: 100%;
 }
 
+#screen-empty h1 {
+    font-size: 20px;
+}
+
+#screen-empty em {
+    color: #999;
+    font-style: normal;
+}
+
+#screen-empty a {
+    color: #fff;
+}
+
 .screen-splash, .screen-instructions {
     position: absolute;
     top: 0;
@@ -737,7 +750,6 @@ hr {
 
 #instructions {
     color: white;
-    text-shadow: 0 1px #000;
     padding: 40px;
     text-align: center;
 }
