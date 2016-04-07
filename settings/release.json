@@ -1,5 +1,4 @@
 {
-    "remote": "zyloid:~/sites/inseven/gameplaycolor",
     "client_id": "151379758364",
     "client_secret": "jn3po_ZX5rmfMm9DZ3Z4yyLd",
     "scopes": ["https://www.googleapis.com/auth/drive.readonly", "https://www.googleapis.com/auth/userinfo.email"],
@@ -8,5 +7,9 @@
     "redirect_uri": "https://gameplaycolor.com/app/",
     "icon": "icons/icon.png",
     "debug": false,
-    "logging_level": 20
+    "logging_level": 20,
+    "deploy": {
+        "domain": "app.gameplaycolor.com",
+        "confirm": true
+    }
 }

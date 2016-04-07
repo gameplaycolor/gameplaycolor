@@ -10,9 +10,6 @@
     "logging_level": 20,
     "deploy": {
         "domain": "beta.gameplaycolor.com",
-        "aliases": [
-          "beta2.gameplaycolor.com"
-        ],
-        "confirm": true
+        "confirm": false
     }
 }
