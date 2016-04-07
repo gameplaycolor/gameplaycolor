@@ -34,6 +34,10 @@ The build will be created in the `build` directory, and a corresponding *.tar.gz
 Changelog
 ---------
 
+### Version 2.3.6
+
+- Improving the first run messaging.
+
 ### Version 2.3.5
 
 - Fixing the icon on the sign in page.

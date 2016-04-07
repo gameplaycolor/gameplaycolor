@@ -1,1 +1,1 @@
-- Fixing the icon on the sign in page.
+- Improving the first run messaging.
