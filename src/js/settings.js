@@ -21,10 +21,10 @@
   App.Settings = function(drive, store, gameBoy, console) {
     this.init(drive, store, gameBoy, console);
   };
-  
+
   jQuery.extend(
     App.Settings.prototype, {
-      
+
       init: function(drive, store, gameBoy, console) {
         var self = this;
         self.drive = drive;
@@ -106,6 +106,16 @@
           }
         });
 
+        // Export
+
+        self.exportSaveFiles = new App.Controls.Button($('#export-save-files'), { touchUpInside: function() {
+          var rawData = base64ToArray(findValue("B64_SRAM_POKEMON_SLV")).map(function (a) {
+            return String.fromCharCode(a);
+          }).join("");
+
+          var data = escape(rawData);
+        }});
+
         // Version
 
         $('#application-version').text(window.config.version);
@@ -138,7 +148,7 @@
         }});
 
       },
-      
+
       hide: function() {
         var self = this;
         self.element.addClass('hidden');
@@ -147,7 +157,7 @@
             document.getElementsByTagName('body')[0].style.overflow = ''; // Allow scrolling.
         }, 200);
       },
-      
+
       show: function() {
         var self = this;
         document.getElementsByTagName('body')[0].style.overflow = 'hidden'; // Prevent scrolling.
@@ -155,9 +165,9 @@
         setTimeout(function() {
           self.element.removeClass('hidden');
         }, 0);
-        
+
       }
-      
+
   });
 
 })(jQuery);
