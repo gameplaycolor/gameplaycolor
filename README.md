@@ -1,9 +1,9 @@
-Game Play Color
-===============
+Game Play
+=========
 
-A JavaScript Game Boy Color emulator for iOS, based on the [GameBoy-Online](https://github.com/taisel/GameBoy-Online) emulator core.
+A JavaScript Game Boy and Game Boy Color emulator for iOS, based on the [GameBoy-Online](https://github.com/taisel/GameBoy-Online) emulator core.
 
-If you just want to play Game Play Color, you can find it online at [https://gameplaycolor.com](https://gameplaycolor.com).
+If you just want to play Game Play, you can find it online at [https://gameplaycolor.com](https://gameplaycolor.com).
 
 Dependencies
 ------------
@@ -21,9 +21,9 @@ pip install --user -r requirements.txt
 Building
 --------
 
-Game Play Color is built using a custom Python build script which inlines and minifies HTML, CSS and JavaScript, and binds in the settings for a given deployment.
+Game Play is built using a custom Python build script which inlines and minifies HTML, CSS and JavaScript, and binds in the settings for a given deployment.
 
-For example, building the release version of Game Play Color as hosted on [gameplaycolor.com](https://gameplaycolor.com) can be done by running the following command from the root of the repository:
+For example, building the release version of Game Play as hosted on [gameplaycolor.com](https://gameplaycolor.com) can be done by running the following command from the root of the repository:
 
 ```bash
 scripts/build build settings/release.json
@@ -155,7 +155,7 @@ Changelog
 
 ### Version 2.0.0
 
-- Initial release of Game Play Color.
+- Initial release of Game Play.
 
 ### Version 1.0.0
 
@@ -167,7 +167,7 @@ Thanks
 Many thanks to:
 
 - [Grant Galitz](https://github.com/taisel) for the [GameBoy-Online](https://github.com/taisel/GameBoy-Online) emulator and core.
-- [Pedro Ladaria](http://www.codebase.es/) for writing the JSGB core.
+- [Pedro Ladaria](http://www.codebase.es/) for writing the JSGB core which served as inspiration for the first version of Game Play.
 - [David McLeod](http://twitter.com/Mucx) for graphical inspiration on [Dribbble](http://dribbble.com/mucx) and for letting me know about MicrogrammaD-MediExte.
 - [Paul Ledger](http://www.flexicoder.com) for suggesting the name 'Game Play'.
 - [Pavlos Vinieratos](https://github.com/pvinis) for help and suggestions testing early builds.
@@ -182,4 +182,11 @@ Legal
 License
 -------
 
-Game Play Color contains code licensed under the GPL and MIT licenses. See [LICENSE.md](LICENSE.md) for more details.
+Game Play and its [dependencies](#third-party-sources) are licensed under the MIT license. See [LICENSE](LICENSE) for more details.
+
+### Third Party Sources
+
+Game Play includes the following third party sources:
+
+- **jQuery** - Copyright (C) 2013 jQuery Foundation and other contributors
+- **GameBoy-Online** - Copyright (C) 2010-2016 Grant Galitz
