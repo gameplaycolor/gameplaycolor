@@ -27,8 +27,6 @@
       
       init: function(willShow, didHide) {
         var self = this;
-        self.onReset = undefined;
-        self.onABStartSelect = undefined;
         self.willShow = willShow;
         self.didHide = didHide;
         self.screen = $('#screen-menu');
@@ -36,18 +34,31 @@
         self.cancel = new App.Controls.Button($('#menu-button-cancel'), { touchUpInside: function() {
           self.hide();
         }});
-        self.reset = new App.Controls.Button($('#menu-button-reset'), { touchUpInside: function() {
-          if (self.onReset !== undefined) {
-            self.onReset();
-          }
+
+        var performCallback = function(callback) {
           self.hide();
-        }});
-        self.ABStartSelect = new App.Controls.Button($('#menu-button-a-b-start-select'), { touchUpInside: function () {
-          if (self.onABStartSelect !== undefined) {
-            self.onABStartSelect();
+          console.log(callback);
+          if (callback) {
+            setTimeout(function() {
+              callback();
+            }, 0);
           }
-          self.hide();
-        }});
+        };
+
+        var handler = function(callbackProvider) {
+          return {
+            'touchUpInside': function() {
+              performCallback(callbackProvider());
+            }
+          }
+        };
+
+        self.save = new App.Controls.Button($('#menu-button-save'), handler(function() { return self.onSave; }));
+        self.restore = new App.Controls.Button($('#menu-button-restore'), handler(function() { return self.onRestore; }));
+        self.delete = new App.Controls.Button($('#menu-button-delete'), handler(function() { return self.onDelete; }));
+        self.reset = new App.Controls.Button($('#menu-button-reset'), handler(function() { return self.onReset; }));
+        self.aBStartSelect = new App.Controls.Button($('#menu-button-a-b-start-select'), handler(function() { return self.onABStartSelect; }));
+
       },
       
       hide: function() {
