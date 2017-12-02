@@ -1,1 +1,1 @@
-- Improving the first run messaging.
+- Updating Google Drive authentication.

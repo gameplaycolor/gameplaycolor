@@ -1,6 +1,6 @@
 {
-    "client_id": "151379758364",
-    "client_secret": "jn3po_ZX5rmfMm9DZ3Z4yyLd",
+    "client_id": "23613441651-6pjoamm436ttqtihk9ao684kr02tedai.apps.googleusercontent.com",
+    "client_secret": "h8BhWEK_wncoxF-Y-DZl0Lkw",
     "scopes": ["https://www.googleapis.com/auth/drive.readonly", "https://www.googleapis.com/auth/userinfo.email"],
     "analytics": "UA-37991248-2",
     "domain": "gameplaycolor.com",
