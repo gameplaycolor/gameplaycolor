@@ -90,12 +90,6 @@
                 <div id="account-details" class="dialog-row-detail-label"></div>
               </div>
 
-              <!-- Sound -->
-              <div class="dialog-row">
-                <div class="dialog-row-label">Sound</div>
-                <div class="dialog-row-detail-label"><div id="switch" class="setting-switch"></div></div>
-              </div>
-
               <!-- Speed -->
               <div class="dialog-row">
                 <div class="dialog-row-label">Speed</div>
@@ -218,6 +212,17 @@
         </div>
       </div><!-- screen-menu -->
 
+      <div id="screen-sound" class="screen screen-sound hidden" style="display: none;">
+        <div id="screen-sound-menu" class="menu menu-short hidden" style="display: none">
+          <ul>
+            <li id="screen-sound-menu-button-enable-sound">Enable Sound</li>
+          </ul>
+          <ul>
+            <li id="screen-sound-menu-button-cancel" class="default">Cancel</li>
+          </ul>
+        </div>
+      </div><!-- screen-sound -->
+
       <div id="DEBUG" style="display: none"></div>
       <div id="DEBUGGER"></div>
 
@@ -284,6 +289,7 @@
     <script type="text/javascript" src="js/pad.js"></script>
     <script type="text/javascript" src="js/settings.js"></script>
     <script type="text/javascript" src="js/menu.js"></script>
+    <script type="text/javascript" src="js/sound.js"></script>
     <script type="text/javascript" src="js/button.js"></script>
     <script type="text/javascript" src="js/switch.js"></script>
     <script type="text/javascript" src="js/segmented.js"></script>

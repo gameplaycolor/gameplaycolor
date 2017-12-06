@@ -35,6 +35,10 @@
     height: 188px;
 }
 
+.menu-short {
+    height: 132px;
+}
+
 .menu.hidden {
     transition: 150ms ease-in-out;
     height: 0;

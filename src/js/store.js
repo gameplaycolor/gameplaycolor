@@ -26,7 +26,6 @@
     STATE: 0,
     GAME:  1,
     COLOR: 2,
-    SOUND: 3,
     SPEED: 4,
   };
   

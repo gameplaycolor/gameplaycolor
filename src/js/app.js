@@ -145,9 +145,25 @@ Promise.prototype.always = function(onAlways) {
 
       self.checkForUpdate();
 
+      // Ensure sound is enabled on a user interaction.
+
+      self.soundMenu = new App.SoundMenu(function() {
+        self.gameBoy.pause();
+      }, function() {
+        self.gameBoy.run();
+      });
+
+      self.gameBoy.setSoundEnabled(false);
+      self.soundMenu.onEnable = function() {
+        self.gameBoy.setSoundEnabled(true);
+      };
+
+      // Restore settings.
+
       self.restorePrevious().always(function() {
         self.console.setAnimationEnabled(true);
         $('#screen-splash').css("display", "none");
+        self.soundMenu.show();
       });
 
       setInterval(function() {

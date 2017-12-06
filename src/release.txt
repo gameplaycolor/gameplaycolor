@@ -1,1 +1,1 @@
-- Updating Google Drive authentication.
+- Fix audio playback on iOS 11.

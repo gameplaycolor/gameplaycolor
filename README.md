@@ -34,6 +34,10 @@ The build will be created in the `build` directory, and a corresponding *.tar.gz
 Changelog
 ---------
 
+### Version 2.3.8
+
+- Fix audio playback on iOS 11.
+
 ### Version 2.3.7
 
 - Updating Google Drive authentication.

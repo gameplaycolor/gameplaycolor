@@ -40,36 +40,6 @@
           e.preventDefault();
         }, false);
 
-        // Sound
-
-        self.sound = new App.Controls.Switch($('#switch'), function(target, selected) {
-          target.setSelected(selected);
-          self.store.setProperty(App.Controller.Domain.SETTINGS, App.Store.Property.SOUND, selected);
-          self.gameBoy.setSoundEnabled(selected !== 0);
-        });
-
-        var setSoundEnabled = function(enabled) {
-          if (enabled === true) {
-            var audio = document.getElementById('silent');
-            audio.addEventListener('ended', function() {
-              self.gameBoy.setSoundEnabled(true);
-            });
-            audio.play();
-          } else {
-            self.gameBoy.setSoundEnabled(false);
-          }
-        }
-
-        self.store.property(App.Controller.Domain.SETTINGS, App.Store.Property.SOUND, function(sound) {
-          if (sound !== undefined) {
-            self.sound.setSelected(sound);
-            setSoundEnabled(sound !== 0);
-          } else {
-            self.sound.setSelected(1);
-            setSoundEnabled(true);
-          }
-        });
-
         // Speed
 
         var speeds = [1.0, 1.5, 2.0, 3.0];
