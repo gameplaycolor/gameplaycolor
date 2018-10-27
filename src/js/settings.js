@@ -42,7 +42,7 @@
 
         // Speed
 
-        var speeds = [1.0, 1.5, 2.0, 3.0];
+        var speeds = [1.0, 1000.0, 3000.0, 5000.0, 9000.0];
 
         self.speed = new App.Controls.Segmented($('#emulation-speed'), function(index) {
           self.speed.setIndex(index);
