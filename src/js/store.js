@@ -52,20 +52,21 @@
      *
      * true if successful. false otherwise.
      */
-    open: function() {
+    open: function(callback) {
       var self = this;
+      console.log("opening");
       try {
-        var request = indexedDB.open(self.name, 1);
+        var request = indexedDB.open(self.name, 3);
         request.onsuccess = function(e) {
           console.log(
             "success our DB: " + self.name + " is open and ready for work"
           );
           self.database.indexedDB.db = e.target.result;
-          todoDB.indexedDB.getAllProperties();
+          callback(true);
         };
 
         request.onupgradeneeded = function(e) {
-          todoDB.indexedDB.db = e.target.result;
+          self.database.indexedDB.db = e.target.result;
           var db = self.database.indexedDB.db;
           console.log(
             "Going to upgrade our DB from version: " +
@@ -91,6 +92,7 @@
 
         request.onfailure = function(e) {
           console.error("could not open our DB! Err:" + e);
+          callback(false, e);
         };
 
         request.onerror = function(e) {
@@ -98,16 +100,16 @@
             "Well... How should I put it? We have some issues with our DB! Err:" +
               e
           );
-        };
 
-        return true;
+          callback(false, e);
+        };
       } catch (e) {
         if (e == 2) {
           self.logging.error("Invalid database version.");
         } else {
           self.logging.error("Unknown error " + e + ".");
         }
-        return false;
+        callback(false);
       }
     },
 
@@ -128,7 +130,7 @@
       store.createIndex("key", "key", { unique: false });
       store.createIndex("domain", "domain", { unique: false });
       store.createIndex("value", "value", { unique: false });
-      store.createIndex("key, name", "key, name", { unique: false });
+      store.createIndex("key, domain", ["key", "domain"], { unique: false });
 
       return store;
     },
@@ -143,6 +145,7 @@
         value: value
       };
 
+      debugger;
       var request = store.put(data);
 
       request.onsuccess = function(e) {
@@ -164,15 +167,23 @@
       var index = store.index("key, domain");
       var request = index.get([key, domain]);
       request.onsuccess = function(e) {
-        self.logging.debug(
-          "Found property '" +
-            key +
-            "' for domain '" +
-            domain +
-            "' with length " +
-            event.target.result.value.length
-        );
-        callback(event.target.result.value);
+        debugger;
+        if (e.target.result != null && e.target.result !== undefined) {
+          self.logging.debug(
+            "Found property '" +
+              key +
+              "' for domain '" +
+              domain +
+              "' with length " +
+              e.target.result.value.length
+          );
+          callback(e.target.result.value);
+        } else {
+          self.logging.error(
+            "Unable to find property '" + key + "' for domain '" + domain + "'"
+          );
+          callback(undefined);
+        }
       };
 
       request.onerror = function(e) {
