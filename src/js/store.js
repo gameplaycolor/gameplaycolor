@@ -99,6 +99,8 @@
               e
           );
         };
+
+        return true;
       } catch (e) {
         if (e == 2) {
           self.logging.error("Invalid database version.");
@@ -185,7 +187,7 @@
       var self = this;
       var store = self.getStore("properties", "readwrite");
 
-      var request = store.delete([key, domain]);
+      var request = store["delete"]([key, domain]);
 
       request.onsuccess = function(e) {
         self.database.indexedDB.getAllProperties();
@@ -232,8 +234,8 @@
         var cursor = e.target.result;
         if (cursor) {
           if (cursor.value.domain == domain) {
-            propertis[cursor.value.key] = cursor.value.value;
-            cursor.continue();
+            properties[cursor.value.key] = cursor.value.value;
+            cursor["continue"]();
           }
         } else {
           callback(properties);
@@ -265,7 +267,7 @@
         var cursor = e.target.result;
         if (cursor) {
           keys.push(cursor.key);
-          cursor.continue();
+          cursor["continue"]();
         } else {
           callback(keys);
         }
