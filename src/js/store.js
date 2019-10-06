@@ -237,18 +237,16 @@
       var self = this;
       var store = self.getStore("properties", "readonly");
 
-      var request = store.openCursor();
+      var request = store.getAll();
 
       request.onsuccess = function(e) {
-        var cursor = e.target.result;
-        if (cursor) {
-          if (cursor.value.domain == domain) {
-            properties[cursor.value.key] = cursor.value.value;
-            cursor["continue"]();
+        for (let i = 0; i < e.target.result.length; i++) {
+          if (e.target.result[i].domain == domain) {
+            properties[e.target.result[i].key] = e.target.result[i].value;
           }
-        } else {
-          callback(properties);
         }
+
+        callback(properties);
       };
 
       request.onerror = function(e) {
