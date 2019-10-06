@@ -388,7 +388,12 @@ Promise.prototype.always = function(onAlways) {
           $("#screen-instructions").show();
         }
       };
-      self.drive = App.Drive.Instance(callback);
+
+      var instance = App.Drive.Instance(callback);
+      self.drive = instance.drive;
+      if (!instance.newInstance) {
+        callback();
+      }
     }
   });
 })(jQuery);
