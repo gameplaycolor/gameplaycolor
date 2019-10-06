@@ -145,12 +145,9 @@
         value: value
       };
 
-      debugger;
       var request = store.put(data);
 
-      request.onsuccess = function(e) {
-        self.database.indexedDB.getAllProperties();
-      };
+      request.onsuccess = function(e) {};
       request.onerror = function(e) {
         console.error("Error Adding an item: ", e);
       };
@@ -167,7 +164,6 @@
       var index = store.index("key, domain");
       var request = index.get([key, domain]);
       request.onsuccess = function(e) {
-        debugger;
         if (e.target.result != null && e.target.result !== undefined) {
           self.logging.debug(
             "Found property '" +
@@ -200,9 +196,7 @@
 
       var request = store["delete"]([key, domain]);
 
-      request.onsuccess = function(e) {
-        self.database.indexedDB.getAllProperties();
-      };
+      request.onsuccess = function(e) {};
 
       request.onerror = function(e) {
         console.error("Error deleting item: ", e);
@@ -217,7 +211,11 @@
       var request = store.index("key, domain").get([key, domain]);
 
       request.onsuccess = function(e) {
-        deferred.resolve(e.target.result.found);
+        if (e.target.result != null && e.target.result !== undefined) {
+          deferred.resolve(e.target.result.found);
+        } else {
+          deferred.reject(e);
+        }
       };
 
       request.onerror = function(e) {

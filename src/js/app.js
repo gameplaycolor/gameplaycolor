@@ -65,7 +65,6 @@ Promise.prototype.always = function(onAlways) {
     },
 
     initCallback: function(opened, error) {
-      debugger;
       var self = this;
       if (opened) {
         self.logging = new App.Logging(window.config.logging_level, "app");
@@ -98,8 +97,108 @@ Promise.prototype.always = function(onAlways) {
               },
               self.store
             );
-            debugger;
-            var callback = self.driveOpenCallback.bind(self);
+            var callback = function() {
+              self.settings = new App.Settings(
+                self.drive,
+                self.store,
+                self.gameBoy,
+                self.console
+              );
+
+              self.settingsButton = new App.Controls.Button(
+                $("#button-account"),
+                {
+                  touchUpInside: function() {
+                    self.settings.show();
+                  }
+                }
+              );
+
+              self.consoleButton = new App.Controls.Button($("#button-done"), {
+                touchUp: function() {
+                  self.logging.info("Show console");
+                  self.console.show();
+                }
+              });
+
+              self.redeem = new App.Controls.Button($("#button-redeem"), {
+                touchUpInside: function() {
+                  $("#redeem-code").blur();
+                  var code = $("#redeem-code").val();
+                  drive
+                    .redeemToken(code)
+                    .then(function() {
+                      self.drive.authorize();
+                    })
+                    .fail(function() {
+                      alert("Unable to sign in.");
+                    });
+                }
+              });
+
+              self.drive.onStateChange(function(state) {
+                if (state == App.Drive.State.UNKNOWN) {
+                  self.logging.info("Google Drive state unknown.");
+                } else if (state == App.Drive.State.UNAUTHORIZED) {
+                  self.logging.info("Google Drive state unauthorized.");
+                  self.settingsButton.hide();
+                  self.consoleButton.hide();
+                  self.clear();
+                  self.console.hide();
+
+                  if (window.navigator.onLine === true) {
+                    self.drive
+                      .authURL()
+                      .then(function(url) {
+                        $("#google-drive-auth").attr("href", url);
+                        $("#redeem-code").val("");
+                        $("#screen-account").show();
+                      })
+                      .fail(function() {
+                        alert("Unable to generate Google authentication URL.");
+                      });
+                  }
+                } else if (state == App.Drive.State.AUTHORIZED) {
+                  self.logging.info("Google Drive state authorized.");
+                  $("#screen-account").hide();
+                  self.settingsButton.show();
+                  self.drive.user().then(function(user) {
+                    $("#account-details").html(user.email);
+                  });
+                  self.games.update();
+                }
+              });
+              self.drive.authorize();
+
+              self.checkForUpdate();
+
+              // Ensure sound is enabled on a user interaction.
+
+              self.soundMenu = new App.SoundMenu(
+                function() {
+                  self.gameBoy.pause();
+                },
+                function() {
+                  self.gameBoy.run();
+                }
+              );
+
+              self.gameBoy.setSoundEnabled(false);
+              self.soundMenu.onEnable = function() {
+                self.gameBoy.setSoundEnabled(true);
+              };
+
+              // Restore settings.
+              self.restorePrevious().always(function() {
+                self.console.setAnimationEnabled(true);
+                $("#screen-splash").css("display", "none");
+                self.soundMenu.show();
+              });
+
+              setInterval(function() {
+                autoSave();
+              }, 1000);
+            };
             var instance = App.Drive.Instance(callback);
             self.drive = instance.drive;
             if (!instance.newInstance) {
@@ -114,109 +213,6 @@ Promise.prototype.always = function(onAlways) {
         );
         return;
       }
-    },
-
-    driveOpenCallback: function() {
-      var self = this;
-      self.settings = new App.Settings(
-        self.drive,
-        self.store,
-        self.gameBoy,
-        self.console
-      );
-
-      self.settingsButton = new App.Controls.Button($("#button-account"), {
-        touchUpInside: function() {
-          self.settings.show();
-        }
-      });
-
-      self.consoleButton = new App.Controls.Button($("#button-done"), {
-        touchUp: function() {
-          self.logging.info("Show console");
-          self.console.show();
-        }
-      });
-
-      self.redeem = new App.Controls.Button($("#button-redeem"), {
-        touchUpInside: function() {
-          $("#redeem-code").blur();
-          var code = $("#redeem-code").val();
-          drive
-            .redeemToken(code)
-            .then(function() {
-              self.drive.authorize();
-            })
-            .fail(function() {
-              alert("Unable to sign in.");
-            });
-        }
-      });
-
-      self.drive.onStateChange(function(state) {
-        var self = this;
-        if (state == App.Drive.State.UNKNOWN) {
-          self.logging.info("Google Drive state unknown.");
-        } else if (state == App.Drive.State.UNAUTHORIZED) {
-          self.logging.info("Google Drive state unauthorized.");
-          self.settingsButton.hide();
-          self.consoleButton.hide();
-          self.clear();
-          self.console.hide();
-
-          if (window.navigator.onLine === true) {
-            self.drive
-              .authURL()
-              .then(function(url) {
-                $("#google-drive-auth").attr("href", url);
-                $("#redeem-code").val("");
-                $("#screen-account").show();
-              })
-              .fail(function() {
-                alert("Unable to generate Google authentication URL.");
-              });
-          }
-        } else if (state == App.Drive.State.AUTHORIZED) {
-          self.logging.info("Google Drive state authorized.");
-          $("#screen-account").hide();
-          self.settingsButton.show();
-          self.drive.user().then(function(user) {
-            $("#account-details").html(user.email);
-          });
-          self.games.update();
-        }
-      });
-      self.drive.authorize();
-
-      self.checkForUpdate();
-
-      // Ensure sound is enabled on a user interaction.
-
-      self.soundMenu = new App.SoundMenu(
-        function() {
-          self.gameBoy.pause();
-        },
-        function() {
-          self.gameBoy.run();
-        }
-      );
-
-      self.gameBoy.setSoundEnabled(false);
-      self.soundMenu.onEnable = function() {
-        self.gameBoy.setSoundEnabled(true);
-      };
-
-      // Restore settings.
-      debugger;
-      self.restorePrevious().always(function() {
-        self.console.setAnimationEnabled(true);
-        $("#screen-splash").css("display", "none");
-        self.soundMenu.show();
-      });
-
-      setInterval(function() {
-        autoSave();
-      }, 1000);
     },
 
     /**

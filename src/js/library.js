@@ -39,7 +39,6 @@
       self.changeCallbacks = [];
       self.stateChangeCallbacks = [];
       var driveCallback = function() {
-        debugger;
         self.store = store;
         self.fetches = {};
         self.callback = callback;
@@ -55,7 +54,11 @@
 
         postInitCallback();
       };
-      self.drive = App.Drive.Instance(driveCallback);
+      var driveInstance = App.Drive.Instance(driveCallback);
+      self.drive = driveInstance.drive;
+      if (!driveInstance.newInstance) {
+        driveCallback();
+      }
     },
 
     authorize: function() {

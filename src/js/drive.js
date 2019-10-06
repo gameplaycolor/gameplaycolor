@@ -37,7 +37,6 @@
   App.Drive.Instance = function(callback) {
     var newInstance = true;
     if (window.drive === undefined) {
-      debugger;
       window.drive = new App.Drive(callback);
     } else {
       newInstance = false;
