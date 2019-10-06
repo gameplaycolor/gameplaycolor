@@ -212,9 +212,9 @@
 
       request.onsuccess = function(e) {
         if (e.target.result != null && e.target.result !== undefined) {
-          deferred.resolve(e.target.result.found);
+          deferred.resolve(true);
         } else {
-          deferred.reject(e);
+          deferred.resolve(false);
         }
       };
 
@@ -226,7 +226,7 @@
             error.message +
             "'"
         );
-        deferred.reject(e);
+        deferred.reject(false);
       };
 
       return deferred.promise();
