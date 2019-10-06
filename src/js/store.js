@@ -54,11 +54,10 @@
      */
     open: function(callback) {
       var self = this;
-      console.log("opening");
       try {
         var request = indexedDB.open(self.name, 3);
         request.onsuccess = function(e) {
-          console.log(
+          self.logging.info(
             "success our DB: " + self.name + " is open and ready for work"
           );
           self.database.indexedDB.db = e.target.result;
@@ -68,7 +67,7 @@
         request.onupgradeneeded = function(e) {
           self.database.indexedDB.db = e.target.result;
           var db = self.database.indexedDB.db;
-          console.log(
+          self.logging.info(
             "Going to upgrade our DB from version: " +
               e.oldVersion +
               " to " +
@@ -82,21 +81,23 @@
               db.deleteObjectStore("properties");
             }
           } catch (err) {
-            console.log("got err in objectStoreNames:" + err);
+            self.logging.error("got err in objectStoreNames:" + err);
           }
 
           var store = self.createTables(db);
 
-          console.log("-- onupgradeneeded store:" + JSON.stringify(store));
+          self.logging.info(
+            "-- onupgradeneeded store:" + JSON.stringify(store)
+          );
         };
 
         request.onfailure = function(e) {
-          console.error("could not open our DB! Err:" + e);
+          self.logging.error("could not open our DB! Err:" + e);
           callback(false, e);
         };
 
         request.onerror = function(e) {
-          console.error(
+          self.logging.error(
             "Well... How should I put it? We have some issues with our DB! Err:" +
               e
           );
@@ -149,7 +150,7 @@
 
       request.onsuccess = function(e) {};
       request.onerror = function(e) {
-        console.error("Error Adding an item: ", e);
+        self.logging.error("Error Adding an item: ", e);
       };
     },
 
@@ -199,7 +200,7 @@
       request.onsuccess = function(e) {};
 
       request.onerror = function(e) {
-        console.error("Error deleting item: ", e);
+        self.logging.error("Error deleting item: ", e);
       };
     },
 

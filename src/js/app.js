@@ -59,7 +59,6 @@ Promise.prototype.always = function(onAlways) {
       self.device = device;
 
       self.store = new App.Store("save-state", 50);
-      console.log("in app");
       var initCallback = self.initCallback.bind(self);
       self.store.open(initCallback);
     },
@@ -382,7 +381,7 @@ Promise.prototype.always = function(onAlways) {
         var drive = self.drive;
         var code = drive.getParameters().code;
         if (code !== undefined) {
-          console.log("Received authentication token: " + code);
+          self.logging.info("Received authentication token: " + code);
           $("#screen-authorizing").show();
           $("#authorization-code").val(code);
         } else {
