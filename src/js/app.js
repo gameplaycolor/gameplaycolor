@@ -376,8 +376,9 @@ Promise.prototype.always = function(onAlways) {
     if (window.navigator.standalone === true && (iPhone || iPad)) {
       bootstrap();
     } else {
+
+      var self = this;
       var callback = function() {
-        var self = this;
         var drive = self.drive;
         var code = drive.getParameters().code;
         if (code !== undefined) {
