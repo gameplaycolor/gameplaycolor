@@ -1,7 +1,7 @@
 {
     "client_id": "23613441651-6pjoamm436ttqtihk9ao684kr02tedai.apps.googleusercontent.com",
     "client_secret": "h8BhWEK_wncoxF-Y-DZl0Lkw",
-    "scopes": ["https://www.googleapis.com/auth/drive.readonly", "https://www.googleapis.com/auth/userinfo.email"],
+    "scopes": ["https://www.googleapis.com/auth/drive.readonly", "https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/drive.appfolder"],
     "analytics": "UA-37991248-2",
     "domain": "gameplaycolor.com",
     "redirect_uri": "https://gameplaycolor.com/app/",

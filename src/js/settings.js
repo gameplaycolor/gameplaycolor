@@ -103,8 +103,8 @@
 
         // Shortcut
 
-        self.installShortcut = new App.Controls.Button($('#screen-settings-install-shortcut'), { touchUpInside: function() {
-          location.href='https://www.icloud.com/shortcuts/79a01afb71d2432fb974f261c8548fd1'
+        self.refresh = new App.Controls.Button($('#screen-settings-refresh'), { touchUpInside: function() {
+          location.reload()
         }});
 
         // Done

@@ -1,2 +1,2 @@
-- Add support for saving game states with Siri Shortcuts
-- Bug fixes and UI improvements
+- Add support for saving game states to Google Drive
+You must sign out and sign back in for these changes to take effect.

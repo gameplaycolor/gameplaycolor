@@ -48,41 +48,53 @@
           }
           self.hide();
         }});
-        self.exportGameState = new App.Controls.Button($('#menu-button-export-state'), { touchUpInside: function () {
-          var obj = { }
-          obj[gameboy.name] = saveState['B64_SRAM_' + gameboy.name]
-          location.href = 'shortcuts://run-shortcut?name=gpc save&input=' + JSON.stringify(obj)
-          self.hide()
+        self.saveGameState = new App.Controls.Button($('#menu-button-save-state'), { touchUpInside: function () {
+          if (drive.gameStates) {
+            var name = gameboy.name
+            drive.gameStates[name] = saveState['B64_SRAM_' + name]
+
+            function hideDialog(failed) {
+              uploadDialog.addClass('hidden')
+              setTimeout(function() {
+                uploadDialog.hide()
+                if (failed) {
+                  alert('An unknown error occurred while uploading the game state')
+                }
+              }, 150)
+            }
+
+            var uploadDialog = $('#upload-progress')
+            uploadDialog.show().removeClass('hidden')
+            drive.uploadGameStates()
+              .then(function() {
+                hideDialog()
+              })
+              .fail(function() {
+                hideDialog(true)
+              })
+
+          } else {
+            alert('Unable to upload game state at this time, relaunch and try again')
+          }
         }})
 
-        self.importGameState = new App.Controls.Button($('#menu-button-import-state'), { touchUpInside: function () {
-          location.href = 'shortcuts://run-shortcut?name=gpc save&input=' + JSON.stringify({ get: gameboy.name })
-          setTimeout( function () {
-            $('#state-import').show().removeClass('hidden')
-          }, 500)
-          self.hide()
-        }})
-
-        self.importDialogButtons = [
-          new App.Controls.Button($('#state-import-apply'), { touchUpInside: function () {
-            var stateData = $('#game-state-input').val()
-            $('#game-state-input').val('')
+        self.loadGameState = new App.Controls.Button($('#menu-button-load-state'), { touchUpInside: function () {
+          if (drive.gameStates) {
+            var game = gameboy.name
+            var stateData = drive.gameStates[game]
             if (stateData) {
-              var game = gameboy.name
-              gameboy.name = 'temp'
               setValue('B64_SRAM_' + game, stateData)
               saveSRAM()
               if (self.onReset !== undefined) {
                 self.onReset()
               }
+            } else {
+              alert('No game state has been saved for this game')
             }
-            $('#state-import').hide().addClass('hidden')
-          }}),
-          new App.Controls.Button($('#state-import-cancel'), { touchUpInside: function () {
-            $('#state-import').hide().addClass('hidden')
-          }})
-        ]
-
+          } else {
+            alert('Unable to retrieve game state at this time, Relaunch and try again')
+          }
+        }})
       },
       
       hide: function() {

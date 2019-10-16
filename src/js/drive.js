@@ -60,8 +60,9 @@
           );
           return;
         }
-
-        callback();
+        
+        callback()
+        self.loadGameStates()
       });
     },
 
@@ -358,7 +359,43 @@
             App.Drive.Property.REFRESH_TOKEN,
             token.refresh_token
           );
-          deferred.resolve();
+
+          $.ajax({
+            url: "https://www.googleapis.com/drive/v2/files",
+            type: "GET",
+            data: {
+              maxResults: "1",
+              spaces: "appDataFolder",
+              access_token: token.access_token
+            },
+            success: function(files, textStatus, jqXHR) {
+              if (files.items.length === 0) {
+                $.ajax({
+                  url: "https://www.googleapis.com/drive/v2/files?" +
+                    "&parents=appDataFolder" +
+                    "&access_token=" + token.access_token,
+                  type: "POST",
+                  data: JSON.stringify({
+                    parents: [{id: 'appDataFolder'}],
+                    title: 'states.json'
+                  }),
+                  processData: false,
+                  contentType: 'application/json',
+                  success: function(result, textStatus, jqXHR) {
+                    deferred.resolve()
+                  },
+                  error: function(jqXHR, textStatus, error) {
+                    deferred.reject(error)
+                  }
+                })
+              } else {
+                deferred.resolve();
+              }
+            },
+            error: function(jqXHR, textStatus, error) {
+              deferred.reject(error)
+            }
+          })
         },
         error: function(jqXHR, textStatus, error) {
           deferred.reject(error);
@@ -649,6 +686,79 @@
         });
 
       return deferred.promise();
+    },
+
+    loadGameStates: function() {
+      var self = this
+
+      var deferred = jQuery.Deferred();
+      self.track("gameStatesDownload", deferred.promise());
+
+      self
+        .token()
+        .then(function(token) {
+          $.ajax({
+            url: "https://www.googleapis.com/drive/v2/files",
+            type: "GET",
+            data: {
+              maxResults: "1",
+              spaces: "appDataFolder",
+              access_token: token
+            },
+            success: function(result, textStatus, jqXHR) {
+              var gameStatesFile = result.items[0]
+              self.gameStatesFileID = gameStatesFile.id
+              self.downloadFile(gameStatesFile)
+                .then(function(fileContents) {
+                  if (fileContents === '') {
+                    self.gameStates = { }
+                  } else {
+                    self.gameStates = JSON.parse(fileContents)
+                  }
+
+                  deferred.resolve(self.gameStates)
+                })
+            },
+            error: function(jqXHR, textStatus, error) {
+              deferred.reject(error)
+            }
+          })
+        })
+        .fail(function(e) {
+          deferred.reject(e)
+        })
+
+      return deferred.promise()
+    },
+
+    uploadGameStates: function() {
+      var self = this
+
+      var deferred = jQuery.Deferred();
+      self.track("gameStatesUpload", deferred.promise());
+
+      self
+        .token()
+        .then(function(token) {
+          $.ajax({
+            url: "https://www.googleapis.com/upload/drive/v2/files/" + self.gameStatesFileID +
+              "?access_token=" + token,
+            type: "PUT",
+            data: JSON.stringify(self.gameStates),
+            contentType: 'application/json',
+            success: function() {
+              deferred.resolve()
+            },
+            error: function(jqXHR, textStatus, error) {
+              deferred.reject(error)
+            }
+          })
+        })
+        .fail(function(e) {
+          deferred.reject(e)
+        })
+
+      return deferred
     }
   });
 })(jQuery);
