@@ -48,6 +48,41 @@
           }
           self.hide();
         }});
+        self.exportGameState = new App.Controls.Button($('#menu-button-export-state'), { touchUpInside: function () {
+          var obj = { }
+          obj[gameboy.name] = saveState['B64_SRAM_' + gameboy.name]
+          location.href = 'shortcuts://run-shortcut?name=gpc save&input=' + JSON.stringify(obj)
+          self.hide()
+        }})
+
+        self.importGameState = new App.Controls.Button($('#menu-button-import-state'), { touchUpInside: function () {
+          location.href = 'shortcuts://run-shortcut?name=gpc save&input=' + JSON.stringify({ get: gameboy.name })
+          setTimeout( function () {
+            $('#state-import').show().removeClass('hidden')
+          }, 500)
+          self.hide()
+        }})
+
+        self.importDialogButtons = [
+          new App.Controls.Button($('#state-import-apply'), { touchUpInside: function () {
+            var stateData = $('#game-state-input').val()
+            $('#game-state-input').val('')
+            if (stateData) {
+              var game = gameboy.name
+              gameboy.name = 'temp'
+              setValue('B64_SRAM_' + game, stateData)
+              saveSRAM()
+              if (self.onReset !== undefined) {
+                self.onReset()
+              }
+            }
+            $('#state-import').hide().addClass('hidden')
+          }}),
+          new App.Controls.Button($('#state-import-cancel'), { touchUpInside: function () {
+            $('#state-import').hide().addClass('hidden')
+          }})
+        ]
+
       },
       
       hide: function() {

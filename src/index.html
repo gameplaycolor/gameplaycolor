@@ -131,6 +131,10 @@
               <div class="dialog-divider"></div>
               <div id="screen-settings-send-feedback" class="dialog-button">Send feedback</div>
 
+              <!-- Install Shortcut -->
+              <div class="dialog-divider"></div>
+              <div id="screen-settings-install-shortcut" class="dialog-button">Install shortcut</div>
+
             </div>
 
             <div class="dialog-divider"></div>
@@ -201,16 +205,49 @@
       </div><!-- screen-console-container -->
 
       <div id="screen-menu" class="screen screen-menu hidden" style="display: none;">
-        <div id="game-menu" class="menu hidden" style="display: none">
+        <div id="game-menu" class="menu menu-tall hidden" style="display: none">
           <ul>
             <li id="menu-button-a-b-start-select">A + B + Start + Select</li>
             <li id="menu-button-reset">Reset</li>
+            <li id="menu-button-export-state">Export Game State</li>
+            <li id="menu-button-import-state">Import Game State</li>
           </ul>
           <ul>
             <li id="menu-button-cancel" class="default">Cancel</li>
           </ul>
         </div>
       </div><!-- screen-menu -->
+
+      <div id="state-import" class="settings screen hidden" style="display: none;">
+
+        <div class="dialog-layout-container screen">
+
+          <div class="dialog-margin"></div>
+
+          <div id="dialog-import-state" class="dialog">
+            <div class="dialog-title">Import Save State</div>
+            <div class="dialog-divider"></div>
+            <div id="dialog-import-state-body" class="dialog-body">
+
+              <div class="dialog-row" style="padding: 0 10px;">Paste save state here:</div>
+              <div class="dialog-row" style="padding: 0 10px 5px 10px;">
+                <input id="game-state-input" style="width: 100%;" type="text">
+              </div>
+
+              <div class="dialog-divider"></div>
+              <div id="state-import-apply" class="dialog-button">Apply</div>
+
+            </div>
+
+            <div class="dialog-divider"></div>
+            <div id="state-import-cancel" class="dialog-button default">Cancel</div>
+
+          </div>
+
+          <div class="dialog-margin"></div>
+
+        </div><!-- dialog-layout-container -->
+      </div>
 
       <div id="screen-sound" class="screen screen-sound hidden" style="display: none;">
         <div id="screen-sound-menu" class="menu menu-short hidden" style="display: none">
