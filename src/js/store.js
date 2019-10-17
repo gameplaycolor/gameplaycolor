@@ -164,7 +164,6 @@
 
       var index = store.index("key, domain");
       var request = index.get([key, domain]);
-      console.log(request)
       request.onsuccess = function(e) {
         if (e.target.result != null && e.target.result !== undefined) {
           self.logging.debug(
