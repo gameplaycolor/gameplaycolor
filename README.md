@@ -3,7 +3,7 @@ Game Play
 
 A JavaScript Game Boy and Game Boy Color emulator for iOS, based on the [GameBoy-Online](https://github.com/taisel/GameBoy-Online) emulator core.
 
-If you just want to play Game Play, you can find it online at [https://gameplaycolor.com](https://gameplaycolor.com).
+If you just want to play Game Play, you can find it online at [brandosha.github.io/test-gameplay-build](https://brandosha.github.io/test-gameplay-build).
 
 Dependencies
 ------------
@@ -23,7 +23,7 @@ Building
 
 Game Play is built using a custom Python build script which inlines and minifies HTML, CSS and JavaScript, and binds in the settings for a given deployment.
 
-For example, building the release version of Game Play as hosted on [gameplaycolor.com](https://gameplaycolor.com) can be done by running the following command from the root of the repository:
+For example, building the release version of Game Play as hosted on [brandosha.github.io/test-gameplay-build](https://brandosha.github.io/test-gameplay-build) can be done by running the following command from the root of the repository:
 
 ```bash
 scripts/build build settings/release.json
@@ -33,6 +33,23 @@ The build will be created in the `build` directory, and a corresponding *.tar.gz
 
 Changelog
 ---------
+
+### Version 3.0.2
+
+- Fix issue with dismissing game menu when offline
+- Remove options for sending data to inseven
+
+### Version 3.0.1
+
+- Fix upload time issues by loading each save into its own file
+
+### Version 3.0.0
+
+- Add support for saving game states to Google Drive
+
+### Version 2.4.0
+
+- Add support for saving game states with Siri Shortcuts
 
 ### Version 2.3.8
 
