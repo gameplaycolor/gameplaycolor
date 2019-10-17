@@ -95,11 +95,11 @@
 
         // Logs
 
-        self.feedback = new App.Controls.Button($('#screen-settings-send-feedback'), { touchUpInside: function() {
+        /*self.feedback = new App.Controls.Button($('#screen-settings-send-feedback'), { touchUpInside: function() {
           setTimeout(function() {
             sendLogs();
           }, 0);
-        }});
+        }});*/
 
         // Shortcut
 

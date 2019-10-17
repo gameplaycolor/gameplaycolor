@@ -434,7 +434,7 @@ window.onerror = function(message, url, linenumber) {
     window.applicationCache.status == window.applicationCache.IDLE &&
     (window.navigator.standalone === true || window.applicationRunning === true)
   ) {
-    handleError();
+    // handleError();
   }
 
   return false;

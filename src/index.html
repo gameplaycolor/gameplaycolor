@@ -128,8 +128,10 @@
               <div id="screen-settings-sign-out" class="dialog-button">Sign out</div>
 
               <!-- Send feedback -->
+              <!--
               <div class="dialog-divider"></div>
               <div id="screen-settings-send-feedback" class="dialog-button">Send feedback</div>
+              -->
 
               <!-- Relaunch -->
               <div class="dialog-divider"></div>
@@ -218,14 +220,16 @@
         </div>
       </div><!-- screen-menu -->
 
-      <div id="upload-progress" class="settings screen hidden" style="display: none;">
+      <div id="load-progress" class="settings screen hidden" style="display: none;">
 
         <div class="dialog-layout-container screen">
 
           <div class="dialog-margin"></div>
 
           <div id="upload-dialog" class="dialog">
-            <div class="dialog-title" style="border-radius: 16px;">Uploading Game State...</div>
+            <div class="dialog-title" style="border-radius: 16px;">
+              <span id="up-or-down"></span>loading Game State...
+            </div>
           </div>
 
           <div class="dialog-margin"></div>

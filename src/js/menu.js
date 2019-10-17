@@ -48,51 +48,59 @@
           }
           self.hide();
         }});
-        self.saveGameState = new App.Controls.Button($('#menu-button-save-state'), { touchUpInside: function () {
-          if (drive.gameStates) {
-            var name = gameboy.name
-            drive.gameStates[name] = saveState['B64_SRAM_' + name]
 
-            function hideDialog(failed) {
-              uploadDialog.addClass('hidden')
-              setTimeout(function() {
-                uploadDialog.hide()
-                if (failed) {
-                  alert('An unknown error occurred while uploading the game state')
-                }
-              }, 150)
+        var loadDialog = $('#load-progress')
+        function hideDialog(upOrDown, failed) {
+          loadDialog.addClass('hidden')
+          setTimeout(function() {
+            loadDialog.hide()
+            if (failed) {
+              alert('An unknown error occurred while ' + upOrDown + 'loading the game state')
             }
-
-            var uploadDialog = $('#upload-progress')
-            uploadDialog.show().removeClass('hidden')
-            drive.uploadGameStates()
+          }, 150)
+        }
+        self.saveGameState = new App.Controls.Button($('#menu-button-save-state'), { touchUpInside: function () {
+          if (navigator.onLine) {
+            self.hide()
+            $('#up-or-down').html('Up')
+            loadDialog.show().removeClass('hidden')
+            drive.uploadGameState()
               .then(function() {
                 hideDialog()
               })
               .fail(function() {
-                hideDialog(true)
+                alert('An unknown error occured while trying to upload the game state')
+                hideDialog('up', true)
               })
-
           } else {
-            alert('Unable to upload game state at this time, relaunch and try again')
+            alert('Unable to upload game state because you are not connected to the internet')
           }
         }})
 
         self.loadGameState = new App.Controls.Button($('#menu-button-load-state'), { touchUpInside: function () {
-          if (drive.gameStates) {
-            var game = gameboy.name
-            var stateData = drive.gameStates[game]
-            if (stateData) {
-              setValue('B64_SRAM_' + game, stateData)
-              saveSRAM()
-              if (self.onReset !== undefined) {
-                self.onReset()
-              }
-            } else {
-              alert('No game state has been saved for this game')
-            }
+          if (navigator.onLine) {
+            self.hide()
+            $('#up-or-down').html('Down')
+            loadDialog.show().removeClass('hidden')
+            drive.downloadGameState()
+              .then(function(stateData) {
+                if (stateData) {
+                  setValue('B64_SRAM_' + gameboy.name, stateData)
+                  saveSRAM()
+                  if (self.onReset !== undefined) {
+                    self.onReset()
+                  }
+                } else {
+                  alert('No state has been saved for this game')
+                }
+                hideDialog()
+              })
+              .fail(function() {
+                alert('An unknown error occured while trying to download the game state')
+                hideDialog('up', true)
+              })
           } else {
-            alert('Unable to retrieve game state at this time, Relaunch and try again')
+            alert('Unable to retrieve game state because you are not connected to the internet')
           }
         }})
       },
