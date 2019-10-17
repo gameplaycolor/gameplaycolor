@@ -60,8 +60,8 @@
           }, 150)
         }
         self.saveGameState = new App.Controls.Button($('#menu-button-save-state'), { touchUpInside: function () {
+          self.hide()
           if (navigator.onLine) {
-            self.hide()
             $('#up-or-down').html('Up')
             loadDialog.show().removeClass('hidden')
             drive.uploadGameState()
@@ -76,10 +76,9 @@
             alert('Unable to upload game state because you are not connected to the internet')
           }
         }})
-
         self.loadGameState = new App.Controls.Button($('#menu-button-load-state'), { touchUpInside: function () {
+          self.hide()
           if (navigator.onLine) {
-            self.hide()
             $('#up-or-down').html('Down')
             loadDialog.show().removeClass('hidden')
             drive.downloadGameState()
