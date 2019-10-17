@@ -34,6 +34,10 @@ The build will be created in the `build` directory, and a corresponding *.tar.gz
 Changelog
 ---------
 
+### Version 3.0.4
+
+- Fix issue with loading game states
+
 ### Version 3.0.3
 
 - Fix authorization issues when handling game states

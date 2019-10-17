@@ -1,2 +1,2 @@
 - Add support for saving game states to Google Drive (You must sign out and sign back in for this change to take effect)
-- Fix authorization issues when handling game states
+- Fix issue with loading game states

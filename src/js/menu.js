@@ -84,7 +84,9 @@
             drive.downloadGameState()
               .then(function(stateData) {
                 if (stateData) {
-                  setValue('B64_SRAM_' + gameboy.name, stateData)
+                  var game = gameboy.name
+                  gameboy.name = 'temp'
+                  setValue('B64_SRAM_' + game, stateData)
                   saveSRAM()
                   if (self.onReset !== undefined) {
                     self.onReset()
