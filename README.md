@@ -34,6 +34,10 @@ The build will be created in the `build` directory, and a corresponding *.tar.gz
 Changelog
 ---------
 
+### Version 3.0.3
+
+- Fix authorization issues when handling game states
+
 ### Version 3.0.2
 
 - Fix issue with dismissing game menu when offline

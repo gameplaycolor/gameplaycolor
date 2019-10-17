@@ -51,7 +51,7 @@
       self.stateChangeCallbacks = [];
       self.logging = new App.Logging(window.config.logging_level, "drive");
       self.requestId = 0;
-      self.gameStateFileIDs = { }
+      self.gameStateFiles = { }
 
       self.store = new App.Store("com.gameplaycolor.drive", 50);
       self.store.open(function(opened, error) {
@@ -361,42 +361,6 @@
           );
 
           deferred.resolve()
-          /*$.ajax({
-            url: "https://www.googleapis.com/drive/v2/files",
-            type: "GET",
-            data: {
-              maxResults: "1",
-              spaces: "appDataFolder",
-              access_token: token.access_token
-            },
-            success: function(files, textStatus, jqXHR) {
-              if (files.items.length === 0) {
-                $.ajax({
-                  url: "https://www.googleapis.com/drive/v2/files?" +
-                    "&parents=appDataFolder" +
-                    "&access_token=" + token.access_token,
-                  type: "POST",
-                  data: JSON.stringify({
-                    parents: [{id: 'appDataFolder'}],
-                    title: 'states.json'
-                  }),
-                  processData: false,
-                  contentType: 'application/json',
-                  success: function(result, textStatus, jqXHR) {
-                    deferred.resolve()
-                  },
-                  error: function(jqXHR, textStatus, error) {
-                    deferred.reject(error)
-                  }
-                })
-              } else {
-                deferred.resolve();
-              }
-            },
-            error: function(jqXHR, textStatus, error) {
-              deferred.reject(error)
-            }
-          })*/
         },
         error: function(jqXHR, textStatus, error) {
           deferred.reject(error);
@@ -698,9 +662,16 @@
       self
         .token()
         .then(function(token) {
-          var fileID = self.gameStateFileIDs[gameboy.name]
-          if (fileID) {
-            uploadState(saveState['B64_SRAM_' + name], fileID)
+          var file = self.gameStateFiles[gameboy.name]
+          if (file) {
+            self
+              .downloadFile(file)
+              .then(function(gameState) {
+                deferred.resolve(gameState)
+              })
+              .fail(function(e) {
+                deferred.reject(e)
+              })
           } else {
             $.ajax({
               url: "https://www.googleapis.com/drive/v2/files",
@@ -715,15 +686,37 @@
                 if (queryResult.items.length === 0) {
                   deferred.resolve(null)
                 } else {
+                  self.gameStateFiles[gameboy.name] = queryResult.items[0]
                   self
                     .downloadFile(queryResult.items[0])
-                    .then(function(fileContents) {
-                      deferred.resolve(fileContents)
+                    .then(function(gameState) {
+                      deferred.resolve(gameState)
+                    })
+                    .fail(function(e) {
+                      deferred.reject(e)
                     })
                 }
               },
               error: function(jqXHR, textStatus, error) {
-                deferred.reject(error)
+                if (jqXHR.status == 401 || jqXHR.status == 403) {
+                  self
+                    .handleInvalidToken()
+                    .then(function() {
+                      self
+                        .downloadGameState()
+                        .then(function(gameState) {
+                          deferred.resolve(gameState);
+                        })
+                        .fail(function(e) {
+                          deferred.reject(e);
+                        });
+                    })
+                    .fail(function(e) {
+                      deferred.reject(e);
+                    });
+                } else {
+                  deferred.reject(error);
+                }
               }
             })
           }          
@@ -745,6 +738,28 @@
       self
         .token()
         .then(function(token) {
+          function handleError(jqXHR, error) {
+            if (jqXHR.status == 401 || jqXHR.status == 403) {
+              self
+                .handleInvalidToken()
+                .then(function() {
+                  self
+                    .uploadGameState()
+                    .then(function() {
+                      deferred.resolve();
+                    })
+                    .fail(function(e) {
+                      deferred.reject(e);
+                    });
+                })
+                .fail(function(e) {
+                  deferred.reject(e);
+                });
+            } else {
+              deferred.reject(error);
+            }
+          }
+
           function uploadState(state, id) {
             $.ajax({
               url: "https://www.googleapis.com/upload/drive/v2/files/" + id +
@@ -756,14 +771,14 @@
                 deferred.resolve()
               },
               error: function(jqXHR, textStatus, error) {
-                deferred.reject(error)
+                handleError(jqXHR, error)
               }
             })
           }
 
-          var fileID = self.gameStateFileIDs[gameName]
-          if (fileID) {
-            uploadState(saveState['B64_SRAM_' + gameName], fileID)
+          var file = self.gameStateFiles[gameName]
+          if (file) {
+            uploadState(saveState['B64_SRAM_' + gameName], file.id)
           } else {
             $.ajax({
               url: "https://www.googleapis.com/drive/v2/files",
@@ -791,15 +806,16 @@
                       uploadState(saveState['B64_SRAM_' + gameName], newFile.id)
                     },
                     error: function(jqXHR, textStatus, error) {
-                      deferred.reject(error)
+                      handleError(jqXHR, error)
                     }
                   })
                 } else {
+                  self.gameStateFiles[gameName] = queryResult.items[0]
                   uploadState(saveState['B64_SRAM_' + gameName], queryResult.items[0].id)
                 }
               },
               error: function(jqXHR, textStatus, error) {
-                deferred.reject(error)
+                handleError(jqXHR, error)
               }
             })
           }          
