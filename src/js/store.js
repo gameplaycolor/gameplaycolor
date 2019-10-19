@@ -146,7 +146,7 @@
         value: value
       };
 
-      var request = store.put(data);
+      var request = store.put(data, JSON.stringify({ domain: domain, key: key }));
 
       request.onsuccess = function(e) {};
       request.onerror = function(e) {
