@@ -3,7 +3,7 @@ Game Play
 
 A JavaScript Game Boy and Game Boy Color emulator for iOS, based on the [GameBoy-Online](https://github.com/taisel/GameBoy-Online) emulator core.
 
-If you just want to play Game Play, you can find it online at [brandosha.github.io/test-gameplay-build](https://brandosha.github.io/test-gameplay-build).
+If you just want to play Game Play, you can find it online at [brandosha.github.io/gameplay](https://brandosha.github.io/gameplay/index.html).
 
 Dependencies
 ------------
@@ -23,7 +23,7 @@ Building
 
 Game Play is built using a custom Python build script which inlines and minifies HTML, CSS and JavaScript, and binds in the settings for a given deployment.
 
-For example, building the release version of Game Play as hosted on [brandosha.github.io/test-gameplay-build](https://brandosha.github.io/test-gameplay-build) can be done by running the following command from the root of the repository:
+For example, building the release version of Game Play as hosted on [brandosha.github.io/gameplay](https://brandosha.github.io/gameplay/index.html) can be done by running the following command from the root of the repository:
 
 ```bash
 scripts/build build settings/release.json
