@@ -152,7 +152,7 @@ Changelog
 
 ### Version 2.0.10
 
-- Adding the application version, screen size and user agent string into the logs.
+- Adding the application version, screen size and the user agent string into the logs.
 
 ### Version 2.0.9
 
