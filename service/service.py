@@ -22,22 +22,24 @@ import os
 from flask import Flask, escape, request, jsonify, send_from_directory, g, make_response, redirect
 
 
-ROOT_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
+SERVICE_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
+ROOT_DIRECTORY = os.path.dirname(SERVICE_DIRECTORY)
+BUILD_DIRECTORY = os.path.join(ROOT_DIRECTORY, "build")
+
 
 logging.basicConfig(level=logging.INFO, format="[%(asctime)s] [%(process)d] [%(levelname)s] %(message)s", datefmt='%Y-%m-%d %H:%M:%S %z')
-
 
 app = Flask(__name__)
 
 
 @app.route('/')
 def index():
-    return send_from_directory(ROOT_DIRECTORY, 'index.html')
+    return send_from_directory(BUILD_DIRECTORY, 'index.html')
 
 
 @app.route('/<path:path>')
 def everything_else(path):
-    return send_from_directory(ROOT_DIRECTORY, path)
+    return send_from_directory(BUILD_DIRECTORY, path)
 
 
 if __name__ == '__main__':
