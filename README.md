@@ -14,7 +14,18 @@ Check out the project, update the submodules, install the brew-based dependencie
 git clone git@github.com:jbmorley/gameplay.git
 cd gameplay
 git submodule update --init --recursive
+```
+
+### macOS
+
 cat brew.txt | xargs brew install
+pip install --user -r requirements.txt
+```
+
+### Ubuntu
+
+```bash
+cat ubuntu.txt | xargs sudo apt install
 pip install --user -r requirements.txt
 ```
 
