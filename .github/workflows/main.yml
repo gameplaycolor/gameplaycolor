@@ -9,9 +9,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Install Pipenv...
+    - name: Checkout submodules
+      uses: textbook/git-checkout-submodule-action@2.0.0
+    - name: Install Pipenv
       uses: dschep/install-pipenv-action@v1
-    - name: Install Python dependencies...
+    - name: Install Python dependencies
       run: cd scripts; pipenv install
-    - name: Build...
+    - name: Build
       run: scripts/build build settings/release.json
