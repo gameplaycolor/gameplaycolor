@@ -1,5 +1,4 @@
 *.DS_Store
 /*.sublime-workspace
-/build
 /archives
 /ansible/gameplay.retry
