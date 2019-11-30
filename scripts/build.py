@@ -142,11 +142,6 @@ def htmlcompressor(contents):
   return output
 
 
-def pngcrush(source_file, destination_file):
-  print("Crushing '%s'..." % source_file)
-  subprocess.check_call(['pngcrush', source_file, destination_file])
-
-
 def find_files(directory):
   result = []
   for root, subdirs, files in os.walk(directory):
@@ -248,7 +243,7 @@ def build(options):
 
   # images
   print("Copying images...")
-  copy_diretory(images_dir, paths.BUILD_DIR, pngcrush)
+  copy_diretory(images_dir, paths.BUILD_DIR)
 
   # images
   print("Copying assets...")
@@ -256,11 +251,11 @@ def build(options):
 
   # defaults
   print("Copying defaults...")
-  copy_diretory(defaults_dir, paths.BUILD_DIR, pngcrush)
+  copy_diretory(defaults_dir, paths.BUILD_DIR)
 
   # icon
   icon_file = os.path.join(paths.ROOT_DIR, settings['icon'])
-  pngcrush(icon_file, os.path.join(paths.BUILD_DIR, "images", "icon.png"))
+  shutil.copy(icon_file, os.path.join(paths.BUILD_DIR, "images", "icon.png"))
 
   # manifest
   manifest = find_files(paths.BUILD_DIR)
