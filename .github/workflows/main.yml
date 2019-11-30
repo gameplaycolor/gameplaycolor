@@ -20,5 +20,5 @@ jobs:
       run: scripts/build build settings/release.json
     - uses: actions/upload-artifact@v1
       with:
-        name: build-release.tar.gz
-        path: build-*-release.tar.gz
+        name: build-latest-release.tar.gz
+        path: archives/build-latest-release.tar.gz

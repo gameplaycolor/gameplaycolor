@@ -276,7 +276,9 @@ def build(options):
     os.makedirs(archives_dir)
   settings_name = os.path.splitext(os.path.basename(options.settings))[0]
   with Chdir(paths.ROOT_DIR):
-    subprocess.check_call(["tar", "-zcf", os.path.join(archives_dir, "build-%s-%s.tar.gz" % (sha.decode('utf-8'), settings_name)), "build"])
+    archive_path = os.path.join(archives_dir, "build-%s-%s.tar.gz" % (sha.decode('utf-8'), settings_name))
+    subprocess.check_call(["tar", "-zcf", archive_path, "build"])
+    os.symlink(archive_path, os.path.join(archives_dir, "build-latest-%s.tar.gz" % settings_name))
 
 
 def command_build(parser):
