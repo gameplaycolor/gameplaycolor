@@ -130,7 +130,7 @@ def download(url, directory):
   path = os.path.join(directory, basename)
   if not os.path.exists(path):
     print("Downloading '%s'..." % basename)
-    subprocess.check_call(["curl", "-o", path, url])
+    subprocess.check_call(["curl", "-L", "-o", path, url])
   return path
 
 
