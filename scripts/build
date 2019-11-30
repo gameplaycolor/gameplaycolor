@@ -1,20 +1,27 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import argparse
 import datetime
+import http.server
 import json
 import os
 import os.path
 import shutil
-import SimpleHTTPServer
-import SocketServer
+import socketserver
 import subprocess
 import tempfile
+import urllib.parse
 
 import lxml.etree
 import lxml.html
 
 import paths
+
+
+HTMLCOMPRESSOR_URL = "https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/htmlcompressor/htmlcompressor-1.5.3.jar"
+
+
+SCRIPTS_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
 
 
 class Chdir():
@@ -77,23 +84,54 @@ def append_style(html, style):
   head.append(style)
 
 
+def env(filename):
+  for path in os.environ["PATH"].split(":"):
+    if filename in os.listdir(path):
+      return os.path.join(path, filename)
+  raise KeyError("Unable to find '%s' in path." % filename)
+
+
+def first_command(commands):
+  for command in commands:
+    try:
+      return env(command)
+    except KeyError:
+      pass
+  quoted_commands = ["'%s'" % command for command in commands]
+  summary = quoted_commands[0]
+  if len(quoted_commands) > 1:
+    summary = "%s or %s" % (", ".join(quoted_commands[:-1]), quoted_commands[-1])
+  raise KeyError("Unable to find %s in path." % summary)
+
+
 def yuicompressor(contents, suffix):
   temp = tempfile.mktemp(suffix=suffix)
   with open(temp, 'w') as f:
     f.write(contents)
-  output = subprocess.check_output(['yuicompressor', temp])
+  yuicompressor_path = None
+  try:
+    yuicompressor_path = first_command(["yucompressor", "yui-compressor"])
+  except KeyError as e:
+    exit(e)
+  output = subprocess.check_output([yuicompressor_path, temp]).decode('utf-8')
   os.unlink(temp)
   return output
 
 
 def htmlcompressor(contents):
-  p = subprocess.Popen(['htmlcompressor'], stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.STDOUT)
-  output = p.communicate(input=contents)[0]
+  htmlcompressor_basename = os.path.basename(urllib.parse.urlparse(HTMLCOMPRESSOR_URL).path)
+  htmlcompressor_path = os.path.join(SCRIPTS_DIRECTORY, htmlcompressor_basename)
+  if not os.path.exists(htmlcompressor_path):
+    print("Downloading '%s'..." % htmlcompressor_basename)
+    subprocess.check_call(["curl", "-o", htmlcompressor_path, HTMLCOMPRESSOR_URL])
+  command = ['java', '-jar', htmlcompressor_path]
+  p = subprocess.Popen(command, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.STDOUT)
+  output = p.communicate(input=contents)[0].decode('utf-8')
   return output
 
 
 def pngcrush(source_file, destination_file):
-  print "Crushing '%s'..." % source_file
+  print("Crushing '%s'..." % source_file)
   subprocess.check_call(['pngcrush', source_file, destination_file])
 
 
@@ -171,41 +209,41 @@ def build(options):
     contents = f.read()
   html = lxml.html.fromstring(contents)
 
-  print "Extracting JavaScript..."
+  print("Extracting JavaScript...")
   script = "window.config = %s;\n" % json.dumps(settings)
   script += extract_tags(html, "//script[@type='text/javascript']", "src", paths.SOURCE_DIR)
   if not settings["debug"]:
-    print "Minifying JavaScript..."
+    print("Minifying JavaScript...")
     script = yuicompressor(script, '.js')
   append_javascript(html, script)
 
-  print "Exctracting CSS..."
+  print("Exctracting CSS...")
   style = extract_tags(html, "//link[@type='text/css']", "href", paths.SOURCE_DIR)
   if not settings["debug"]:
-    print "Minifying CSS..."
+    print("Minifying CSS...")
     style = yuicompressor(style, '.css')
   append_style(html, style)
 
   contents = lxml.html.tostring(html)
   if not settings["debug"]:
-    print "Compressing HTML..."
+    print("Compressing HTML...")
     contents = htmlcompressor(contents)
 
-  print "Writing HTML..."
+  print("Writing HTML...")
   with open(output_file, 'w') as f:
     f.write("<!DOCTYPE html>\n")
     f.write(contents)
 
   # images
-  print "Copying images..."
+  print("Copying images...")
   copy_diretory(images_dir, paths.BUILD_DIR, pngcrush)
 
   # images
-  print "Copying assets..."
+  print("Copying assets...")
   copy_diretory(assets_dir, paths.BUILD_DIR)
 
   # defaults
-  print "Copying defaults..."
+  print("Copying defaults...")
   copy_diretory(defaults_dir, paths.BUILD_DIR, pngcrush)
 
   # icon
@@ -244,7 +282,7 @@ def command_serve(parser):
 
     def inner(options):
       httpd = SocketServer.TCPServer(("", options.port), SimpleHTTPServer.SimpleHTTPRequestHandler)
-      print "Serving on http://127.0.0.1:%d..." % options.port
+      print("Serving on http://127.0.0.1:%d..." % options.port)
       os.chdir(paths.BUILD_DIR)
       httpd.serve_forever()
 
@@ -259,7 +297,7 @@ def command_deploy(parser):
     settings = load_settings(path=os.path.abspath(options.settings))
 
     if (settings["deploy"]["confirm"]):
-      print "Deploy to '%s'? [y/N]" % settings["deploy"]["domain"]
+      print("Deploy to '%s'? [y/N]" % settings["deploy"]["domain"])
       choice = raw_input().lower()
       if choice != "y":
         exit("Abort.")
