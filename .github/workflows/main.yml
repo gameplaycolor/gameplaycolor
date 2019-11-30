@@ -18,3 +18,7 @@ jobs:
       run: cd scripts; pipenv install
     - name: Build
       run: scripts/build build settings/release.json
+    - uses: actions/upload-artifact@v1
+      with:
+        name: build-release.tar.gz
+        path: build-*-release.tar.gz
