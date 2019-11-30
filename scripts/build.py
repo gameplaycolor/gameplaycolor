@@ -113,7 +113,7 @@ def yuicompressor(contents, suffix):
     f.write(contents)
   yuicompressor_path = None
   try:
-    yuicompressor_path = first_command(["yucompressor", "yui-compressor"])
+    yuicompressor_path = first_command(["yuicompressor", "yui-compressor"])
   except KeyError as e:
     exit(e)
   output = subprocess.check_output([yuicompressor_path, temp]).decode('utf-8')
