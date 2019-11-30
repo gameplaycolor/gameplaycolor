@@ -208,7 +208,7 @@ def build(options):
   # git sha
   sha = git_sha(repository=paths.ROOT_DIR)
   with open(sha_file, "w") as f:
-    f.write("%s\n" % sha)
+    f.write("%s\n" % sha.decode('utf-8'))
 
   # index.html
   contents = None
@@ -277,8 +277,11 @@ def build(options):
   settings_name = os.path.splitext(os.path.basename(options.settings))[0]
   with Chdir(paths.ROOT_DIR):
     archive_path = os.path.join(archives_dir, "build-%s-%s.tar.gz" % (sha.decode('utf-8'), settings_name))
+    latest_archive_path = os.path.join(archives_dir, "build-latest-%s.tar.gz" % settings_name)
     subprocess.check_call(["tar", "-zcf", archive_path, "build"])
-    os.symlink(archive_path, os.path.join(archives_dir, "build-latest-%s.tar.gz" % settings_name))
+    if os.path.exists(latest_archive_path):
+      os.remove(latest_archive_path)
+    os.symlink(archive_path, latest_archive_path)
 
 
 def command_build(parser):
