@@ -19,6 +19,7 @@ import paths
 
 
 HTMLCOMPRESSOR_URL = "https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/htmlcompressor/htmlcompressor-1.5.3.jar"
+YUICOMPRESSOR_URL = "https://github.com/yui/yuicompressor/releases/download/v2.4.8/yuicompressor-2.4.8.jar"
 
 
 SCRIPTS_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
@@ -112,21 +113,29 @@ def yuicompressor(contents, suffix):
   with open(temp, 'w') as f:
     f.write(contents)
   yuicompressor_path = None
+  command = []
   try:
     yuicompressor_path = first_command(["yuicompressor", "yui-compressor"])
+    command = [yuicompressor_path]
   except KeyError as e:
-    exit(e)
-  output = subprocess.check_output([yuicompressor_path, temp]).decode('utf-8')
+    yuicompressor_path = download(YUICOMPRESSOR_URL, SCRIPTS_DIRECTORY)
+    command = ["java", "-jar", yuicompressor_path]
+  output = subprocess.check_output(command + [temp]).decode('utf-8')
   os.unlink(temp)
   return output
 
 
-def htmlcompressor(contents):
-  htmlcompressor_basename = os.path.basename(urllib.parse.urlparse(HTMLCOMPRESSOR_URL).path)
-  htmlcompressor_path = os.path.join(SCRIPTS_DIRECTORY, htmlcompressor_basename)
-  if not os.path.exists(htmlcompressor_path):
-    print("Downloading '%s'..." % htmlcompressor_basename)
-    subprocess.check_call(["curl", "-o", htmlcompressor_path, HTMLCOMPRESSOR_URL])
+def download(url, directory):
+  basename = os.path.basename(urllib.parse.urlparse(url).path)
+  path = os.path.join(directory, basename)
+  if not os.path.exists(path):
+    print("Downloading '%s'..." % basename)
+    subprocess.check_call(["curl", "-o", path, url])
+  return path
+
+
+def htmlcompressor(contents):  
+  htmlcompressor_path = download(HTMLCOMPRESSOR_URL, SCRIPTS_DIRECTORY)
   command = ['java', '-jar', htmlcompressor_path]
   p = subprocess.Popen(command, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.STDOUT)
   output = p.communicate(input=contents)[0].decode('utf-8')
