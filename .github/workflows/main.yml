@@ -1,4 +1,4 @@
-name: CI
+name: Build
 
 on: [push]
 
@@ -9,11 +9,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Run a one-line script
-      run: echo Hello, world!
-    - name: Run a multi-line script
-      run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
-    - name: Install pipenv
+    - name: Install Pipenv...
       uses: dschep/install-pipenv-action@v1
+    - name: Build...
+      run: scripts/build build settings/release.json
