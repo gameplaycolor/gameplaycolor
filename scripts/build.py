@@ -86,8 +86,11 @@ def append_style(html, style):
 
 def env(filename):
   for path in os.environ["PATH"].split(":"):
-    if filename in os.listdir(path):
-      return os.path.join(path, filename)
+    try:
+      if filename in os.listdir(path):
+        return os.path.join(path, filename)
+    except FileNotFoundError:
+      pass
   raise KeyError("Unable to find '%s' in path." % filename)
 
 
