@@ -18,6 +18,7 @@ git submodule update --init --recursive
 
 ### macOS
 
+```bash
 cat brew.txt | xargs brew install
 cd scripts
 pipenv install
