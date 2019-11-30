@@ -1,0 +1,13 @@
+[[source]]
+
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+
+
+[packages]
+
+lxml = "*"
+
+[requires]
+
+python_version = "3"

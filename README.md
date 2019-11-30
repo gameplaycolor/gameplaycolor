@@ -19,14 +19,22 @@ git submodule update --init --recursive
 ### macOS
 
 cat brew.txt | xargs brew install
-pip install --user -r requirements.txt
+cd scripts
+pipenv install
 ```
 
 ### Ubuntu
 
 ```bash
 cat ubuntu.txt | xargs sudo apt install
-pip install --user -r requirements.txt
+cd scripts
+pipenv install
+```
+
+It may be necessary to install pipenv as follows:
+
+```bash
+pip3 install pipenv
 ```
 
 Building
