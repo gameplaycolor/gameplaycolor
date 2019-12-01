@@ -17,15 +17,16 @@
  */
 
 (function($) {
+
   App.Store = function(name) {
     this.init(name);
   };
-
+  
   App.Store.Property = {
     STATE: 0,
-    GAME: 1,
+    GAME:  1,
     COLOR: 2,
-    SPEED: 4
+    SPEED: 4,
   };
 
   jQuery.extend(App.Store.prototype, {
