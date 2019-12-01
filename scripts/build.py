@@ -337,7 +337,7 @@ def command_check_git_status(parser):
         print(result)
         subprocess.run(["git", "diff"])
         exit("Git repository has local modifications. Did you run a build locally and commit the changes? 🤔")
-    print("Repository is clean. THank you for building locally. 🎉")
+    print("Repository is clean. Thank you for building locally. 🎉")
 
   return inner
 
