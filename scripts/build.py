@@ -219,20 +219,20 @@ def build(options):
   print("Extracting JavaScript...")
   script = "window.config = %s;\n" % json.dumps(settings, sort_keys=True)
   script += extract_tags(html, "//script[@type='text/javascript']", "src", paths.SOURCE_DIR)
-  if not settings["debug"]:
+  if not settings["debug"] and not options.debug:
     print("Minifying JavaScript...")
     script = yuicompressor(script, '.js')
   append_javascript(html, script)
 
   print("Exctracting CSS...")
   style = extract_tags(html, "//link[@type='text/css']", "href", paths.SOURCE_DIR)
-  if not settings["debug"]:
+  if not settings["debug"] and not options.debug:
     print("Minifying CSS...")
     style = yuicompressor(style, '.css')
   append_style(html, style)
 
   contents = lxml.html.tostring(html).decode('utf-8')
-  if not settings["debug"]:
+  if not settings["debug"] and not options.debug:
     print("Compressing HTML...")
     contents = htmlcompressor(contents)
 
@@ -291,7 +291,8 @@ def build(options):
 
 def command_build(parser):
   parser.add_argument("settings", help="settings file")
-  return build;
+  parser.add_argument("--debug", action="store_true", default=False, help="build without minification")
+  return build
 
 
 def command_serve(parser):
@@ -308,6 +309,7 @@ def command_serve(parser):
 
 def command_deploy(parser):
   parser.add_argument("settings", help="settings file")
+  parser.add_argument("--debug", action="store_true", default=False, help="build without minification")
 
   def inner(options):
     build(options)
