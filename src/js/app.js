@@ -16,9 +16,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-console.log("FOO");
-
-
 Promise.prototype.always = function(onAlways) {
   return this.then(onAlways, onAlways);
 };
