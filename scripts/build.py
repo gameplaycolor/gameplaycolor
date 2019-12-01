@@ -332,8 +332,8 @@ def command_check_git_status(parser):
     with Chdir(paths.BUILD_DIR):
       result = subprocess.check_output(["git", "status", "--porcelain"]).decode('utf-8').strip()
       if result:
-        exit("Git repository has local modifications.")
-    print("Repository is clean.")
+        exit("Git repository has local modifications. Did you run a build locally and commit the changes? 🤔")
+    print("Repository is clean. THank you for building locally. 🎉")
 
   return inner
 
