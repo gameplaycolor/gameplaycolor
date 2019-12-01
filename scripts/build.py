@@ -39,11 +39,6 @@ class Chdir():
     os.chdir(self._previous)
 
 
-def git_sha(repository):
-  with Chdir(repository):
-    return subprocess.check_output(["git", "rev-parse", "HEAD"]).strip()
-
-
 def checksum(root):
   paths = find_files(root)
   sha = hashlib.sha1()
@@ -194,7 +189,6 @@ def load_settings(path):
 def build(options):
   paths.BUILD_DIR = os.path.join(paths.ROOT_DIR, "build")
   archives_dir = os.path.join(paths.ROOT_DIR, "archives")
-  sha_file = os.path.join(paths.BUILD_DIR, "sha.txt")
   input_file = os.path.join(paths.SOURCE_DIR, "index.html")
   output_file = os.path.join(paths.BUILD_DIR, "index.html")
   images_dir = os.path.join(paths.SOURCE_DIR, "images")
@@ -215,11 +209,6 @@ def build(options):
         shutil.rmtree(path)
   else:
     os.mkdir(paths.BUILD_DIR)
-
-  # git sha
-  sha = git_sha(repository=paths.ROOT_DIR)
-  with open(sha_file, "w") as f:
-    f.write("%s\n" % sha.decode('utf-8'))
 
   # index.html
   contents = None
@@ -292,7 +281,7 @@ def build(options):
     os.makedirs(archives_dir)
   settings_name = os.path.splitext(os.path.basename(options.settings))[0]
   with Chdir(paths.ROOT_DIR):
-    archive_path = os.path.join(archives_dir, "build-%s-%s.tar.gz" % (sha.decode('utf-8'), settings_name))
+    archive_path = os.path.join(archives_dir, "build-%s-%s.tar.gz" % (build_checksum, settings_name))
     latest_archive_path = os.path.join(archives_dir, "build-latest-%s.tar.gz" % settings_name)
     subprocess.check_call(["tar", "-zcf", archive_path, "build"])
     if os.path.exists(latest_archive_path):
