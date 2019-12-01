@@ -154,7 +154,7 @@ def find_files(directory):
     for file in files:
       if file.find('.') != 0:
         result.append(os.path.relpath(os.path.join(root, file), directory))
-  return result
+  return sorted(result)
 
 
 def copy_diretory(source_dir, output_dir, task=shutil.copy):
