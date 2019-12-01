@@ -144,7 +144,7 @@ def htmlcompressor(contents):
   htmlcompressor_path = download(HTMLCOMPRESSOR_URL, SCRIPTS_DIRECTORY)
   command = ['java', '-jar', htmlcompressor_path]
   p = subprocess.Popen(command, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.STDOUT)
-  output = p.communicate(input=contents)[0].decode('utf-8')
+  output = p.communicate(input=contents.encode('utf-8'))[0].decode('utf-8')
   return output
 
 
@@ -232,9 +232,9 @@ def build(options):
   append_style(html, style)
 
   contents = lxml.html.tostring(html).decode('utf-8')
-  #if not settings["debug"]:
-  #  print("Compressing HTML...")
-  #  contents = htmlcompressor(contents)
+  if not settings["debug"]:
+    print("Compressing HTML...")
+    contents = htmlcompressor(contents)
 
   print("Writing HTML...")
   with open(output_file, 'w') as f:
