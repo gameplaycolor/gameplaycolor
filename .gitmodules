@@ -1,3 +1,4 @@
 [submodule "cores/GameBoy-Online"]
 	path = cores/GameBoy-Online
-	url = git@github.com:jbmorley/GameBoy-Online.git
+	url = https://github.com/gameplaycolor/GameBoy-Online.git
+

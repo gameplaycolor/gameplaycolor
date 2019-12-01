@@ -1,0 +1,28 @@
+name: Check for local build
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout source
+      uses: actions/checkout@v1
+      with:
+        submodules: true
+        token: ${{ secrets.PAT }}
+    - name: Install Pipenv
+      uses: dschep/install-pipenv-action@v1
+    - name: Install Python dependencies
+      run: cd scripts; pipenv install
+    - name: Build release
+      run: scripts/build build settings/release.json
+    - name: Save artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: build-latest-release.tar.gz
+        path: archives/build-latest-release.tar.gz
+    - name: Check for local modifications
+      run: scripts/build check-git-status
