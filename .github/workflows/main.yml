@@ -18,7 +18,7 @@ jobs:
     - name: Install Python dependencies
       run: cd scripts; pipenv install
     - name: Build release
-      run: scripts/build build settings/release.json
+      run: scripts/build build settings/release.json --debug
     - name: Save artifacts
       uses: actions/upload-artifact@v1
       with:
