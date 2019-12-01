@@ -91,41 +91,12 @@ def append_style(html, style):
   head.append(style)
 
 
-def env(filename):
-  for path in os.environ["PATH"].split(":"):
-    try:
-      if filename in os.listdir(path):
-        return os.path.join(path, filename)
-    except FileNotFoundError:
-      pass
-  raise KeyError("Unable to find '%s' in path." % filename)
-
-
-def first_command(commands):
-  for command in commands:
-    try:
-      return env(command)
-    except KeyError:
-      pass
-  quoted_commands = ["'%s'" % command for command in commands]
-  summary = quoted_commands[0]
-  if len(quoted_commands) > 1:
-    summary = "%s or %s" % (", ".join(quoted_commands[:-1]), quoted_commands[-1])
-  raise KeyError("Unable to find %s in path." % summary)
-
-
 def yuicompressor(contents, suffix):
   temp = tempfile.mktemp(suffix=suffix)
   with open(temp, 'w') as f:
     f.write(contents)
-  yuicompressor_path = None
-  command = []
-  try:
-    yuicompressor_path = first_command(["yuicompressor", "yui-compressor"])
-    command = [yuicompressor_path]
-  except KeyError as e:
-    yuicompressor_path = download(YUICOMPRESSOR_URL, SCRIPTS_DIRECTORY)
-    command = ["java", "-jar", yuicompressor_path]
+  yuicompressor_path = download(YUICOMPRESSOR_URL, SCRIPTS_DIRECTORY)
+  command = ["java", "-jar", yuicompressor_path]
   output = subprocess.check_output(command + [temp]).decode('utf-8')
   os.unlink(temp)
   return output
