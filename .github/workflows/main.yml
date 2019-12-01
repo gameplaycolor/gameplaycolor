@@ -18,7 +18,10 @@ jobs:
       run: cd scripts; pipenv install
     - name: Build
       run: scripts/build build settings/release.json
-    - uses: actions/upload-artifact@v1
+    - name: Save artifacts
+      uses: actions/upload-artifact@v1
       with:
         name: build-latest-release.tar.gz
         path: archives/build-latest-release.tar.gz
+    - name: Check for local modifications
+      run: scripts/build check-git-status
