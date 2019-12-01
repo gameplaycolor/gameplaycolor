@@ -219,22 +219,22 @@ def build(options):
   print("Extracting JavaScript...")
   script = "window.config = %s;\n" % json.dumps(settings)
   script += extract_tags(html, "//script[@type='text/javascript']", "src", paths.SOURCE_DIR)
-  if not settings["debug"]:
-    print("Minifying JavaScript...")
-    script = yuicompressor(script, '.js')
+  #if not settings["debug"]:
+  #  print("Minifying JavaScript...")
+  #  script = yuicompressor(script, '.js')
   append_javascript(html, script)
 
   print("Exctracting CSS...")
   style = extract_tags(html, "//link[@type='text/css']", "href", paths.SOURCE_DIR)
-  if not settings["debug"]:
-    print("Minifying CSS...")
-    style = yuicompressor(style, '.css')
+  #if not settings["debug"]:
+  #  print("Minifying CSS...")
+  #  style = yuicompressor(style, '.css')
   append_style(html, style)
 
-  contents = lxml.html.tostring(html)
-  if not settings["debug"]:
-    print("Compressing HTML...")
-    contents = htmlcompressor(contents)
+  contents = lxml.html.tostring(html).decode('utf-8')
+  #if not settings["debug"]:
+  #  print("Compressing HTML...")
+  #  contents = htmlcompressor(contents)
 
   print("Writing HTML...")
   with open(output_file, 'w') as f:
