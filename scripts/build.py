@@ -226,9 +226,9 @@ def build(options):
 
   print("Exctracting CSS...")
   style = extract_tags(html, "//link[@type='text/css']", "href", paths.SOURCE_DIR)
-  #if not settings["debug"]:
-  #  print("Minifying CSS...")
-  #  style = yuicompressor(style, '.css')
+  if not settings["debug"]:
+    print("Minifying CSS...")
+    style = yuicompressor(style, '.css')
   append_style(html, style)
 
   contents = lxml.html.tostring(html).decode('utf-8')
