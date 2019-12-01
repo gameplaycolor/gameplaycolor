@@ -217,7 +217,7 @@ def build(options):
   html = lxml.html.fromstring(contents)
 
   print("Extracting JavaScript...")
-  script = "window.config = %s;\n" % json.dumps(settings)
+  script = "window.config = %s;\n" % json.dumps(settings, sort_keys=True)
   script += extract_tags(html, "//script[@type='text/javascript']", "src", paths.SOURCE_DIR)
   #if not settings["debug"]:
   #  print("Minifying JavaScript...")
