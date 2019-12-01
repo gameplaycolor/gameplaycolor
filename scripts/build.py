@@ -2,6 +2,7 @@
 
 import argparse
 import datetime
+import hashlib
 import http.server
 import json
 import os
@@ -41,6 +42,16 @@ class Chdir():
 def git_sha(repository):
   with Chdir(repository):
     return subprocess.check_output(["git", "rev-parse", "HEAD"]).strip()
+
+
+def checksum(root):
+  paths = find_files(root)
+  sha = hashlib.sha1()
+  for path in paths:
+    sha.update(path.encode('utf-8'))
+    with open(os.path.join(root, path), 'rb') as fh:
+      sha.update(fh.read())
+  return sha.hexdigest()
 
 
 def extract_javascript(html, root):
@@ -257,13 +268,18 @@ def build(options):
   icon_file = os.path.join(paths.ROOT_DIR, settings['icon'])
   shutil.copy(icon_file, os.path.join(paths.BUILD_DIR, "images", "icon.png"))
 
-  # manifest
-  manifest = find_files(paths.BUILD_DIR)
+  # Generate a sha for the build.
+  print("Generating a checksum...")
+  build_checksum = checksum(paths.BUILD_DIR)
+
+  # Write the manifest.
+  print("Writing the manifest...")
+  build_files = find_files(paths.BUILD_DIR)
   with open(manifest_file, 'w') as f:
     f.write("CACHE MANIFEST\n")
-    f.write("# %s\n" % str(datetime.datetime.now()))
+    f.write("# %s\n" % build_checksum)
     f.write("CACHE:\n")
-    f.write("\n".join(map(lambda x: x, manifest)))
+    f.write("\n".join(map(lambda x: x, build_files)))
     f.write("\n")
     f.write("NETWORK:\n")
     f.write("*\n")
