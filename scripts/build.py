@@ -219,9 +219,9 @@ def build(options):
   print("Extracting JavaScript...")
   script = "window.config = %s;\n" % json.dumps(settings, sort_keys=True)
   script += extract_tags(html, "//script[@type='text/javascript']", "src", paths.SOURCE_DIR)
-  #if not settings["debug"]:
-  #  print("Minifying JavaScript...")
-  #  script = yuicompressor(script, '.js')
+  if not settings["debug"]:
+    print("Minifying JavaScript...")
+    script = yuicompressor(script, '.js')
   append_javascript(html, script)
 
   print("Exctracting CSS...")
