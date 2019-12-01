@@ -1,4 +1,4 @@
-name: Build
+name: Check for local build
 
 on: [push]
 
@@ -18,7 +18,7 @@ jobs:
     - name: Install Python dependencies
       run: cd scripts; pipenv install
     - name: Build release
-      run: scripts/build build settings/release.json --debug
+      run: scripts/build build settings/release.json
     - name: Save artifacts
       uses: actions/upload-artifact@v1
       with:
