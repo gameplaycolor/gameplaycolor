@@ -8,7 +8,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
+    - name: Checkout source
+      uses: actions/checkout@v1
       with:
         submodules: true
         token: ${{ secrets.PAT }}
@@ -16,7 +17,7 @@ jobs:
       uses: dschep/install-pipenv-action@v1
     - name: Install Python dependencies
       run: cd scripts; pipenv install
-    - name: Build
+    - name: Build release
       run: scripts/build build settings/release.json
     - name: Save artifacts
       uses: actions/upload-artifact@v1
