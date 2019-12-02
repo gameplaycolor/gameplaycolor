@@ -1,7 +1,8 @@
 CACHE MANIFEST
-# 02d90d80a9cf756a5a8907dad5083fff6a474559
+# e621e1a6cb6adadd91b5739acf347801c462c40d
 CACHE:
 assets/silent.mp3
+authorization.html
 defaults/apple-touch-startup-image-1242x2148.png
 defaults/apple-touch-startup-image-1536x2008.png
 defaults/apple-touch-startup-image-2048x1496.png

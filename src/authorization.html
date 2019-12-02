@@ -1,0 +1,16 @@
+<html>
+  <head>
+    <title>Game Play Color</title>
+    <script type="text/javascript">
+      window.onload = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+      div = document.getElementById('code');
+      div.innerHTML = code;
+      };
+    </script>
+  </head>
+  <body>
+    <div id="code"></div>
+  </body>
+</html>
