@@ -215,8 +215,9 @@ def build(options):
 
   # authorization.html
   print("Copying authorization page...")
-  shutil.copy(os.path.join(paths.SOURCE_DIR, "authorization.html"),
-              os.path.join(paths.BUILD_DIR, "authorization.html"))
+  os.makedirs(os.path.join(paths.BUILD_DIR, "authorization"))
+  shutil.copy(os.path.join(paths.SOURCE_DIR, "authorization/index.html"),
+              os.path.join(paths.BUILD_DIR, "authorization/index.html"))
 
   # images
   print("Copying images...")
