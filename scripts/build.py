@@ -182,6 +182,7 @@ def build(options):
     os.mkdir(paths.BUILD_DIR)
 
   # index.html
+
   contents = None
   with open(input_file) as f:
     contents = f.read()
@@ -211,6 +212,12 @@ def build(options):
   with open(output_file, 'w') as f:
     f.write("<!DOCTYPE html>\n")
     f.write(contents)
+
+  # authorization.html
+  print("Copying authorization page...")
+  os.makedirs(os.path.join(paths.BUILD_DIR, "authorization"))
+  shutil.copy(os.path.join(paths.SOURCE_DIR, "authorization/index.html"),
+              os.path.join(paths.BUILD_DIR, "authorization/index.html"))
 
   # images
   print("Copying images...")

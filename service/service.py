@@ -39,6 +39,8 @@ def index():
 
 @app.route('/<path:path>')
 def everything_else(path):
+    if os.path.isdir(os.path.join(BUILD_DIRECTORY, path)):
+        return send_from_directory(BUILD_DIRECTORY, os.path.join(path, "index.html"))
     return send_from_directory(BUILD_DIRECTORY, path)
 
 

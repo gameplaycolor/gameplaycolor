@@ -1,0 +1,40 @@
+<html>
+  <head>
+    <title>Game Play Color</title>
+    <script type="text/javascript">
+      window.onload = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+      div = document.getElementById('code');
+      div.innerHTML = code;
+      };
+    </script>
+    <style>
+
+      body {
+      font-family: -apple-system, Helvetica, sans-serif;
+      font-size: 1.4em;
+      text-align: center;
+      padding: 2em;
+      }
+      
+      .instructions {
+      
+      }
+
+      .code {
+      font-family: monospace;
+      white-space: pre;
+      background-color: #ddd;
+      padding: 1em;
+      border-radius: 0.5em;
+      }
+      
+    </style>
+  </head>
+  <body>
+    <h1>Success</h1>
+    <p class="instructions">Copy and paste the access code into <strong>Game Play Color</strong> then click <strong>Continue</strong>.</p>
+    <p id="code" class="code"></p>
+  </body>
+</html>
