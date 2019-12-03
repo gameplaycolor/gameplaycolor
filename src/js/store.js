@@ -42,10 +42,7 @@
 
       self.indexedDB =
         window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB;
-      if ("webkitIndexedDB" in window) {
-        //   window.IDBTransaction = window.webkitIDBTransaction;
-        window.IDBKeyRange = window.webkitIDBKeyRange;
-      }
+      window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange;
     },
 
     /**
@@ -238,14 +235,15 @@
       var properties = {};
       var self = this;
       var store = self.getStore("properties", "readonly");
+      store = store.index("domain");
+      const keyRangeValue = IDBKeyRange.only(domain);
+      var request = store.getAll(keyRangeValue);
 
-      var request = store.getAll();
 
-      request.onsuccess = function(e) {
+      request.onsuccess = function (e) {
+        console.log('here');
         for (let i = 0; i < e.target.result.length; i++) {
-          if (e.target.result[i].domain == domain) {
-            properties[e.target.result[i].key] = e.target.result[i].value;
-          }
+          properties[e.target.result[i].key] = e.target.result[i].value;
         }
 
         callback(properties);
