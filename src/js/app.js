@@ -58,11 +58,11 @@ Promise.prototype.always = function(onAlways) {
       self.device = device;
 
       self.store = new App.Store("save-state", 50);
-      var initCallback = self.initCallback.bind(self);
-      self.store.open(initCallback);
+      var storeInitCallback = self.storeInitCallback.bind(self);
+      self.store.open(storeInitCallback);
     },
 
-    initCallback: function(opened, error) {
+    storeInitCallback: function(opened, error) {
       var self = this;
       if (opened) {
         self.logging = new App.Logging(window.config.logging_level, "app");
