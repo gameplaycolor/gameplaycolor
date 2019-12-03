@@ -4,7 +4,7 @@
     "scopes": ["https://www.googleapis.com/auth/drive.readonly", "https://www.googleapis.com/auth/userinfo.email"],
     "analytics": "UA-37991248-2",
     "domain": "gameplaycolor.com",
-    "redirect_uri": "https://gameplaycolor.com/app/",
+    "redirect_uri": "https://app.gameplaycolor.com/authorization/",
     "icon": "icons/icon.png",
     "debug": false,
     "logging_level": 20,
