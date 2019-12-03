@@ -85,7 +85,8 @@ Promise.prototype.always = function(onAlways) {
                   self.games.update();
                 }
               }, self.store);
-            var callback = function() {
+            var callback = function (drive) {
+              self.drive = drive;
               self.settings = new App.Settings(
                 self.drive,
                 self.store,
@@ -116,7 +117,7 @@ Promise.prototype.always = function(onAlways) {
                     });
               }});
 
-              self.drive.onStateChange(function(state) {
+              self.drive.onStateChange(function (state) {
                 if (state == App.Drive.State.UNKNOWN) {
 
                   self.logging.info("Google Drive state unknown.");
@@ -178,11 +179,8 @@ Promise.prototype.always = function(onAlways) {
               }, 1000);
 
             };
-            var instance = App.Drive.Instance(callback);
-            self.drive = instance.drive;
-            if (!instance.newInstance) {
-              callback();
-            }
+            const boundCallback = callback.bind(self);
+            self.drive = App.Drive.Instance(boundCallback);
           }
         );
       } else {
@@ -327,12 +325,7 @@ Promise.prototype.always = function(onAlways) {
         }
       };
 
-      var instance = App.Drive.Instance(callback);
-      self.drive = instance.drive;
-      if (!instance.newInstance) {
-        callback();
-      }
-      
+      self.drive = App.Drive.Instance(callback);
     }
   });
 

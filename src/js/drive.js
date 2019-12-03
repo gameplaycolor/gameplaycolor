@@ -40,9 +40,9 @@
     if (window.drive === undefined) {
       window.drive = new App.Drive(callback);
     } else {
-      newInstance = false;
+      callback(window.drive);
     }
-    return { drive: window.drive, newInstance: newInstance };
+    return window.drive;
   };
 
   jQuery.extend(App.Drive.prototype, {
@@ -61,7 +61,7 @@
             return;
           }
 
-          callback();
+          callback(self);
         });
       },
 
