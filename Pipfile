@@ -1,0 +1,19 @@
+[[source]]
+
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+
+
+[packages]
+
+python-dateutil = "*"
+django = "*"
+django-heroku = "*"
+Flask = "*"
+gunicorn = "*"
+pytest = "*"
+
+
+[requires]
+
+python_version = "3"

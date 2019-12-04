@@ -1,0 +1,162 @@
+<html>
+  <head>
+      <title>Sizes</title>
+      <style>
+
+        body {
+          background-color: #333;
+        }
+
+        #device {
+          border: 1px solid black;
+        }
+
+        #content {
+          text-align: center;
+        }
+
+        .panel {
+          background-color: black;
+          color: white;
+          position: absolute;
+          margin: 10px;
+          opacity: 0.5;
+          font-family: Helvetica, sans-serif;
+          font-size: 14px;
+          padding-top: 16px;
+          padding-right: 16px;
+          padding-bottom: 16px;
+        }
+
+        .panel a {
+          color: white;
+          text-decoration: none;
+        }
+
+        .left {
+          top: 0;
+          left: 0;
+        }
+
+        .right {
+          top: 0;
+          right: 0;
+        }
+
+      </style>
+      <script>
+
+        var orientation = {
+          PORTRAIT: 1,
+          LANDSCAPE: 2
+        };
+
+        var items = [
+          { name: "iPhone 6", width: 750, height: 1334, scale: 2, status: orientation.PORTRAIT },
+          { name: "iPhone 5", width: 640, height: 1136, scale: 2, status: orientation.PORTRAIT },
+          { name: "iPhone 6 Plus", width: 1242, height: 2208, scale: 3, status: orientation.PORTRAIT },
+          { name: "iPad", width: 1536, height: 2048, scale: 2, status: orientation.PORTRAIT | orientation.LANDSCAPE },
+          { name: "iPhone 4", width: 640, height: 960, scale: 2, status: orientation.PORTRAIT }
+        ];
+
+        function postMessage(message) {
+          var device = document.getElementById("device");
+          device.contentWindow.postMessage(message, '*');
+        }
+
+        function init() {
+          for (var i = 0; i < items.length; i++) {
+            addItem(items[i], orientation.PORTRAIT);
+            addItem(items[i], orientation.LANDSCAPE);
+          }
+          setSize(items[0], orientation.PORTRAIT);
+          postMessage('debug');
+        }
+
+        function addItem(details, or) {
+          var picker = document.getElementById("picker");
+          var li = document.createElement('li');
+          var a = document.createElement('a');
+          a.href = "javascript:setSize(" + JSON.stringify(details) + ", " + or + ");";
+          a.appendChild(document.createTextNode(getTitle(details, or)));
+          li.appendChild(a);
+          picker.appendChild(li);
+        }
+
+        function getTitle(details, or) {
+          var title = details.name + " - ";
+          if (or == orientation.PORTRAIT) {
+            title = title + "Portrait";
+          } else if (or = orientation.LANDSCAPE) {
+            title = title + "Landscape";
+          }
+          size = getSize(details, or);
+          title = title + " - " + size.width + "x" + size.height;
+          return title;
+        }
+
+        function getSize(details, or) {
+          var width = 0;
+          var height = 0;
+
+          if (or == orientation.PORTRAIT) {
+            width = details.width;
+            height = details.height;
+          } else if (or = orientation.LANDSCAPE) {
+            width = details.height;
+            height = details.width;
+          }
+
+          var status = details.status & or;
+          if (status > 0) {
+            height = height - (20 * details.scale);
+          }
+
+          width = Math.floor(width / details.scale);
+          height = Math.floor(height / details.scale);
+
+          return { width: width, height: height };
+        }
+
+        function setSize(details, or) {
+          var device = document.getElementById("device");
+          var title = getTitle(details, or);
+          var size = getSize(details, or);
+          console.log("Device: (" + (size.width * details.scale) + ", " + (size.height * details.scale) + ")");
+          device.style.width = size.width;
+          device.style.height = size.height;
+          document.title = title;
+        }
+
+        function keyPress(event) {
+          var keyCode = event.keyCode - 49;
+          if (keyCode >= 0 && keyCode < (items.length * 2)) {
+            var index = Math.floor(keyCode / 2);
+            var or = orientation.PORTRAIT;
+            if ((keyCode % 2) > 0) {
+              or = orientation.LANDSCAPE;
+            }
+            var details = items[index];
+            setSize(details, or);
+          }
+        }
+
+        function crash() {
+          postMessage('crash');
+        }
+
+        window.onload = init;
+        window.onkeypress = keyPress;
+
+      </script>
+  </head>
+  <body>
+    <ol id="picker" class="panel left"></ol>
+    <ol id="actions" class="panel right">
+      <li><a href="javascript:crash();">Crash</a></li>
+    </ol>
+    <div id="content">
+      <iframe id="device" src="index.html" width="1024" height="768" frameborder="0"></iframe>
+    </div>
+  </body>
+</html>

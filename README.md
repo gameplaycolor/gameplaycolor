@@ -14,8 +14,28 @@ Check out the project, update the submodules, install the brew-based dependencie
 git clone git@github.com:jbmorley/gameplay.git
 cd gameplay
 git submodule update --init --recursive
+```
+
+### macOS
+
+```bash
 cat brew.txt | xargs brew install
-pip install --user -r requirements.txt
+cd scripts
+pipenv install
+```
+
+### Ubuntu
+
+```bash
+cat ubuntu.txt | xargs sudo apt install
+cd scripts
+pipenv install
+```
+
+It may be necessary to install pipenv as follows:
+
+```bash
+pip3 install pipenv
 ```
 
 Building
@@ -157,7 +177,7 @@ Changelog
 
 ### Version 2.0.10
 
-- Adding the application version, screen size and user agent string into the logs.
+- Adding the application version, screen size and the user agent string into the logs.
 
 ### Version 2.0.9
 
