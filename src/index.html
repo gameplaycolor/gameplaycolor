@@ -211,14 +211,60 @@
           <ul>
             <li id="menu-button-a-b-start-select">A + B + Start + Select</li>
             <li id="menu-button-reset">Reset</li>
-            <li id="menu-button-save-state">Save Game State</li>
-            <li id="menu-button-load-state">Load Game State</li>
+            <li id="menu-button-game-state">Handle Game State</li>
           </ul>
           <ul>
             <li id="menu-button-cancel" class="default">Cancel</li>
           </ul>
         </div>
       </div><!-- screen-menu -->
+
+      <div id="game-state-settings" class="settings screen hidden" style="display: none;">
+
+        <div class="dialog-layout-container screen">
+
+          <div class="dialog-margin"></div>
+
+          <div id="game-state-dialog" class="dialog">
+            <div class="dialog-title">
+              Game State Settings
+            </div>
+
+            <div class="dialog-divider"></div>
+            <div class="dialog-row">
+              <div class="dialog-row-label" style="font-weight: 400;">
+                Google Drive Sync
+              </div>
+            </div>
+
+            <div class="dialog-divider"></div>
+            <div id="drive-state-sync-push" class="dialog-button">Push</div>
+
+            <div class="dialog-divider"></div>
+            <div id="drive-state-sync-pull" class="dialog-button">Pull</div>
+
+            <div class="dialog-divider"></div>
+            <div class="dialog-row">
+              <div class="dialog-row-label" style="font-weight: 400;">
+                Local Save File
+              </div>
+            </div>
+
+            <div class="dialog-divider"></div>
+            <input id="state-file-input" type="file" style="width: 1px; visibility: hidden; position: absolute;">
+            <div id="local-state-upload" class="dialog-button">Upload</div>
+            
+            <div class="dialog-divider"></div>
+            <div id="local-state-download" class="dialog-button">Download</div>
+
+            <div class="dialog-divider"></div>
+            <div id="game-state-cancel" class="dialog-button default">Cancel</div>
+          </div>
+
+          <div class="dialog-margin"></div>
+
+        </div>
+      </div><!-- upload-progress -->
 
       <div id="load-progress" class="settings screen hidden" style="display: none;">
 

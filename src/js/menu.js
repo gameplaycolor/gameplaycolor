@@ -49,61 +49,110 @@
           self.hide();
         }});
 
+        self.handleGameState = new App.Controls.Button($('#menu-button-game-state'), { touchUpInside: function () {
+          $('#game-state-settings').show().removeClass('hidden')
+          self.hide()
+          setTimeout(function () {
+            app.console.pause()
+          }, 200);
+        }})
+
+        function hideGameStateSettings() {
+          $('#game-state-settings').addClass('hidden')
+          setTimeout(function () {
+            $('#game-state-settings').hide()
+            app.console.run()
+          }, 200);
+        }
+
         var loadDialog = $('#load-progress')
-        function hideDialog(upOrDown, failed) {
+        function hideDialog() {
           loadDialog.addClass('hidden')
           setTimeout(function() {
             loadDialog.hide()
-            if (failed) {
-              alert('An unknown error occurred while ' + upOrDown + 'loading the game state')
-            }
-          }, 150)
+          }, 200)
         }
-        self.saveGameState = new App.Controls.Button($('#menu-button-save-state'), { touchUpInside: function () {
-          self.hide()
-          if (navigator.onLine) {
-            $('#up-or-down').html('Up')
-            loadDialog.show().removeClass('hidden')
-            drive.uploadGameState()
-              .then(function() {
-                hideDialog()
-              })
-              .fail(function() {
-                alert('An unknown error occured while trying to upload the game state')
-                hideDialog('up', true)
-              })
-          } else {
-            alert('Unable to upload game state because you are not connected to the internet')
-          }
-        }})
-        self.loadGameState = new App.Controls.Button($('#menu-button-load-state'), { touchUpInside: function () {
-          self.hide()
-          if (navigator.onLine) {
-            $('#up-or-down').html('Down')
-            loadDialog.show().removeClass('hidden')
-            drive.downloadGameState()
-              .then(function(stateData) {
-                if (stateData) {
-                  var game = gameboy.name
-                  gameboy.name = 'temp'
-                  setValue('B64_SRAM_' + game, stateData)
-                  saveSRAM()
-                  if (self.onReset !== undefined) {
-                    self.onReset()
+
+        self.gameStateOptions = {
+          drivePush: new App.Controls.Button($('#drive-state-sync-push'), { touchUpInside: function () {
+            if (navigator.onLine) {
+              $('#up-or-down').html('Up')
+              loadDialog.show().removeClass('hidden')
+              drive.uploadGameState()
+                .then(function() {
+                  hideDialog()
+                  hideGameStateSettings()
+                })
+                .fail(function() {
+                  alert('An unknown error occured while trying to upload the game state')
+                  hideDialog()
+                })
+            } else {
+              alert('Unable to upload game state because you are not connected to the internet')
+            }
+          }}),
+          drivePull: new App.Controls.Button($('#drive-state-sync-pull'), { touchUpInside: function () {
+            if (navigator.onLine) {
+              $('#up-or-down').html('Down')
+              loadDialog.show().removeClass('hidden')
+              drive.downloadGameState()
+                .then(function(stateData) {
+                  if (stateData) {
+                    var game = gameboy.name
+                    gameboy.name = 'temp'
+                    setValue('B64_SRAM_' + game, stateData)
+                    saveSRAM()
+                    if (self.onReset !== undefined) {
+                      self.onReset()
+                    }
+                  } else {
+                    alert('No state has been saved for this game')
                   }
-                } else {
-                  alert('No state has been saved for this game')
-                }
-                hideDialog()
-              })
-              .fail(function() {
-                alert('An unknown error occured while trying to download the game state')
-                hideDialog('up', true)
-              })
-          } else {
-            alert('Unable to retrieve game state because you are not connected to the internet')
+                  hideDialog()
+                  hideGameStateSettings()
+                })
+                .fail(function() {
+                  alert('An unknown error occured while trying to download the game state')
+                  hideDialog()
+                })
+            } else {
+              alert('Unable to retrieve game state because you are not connected to the internet')
+            }
+          }}),
+          localUpload: new App.Controls.Button($('#local-state-upload'), { touchUpInside: function () {
+            $('#state-file-input').click()
+          }}),
+          localDownload: new App.Controls.Button($('#local-state-download'), { touchUpInside: function () {
+            hideGameStateSettings()
+
+            var dataUrl = 'data:application/octet-stream;base64,' + saveState['B64_SRAM_' + gameboy.name]
+            window.open(dataUrl)
+          }}),
+          cancel: new App.Controls.Button($('#game-state-cancel'), { touchUpInside: function () {
+            hideGameStateSettings()
+          }})
+        }
+
+        $('#state-file-input').on('change', function(e) {
+          var file = e.target.files[0]
+
+          var reader = new FileReader()
+          reader.readAsDataURL(file)
+          reader.onload = function(ev) {
+            var dataUrl = ev.target.result
+            var stateData = dataUrl.split(',')[1]
+
+            var game = gameboy.name
+            gameboy.name = 'temp'
+            setValue('B64_SRAM_' + game, stateData)
+            saveSRAM()
+            if (self.onReset !== undefined) {
+              self.onReset()
+            }
+
+            hideGameStateSettings()
           }
-        }})
+        })
       },
       
       hide: function() {

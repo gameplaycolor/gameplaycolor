@@ -1,1 +1,2 @@
-- Minor bugfixes
+- Add support for uploading and downloading .sav files
+- Improves UI for handling save state
