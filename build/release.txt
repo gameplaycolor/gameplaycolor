@@ -1,1 +1,1 @@
-- Update from @nickydraz to use IndexedDB to support iOS 13. 
+- Minor bugfixes

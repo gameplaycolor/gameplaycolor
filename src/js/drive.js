@@ -53,6 +53,7 @@
         self.stateChangeCallbacks = [];
         self.logging = new App.Logging(window.config.logging_level, "drive");
         self.requestId = 0;
+        self.gameStateFiles = { }
 
         self.store = new App.Store("com.gameplaycolor.drive", 50);
         self.store.open(function(opened, error) {
