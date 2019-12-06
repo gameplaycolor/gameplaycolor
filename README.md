@@ -54,6 +54,18 @@ The build will be created in the `build` directory, and a corresponding *.tar.gz
 Changelog
 ---------
 
+### Version 3.1.1
+
+- Update menus to fit full screen iPhones
+
+### Version 3.1.0
+
+- Add support for importing and exporting .sav files
+
+### Version 3.0.5
+
+- Fix issue with Google Drive sync caused when merging upstream 
+
 ### Version 3.0.4
 
 - Fix issue with loading game states
