@@ -119,10 +119,10 @@
               alert('Unable to retrieve game state because you are not connected to the internet')
             }
           }}),
-          localUpload: new App.Controls.Button($('#local-state-upload'), { touchUpInside: function () {
+          localUpload: new App.Controls.Button($('#local-state-import'), { touchUpInside: function () {
             $('#state-file-input').click()
           }}),
-          localDownload: new App.Controls.Button($('#local-state-download'), { touchUpInside: function () {
+          localDownload: new App.Controls.Button($('#local-state-export'), { touchUpInside: function () {
             hideGameStateSettings()
 
             var dataUrl = 'data:application/octet-stream;base64,' + saveState['B64_SRAM_' + gameboy.name]

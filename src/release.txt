@@ -1,2 +1,2 @@
-- Add support for uploading and downloading .sav files
-- Improves UI for handling save state
+- UI update to better support full screen iPhones
+- Other minor UI changes
