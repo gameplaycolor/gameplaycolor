@@ -101,10 +101,30 @@
           }, 0);
         }});*/
 
-        // Shortcut
+        // Refresh
 
         self.refresh = new App.Controls.Button($('#screen-settings-refresh'), { touchUpInside: function() {
           location.reload()
+        }});
+
+        // Clear save data
+
+        self.clearSaveData = new App.Controls.Button($('#screen-settings-save-clear'), { touchUpInside: function() {
+          var allClear = confirm("Are you sure you want to clear all of your save data?\nThis cannot be undone")
+          if (allClear) {
+            var saveStore = app.store.getStore('properties', 'readwrite')
+            saveStore.openCursor().onsuccess = function(e) {
+              var cursor = e.target.result
+              if (cursor) {
+                var domain = cursor.value.domain
+                if (domain.includes('game-')) {
+                  window.console.log(domain)
+                  cursor['delete']()
+                }
+                cursor.advance(1)
+              }
+            }
+          }
         }});
 
         // Done

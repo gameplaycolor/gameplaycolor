@@ -1,2 +1,4 @@
-- UI update to better support full screen iPhones
+- Add button for clearing all save data in settings
 - Other minor UI changes
+
+If you have been having issues with saving since 3.0.4 clearing all of the save data should help, just be sure to sync it first
