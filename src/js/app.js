@@ -174,6 +174,14 @@ Promise.prototype.always = function(onAlways) {
                 self.soundMenu.show();
               });
 
+              document.addEventListener("visibilitychange", function(e) {
+                console.log(document.visibilityState, "hidden: " + document.hidden)
+                if (document.hidden) {
+                  var snapshot = gameboy.saveState().slice(1)
+                  localStorage.setItem('snapshot', JSON.stringify(snapshot))
+                }
+              })
+
               setInterval(function() {
                 autoSave();
               }, 1000);
@@ -205,6 +213,12 @@ Promise.prototype.always = function(onAlways) {
         self.store.property(App.Controller.Domain.SETTINGS, App.Store.Property.GAME, function(identifier) {
           if (identifier !== undefined) {
             self.load(identifier).then(function() {
+              var snapshot = localStorage.getItem('snapshot')
+              if (snapshot) {
+                snapshot = JSON.parse(snapshot)
+                var state = [gameboy.ROM].concat(snapshot)
+                gameboy.returnFromState(state)
+              }
               resolve();
             }, function(error) {
               reject(error);
