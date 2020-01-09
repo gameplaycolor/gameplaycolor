@@ -1,1 +1,2 @@
-- Automatically save a snapshot of your game when you close the app
+- Automatically save a snapshot for each game so you can continue from where you left off after switching games
+- Fix issue with saving the game after closing and reopening the app

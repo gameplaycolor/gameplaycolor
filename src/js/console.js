@@ -96,8 +96,12 @@ KEYCODE_SHIFT_LEFT = 16;
         }});
         
         self.navigation_back = new App.Controls.Button($('#button-library'), { touchUpInside: function() {
-          var snapshot = gameboy.saveState().slice(1)
-          localStorage.setItem('snapshot', JSON.stringify(snapshot))
+          var snapshot = app.getSnapshot()
+          app.setValue(saveStateContext, "SNAPSHOT_" + gameboy.name, snapshot)
+          localStorage.setItem("snapshot", JSON.stringify({
+            name: gameboy.name + "_" + saveStateContext,
+            data: snapshot
+          }))
 
           self.logging.info("Show library");
           window.tracker.track('games');

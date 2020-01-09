@@ -103,6 +103,19 @@ function startWrapper(identifier, canvas, ROM) {
   loadSaveStateContext("game-" + identifier).then(function() {
     try {
       start(canvas, ROM, true);
+
+      var snapshot = localStorage.getItem("snapshot")
+      if (snapshot === null) {
+        app.continueFromSavedSnapshot()
+      } else {
+        snapshot = JSON.parse(snapshot)
+        if (snapshot.name !== gameboy.name + "_" + saveStateContext) {
+          app.continueFromSavedSnapshot()
+        } else {
+          app.continueFromSnapshot(snapshot.data)
+        }
+      }
+      
       deferred.resolve();
     } catch (e) {
       deferred.reject(e);

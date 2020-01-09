@@ -156,29 +156,48 @@ Promise.prototype.always = function(onAlways) {
 
               // Ensure sound is enabled on a user interaction.
 
-              self.soundMenu = new App.SoundMenu(function() {
+              var audioEnabled = localStorage.getItem("audio")
+              if (audioEnabled === null) {
+                self.soundMenu = new App.SoundMenu(function() {
                   self.gameBoy.pause();
                 }, function() {
                   self.gameBoy.run();
-              });
+                });
 
-              self.gameBoy.setSoundEnabled(false);
-              self.soundMenu.onEnable = function() {
-                self.gameBoy.setSoundEnabled(true);
-              };
+                self.gameBoy.setSoundEnabled(false);
+                self.soundMenu.onEnable = function() {
+                  self.gameBoy.setSoundEnabled(true);
+                };
+              } else {
+                self.gameBoy.setSoundEnabled(audioEnabled);
+                localStorage.removeItem("audio")
+              }
 
               // Restore settings.
               self.restorePrevious().always(function() {
+                /*var snapshot = localStorage.getItem("snapshot")
+                if (snapshot !== null) {
+                  snapshot = JSON.parse(snapshot)
+                  if (snapshot.name === gameboy.name + "_" + saveStateContext) {
+                    self.continueFromSnapshot(snapshot.data)
+                  }
+                }*/
+
                 self.console.setAnimationEnabled(true);
                 $("#screen-splash").css("display", "none");
+
+                if (audioEnabled !== null) return
                 self.soundMenu.show();
               });
 
               document.addEventListener("visibilitychange", function(e) {
-                console.log(document.visibilityState, "hidden: " + document.hidden)
-                if (document.hidden) {
-                  var snapshot = gameboy.saveState().slice(1)
-                  localStorage.setItem('snapshot', JSON.stringify(snapshot))
+                localStorage.setItem("snapshot", JSON.stringify({
+                  name: gameboy.name + "_" + saveStateContext,
+                  data: self.getSnapshot()
+                }))
+                if (!document.hidden) {
+                  localStorage.setItem("audio", settings[App.GameBoy.Settings.ENABLE_SOUND])
+                  location.reload()
                 }
               })
 
@@ -200,6 +219,33 @@ Promise.prototype.always = function(onAlways) {
       }
     },
 
+    getSnapshot: function() {
+      var snapshot = gameboy.saveState().slice(1)
+      snapshot[19] = null
+
+      return snapshot
+    },
+
+    continueFromSnapshot: function(snapshot) {
+      var state = [gameboy.ROM].concat(snapshot)
+      state[20] = gameboy.toTypedArray(gameboy.MBCRam, 'uint8')
+      gameboy.returnFromState(state)
+    },
+
+    continueFromSavedSnapshot: function() {
+      var self = this
+      return new Promise(function(resolve, reject) {
+        self.getValue(saveStateContext, "SNAPSHOT_" + gameboy.name, function(snapshot) {
+          if (snapshot !== undefined) {
+            self.continueFromSnapshot(snapshot)
+            resolve()
+          } else {
+            reject()
+          }
+        })
+      })
+    },
+
     /**
      * Restores the previous ROM and game state if one was present.
      *
@@ -213,12 +259,6 @@ Promise.prototype.always = function(onAlways) {
         self.store.property(App.Controller.Domain.SETTINGS, App.Store.Property.GAME, function(identifier) {
           if (identifier !== undefined) {
             self.load(identifier).then(function() {
-              var snapshot = localStorage.getItem('snapshot')
-              if (snapshot) {
-                snapshot = JSON.parse(snapshot)
-                var state = [gameboy.ROM].concat(snapshot)
-                gameboy.returnFromState(state)
-              }
               resolve();
             }, function(error) {
               reject(error);
