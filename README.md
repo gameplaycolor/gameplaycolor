@@ -54,6 +54,23 @@ The build will be created in the `build` directory, and a corresponding *.tar.gz
 Changelog
 ---------
 
+### Version 3.2.3
+- Use different workaround for closing IndexedDB issue (see Version 3.2.1)
+
+### Version 3.2.2
+- Fix issue that caused the restart button to load the most recent snapshot instead of restarting
+- Fix audio issue with closing and reopening the app caused by autoplay restriction
+
+### Version 3.2.1
+- Update snapshot feature to store a snapshot for each game
+- Implement workaround for issue caused by iOS closing indexedDB connections when the app is sent to background (issue #5)
+
+### Version 3.2.0
+- Add support for saving a snapshot automatically when users close the app
+
+### Version 3.1.2
+- Add button for clearing all save data to help fix issues caused in upstream merge
+
 ### Version 3.1.1
 
 - Update menus to fit full screen iPhones
