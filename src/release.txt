@@ -1,2 +1,2 @@
-- Automatically save a snapshot for each game so you can continue from where you left off after switching games
-- Fix issue with saving the game after closing and reopening the app
+- Fixes the console restart button to actually restart instead of loading the most recent snapshot
+- Fixes audio issue when closing and reopening the app

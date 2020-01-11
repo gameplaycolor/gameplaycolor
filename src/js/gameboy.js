@@ -98,21 +98,26 @@ function findValue(key) {
   return value;
 }
 
+var restartPressed = false
 function startWrapper(identifier, canvas, ROM) {
   var deferred = jQuery.Deferred();
   loadSaveStateContext("game-" + identifier).then(function() {
     try {
       start(canvas, ROM, true);
 
-      var snapshot = localStorage.getItem("snapshot")
-      if (snapshot === null) {
-        app.continueFromSavedSnapshot()
+      if (restartPressed === true) {
+        restartPressed = false
       } else {
-        snapshot = JSON.parse(snapshot)
-        if (snapshot.name !== gameboy.name + "_" + saveStateContext) {
+        var snapshot = localStorage.getItem("snapshot")
+        if (snapshot === null) {
           app.continueFromSavedSnapshot()
         } else {
-          app.continueFromSnapshot(snapshot.data)
+          snapshot = JSON.parse(snapshot)
+          if (snapshot.name !== gameboy.name + "_" + saveStateContext) {
+            app.continueFromSavedSnapshot()
+          } else {
+            app.continueFromSnapshot(snapshot.data)
+          }
         }
       }
       
@@ -174,6 +179,7 @@ function startWrapper(identifier, canvas, ROM) {
     },
 
     setSoundEnabled: function(enabled) {
+      console.log('setting: ', enabled === true)
       var self = this;
       if (enabled === true) {
         settings[App.GameBoy.Settings.ENABLE_SOUND] = true;
@@ -183,7 +189,7 @@ function startWrapper(identifier, canvas, ROM) {
       } else {
         settings[App.GameBoy.Settings.ENABLE_SOUND] = false;
         if (gameboy) {
-          gameboy.stopSound();
+          gameboy.initSound();
         }
       }
     },
@@ -229,6 +235,7 @@ function startWrapper(identifier, canvas, ROM) {
 
     keyDown: function(keycode) {
       var self = this;
+      if (app.someUserInteraction) { app.someUserInteraction() }
       GameBoyJoyPadEvent(keycode, true);
     },
 
@@ -246,6 +253,7 @@ function startWrapper(identifier, canvas, ROM) {
 
     reset: function() {
       var self = this;
+      restartPressed = true
       return self._insertCartridge(self.identifier, self.data);
     },
 

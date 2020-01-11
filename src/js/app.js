@@ -155,39 +155,33 @@ Promise.prototype.always = function(onAlways) {
               self.checkForUpdate();
 
               // Ensure sound is enabled on a user interaction.
+              self.soundMenu = new App.SoundMenu(function() {
+                self.gameBoy.pause();
+              }, function() {
+                self.gameBoy.run();
+              });
+
+              self.gameBoy.setSoundEnabled(false);
+              self.soundMenu.onEnable = function() {
+                self.gameBoy.setSoundEnabled(true);
+              };
 
               var audioEnabled = localStorage.getItem("audio")
-              if (audioEnabled === null) {
-                self.soundMenu = new App.SoundMenu(function() {
-                  self.gameBoy.pause();
-                }, function() {
-                  self.gameBoy.run();
-                });
-
-                self.gameBoy.setSoundEnabled(false);
-                self.soundMenu.onEnable = function() {
-                  self.gameBoy.setSoundEnabled(true);
-                };
-              } else {
-                self.gameBoy.setSoundEnabled(audioEnabled);
-                localStorage.removeItem("audio")
-              }
+              localStorage.removeItem("audio")
 
               // Restore settings.
               self.restorePrevious().always(function() {
-                /*var snapshot = localStorage.getItem("snapshot")
-                if (snapshot !== null) {
-                  snapshot = JSON.parse(snapshot)
-                  if (snapshot.name === gameboy.name + "_" + saveStateContext) {
-                    self.continueFromSnapshot(snapshot.data)
-                  }
-                }*/
-
                 self.console.setAnimationEnabled(true);
                 $("#screen-splash").css("display", "none");
 
-                if (audioEnabled !== null) return
-                self.soundMenu.show();
+                if (audioEnabled === null) {
+                  self.soundMenu.show();
+                } else if (audioEnabled == 'true') {
+                  self.someUserInteraction = function() {
+                    self.gameBoy.setSoundEnabled(true)
+                    delete self.someUserInteraction
+                  }
+                }
               });
 
               document.addEventListener("visibilitychange", function(e) {
