@@ -283,6 +283,12 @@
       request.onerror = function(e) {
         callback(undefined);
       };
+    },
+
+    close: function() {
+      var self = this
+      var db = self.database.indexedDB.db
+      db.close()
     }
   });
 })(jQuery);

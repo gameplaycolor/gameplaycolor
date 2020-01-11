@@ -179,7 +179,6 @@ function startWrapper(identifier, canvas, ROM) {
     },
 
     setSoundEnabled: function(enabled) {
-      console.log('setting: ', enabled === true)
       var self = this;
       if (enabled === true) {
         settings[App.GameBoy.Settings.ENABLE_SOUND] = true;

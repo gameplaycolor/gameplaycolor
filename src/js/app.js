@@ -166,22 +166,12 @@ Promise.prototype.always = function(onAlways) {
                 self.gameBoy.setSoundEnabled(true);
               };
 
-              var audioEnabled = localStorage.getItem("audio")
-              localStorage.removeItem("audio")
-
               // Restore settings.
               self.restorePrevious().always(function() {
                 self.console.setAnimationEnabled(true);
                 $("#screen-splash").css("display", "none");
 
-                if (audioEnabled === null) {
-                  self.soundMenu.show();
-                } else if (audioEnabled == 'true') {
-                  self.someUserInteraction = function() {
-                    self.gameBoy.setSoundEnabled(true)
-                    delete self.someUserInteraction
-                  }
-                }
+                self.soundMenu.show();
               });
 
               document.addEventListener("visibilitychange", function(e) {
@@ -189,9 +179,12 @@ Promise.prototype.always = function(onAlways) {
                   name: gameboy.name + "_" + saveStateContext,
                   data: self.getSnapshot()
                 }))
-                if (!document.hidden) {
-                  localStorage.setItem("audio", settings[App.GameBoy.Settings.ENABLE_SOUND])
-                  location.reload()
+                if (document.hidden) {
+                  app.store.close()
+                  app.drive.store.close()
+                } else {
+                  app.store.open(function(){})
+                  app.drive.store.open(function(){})
                 }
               })
 
@@ -232,9 +225,9 @@ Promise.prototype.always = function(onAlways) {
         self.getValue(saveStateContext, "SNAPSHOT_" + gameboy.name, function(snapshot) {
           if (snapshot !== undefined) {
             self.continueFromSnapshot(snapshot)
-            resolve()
+            resolve(true)
           } else {
-            reject()
+            resolve(false)
           }
         })
       })
@@ -387,7 +380,7 @@ function bootstrap() {
 }
 
 function sendLogs() {
-  window.location.href = 'mailto:support@inseven.co.uk?subject=Game Play Color Logs&body=Description:%0A%0APlease describe the issue you are seeing.%0A%0ALogs:%0A%0A' + encodeURIComponent(App.Logging.logs());
+  window.location.href = 'mailto:?subject=Game Play Color Logs&body=Description:%0A%0APlease describe the issue you are seeing.%0A%0ALogs:%0A%0A' + encodeURIComponent(App.Logging.logs());
 }
 
 window.onerror = function(message, url, linenumber) {
