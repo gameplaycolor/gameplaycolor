@@ -98,29 +98,11 @@ function findValue(key) {
   return value;
 }
 
-var restartPressed = false
 function startWrapper(identifier, canvas, ROM) {
   var deferred = jQuery.Deferred();
   loadSaveStateContext("game-" + identifier).then(function() {
     try {
       start(canvas, ROM, true);
-
-      if (restartPressed === true) {
-        restartPressed = false
-      } else {
-        var snapshot = localStorage.getItem("snapshot")
-        if (snapshot === null) {
-          app.continueFromSavedSnapshot()
-        } else {
-          snapshot = JSON.parse(snapshot)
-          if (snapshot.name !== gameboy.name + "_" + saveStateContext) {
-            app.continueFromSavedSnapshot()
-          } else {
-            app.continueFromSnapshot(snapshot.data)
-          }
-        }
-      }
-      
       deferred.resolve();
     } catch (e) {
       deferred.reject(e);
@@ -252,7 +234,6 @@ function startWrapper(identifier, canvas, ROM) {
 
     reset: function() {
       var self = this;
-      restartPressed = true
       return self._insertCartridge(self.identifier, self.data);
     },
 

@@ -74,7 +74,9 @@ Promise.prototype.always = function(onAlways) {
             self.console.clear();
             self.console.show();
             setTimeout(function() {
-              self.load(identifier);
+              self.load(identifier).always(function() {
+                self.continueFromSavedSnapshot()
+              });
             }, 400);
           },
           function() {
@@ -169,9 +171,23 @@ Promise.prototype.always = function(onAlways) {
               // Restore settings.
               self.restorePrevious().always(function() {
                 self.console.setAnimationEnabled(true);
-                $("#screen-splash").css("display", "none");
 
-                self.soundMenu.show();
+                var snapshot = localStorage.getItem("snapshot")
+                if (snapshot === null) {
+                  app.continueFromSavedSnapshot()
+                } else {
+                  snapshot = JSON.parse(snapshot)
+                  if (snapshot.name !== gameboy.name + "_" + saveStateContext) {
+                    app.continueFromSavedSnapshot()
+                  } else {
+                    app.continueFromSnapshot(snapshot.data)
+                  }
+                }
+                
+                setTimeout(function(){
+                  $("#screen-splash").css("display", "none");
+                  self.soundMenu.show();
+                }, 50)
               });
 
               document.addEventListener("visibilitychange", function(e) {
