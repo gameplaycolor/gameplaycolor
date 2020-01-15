@@ -1,1 +1,1 @@
-- Fixes issue that sometimes caused an incorrect snapshot to be loaded when the app was opened
+- Minor bugfixes

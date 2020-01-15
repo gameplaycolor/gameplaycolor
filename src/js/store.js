@@ -170,7 +170,7 @@
               "' for domain '" +
               domain +
               "' with length " +
-              e.target.result.value.length
+              (e.target.result.value ? e.target.result.value.length : "undefined")
           );
           callback(e.target.result.value);
         } else {
@@ -193,9 +193,11 @@
       var self = this;
       var store = self.getStore("properties", "readwrite");
 
-      var request = store["delete"]([key, domain]);
+      var request = store["delete"](JSON.stringify({ domain: domain, key: key }));
 
-      request.onsuccess = function(e) {};
+      request.onsuccess = function(e) { 
+        self.logging.info("Succesfully deleted file in domain '" + domain + "' with key '" + key + "'")
+      };
 
       request.onerror = function(e) {
         self.logging.error("Error deleting item: ", e);
@@ -241,7 +243,6 @@
 
 
       request.onsuccess = function (e) {
-        console.log('here');
         for (let i = 0; i < e.target.result.length; i++) {
           properties[e.target.result[i].key] = e.target.result[i].value;
         }
