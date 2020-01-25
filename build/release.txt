@@ -1,1 +1,1 @@
-- Minor bugfixes
+- Improve reliability of snapshots

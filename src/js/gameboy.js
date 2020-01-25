@@ -216,7 +216,6 @@ function startWrapper(identifier, canvas, ROM) {
 
     keyDown: function(keycode) {
       var self = this;
-      if (app.someUserInteraction) { app.someUserInteraction() }
       GameBoyJoyPadEvent(keycode, true);
     },
 

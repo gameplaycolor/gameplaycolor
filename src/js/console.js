@@ -98,7 +98,6 @@ KEYCODE_SHIFT_LEFT = 16;
         self.navigation_back = new App.Controls.Button($('#button-library'), { touchUpInside: function() {
           var snapshot = app.getSnapshot()
           app.setValue(saveStateContext, "SNAPSHOT_" + gameboy.name, snapshot)
-          if (app.someUserInteraction) { app.someUserInteraction() }
           localStorage.setItem("snapshot", JSON.stringify({
             name: gameboy.name + "_" + saveStateContext,
             data: snapshot

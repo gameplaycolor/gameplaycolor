@@ -173,15 +173,12 @@ Promise.prototype.always = function(onAlways) {
                 self.console.setAnimationEnabled(true);
 
                 var snapshot = localStorage.getItem("snapshot")
-                if (snapshot === null) {
-                  app.continueFromSavedSnapshot()
-                } else {
+                if (snapshot !== null) {
                   snapshot = JSON.parse(snapshot)
-                  if (snapshot.name !== gameboy.name + "_" + saveStateContext) {
-                    app.continueFromSavedSnapshot()
-                  } else {
-                    app.continueFromSnapshot(snapshot.data)
+                  if (snapshot.name === gameboy.name + "_" + saveStateContext) {
+                    self.continueFromSnapshot(snapshot.data)
                   }
+                  localStorage.removeItem("snapshot")
                 }
                 
                 setTimeout(function(){
@@ -191,16 +188,17 @@ Promise.prototype.always = function(onAlways) {
               });
 
               document.addEventListener("visibilitychange", function(e) {
-                localStorage.setItem("snapshot", JSON.stringify({
-                  name: gameboy.name + "_" + saveStateContext,
-                  data: self.getSnapshot()
-                }))
                 if (document.hidden) {
-                  app.store.close()
-                  app.drive.store.close()
+                  localStorage.setItem("snapshot", JSON.stringify({
+                    name: gameboy.name + "_" + saveStateContext,
+                    data: self.getSnapshot()
+                  }))
+
+                  self.store.close()
+                  self.drive.store.close()
                 } else {
-                  app.store.open(function(){})
-                  app.drive.store.open(function(){})
+                  self.store.open(function(){})
+                  self.drive.store.open(function(){})
                 }
               })
 
