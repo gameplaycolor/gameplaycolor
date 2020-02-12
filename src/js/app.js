@@ -188,25 +188,21 @@ Promise.prototype.always = function(onAlways) {
               });
 
               document.addEventListener("visibilitychange", function(e) {
-                if (document.hidden) {
-                  localStorage.setItem("snapshot", JSON.stringify({
-                    name: gameboy.name + "_" + saveStateContext,
-                    data: self.getSnapshot()
-                  }))
+                localStorage.setItem("snapshot", JSON.stringify({
+                  name: gameboy.name + "_" + saveStateContext,
+                  data: self.getSnapshot()
+                }))
 
-                  self.store.close()
-                  self.drive.store.close()
-                } else {
-                  self.store.open(function(){})
-                  self.drive.store.open(function(){})
+                if (!document.hidden) {
+                  location.reload()
                 }
               })
 
               setInterval(function() {
                 autoSave();
               }, 1000);
-
             };
+
             const boundCallback = callback.bind(self);
             self.drive = App.Drive.Instance(boundCallback);
           }
@@ -223,6 +219,7 @@ Promise.prototype.always = function(onAlways) {
     getSnapshot: function() {
       var snapshot = gameboy.saveState().slice(1)
       snapshot[19] = null
+      snapshot[70] = null
 
       return snapshot
     },
