@@ -15,4 +15,4 @@ for line in sys.stdin:
         color = GREEN
     elif "FAIL" in line or "error:" in line:
         color = RED
-    print "%s%s%s" % (color, line, RESET)
+    print("%s%s%s" % (color, line, RESET))
