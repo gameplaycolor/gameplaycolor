@@ -9,3 +9,5 @@
 
 /scripts/htmlcompressor*
 /scripts/yuicompressor*
+
+/serving/localhost.pem

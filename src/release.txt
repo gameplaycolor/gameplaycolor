@@ -1,1 +1,1 @@
-- Fixes issue that could cause freezing and crashing
+- Added game controller support

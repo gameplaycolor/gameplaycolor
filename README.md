@@ -54,6 +54,9 @@ The build will be created in the `build` directory, and a corresponding *.tar.gz
 Changelog
 ---------
 
+### Version 3.3.0
+- Added game controller support
+
 ### Version 3.2.3
 - Use different workaround for closing IndexedDB issue (see Version 3.2.1)
 
