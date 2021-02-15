@@ -2,99 +2,97 @@ var GameController = function() {
   this.init()
 }
 
-jQuery.extend(GameController.prototype, {
-  init: function() {
-    const self = this
+GameController.prototype.init = function() {
+  const self = this
 
-    self.gamepadIndex = 0
-    self.state = {
-      /** @type { boolean[] } */
-      buttons: [],
-      /** @type { number[] } */
-      axes: []
-    },
-
-    /** @type { ((axisKey: number, value: number) => void)[] } */
-    self._axisCallbacks = []
-    /** @type { ((buttonKey: number, pressed: boolean) => void)[] } */
-    self._buttonCallbacks = []
-    /** @type { ((status: "connected" | "disconnected", gamepad: Gamepad, gamepadIndex: number) => void)[] } */
-    self._controllerCallbacks = []
-
-    self.initEventListeners()
-    self.initRunloop()
+  self.gamepadIndex = 0
+  self.state = {
+    /** @type { boolean[] } */
+    buttons: [],
+    /** @type { number[] } */
+    axes: []
   },
 
-  initEventListeners: function() {
-    const self = this
+  /** @type { ((axisKey: number, value: number) => void)[] } */
+  self._axisCallbacks = []
+  /** @type { ((buttonKey: number, pressed: boolean) => void)[] } */
+  self._buttonCallbacks = []
+  /** @type { ((status: "connected" | "disconnected", gamepad: Gamepad, gamepadIndex: number) => void)[] } */
+  self._controllerCallbacks = []
 
-    window.addEventListener("gamepadconnected", function(e) {
-      var gp = navigator.getGamepads()[e.gamepad.index]
-      self.gamepadIndex = gp.index
+  self.initEventListeners()
+  self.initRunloop()
+}
 
-      self._controllerCallbacks.forEach(function(cb) {
-        cb("connected", gp, gp.index)
-      })
+GameController.prototype.initEventListeners = function() {
+  const self = this
+
+  window.addEventListener("gamepadconnected", function(e) {
+    var gp = navigator.getGamepads()[e.gamepad.index]
+    self.gamepadIndex = gp.index
+
+    self._controllerCallbacks.forEach(function(cb) {
+      cb("connected", gp, gp.index)
     })
-    window.addEventListener("gamepaddisconnected", function(e) {
-      console.log(e)
+  })
+  window.addEventListener("gamepaddisconnected", function(e) {
+    console.log(e)
 
-      self._controllerCallbacks.forEach(function(cb) {
-        cb("disconnected")
-      })
+    self._controllerCallbacks.forEach(function(cb) {
+      cb("disconnected")
     })
-  },
+  })
+}
 
-  initRunloop: function() {
-    const self = this
+GameController.prototype.initRunloop = function() {
+  const self = this
 
-    runloop = function() {
-      const gamepad = navigator.getGamepads()[self.gamepadIndex]
-      if (!gamepad || gamepad.mapping !== "standard") return
+  runloop = function() {
+    const gamepad = navigator.getGamepads()[self.gamepadIndex]
+    if (!gamepad || gamepad.mapping !== "standard") return
 
-      gamepad.axes.forEach(function(val, index) {
-        if (val !== self.state.axes[index]) {
-          self.state.axes[index] = val
+    gamepad.axes.forEach(function(val, index) {
+      if (val !== self.state.axes[index]) {
+        self.state.axes[index] = val
 
-          self._axisCallbacks.forEach(function(cb) {
-            cb(index, val)
-          })
-        }
-      })
+        self._axisCallbacks.forEach(function(cb) {
+          cb(index, val)
+        })
+      }
+    })
 
-      gamepad.buttons.forEach(function(val, index) {
-        if (val.pressed !== self.state.buttons[index]) {
-          self.state.buttons[index] = val.pressed
+    gamepad.buttons.forEach(function(val, index) {
+      if (val.pressed !== self.state.buttons[index]) {
+        self.state.buttons[index] = val.pressed
 
-          self._buttonCallbacks.forEach(function(cb) {
-            cb(index, val.pressed)
-          })
-        }
-      })
-    }
-  },
-
-  /**
-   * @param { (status: "connected" | "disconnected", gamepad: Gamepad, gamepadIndex: number) => void } callback
-   */
-  watchControllers: function(callback) {
-    this._controllerCallbacks.push(callback)
-  },
-
-  /**
-   * @param { (buttonKey: number, pressed: boolean) => void } callback
-   */
-  watchButtons: function(callback) {
-    this._buttonCallbacks.push(callback)
-  },
-
-  /**
-   * @param { (axisKey: number, value: number) => void } callback
-   */
-  watchAxes: function(callback) {
-    this._axisCallbacks.push(callback)
+        self._buttonCallbacks.forEach(function(cb) {
+          cb(index, val.pressed)
+        })
+      }
+    })
   }
-})
+}
+
+/**
+ * @param { (status: "connected" | "disconnected", gamepad: Gamepad, gamepadIndex: number) => void } callback
+ */
+GameController.prototype.watchControllers = function(callback) {
+  this._controllerCallbacks.push(callback)
+},
+
+/**
+ * @param { (buttonKey: number, pressed: boolean) => void } callback
+ */
+GameController.prototype.watchButtons = function(callback) {
+  this._buttonCallbacks.push(callback)
+},
+
+/**
+ * @param { (axisKey: number, value: number) => void } callback
+ */
+GameController.prototype.watchAxes = function(callback) {
+  this._axisCallbacks.push(callback)
+}
 
 GameController.Mapping = {}
 GameController.Mapping.Button = {
