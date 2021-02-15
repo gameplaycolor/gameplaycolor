@@ -74,18 +74,19 @@
 
       runloop = function() {
         const gamepad = navigator.getGamepads()[gamepadIndex]
-        if (!gamepad) return
+        if (!gamepad || gamepad.mapping !== "standard") return
 
         const currentAxes = gamepadState.axes
+        const axisThreshold = 0.5
         gamepad.axes.forEach(function(val, index) {
           if (currentAxes[index] !== val) {
             currentAxes[index] = val
             const axisName = axisMap[index]
 
             if (axisName.endsWith("VERT")) {
-              if (val < -0.5) {
+              if (val < -axisThreshold) {
                 self.setUp(true)
-              } else if (val > 0.5) {
+              } else if (val > axisThreshold) {
                 self.setDown(true)
               } else {
                 self.setUp(false)
@@ -93,9 +94,9 @@
               }
             }
             else if (axisName.endsWith("HORIZ")) {
-              if (val < -0.5) {
+              if (val < -axisThreshold) {
                 self.setLeft(true)
-              } else if (val > 0.5) {
+              } else if (val > axisThreshold) {
                 self.setRight(true)
               } else {
                 self.setLeft(false)

@@ -188,6 +188,8 @@ Promise.prototype.always = function(onAlways) {
               });
 
               document.addEventListener("visibilitychange", function(e) {
+                if (!gameboy) return
+
                 localStorage.setItem("snapshot", JSON.stringify({
                   name: gameboy.name + "_" + saveStateContext,
                   data: self.getSnapshot()
@@ -217,6 +219,8 @@ Promise.prototype.always = function(onAlways) {
     },
 
     getSnapshot: function() {
+      if (!gameboy) return
+
       var snapshot = gameboy.saveState().slice(1)
       snapshot[19] = null
       snapshot[70] = null
@@ -352,9 +356,9 @@ Promise.prototype.always = function(onAlways) {
 
   $(document).ready(function() {
 
-    var iPhone = (navigator.userAgent.indexOf("iPhone OS") !== -1);
-    var iPad = (navigator.userAgent.indexOf("iPad") !== -1);
-    if ((window.navigator.standalone === true && (iPhone || iPad))) {
+    // var iPhone = (navigator.userAgent.indexOf("iPhone OS") !== -1);
+    // var iPad = (navigator.userAgent.indexOf("iPad") !== -1);
+    if (window.navigator.standalone === true) {
 
       bootstrap();
 

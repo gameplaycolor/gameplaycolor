@@ -54,6 +54,9 @@ The build will be created in the `build` directory, and a corresponding *.tar.gz
 Changelog
 ---------
 
+### Version 3.3.1
+- Fix iPadOS user agent issue
+
 ### Version 3.3.0
 - Added game controller support
 

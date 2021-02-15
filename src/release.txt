@@ -1,1 +1,3 @@
 - Added game controller support
+- Fix iPadOS user agent issue
+- Bug fixes
