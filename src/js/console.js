@@ -77,6 +77,25 @@ KEYCODE_SHIFT_LEFT = 16;
         self.button_start = self.configureButton($('#control-start'), Gameboy.Key.START, KEYCODE_RETURN);
         self.button_select = self.configureButton($('#control-select'), Gameboy.Key.SELECT, KEYCODE_SHIFT_LEFT);
 
+        const but = GameController.Mapping.Button
+        gameController.watchButtons(function(buttonKey, pressed) {
+          const control = pressed ? self.core.keyDown : self.core.keyUp
+
+          if (buttonKey == but.Right.bottom || buttonKey == but.Right.top) {
+            control(Gameboy.Key.A)
+          }
+          else if (buttonKey == but.Right.left || buttonKey == but.Right.right) {
+            control(Gameboy.Key.B)
+          }
+
+          else if (buttonKey == but.Center.left) {
+            control(Gameboy.Key.SELECT)
+          }
+          else if (buttonKey == but.Center.right) {
+            control(Gameboy.Key.START)
+          }
+        })
+
         // Navigation.
 
         self.navigationBarTimeout = undefined;

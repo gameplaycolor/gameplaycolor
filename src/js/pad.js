@@ -54,101 +54,46 @@
       self.left  = false;
       self.right = false;
 
-      var gamepadIndex = 0
-      window.addEventListener("gamepadconnected", function(e) {
-        var gp = navigator.getGamepads()[e.gamepad.index];
-        gamepadIndex = gp.index
-        console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
-          gp.index, gp.id,
-          gp.buttons.length, gp.axes.length);
+      const but = GameController.Mapping.Button
+      gameController.watchButtons(function(buttonKey, pressed) {
+        if (buttonKey == but.Left.left) {
+          self.setLeft(pressed)
+        }
+        else if (buttonKey == but.Left.top) {
+          self.setUp(pressed)
+        }
+        else if (buttonKey == but.Left.right) {
+          self.setRight(pressed)
+        }
+        else if (buttonKey == but.Left.bottom) {
+          self.setDown(pressed)
+        }
       })
-      console.log(navigator.getGamepads())
 
-      var gamepadState = {
-        buttons: [],
-        axes: []
-      }
-
-      const buttonMap = [ "A", "B", "X", "Y", "LEFT_SHOULDER", "RIGHT_SHOULDER", "LEFT_TRIGGER", "RIGHT_TRIGGER", "SELECT", "START", "LEFT_STICK", "RIGHT_STICK", "UP", "DOWN", "LEFT", "RIGHT" ]
-      const axisMap = [ "LEFT_HORIZ", "LEFT_VERT", "RIGHT_HORIZ", "RIGHT_VERT" ]
-
-      runloop = function() {
-        const gamepad = navigator.getGamepads()[gamepadIndex]
-        if (!gamepad || gamepad.mapping !== "standard") return
-
-        const currentAxes = gamepadState.axes
-        const axisThreshold = 0.5
-        gamepad.axes.forEach(function(val, index) {
-          if (currentAxes[index] !== val) {
-            currentAxes[index] = val
-            const axisName = axisMap[index]
-
-            if (axisName.endsWith("VERT")) {
-              if (val < -axisThreshold) {
-                self.setUp(true)
-              } else if (val > axisThreshold) {
-                self.setDown(true)
-              } else {
-                self.setUp(false)
-                self.setDown(false)
-              }
-            }
-            else if (axisName.endsWith("HORIZ")) {
-              if (val < -axisThreshold) {
-                self.setLeft(true)
-              } else if (val > axisThreshold) {
-                self.setRight(true)
-              } else {
-                self.setLeft(false)
-                self.setRight(false)
-              }
-            }
+      const axisThreshold = 0.5
+      const axis = GameController.Mapping.Axis
+      gameController.watchAxes(function(axisKey, value) {
+        if (axisKey == axis.Left.vertical || axisKey == axis.Right.vertical) {
+          if (value < -axisThreshold) {
+            self.setUp(true)
+          } else if (value > axisThreshold) {
+            self.setDown(true)
+          } else {
+            self.setUp(false)
+            self.setDown(false)
           }
-        })
-
-        const currentButtons = gamepadState.buttons
-        gamepad.buttons.forEach(function(val, index) {
-          if (currentButtons[index] !== val.pressed) {
-            currentButtons[index] = val.pressed
-            const buttonName = buttonMap[index]
-
-            if (buttonName == "LEFT") self.setLeft(val.pressed)
-            else if (buttonName == "RIGHT") self.setRight(val.pressed)
-            else if (buttonName == "UP") self.setUp(val.pressed)
-            else if (buttonName == "DOWN") self.setDown(val.pressed)
-
-            else if (buttonName == "START") {
-              if (val.pressed) {
-                app.gameBoy.keyDown(Gameboy.Key.START)
-              } else {
-                app.gameBoy.keyUp(Gameboy.Key.START)
-              }
-            }
-            else if (buttonName == "SELECT") {
-              if (val.pressed) {
-                app.gameBoy.keyDown(Gameboy.Key.SELECT)
-              } else {
-                app.gameBoy.keyUp(Gameboy.Key.SELECT)
-              }
-            }
-
-            else if (buttonName == "A" || buttonName == "Y") {
-              if (val.pressed) {
-                app.gameBoy.keyDown(Gameboy.Key.A)
-              } else {
-                app.gameBoy.keyUp(Gameboy.Key.A)
-              }
-            }
-            else if (buttonName == "B" || buttonName == "X") {
-              if (val.pressed) {
-                app.gameBoy.keyDown(Gameboy.Key.B)
-              } else {
-                app.gameBoy.keyUp(Gameboy.Key.B)
-              }
-            }
+        }
+        else if (axisKey == axis.Left.horizontal || axisKey == axis.Right.horizontal) {
+          if (value < -axisThreshold) {
+            self.setLeft(true)
+          } else if (value > axisThreshold) {
+            self.setRight(true)
+          } else {
+            self.setLeft(false)
+            self.setRight(false)
           }
-        })
-      }
+        }
+      })
 
       $(document).keydown(function(event) {
         var keycode = event.which;
