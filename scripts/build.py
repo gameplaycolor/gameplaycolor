@@ -165,6 +165,7 @@ def build(options):
   images_dir = os.path.join(paths.SOURCE_DIR, "images")
   assets_dir = os.path.join(paths.SOURCE_DIR, "assets")
   defaults_dir = os.path.join(paths.SOURCE_DIR, "defaults")
+  checksum_file = os.path.join(paths.BUILD_DIR, "checksum.txt")
   manifest_file = os.path.join(paths.BUILD_DIR, "cache.manifest")
 
   settings = load_settings(path=os.path.abspath(options.settings))
@@ -188,6 +189,14 @@ def build(options):
     contents = f.read()
   html = lxml.html.fromstring(contents)
 
+  # Generate a sha for the build.
+  print("Generating a checksum...")
+  build_checksum = checksum(paths.BUILD_DIR)
+  # settings["checksum"] = build_checksum
+
+  with open(checksum_file, 'w') as f:
+    f.write(build_checksum)
+
   print("Extracting JavaScript...")
   script = "window.config = %s;\n" % json.dumps(settings, sort_keys=True)
   script += extract_tags(html, "//script[@type='text/javascript']", "src", paths.SOURCE_DIR)
@@ -196,7 +205,7 @@ def build(options):
     script = yuicompressor(script, '.js')
   append_javascript(html, script)
 
-  print("Exctracting CSS...")
+  print("Extracting CSS...")
   style = extract_tags(html, "//link[@type='text/css']", "href", paths.SOURCE_DIR)
   if not settings["debug"] and not options.debug:
     print("Minifying CSS...")
@@ -235,24 +244,22 @@ def build(options):
   icon_file = os.path.join(paths.ROOT_DIR, settings['icon'])
   shutil.copy(icon_file, os.path.join(paths.BUILD_DIR, "images", "icon.png"))
 
-  # Generate a sha for the build.
-  print("Generating a checksum...")
-  build_checksum = checksum(paths.BUILD_DIR)
-
   # Write the manifest.
-  print("Writing the manifest...")
-  build_files = find_files(paths.BUILD_DIR)
+  # print("Writing the manifest...")
+  # build_files = find_files(paths.BUILD_DIR)
   with open(manifest_file, 'w') as f:
     f.write("CACHE MANIFEST\n")
-    f.write("# %s\n" % build_checksum)
-    f.write("CACHE:\n")
-    f.write("\n".join(map(lambda x: x, build_files)))
-    f.write("\n")
-    f.write("NETWORK:\n")
-    f.write("*\n")
+    f.write("# No longer using the application cache\n")
+    f.write("NETWORK:\n*\n")
+    # f.write("# %s\n" % build_checksum)
+    # f.write("CACHE:\n")
+    # f.write("\n".join(map(lambda x: x, build_files)))
+    # f.write("\n")
+    # f.write("NETWORK:\n")
+    # f.write("*\n")
 
   # We don't want the following files to be added to the manifest.
-  copy_files(paths.SOURCE_DIR, paths.BUILD_DIR, ["version.txt", "release.txt", "sizes.html"])
+  copy_files(paths.SOURCE_DIR, paths.BUILD_DIR, ["version.txt", "release.txt", "sizes.html", "service-worker.js"])
 
   # Archive the build.
   if not os.path.exists(archives_dir):

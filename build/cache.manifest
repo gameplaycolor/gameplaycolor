@@ -1,16 +1,4 @@
 CACHE MANIFEST
-# 1720ddf63ab0717c9a9ecbbbdad10a0603cc5dd0
-CACHE:
-assets/silent.mp3
-authorization/index.html
-defaults/apple-touch-startup-image-1242x2148.png
-defaults/apple-touch-startup-image-1536x2008.png
-defaults/apple-touch-startup-image-2048x1496.png
-defaults/apple-touch-startup-image-640x1096.png
-defaults/apple-touch-startup-image-750x1294.png
-images/drive.png
-images/icon-large.png
-images/icon.png
-index.html
+# No longer using the application cache
 NETWORK:
 *

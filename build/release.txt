@@ -1,3 +1,4 @@
+v3.3.0
 - Added game controller support
-- Fix iPadOS user agent issue
-- Bug fixes
+v3.3.2
+- Various fixes and improvements

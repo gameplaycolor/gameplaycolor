@@ -303,7 +303,19 @@ Promise.prototype.always = function(onAlways) {
     checkForUpdate: function() {
       var self = this;
 
-      if (self.updateCheck !== undefined) {
+      fetch("/request-update")
+      .then(function(response) {
+        return response.json()
+      })
+      .then(function(updateData) {
+        console.log(updateData)
+
+        if (updateData.update) {
+          alert("Update available.\nRelaunch the application to update.\n\nVersion " + updateData.version + "\n\n" + updateData.release);
+        }
+      })
+
+      /*if (self.updateCheck !== undefined) {
         return self.updateCheck.promise();
       }
 
@@ -334,7 +346,7 @@ Promise.prototype.always = function(onAlways) {
         });
       }
 
-      return deferred.promise();
+      return deferred.promise();*/
     },
 
     setValue: function(domain, key, value) {
@@ -356,9 +368,12 @@ Promise.prototype.always = function(onAlways) {
 
   $(document).ready(function() {
 
+    console.log("Registering service worker")
+    navigator.serviceWorker.register("/service-worker.js")
+
     // var iPhone = (navigator.userAgent.indexOf("iPhone OS") !== -1);
     // var iPad = (navigator.userAgent.indexOf("iPad") !== -1);
-    if (window.navigator.standalone === true) {
+    if (window.navigator.standalone === true || location.hash == "#desktop") {
 
       bootstrap();
 
@@ -418,6 +433,7 @@ window.onerror = function(message, url, linenumber) {
 };
 
 window.onmessage = function(message) {
+  console.log(message)
 
   if (message.data === "debug") {
     $("#screen-instructions").hide();
