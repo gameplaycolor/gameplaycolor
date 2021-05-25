@@ -15,11 +15,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
- 
-(function($) {
 
-  App.Drive = function() {
-    this.init();
+(function ($) {
+  
+  App.Drive = function(callback) {
+    this.init(callback);
   };
 
   App.Drive.State = {
@@ -35,27 +35,34 @@
     REFRESH_TOKEN: 1
   };
 
-  App.Drive.Instance = function() {
+  App.Drive.Instance = function(callback) {
+    var newInstance = true;
     if (window.drive === undefined) {
-      window.drive = new App.Drive();
+      window.drive = new App.Drive(callback);
+    } else {
+      callback(window.drive);
     }
     return window.drive;
   };
 
   jQuery.extend(App.Drive.prototype, {
-        
-      init: function(store) {
+    
+      init: function (callback) {
         var self = this;
         self.state = App.Drive.State.UNINITIALIZED;
         self.stateChangeCallbacks = [];
         self.logging = new App.Logging(window.config.logging_level, "drive");
         self.requestId = 0;
 
-        self.store = new App.Store('com.gameplaycolor.drive', 1);
-        if (!self.store.open()) {
-          alert("Unable to create database.\nPlease accept increased storage size when asked.");
-          return;
-        }
+        self.store = new App.Store("com.gameplaycolor.drive", 50);
+        self.store.open(function(opened, error) {
+          if (!opened) {
+            alert("Unable to create database.\nPlease accept increased storage size when asked.");
+            return;
+          }
+
+          callback(self);
+        });
       },
 
       onStateChange: function(callback) {
@@ -84,7 +91,7 @@
           self.stateChangeCallbacks[i](state);
         }
       },
-      
+
       // Attmept to refresh the token,
       // If this action fails, the state is automatically reset to unauthorized.
       handleInvalidToken: function() {
@@ -111,7 +118,6 @@
         });
 
         self.token().then(function(token) {
-
           $.ajax({
             type: 'GET',
             url: 'https://accounts.google.com/o/oauth2/revoke?token=' + token,
@@ -125,9 +131,9 @@
               deferred.reject(e);
             }
           });
-
+          
         }).fail(function(e) {
-
+          
           deferred.reject(e);
 
         });

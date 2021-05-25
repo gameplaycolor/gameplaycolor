@@ -19,9 +19,8 @@
 Promise.prototype.always = function(onAlways) {
   return this.then(onAlways, onAlways);
 };
- 
-(function($) {
 
+(function($) {
   jQuery.fn.selectText = function() {
     var element = this[0], range, selection;
     if (document.body.createTextRange) {
@@ -56,120 +55,141 @@ Promise.prototype.always = function(onAlways) {
 
     init: function (device) {
       var self = this;
-
-      self.store = new App.Store('save-state', 50);
-      if (!self.store.open()) {
-        alert("Unable to create database.\nPlease accept increased storage size when asked.");
-        return;
-      }
-
       self.device = device;
 
-      self.logging = new App.Logging(window.config.logging_level, "app");
-      self.logging.info("Version: " + window.config.version);
-      self.logging.info("Screen size: " + $(window).width() + " x " + $(window).height());
-      self.logging.info("User Agent: " + navigator.userAgent);
+      self.store = new App.Store("save-state", 50);
+      var storeInitCallback = self.storeInitCallback.bind(self);
+      self.store.open(storeInitCallback);
+    },
 
-      self.library = new App.Library(self.store, function(identifier) {
-        self.console.clear();
-        self.console.show();
-        setTimeout(function() {
-          self.load(identifier);
-        }, 400);
-      });
-      self.gameBoy = new App.GameBoy(self.store, self.library);
-      self.games = new App.Games(self.device, self.gameBoy, self.library);
+    storeInitCallback: function(opened, error) {
+      var self = this;
+      if (opened) {
+        self.logging = new App.Logging(window.config.logging_level, "app");
+        self.logging.info("Version: " + window.config.version);
+        self.logging.info("Screen size: " + $(window).width() + " x " + $(window).height());
+        self.logging.info("User Agent: " + navigator.userAgent);
 
-      self.console = new App.Console(self.device, self.gameBoy, { 'didHide': function() {
-        self.games.update();
-      }}, self.store);
+        self.library = new App.Library(self.store, function(identifier) {
+            self.console.clear();
+            self.console.show();
+            setTimeout(function() {
+              self.load(identifier);
+            }, 400);
+          },
+          function() {
+            self.gameBoy = new App.GameBoy(self.store, self.library);
+            self.games = new App.Games(self.device, self.gameBoy, self.library);
 
-      self.drive = App.Drive.Instance();
-      self.settings = new App.Settings(self.drive, self.store, self.gameBoy, self.console);
+            self.console = new App.Console(self.device, self.gameBoy, { didHide: function() {
+                  self.games.update();
+                }
+              }, self.store);
+            var callback = function (drive) {
+              self.drive = drive;
+              self.settings = new App.Settings(
+                self.drive,
+                self.store,
+                self.gameBoy,
+                self.console
+              );
 
-      self.settingsButton = new App.Controls.Button($('#button-account'), { touchUpInside: function() {
-        self.settings.show();
-      }});
+              self.settingsButton = new App.Controls.Button(
+                $("#button-account"),
+                {
+                  touchUpInside: function() {
+                    self.settings.show();
+              }});
 
-      self.consoleButton = new App.Controls.Button($('#button-done'), { touchUp: function() {
-        self.logging.info("Show console");
-        self.console.show();
-      }});
+              self.consoleButton = new App.Controls.Button($("#button-done"), { touchUp: function() {
+                  self.logging.info("Show console");
+                  self.console.show();
+                }
+              });
 
-      self.redeem = new App.Controls.Button($('#button-redeem'), { touchUpInside: function() {
-        $("#redeem-code").blur();
-        var code = $("#redeem-code").val();
-        drive.redeemToken(code).then(function() {
-          self.drive.authorize();
-        }).fail(function() {
-          alert("Unable to sign in.");
-        });
-      }});
+              self.redeem = new App.Controls.Button($("#button-redeem"), { touchUpInside: function() {
+                  $("#redeem-code").blur();
+                  var code = $("#redeem-code").val();
+                  drive.redeemToken(code).then(function() {
+                      self.drive.authorize();
+                    }).fail(function() {
+                      alert("Unable to sign in.");
+                    });
+              }});
 
-      self.drive.onStateChange(function(state) {
-        if (state == App.Drive.State.UNKNOWN) {
+              self.drive.onStateChange(function (state) {
+                if (state == App.Drive.State.UNKNOWN) {
 
-          self.logging.info("Google Drive state unknown.");
+                  self.logging.info("Google Drive state unknown.");
+                } else if (state == App.Drive.State.UNAUTHORIZED) {
 
-        } else if (state == App.Drive.State.UNAUTHORIZED) {
+                  self.logging.info("Google Drive state unauthorized.");
+                  self.settingsButton.hide();
+                  self.consoleButton.hide();
+                  self.clear();
+                  self.console.hide();
 
-          self.logging.info("Google Drive state unauthorized.");
-          self.settingsButton.hide();
-          self.consoleButton.hide();
-          self.clear();
-          self.console.hide();
+                  if (window.navigator.onLine === true) {
+                    self.drive.authURL().then(function(url) {
+                        $("#google-drive-auth").attr("href", url);
+                        $("#redeem-code").val("");
+                        $("#screen-account").show();
+                      }).fail(function() {
+                        alert("Unable to generate Google authentication URL.");
+                      });
+                  }
+                } else if (state == App.Drive.State.AUTHORIZED) {
+                  
+                  self.logging.info("Google Drive state authorized.");
+                  $("#screen-account").hide();
+                  self.settingsButton.show();
+                  self.drive.user().then(function(user) {
+                    $("#account-details").html(user.email);
+                  });
+                  self.games.update();
 
-          if (window.navigator.onLine === true) {
-            self.drive.authURL().then(function(url) {
-              $("#google-drive-auth").attr("href", url);
-              $("#redeem-code").val('');
-              $("#screen-account").show();
-            }).fail(function() {
-              alert("Unable to generate Google authentication URL.");
-            });
+                }
+              });
+              self.drive.authorize();
+
+              self.checkForUpdate();
+
+              // Ensure sound is enabled on a user interaction.
+
+              self.soundMenu = new App.SoundMenu(function() {
+                  self.gameBoy.pause();
+                }, function() {
+                  self.gameBoy.run();
+              });
+
+              self.gameBoy.setSoundEnabled(false);
+              self.soundMenu.onEnable = function() {
+                self.gameBoy.setSoundEnabled(true);
+              };
+
+              // Restore settings.
+              self.restorePrevious().always(function() {
+                self.console.setAnimationEnabled(true);
+                $("#screen-splash").css("display", "none");
+                self.soundMenu.show();
+              });
+
+              setInterval(function() {
+                autoSave();
+              }, 1000);
+
+            };
+            const boundCallback = callback.bind(self);
+            self.drive = App.Drive.Instance(boundCallback);
           }
-
-        } else if (state == App.Drive.State.AUTHORIZED) {
-
-          self.logging.info("Google Drive state authorized.");
-          $("#screen-account").hide();
-          self.settingsButton.show();
-          self.drive.user().then(function(user) {
-            $('#account-details').html(user.email);
-          });
-          self.games.update();
-
-        }
-      });
-      self.drive.authorize();
-
-      self.checkForUpdate();
-
-      // Ensure sound is enabled on a user interaction.
-
-      self.soundMenu = new App.SoundMenu(function() {
-        self.gameBoy.pause();
-      }, function() {
-        self.gameBoy.run();
-      });
-
-      self.gameBoy.setSoundEnabled(false);
-      self.soundMenu.onEnable = function() {
-        self.gameBoy.setSoundEnabled(true);
-      };
-
-      // Restore settings.
-
-      self.restorePrevious().always(function() {
-        self.console.setAnimationEnabled(true);
-        $('#screen-splash').css("display", "none");
-        self.soundMenu.show();
-      });
-
-      setInterval(function() {
-        autoSave();
-      }, 1000);
-
+        );
+      } else {
+        alert(
+          "Unable to create database.\nPlease accept increased storage size when asked.",
+          error
+        );
+        return;
+      }
     },
 
     /**
@@ -287,21 +307,25 @@ Promise.prototype.always = function(onAlways) {
       bootstrap();
 
     } else {
-
-      var drive = App.Drive.Instance();
-      var code = drive.getParameters().code;
-      if (code !== undefined) {
-
-        console.log("Received authentication token: " + code);
-        $("#screen-authorizing").show();
-        $("#authorization-code").val(code);
-
-      } else {
-
-        $("#screen-instructions").show();
-
-      }
       
+      var self = this;
+      var callback = function() {
+        var drive = self.drive;
+        var code = drive.getParameters().code;
+        if (code !== undefined) {
+
+          self.logging.info("Received authentication token: " + code);
+          $("#screen-authorizing").show();
+          $("#authorization-code").val(code);
+
+        } else {
+
+          $("#screen-instructions").show();
+
+        }
+      };
+
+      self.drive = App.Drive.Instance(callback);
     }
   });
 

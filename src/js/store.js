@@ -28,16 +28,21 @@
     COLOR: 2,
     SPEED: 4,
   };
-  
-  jQuery.extend(App.Store.prototype, {
 
+  jQuery.extend(App.Store.prototype, {
     init: function(name, size) {
       var self = this;
       self.name = name;
-      self.database = undefined;
+      self.database = {};
+      self.database.indexedDB = {};
+      self.database.indexedDB.db = null;
       self.debug = false;
       self.size = size;
       self.logging = new App.Logging(window.config.logging_level, "store");
+
+      self.indexedDB =
+        window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB;
+      window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange;
     },
 
     /**
@@ -45,166 +50,239 @@
      *
      * true if successful. false otherwise.
      */
-    open: function() {
+    open: function(callback) {
       var self = this;
       try {
+        var request = indexedDB.open(self.name, 3);
+        request.onsuccess = function(e) {
+          self.logging.info(
+            "success our DB: " + self.name + " is open and ready for work"
+          );
+          self.database.indexedDB.db = e.target.result;
+          callback(true);
+        };
 
-        if (!window.openDatabase) {
-          alert('Databases are not supported in this browser.');
-          return false;
-        }
+        request.onupgradeneeded = function(e) {
+          self.database.indexedDB.db = e.target.result;
+          var db = self.database.indexedDB.db;
+          self.logging.info(
+            "Going to upgrade our DB from version: " +
+              e.oldVersion +
+              " to " +
+              e.newVersion
+          );
+          try {
+            if (
+              db.objectStoreNames &&
+              db.objectStoreNames.contains("properties")
+            ) {
+              db.deleteObjectStore("properties");
+            }
+          } catch (err) {
+            self.logging.error("got err in objectStoreNames:" + err);
+          }
 
-        self.database = openDatabase(self.name, '1.0', self.name, self.size*1024*1024);
-        if (self.database === undefined) {
-          self.logging.error("Unable to create database");
-          return false;
-        }
+          var store = self.createTables(db);
 
-        self.createTables();
-        return true;
+          self.logging.info(
+            "-- onupgradeneeded store:" + JSON.stringify(store)
+          );
+        };
 
-      } catch(e) {
+        request.onfailure = function(e) {
+          self.logging.error("could not open our DB! Err:" + e);
+          callback(false, e);
+        };
 
+        request.onerror = function(e) {
+          self.logging.error(
+            "Well... How should I put it? We have some issues with our DB! Err:" +
+              e
+          );
+
+          callback(false, e);
+        };
+      } catch (e) {
         if (e == 2) {
           self.logging.error("Invalid database version.");
         } else {
           self.logging.error("Unknown error " + e + ".");
         }
-        return false;
-        
+        callback(false);
       }
     },
 
-    /**
-     * Perform a transaction on the database using the common error handler.
-     */
-    transaction: function(callback, description) {
+    getStore: function(storeName, permissions) {
       var self = this;
-      self.database.transaction(callback, function(error) {
-        self.logging.error(description + ": Failed to access storage named '" + self.name + "' with error  '" +
-                           error.message + "' (" + error.code + ")");
+      var db = self.database.indexedDB.db;
+      var trans = db.transaction(storeName, permissions);
+      var store = trans.objectStore(storeName);
+
+      return store;
+    },
+
+    createTables: function(db) {
+      var store = db.createObjectStore("properties", {
+        autoIncrement: true
       });
+
+      store.createIndex("key", "key", { unique: false });
+      store.createIndex("domain", "domain", { unique: false });
+      store.createIndex("value", "value", { unique: false });
+      store.createIndex("key, domain", ["key", "domain"], { unique: false });
+
+      return store;
     },
-    
-    createTables: function() {
-      var self = this;
-      self.transaction(function(transaction) {
-        transaction.executeSql("CREATE TABLE IF NOT EXISTS " +
-                                "properties ( " +
-                                  "id INTEGER PRIMARY KEY," +
-                                  "domain TEXT NOT NULL," +
-                                  "key TEXT NOT NULL," +
-                                  "value BLOB NOT NULL" +
-                                ")");
-      }, "Creating database tables");
-    },
-    
+
     setProperty: function(domain, key, value) {
       var self = this;
-      self.logging.debug("Setting property '" + key + "' for domain '" + domain + "'");
-      self.transaction(function(transaction) {
-        transaction.executeSql("DELETE FROM properties WHERE domain = ? AND key = ?", [domain, key]);
-        transaction.executeSql("INSERT OR REPLACE INTO properties (domain, key, value) VALUES (?, ?, ?)",
-                               [domain, key, value]);
-      }, "Setting property '" + key + "'");
+      var store = self.getStore("properties", "readwrite");
+
+      var data = {
+        domain: domain,
+        key: key,
+        value: value
+      };
+
+      var request = store.put(data, JSON.stringify({ domain: domain, key: key }));
+
+      request.onsuccess = function(e) {};
+      request.onerror = function(e) {
+        self.logging.error("Error Adding an item: ", e);
+      };
     },
-    
+
     property: function(domain, key, callback) {
       var self = this;
-      self.logging.debug("Reading property '" + key + "' for domain '" + domain + "'");
-      self.transaction(function(transaction) {
-        transaction.executeSql(
-          "SELECT * FROM properties WHERE domain = ? AND key = ?",
-          [domain, key],
-          function(transaction, results) {
-            if (results.rows.length > 0) {
-              self.logging.debug("Found property '" + key + "' for domain '" + domain + "' with length " +
-                                 results.rows.item(0).value.length);
-              callback(results.rows.item(0).value);
-            } else {
-              self.logging.error("Unable to find property '" + key + "' for domain '" + domain + "'");
-              callback(undefined);
-            }
-          },
-          function(transaction, error) {
-            self.logging.error("Reading property '" + key + "': Failed with error '" + error.message + "'");
-            callback(undefined);
-          }
+      self.logging.debug(
+        "Reading property '" + key + "' for domain '" + domain + "'"
+      );
+
+      var store = self.getStore("properties", "readonly");
+
+      var index = store.index("key, domain");
+      var request = index.get([key, domain]);
+      request.onsuccess = function(e) {
+        if (e.target.result != null && e.target.result !== undefined) {
+          self.logging.debug(
+            "Found property '" +
+              key +
+              "' for domain '" +
+              domain +
+              "' with length " +
+              e.target.result.value.length
+          );
+          callback(e.target.result.value);
+        } else {
+          self.logging.error(
+            "Unable to find property '" + key + "' for domain '" + domain + "'"
+          );
+          callback(undefined);
+        }
+      };
+
+      request.onerror = function(e) {
+        self.logging.error(
+          "Unable to find property '" + key + "' for domain '" + domain + "'"
         );
-      }, "Reading property '" + key + "'");
+        callback(undefined);
+      };
     },
 
     deleteProperty: function(domain, key) {
       var self = this;
-      self.transaction(function(transaction) {
-        transaction.executeSql(
-          "DELETE FROM properties WHERE domain = ? AND key = ?",
-          [domain, key]
-        );
-      }, "Deleting property '" + key + "'");
+      var store = self.getStore("properties", "readwrite");
+
+      var request = store["delete"]([key, domain]);
+
+      request.onsuccess = function(e) {};
+
+      request.onerror = function(e) {
+        self.logging.error("Error deleting item: ", e);
+      };
     },
 
     hasProperty: function(domain, key) {
       var self = this;
       var deferred = new jQuery.Deferred();
-      self.transaction(function(transaction) {
-        transaction.executeSql(
-          "SELECT EXISTS(SELECT 1 FROM properties WHERE domain = ? AND key = ? LIMIT 1) AS found",
-          [domain, key],
-          function(transaction, results) {
-            deferred.resolve(results.rows.item(0).found);
-          },
-          function(transaction, error) {
-            self.logging.error("Checking for property '" + key + "': Failed with error '" + error.message + "'");
-            deferred.reject(error);
-          }
+      var store = self.getStore("properties", "readonly");
+
+      var request = store.index("key, domain").get([key, domain]);
+
+      request.onsuccess = function(e) {
+        if (e.target.result != null && e.target.result !== undefined) {
+          deferred.resolve(true);
+        } else {
+          deferred.resolve(false);
+        }
+      };
+
+      request.onerror = function(e) {
+        self.logging.error(
+          "Checking for property '" +
+            key +
+            "': Failed with error '" +
+            error.message +
+            "'"
         );
-      });
+        deferred.reject(false);
+      };
+
       return deferred.promise();
     },
 
     propertiesForDomain: function(domain, callback) {
+      var properties = {};
       var self = this;
-      self.transaction(function(transaction) {
-        transaction.executeSql(
-          "SELECT * FROM properties WHERE domain = ?",
-          [domain],
-          function(transaction, results) {
-            var properties = {};
-            for (var i = 0; i < results.rows.length; i++) {
-              var item = results.rows.item(i);
-              properties[item.key] = item.value;
-            }
-            callback(properties);
-          },
-          function(error) {
-            self.logging.error("Reading properties for domain '" + domain + "': Failed with error '" + error.message + "'");
-            callback({});
-          }
+      var store = self.getStore("properties", "readonly");
+      store = store.index("domain");
+      const keyRangeValue = IDBKeyRange.only(domain);
+      var request = store.getAll(keyRangeValue);
+
+
+      request.onsuccess = function (e) {
+        console.log('here');
+        for (let i = 0; i < e.target.result.length; i++) {
+          properties[e.target.result[i].key] = e.target.result[i].value;
+        }
+
+        callback(properties);
+      };
+
+      request.onerror = function(e) {
+        self.logging.error(
+          "Reading properties for domain '" +
+            domain +
+            "': Failed with error '" +
+            error.message +
+            "'"
         );
-      }, "Reading properties for domain '" + domain + "'");
+        callback({});
+      };
     },
 
     keys: function(callback) {
+      var keys = [];
       var self = this;
-      self.transaction(function(transation) {
-        transation.executeSql(
-          "SELECT key FROM properties",
-          [],
-          function(transaction, results) {
-            var rows = [];
-            for (var i = 0; i < results.rows.length; i++) {
-              rows.push(results.rows.item(i).key);
-            }
-            callback(rows);
-          },
-          function(transaction, error) {
-            callback(undefined);
-          }
-        );
-      });
+      var store = self.getStore("properties", "readonly");
+
+      var index = store.index("key");
+
+      var request = index.openKeyCursor();
+
+      request.onsuccess = function(e) {
+        var cursor = e.target.result;
+        if (cursor) {
+          keys.push(cursor.key);
+          cursor["continue"]();
+        } else {
+          callback(keys);
+        }
+      };
+
+      request.onerror = function(e) {
+        callback(undefined);
+      };
     }
-
   });
-
 })(jQuery);
