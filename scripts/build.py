@@ -28,6 +28,7 @@ import os
 import os.path
 import shutil
 import socketserver
+import ssl
 import subprocess
 import tempfile
 import urllib.parse
@@ -41,7 +42,10 @@ import paths
 HTMLCOMPRESSOR_URL = "https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/htmlcompressor/htmlcompressor-1.5.3.jar"
 YUICOMPRESSOR_URL = "https://github.com/yui/yuicompressor/releases/download/v2.4.8/yuicompressor-2.4.8.jar"
 
+
 SCRIPTS_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
+ROOT_DIRECTORY = os.path.dirname(SCRIPTS_DIRECTORY)
+CERTIFICATE_PATH = os.path.join(ROOT_DIRECTORY, "server.pem")
 CHANGES_DIRECTORY = os.path.join(SCRIPTS_DIRECTORY, "changes")
 
 CHANGES_PATH = os.path.join(CHANGES_DIRECTORY, "changes")
@@ -168,6 +172,7 @@ def copy_files(source, destination, files):
 
 
 def load_settings(path, version):
+
   settings = None
   with open(path, 'r') as f:
     settings = json.load(f)
@@ -321,10 +326,11 @@ def command_build(parser):
 
 
 def command_serve(parser):
-    parser.add_argument("--port", default=8000, type=int, help="Listening port.")
+    parser.add_argument("--port", default=4443, type=int, help="Listening port.")
 
     def inner(options):
-      httpd = SocketServer.TCPServer(("", options.port), SimpleHTTPServer.SimpleHTTPRequestHandler)
+      httpd = socketserver.TCPServer(("", options.port), http.server.SimpleHTTPRequestHandler)
+      httpd.socket = ssl.wrap_socket(httpd.socket, certfile=CERTIFICATE_PATH, server_side=True)
       print("Serving on http://127.0.0.1:%d..." % options.port)
       os.chdir(paths.BUILD_DIR)
       httpd.serve_forever()

@@ -139,6 +139,79 @@ KEYCODE_SHIFT_LEFT = 16;
         }});
         self.game.animate = false;
 
+        var buttons = {}
+
+        function handleButton(index, state) {
+          console.log(index, state);
+          let mapping = {
+            1: Gameboy.Key.A,
+            0: Gameboy.Key.B,
+            9: Gameboy.Key.SELECT,
+            16: Gameboy.Key.START,
+            12: Gameboy.Key.UP,
+            13: Gameboy.Key.DOWN,
+            14: Gameboy.Key.LEFT,
+            15: Gameboy.Key.RIGHT,
+          };
+          var code = mapping[index];
+
+          // Ignore unsupported keys.
+          if (code === 'undefined') {
+            return;
+          }
+
+          // Set the key state.
+          if (state) {
+            self.core.keyDown(code);
+          } else {
+            self.core.keyUp(code);
+          }
+        }
+
+        function updateHardwareButtons() {
+          var gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads() : []);
+          for (j in gamepads) {
+            var controller = gamepads[j];
+            for (i in controller.buttons) {
+              var button = controller.buttons[i];
+              if (buttons[i] !== 'undefined' && buttons[i] != button.pressed) {
+                handleButton(i, button.pressed);
+              }
+              buttons[i] = button.pressed;
+            }
+            requestAnimationFrame(updateHardwareButtons);
+          }
+        }
+
+        function connected(e) {
+          self.controllers[e.gamepad.index] = e.gamepad;
+          requestAnimationFrame(updateHardwareButtons);
+          self.fullscreen();
+          // TODO: Enter fullscreen
+        }
+
+        function disconnected(e) {
+          // TODO: Stop polling.
+        }
+
+        // Hardware controllers.
+        var haveEvents = 'GamepadEvent' in window;
+        self.controllers = {};
+        if (haveEvents) {
+          window.addEventListener("gamepadconnected", connected);
+          window.addEventListener("gamepaddisconnected", disconnected);
+        }
+      },
+
+      fullscreen: function() {
+        var self = this;
+
+        document.getElementById('screen-console').style.background = "black";
+        document.getElementById('moulding').style.display = "none";
+        document.getElementById('element-surround').style.display = "none";
+        document.getElementById('element-dpad').style.display = "none";
+        document.getElementById('element-options').style.display = "none";
+        document.getElementById('element-buttons').style.display = "none";
       },
 
       /**
