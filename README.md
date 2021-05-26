@@ -20,16 +20,14 @@ git submodule update --init --recursive
 
 ```bash
 cat brew.txt | xargs brew install
-cd scripts
-pipenv install
+scripts/install-dependencies.sh
 ```
 
 ### Ubuntu
 
 ```bash
 cat ubuntu.txt | xargs sudo apt install
-cd scripts
-pipenv install
+scripts/install-dependencies.sh
 ```
 
 It may be necessary to install pipenv as follows:

@@ -8,21 +8,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
     - name: Checkout source
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2
       with:
-        submodules: true
-        token: ${{ secrets.PAT }}
+        submodules: recursive
+        fetch-depth: 0
+
     - name: Install Pipenv
       uses: dschep/install-pipenv-action@v1
-    - name: Install Python dependencies
-      run: cd scripts; pipenv install
+
+    - name: Install dependencies
+      run: scripts/install-dependencies.sh
+
     - name: Build release
       run: scripts/build build settings/release.json
+
     - name: Save artifacts
       uses: actions/upload-artifact@v1
       with:
         name: build-latest-release.tar.gz
         path: archives/build-latest-release.tar.gz
+
     - name: Check for local modifications
       run: scripts/build check-git-status

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3 -u
 
 # Copyright (c) 2012-2021 InSeven Limited
 #
@@ -41,8 +41,10 @@ import paths
 HTMLCOMPRESSOR_URL = "https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/htmlcompressor/htmlcompressor-1.5.3.jar"
 YUICOMPRESSOR_URL = "https://github.com/yui/yuicompressor/releases/download/v2.4.8/yuicompressor-2.4.8.jar"
 
-
 SCRIPTS_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
+CHANGES_DIRECTORY = os.path.join(SCRIPTS_DIRECTORY, "changes")
+
+CHANGES_PATH = os.path.join(CHANGES_DIRECTORY, "changes")
 
 
 class Chdir():
@@ -271,7 +273,23 @@ def build(options):
     f.write("*\n")
 
   # We don't want the following files to be added to the manifest.
-  copy_files(paths.SOURCE_DIR, paths.BUILD_DIR, ["version.txt", "release.txt", "sizes.html"])
+  copy_files(paths.SOURCE_DIR, paths.BUILD_DIR, ["release.txt", "sizes.html"])
+
+
+  # Get the version number.
+  print("Getting version... ", end="")
+  version = run([CHANGES_PATH, "current-version"]).strip()
+  print(version)
+  with open(os.path.join(paths.BUILD_DIR, "version.txt"), "w") as fh:
+    fh.write(version)
+    fh.write("\n")
+
+  # Get the release notes.
+  print("Getting release notes... ")
+  notes = run([CHANGES_PATH, "current-notes"]).strip()
+  with open(os.path.join(paths.BUILD_DIR, "release.txt"), "w") as fh:
+    fh.write(notes)
+    fh.write("\n")
 
   # Archive the build.
   if not os.path.exists(archives_dir):
@@ -284,6 +302,12 @@ def build(options):
     if os.path.exists(latest_archive_path):
       os.remove(latest_archive_path)
     os.symlink(archive_path, latest_archive_path)
+
+
+def run(command):
+  result = subprocess.run(command, capture_output=True)
+  result.check_returncode()
+  return result.stdout.decode('utf-8')
 
 
 def command_build(parser):
