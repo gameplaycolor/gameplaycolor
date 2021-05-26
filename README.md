@@ -54,6 +54,10 @@ The build will be created in the `build` directory, and a corresponding *.tar.gz
 Changelog
 ---------
 
+### Version 3.0.2
+
+- Update from @nickydraz to use IndexedDB to support iOS 13.
+
 ### Version 2.3.8
 
 - Fix audio playback on iOS 11.
