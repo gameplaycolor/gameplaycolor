@@ -20,7 +20,6 @@ git submodule update --init --recursive
 
 ```bash
 cat brew.txt | xargs brew install
-cd scripts
 pipenv install
 ```
 
@@ -28,7 +27,6 @@ pipenv install
 
 ```bash
 cat ubuntu.txt | xargs sudo apt install
-cd scripts
 pipenv install
 ```
 
