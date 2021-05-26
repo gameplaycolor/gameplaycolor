@@ -24,5 +24,3 @@ jobs:
       with:
         name: build-latest-release.tar.gz
         path: archives/build-latest-release.tar.gz
-    - name: Check for local modifications
-      run: scripts/build check-git-status
