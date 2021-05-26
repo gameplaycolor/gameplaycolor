@@ -1,6 +1,8 @@
 Game Play
 =========
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/6b57f8f0-fdc2-4372-a0ad-d7c8cb35f612/deploy-status)](https://app.netlify.com/sites/gameplaycolor/deploys)
+
 A JavaScript Game Boy and Game Boy Color emulator for iOS, based on the [GameBoy-Online](https://github.com/taisel/GameBoy-Online) emulator core.
 
 If you just want to play Game Play, you can find it online at [https://gameplaycolor.com](https://gameplaycolor.com).
