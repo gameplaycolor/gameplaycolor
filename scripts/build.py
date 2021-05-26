@@ -167,10 +167,7 @@ def copy_files(source, destination, files):
     shutil.copy(source_file, destination_file)
 
 
-def load_settings(path):
-  version = None
-  with open(paths.VERSION_FILE, 'r') as f:
-    version = f.read().strip()
+def load_settings(path, version):
   settings = None
   with open(path, 'r') as f:
     settings = json.load(f)
@@ -188,7 +185,12 @@ def build(options):
   defaults_dir = os.path.join(paths.SOURCE_DIR, "defaults")
   manifest_file = os.path.join(paths.BUILD_DIR, "cache.manifest")
 
-  settings = load_settings(path=os.path.abspath(options.settings))
+  print("Getting version... ", end="")
+  version = run([CHANGES_PATH, "current-version"]).strip()
+  print(version)
+
+  print("Loading settings...")
+  settings = load_settings(path=os.path.abspath(options.settings), version=version)
 
   # Create/empty the build directory.
   # We do not simply delete the directory so as not to break the development server which might be serving from here.
@@ -273,13 +275,10 @@ def build(options):
     f.write("*\n")
 
   # We don't want the following files to be added to the manifest.
-  copy_files(paths.SOURCE_DIR, paths.BUILD_DIR, ["release.txt", "sizes.html"])
+  copy_files(paths.SOURCE_DIR, paths.BUILD_DIR, ["sizes.html"])
 
-
-  # Get the version number.
-  print("Getting version... ", end="")
-  version = run([CHANGES_PATH, "current-version"]).strip()
-  print(version)
+  # Set the version number.
+  print("Writing version...")
   with open(os.path.join(paths.BUILD_DIR, "version.txt"), "w") as fh:
     fh.write(version)
     fh.write("\n")
@@ -287,6 +286,7 @@ def build(options):
   # Get the release notes.
   print("Getting release notes... ")
   notes = run([CHANGES_PATH, "current-notes"]).strip()
+  print("Writing release notes... ")
   with open(os.path.join(paths.BUILD_DIR, "release.txt"), "w") as fh:
     fh.write(notes)
     fh.write("\n")
