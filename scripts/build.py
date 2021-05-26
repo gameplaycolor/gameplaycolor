@@ -349,20 +349,6 @@ def command_deploy(parser):
   return inner
 
 
-def command_check_git_status(parser):
-
-  def inner(options):
-    with Chdir(paths.BUILD_DIR):
-      result = subprocess.check_output(["git", "status", "--porcelain"]).decode('utf-8').strip()
-      if result:
-        print(result)
-        subprocess.run(["git", "diff"])
-        exit("Git repository has local modifications. Did you run a build locally and commit the changes? 🤔")
-    print("Repository is clean. Thank you for building locally. 🎉")
-
-  return inner
-
-
 def add_command(subparsers, name, command, help=""):
   parser = subparsers.add_parser(name, help=help)
   fn = command(parser)
@@ -375,7 +361,6 @@ def main():
   add_command(subparsers, name="build", command=command_build, help="Build the project.")
   add_command(subparsers, name="serve", command=command_serve, help="Run a local server.")
   add_command(subparsers, name="deploy", command=command_deploy, help="Deploy the project.")
-  add_command(subparsers, name="check-git-status", command=command_check_git_status, help="Check the git repository is clean.")
   options = parser.parse_args()
   options.fn(options)
 
