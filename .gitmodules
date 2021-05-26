@@ -4,4 +4,4 @@
 
 [submodule "scripts/changes"]
 	path = scripts/changes
-	url = git@github.com:jbmorley/changes.git
+	url = https://github.com/jbmorley/changes.git
