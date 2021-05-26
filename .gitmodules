@@ -2,3 +2,6 @@
 	path = cores/GameBoy-Online
 	url = https://github.com/gameplaycolor/GameBoy-Online.git
 
+[submodule "scripts/changes"]
+	path = scripts/changes
+	url = git@github.com:jbmorley/changes.git

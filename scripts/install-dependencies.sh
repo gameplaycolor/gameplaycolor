@@ -19,7 +19,14 @@
 # IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-SCRIPTS_DIRECTORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+set -e
+set -o pipefail
+set -x
+set -u
 
-export PIPENV_PIPFILE="${SCRIPTS_DIRECTORY}/Pipfile"
-pipenv run python3 -u "${SCRIPTS_DIRECTORY}/build.py" $@
+SCRIPTS_DIRECTORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+ROOT_DIRECTORY="${SCRIPTS_DIRECTORY}/.."
+CHANGES_DIRECTORY="${SCRIPTS_DIRECTORY}/changes"
+
+PIPENV_PIPFILE="$SCRIPTS_DIRECTORY/Pipfile" pipenv install
+PIPENV_PIPFILE="$CHANGES_DIRECTORY/Pipfile" pipenv install
