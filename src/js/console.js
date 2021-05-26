@@ -1,19 +1,22 @@
 /*
- * Copyright (C) 2012-2016 InSeven Limited.
+ * Copyright (c) 2012-2021 InSeven Limited
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in
+ * the Software without restriction, including without limitation the rights to
+ * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+ * the Software, and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions:
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+ * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+ * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
 KEYCODE_A = 65;
@@ -26,21 +29,21 @@ KEYCODE_SHIFT_LEFT = 16;
   App.Console = function(device, gameBoy, events, store) {
     this.init(device, gameBoy, events, store);
   };
-  
+
   App.Console.State = {
     VISIBLE: 0,
     HIDDEN:  1,
   };
-  
+
   App.Console.SHAKE_THRESHOLD = 24;
   App.Console.SHAKE_TIMEOUT_MS = 800;
 
   jQuery.extend(
     App.Console.prototype, {
-      
+
       init: function(device, gameBoy, events, store) {
         var self = this;
-        
+
         self.logging = new App.Logging(window.config.logging_level, "console");
         self.device = device;
         self.core = gameBoy;
@@ -94,7 +97,7 @@ KEYCODE_SHIFT_LEFT = 16;
             }, 2000);
           }
         }});
-        
+
         self.navigation_back = new App.Controls.Button($('#button-library'), { touchUpInside: function() {
           self.logging.info("Show library");
           window.tracker.track('games');
@@ -145,7 +148,7 @@ KEYCODE_SHIFT_LEFT = 16;
        * @param keyEvent The key event to inject into the emulator core.
        * @param keyCode The browser key code to bind to.
        *
-       * @return The newly created button. 
+       * @return The newly created button.
        */
       configureButton: function(element, keyEvent, keyCode) {
         var self = this;
@@ -194,14 +197,14 @@ KEYCODE_SHIFT_LEFT = 16;
         var self = this;
         self.core.clear();
       },
-      
+
       event: function(id) {
         var self = this;
         if (id in self.events) {
           self.events[id]();
         }
       },
-      
+
       hide: function() {
         var self = this;
         if (self.state != App.Console.State.HIDDEN) {
@@ -242,7 +245,7 @@ KEYCODE_SHIFT_LEFT = 16;
         var self = this;
         return self.isAnimationEnabled() ? 400 : 10;
       },
-      
+
       show: function() {
         var self = this;
         return new Promise(function(resolve, reject) {
@@ -264,7 +267,7 @@ KEYCODE_SHIFT_LEFT = 16;
 
         });
       },
-      
+
   });
 
 })(jQuery);
