@@ -16,7 +16,7 @@ jobs:
     - name: Install Pipenv
       uses: dschep/install-pipenv-action@v1
     - name: Install Python dependencies
-      run: cd scripts; pipenv install
+      run: pipenv install
     - name: Build release
       run: scripts/build build settings/release.json
     - name: Save artifacts
