@@ -36,8 +36,6 @@ import urllib.parse
 import lxml.etree
 import lxml.html
 
-import paths
-
 
 HTMLCOMPRESSOR_URL = "https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/htmlcompressor/htmlcompressor-1.5.3.jar"
 YUICOMPRESSOR_URL = "https://github.com/yui/yuicompressor/releases/download/v2.4.8/yuicompressor-2.4.8.jar"
@@ -46,7 +44,9 @@ YUICOMPRESSOR_URL = "https://github.com/yui/yuicompressor/releases/download/v2.4
 SCRIPTS_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
 ROOT_DIRECTORY = os.path.dirname(SCRIPTS_DIRECTORY)
 CERTIFICATE_PATH = os.path.join(ROOT_DIRECTORY, "server.pem")
+SOURCE_DIRECTORY = os.path.join(ROOT_DIRECTORY, "src")
 CHANGES_DIRECTORY = os.path.join(SCRIPTS_DIRECTORY, "changes")
+BUILD_DIRECTORY = os.path.join(ROOT_DIRECTORY, "build")
 
 CHANGES_PATH = os.path.join(CHANGES_DIRECTORY, "changes")
 
@@ -181,14 +181,14 @@ def load_settings(path, version):
 
 
 def build(options):
-  paths.BUILD_DIR = os.path.join(paths.ROOT_DIR, "build")
-  archives_dir = os.path.join(paths.ROOT_DIR, "archives")
-  input_file = os.path.join(paths.SOURCE_DIR, "index.html")
-  output_file = os.path.join(paths.BUILD_DIR, "index.html")
-  images_dir = os.path.join(paths.SOURCE_DIR, "images")
-  assets_dir = os.path.join(paths.SOURCE_DIR, "assets")
-  defaults_dir = os.path.join(paths.SOURCE_DIR, "defaults")
-  manifest_file = os.path.join(paths.BUILD_DIR, "cache.manifest")
+  archives_dir = os.path.join(ROOT_DIRECTORY, "archives")
+  input_file = os.path.join(SOURCE_DIRECTORY, "index.html")
+  output_file = os.path.join(BUILD_DIRECTORY, "index.html")
+  images_dir = os.path.join(SOURCE_DIRECTORY, "images")
+  assets_dir = os.path.join(SOURCE_DIRECTORY, "assets")
+  defaults_dir = os.path.join(SOURCE_DIRECTORY, "defaults")
+  manifest_file = os.path.join(BUILD_DIRECTORY, "cache.manifest")
+
 
   print("Getting version... ", end="")
   version = run([CHANGES_PATH, "current-version"]).strip()
@@ -199,15 +199,15 @@ def build(options):
 
   # Create/empty the build directory.
   # We do not simply delete the directory so as not to break the development server which might be serving from here.
-  if os.path.exists(paths.BUILD_DIR):
-    for path in os.listdir(paths.BUILD_DIR):
-      path = os.path.join(paths.BUILD_DIR, path)
+  if os.path.exists(BUILD_DIRECTORY):
+    for path in os.listdir(BUILD_DIRECTORY):
+      path = os.path.join(BUILD_DIRECTORY, path)
       if os.path.isfile(path):
         os.unlink(path)
       else:
         shutil.rmtree(path)
   else:
-    os.mkdir(paths.BUILD_DIR)
+    os.mkdir(BUILD_DIRECTORY)
 
   # index.html
 
@@ -218,14 +218,14 @@ def build(options):
 
   print("Extracting JavaScript...")
   script = "window.config = %s;\n" % json.dumps(settings, sort_keys=True)
-  script += extract_tags(html, "//script[@type='text/javascript']", "src", paths.SOURCE_DIR)
+  script += extract_tags(html, "//script[@type='text/javascript']", "src", SOURCE_DIRECTORY)
   if not settings["debug"] and not options.debug:
     print("Minifying JavaScript...")
     script = yuicompressor(script, '.js')
   append_javascript(html, script)
 
   print("Exctracting CSS...")
-  style = extract_tags(html, "//link[@type='text/css']", "href", paths.SOURCE_DIR)
+  style = extract_tags(html, "//link[@type='text/css']", "href", SOURCE_DIRECTORY)
   if not settings["debug"] and not options.debug:
     print("Minifying CSS...")
     style = yuicompressor(style, '.css')
@@ -243,33 +243,33 @@ def build(options):
 
   # authorization.html
   print("Copying authorization page...")
-  os.makedirs(os.path.join(paths.BUILD_DIR, "authorization"))
-  shutil.copy(os.path.join(paths.SOURCE_DIR, "authorization/index.html"),
-              os.path.join(paths.BUILD_DIR, "authorization/index.html"))
+  os.makedirs(os.path.join(BUILD_DIRECTORY, "authorization"))
+  shutil.copy(os.path.join(SOURCE_DIRECTORY, "authorization/index.html"),
+              os.path.join(BUILD_DIRECTORY, "authorization/index.html"))
 
   # images
   print("Copying images...")
-  copy_diretory(images_dir, paths.BUILD_DIR)
+  copy_diretory(images_dir, BUILD_DIRECTORY)
 
   # images
   print("Copying assets...")
-  copy_diretory(assets_dir, paths.BUILD_DIR)
+  copy_diretory(assets_dir, BUILD_DIRECTORY)
 
   # defaults
   print("Copying defaults...")
-  copy_diretory(defaults_dir, paths.BUILD_DIR)
+  copy_diretory(defaults_dir, BUILD_DIRECTORY)
 
   # icon
-  icon_file = os.path.join(paths.ROOT_DIR, settings['icon'])
-  shutil.copy(icon_file, os.path.join(paths.BUILD_DIR, "images", "icon.png"))
+  icon_file = os.path.join(ROOT_DIRECTORY, settings['icon'])
+  shutil.copy(icon_file, os.path.join(BUILD_DIRECTORY, "images", "icon.png"))
 
   # Generate a sha for the build.
   print("Generating a checksum...")
-  build_checksum = checksum(paths.BUILD_DIR)
+  build_checksum = checksum(BUILD_DIRECTORY)
 
   # Write the manifest.
   print("Writing the manifest...")
-  build_files = find_files(paths.BUILD_DIR)
+  build_files = find_files(BUILD_DIRECTORY)
   with open(manifest_file, 'w') as f:
     f.write("CACHE MANIFEST\n")
     f.write("# %s\n" % build_checksum)
@@ -280,11 +280,11 @@ def build(options):
     f.write("*\n")
 
   # We don't want the following files to be added to the manifest.
-  copy_files(paths.SOURCE_DIR, paths.BUILD_DIR, ["sizes.html"])
+  copy_files(SOURCE_DIRECTORY, BUILD_DIRECTORY, ["sizes.html"])
 
   # Set the version number.
   print("Writing version...")
-  with open(os.path.join(paths.BUILD_DIR, "version.txt"), "w") as fh:
+  with open(os.path.join(BUILD_DIRECTORY, "version.txt"), "w") as fh:
     fh.write(version)
     fh.write("\n")
 
@@ -292,7 +292,7 @@ def build(options):
   print("Getting release notes... ")
   notes = run([CHANGES_PATH, "current-notes"]).strip()
   print("Writing release notes... ")
-  with open(os.path.join(paths.BUILD_DIR, "release.txt"), "w") as fh:
+  with open(os.path.join(BUILD_DIRECTORY, "release.txt"), "w") as fh:
     fh.write(notes)
     fh.write("\n")
 
@@ -300,7 +300,7 @@ def build(options):
   if not os.path.exists(archives_dir):
     os.makedirs(archives_dir)
   settings_name = os.path.splitext(os.path.basename(options.settings))[0]
-  with Chdir(paths.ROOT_DIR):
+  with Chdir(ROOT_DIRECTORY):
     archive_path = os.path.join(archives_dir, "build-%s-%s.tar.gz" % (build_checksum, settings_name))
     latest_archive_path = os.path.join(archives_dir, "build-latest-%s.tar.gz" % settings_name)
     subprocess.check_call(["tar", "-zcf", archive_path, "build"])
@@ -332,7 +332,7 @@ def command_serve(parser):
       httpd = socketserver.TCPServer(("", options.port), http.server.SimpleHTTPRequestHandler)
       httpd.socket = ssl.wrap_socket(httpd.socket, certfile=CERTIFICATE_PATH, server_side=True)
       print("Serving on http://127.0.0.1:%d..." % options.port)
-      os.chdir(paths.BUILD_DIR)
+      os.chdir(BUILD_DIRECTORY)
       httpd.serve_forever()
 
     return inner
