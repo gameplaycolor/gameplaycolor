@@ -42,7 +42,7 @@ do
     esac
 done
 
-git ls-remote --tags origin
+git ls-remote --tags
 git tag
 git submodule update --init --recursive
 pip install pipenv
