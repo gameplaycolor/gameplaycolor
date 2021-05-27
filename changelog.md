@@ -1,5 +1,7 @@
 # Changelog
 
+This file is no longer being updated. Check the [GitHub Releases page](https://github.com/gameplaycolor/gameplaycolor/releases) for up to date releases and changes.
+
 ## Version 2.4.0
 
 - Update from @nickydraz to use IndexedDB to support iOS 13.
