@@ -23,7 +23,7 @@ jobs:
       run: scripts/install-dependencies.sh
 
     - name: Build release
-      run: scripts/build build settings/release.json
+      run: scripts/gameplay build settings/release.json
 
     - name: Save artifacts
       uses: actions/upload-artifact@v1
