@@ -39,7 +39,7 @@ HTMLCOMPRESSOR_URL = "https://storage.googleapis.com/google-code-archive-downloa
 YUICOMPRESSOR_URL = "https://github.com/yui/yuicompressor/releases/download/v2.4.8/yuicompressor-2.4.8.jar"
 
 SCRIPTS_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
-ROOT_DIRECTORY = os.path.dirname(SCRIPTS_DIR)
+ROOT_DIRECTORY = os.path.dirname(SCRIPTS_DIRECTORY)
 SOURCE_DIRECTORY = os.path.join(ROOT_DIRECTORY, "src")
 CHANGES_DIRECTORY = os.path.join(SCRIPTS_DIRECTORY, "changes")
 BUILD_DIRECTORY = os.path.join(ROOT_DIRECTORY, "build")
