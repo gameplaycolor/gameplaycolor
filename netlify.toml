@@ -5,4 +5,4 @@
   command = "scripts/netlify-build.sh"
 
 [context.deploy-preview]
-  command = "scripts/netlify-build.sh"
+  command = "scripts/netlify-build.sh --preview"
