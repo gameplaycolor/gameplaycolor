@@ -205,10 +205,6 @@ KEYCODE_SHIFT_LEFT = 16;
 
       fullscreen: function() {
         var self = this;
-
-        document.getElementById('screen-console').style.background = "black";
-        document.getElementById('moulding').style.display = "none";
-        document.getElementById('element-surround').style.display = "none";
         document.getElementById('element-dpad').style.display = "none";
         document.getElementById('element-options').style.display = "none";
         document.getElementById('element-buttons').style.display = "none";
