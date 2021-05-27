@@ -26,4 +26,5 @@ set -u
 
 git submodule update --init --recursive
 pip install pipenv
+scripts/install-dependencies.sh
 scripts/build build settings/release.json

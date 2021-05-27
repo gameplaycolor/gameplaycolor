@@ -28,5 +28,5 @@ SCRIPTS_DIRECTORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd 
 ROOT_DIRECTORY="${SCRIPTS_DIRECTORY}/.."
 CHANGES_DIRECTORY="${SCRIPTS_DIRECTORY}/changes"
 
-PIPENV_PIPFILE="$ROOT_DIRECTORY/Pipfile" pipenv install
+PIPENV_PIPFILE="$SCRIPTS_DIRECTORY/Pipfile" pipenv install
 PIPENV_PIPFILE="$CHANGES_DIRECTORY/Pipfile" pipenv install
