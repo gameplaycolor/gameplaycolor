@@ -42,6 +42,8 @@ do
     esac
 done
 
+git ls-remote --tags origin
+git tag
 git submodule update --init --recursive
 pip install pipenv
 export PIPENV_IGNORE_VIRTUALENVS=1
