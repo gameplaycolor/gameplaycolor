@@ -2,7 +2,7 @@
 # unless otherwise overridden by more specific contexts.
 [build]
   publish = "build/"
-  command = "scripts/build.sh --prune-tags"
+  command = "scripts/build.sh --install-dependencies --prune-tags"
 
 [context.deploy-preview]
-  command = "scripts/build.sh --prune-tags --preview"
+  command = "scripts/build.sh --install-dependencies --prune-tags --preview"

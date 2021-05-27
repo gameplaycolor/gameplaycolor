@@ -24,10 +24,16 @@ set -o pipefail
 set -x
 set -u
 
+SCRIPTS_DIRECTORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+
+CHANGES_SCRIPT="${SCRIPTS_DIRECTORY}/changes/changes"
+
 # Process the command line arguments.
 POSITIONAL=()
 PREVIEW=false
 PRUNE_TAGS=false
+RELEASE=false
+INSTALL_DEPENDENCIES=false
 while [[ $# -gt 0 ]]
 do
     key="$1"
@@ -38,6 +44,14 @@ do
         ;;
         --prune-tags)
         PRUNE_TAGS=true
+        shift
+        ;;
+        --install-dependencies)
+        INSTALL_DEPENDENCIES=true
+        shift
+        ;;
+        -r|--release)
+        RELEASE=true
         shift
         ;;
         *)
@@ -59,14 +73,22 @@ fi
 git tag
 
 # Install dependencies.
-git submodule update --init --recursive
-pip install pipenv
-export PIPENV_IGNORE_VIRTUALENVS=1
-scripts/install-dependencies.sh
+if $INSTALL_DEPENDENCIES ; then
+    git submodule update --init --recursive
+    pip install pipenv
+    export PIPENV_IGNORE_VIRTUALENVS=1
+    scripts/install-dependencies.sh
+fi
 
 # Build.
 if $PREVIEW ; then
     scripts/gameplay build settings/preview.json
 else
     scripts/gameplay build settings/release.json
+fi
+
+# Attempt to create a version tag and publish a GitHub release.
+# This fails quietly if there's no release to be made.
+if $RELEASE || $TRY_RELEASE ; then
+    "$CHANGES_SCRIPT" release --skip-if-empty --push --command 'gh release create $CHANGES_TAG --title "$CHANGES_TITLE" --notes "$CHANGES_NOTES"' "$@"
 fi

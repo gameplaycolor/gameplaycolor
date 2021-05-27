@@ -23,7 +23,10 @@ jobs:
       run: scripts/install-dependencies.sh
 
     - name: Build release
-      run: scripts/gameplay build settings/release.json
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        TRY_RELEASE: ${{ github.ref == 'refs/heads/main' }}
+      run: scripts/build.sh
 
     - name: Save artifacts
       uses: actions/upload-artifact@v1
