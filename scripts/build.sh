@@ -48,7 +48,7 @@ export PIPENV_IGNORE_VIRTUALENVS=1
 scripts/install-dependencies.sh
 
 if $PREVIEW ; then
-    scripts/build build settings/preview.json
+    scripts/gameplay build settings/preview.json
 else
-    scripts/build build settings/release.json
+    scripts/gameplay build settings/release.json
 fi

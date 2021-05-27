@@ -20,6 +20,7 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 SCRIPTS_DIRECTORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+NAME=`basename "$0"`
 
 export PIPENV_PIPFILE="${SCRIPTS_DIRECTORY}/Pipfile"
-pipenv run python3 -u "${SCRIPTS_DIRECTORY}/build.py" $@
+pipenv run python3 -u "${SCRIPTS_DIRECTORY}/${NAME}.py" $@
