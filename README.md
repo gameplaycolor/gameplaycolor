@@ -14,8 +14,8 @@ Dependencies
 Check out the project, update the submodules, install the brew-based dependencies, and install the additional Python dependencies:
 
 ```bash
-git clone git@github.com:jbmorley/gameplay.git
-cd gameplay
+git clone git@github.com:gameplaycolor/gameplaycolor.git
+cd gameplaycolor
 git submodule update --init --recursive
 scripts/install-dependencies.sh
 ```
@@ -34,10 +34,10 @@ Game Play is built using a custom Python build script which inlines and minifies
 For example, building the release version of Game Play as hosted on [gameplaycolor.com](https://gameplaycolor.com) can be done by running the following command from the root of the repository:
 
 ```bash
-scripts/build build settings/release.json
+scripts/gameplay build settings/release.json
 ```
 
-The build will be created in the `build` directory, and a corresponding *.tar.gz will be creatd in `archives`, tagged with the git sha and settings name (e.g., `build-168bd9d0d8d309a1efb1983bd61ec34ff22951b5-release.tar.gz`).
+The build will be created in the `build` directory, and a corresponding *.tar.gz will be created in `archives`, tagged with the git sha and settings name (e.g., `build-168bd9d0d8d309a1efb1983bd61ec34ff22951b5-release.tar.gz`).
 
 Changelog
 ---------
