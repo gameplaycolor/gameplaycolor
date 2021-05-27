@@ -5,7 +5,7 @@
     "analytics": "UA-37991248-2",
     "domain": "gameplaycolor.com",
     "redirect_uri": "https://app.gameplaycolor.com/authorization/",
-    "icon": "icons/icon-alpha.png",
+    "icon": "icons/icon-preview.png",
     "debug": false,
     "logging_level": 20,
     "deploy": {
