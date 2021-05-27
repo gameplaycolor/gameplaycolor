@@ -306,8 +306,12 @@ def build(options):
 
 def run(command):
   result = subprocess.run(command, capture_output=True)
-  result.check_returncode()
-  return result.stdout.decode('utf-8')
+  try:
+    result.check_returncode()
+    return result.stdout.decode('utf-8')
+  except subprocess.CalledProcessError as e:
+    print(e.stderr.decode("utf-8"))
+    raise
 
 
 def command_build(parser):
