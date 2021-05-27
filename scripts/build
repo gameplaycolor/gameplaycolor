@@ -21,5 +21,5 @@
 
 SCRIPTS_DIRECTORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-export PIPENV_PIPFILE="${SCRIPTS_DIRECTORY}/../Pipfile"
+export PIPENV_PIPFILE="${SCRIPTS_DIRECTORY}/Pipfile"
 pipenv run python3 -u "${SCRIPTS_DIRECTORY}/build.py" $@
