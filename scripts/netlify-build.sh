@@ -25,5 +25,6 @@ set -x
 set -u
 
 git submodule update --init --recursive
+pip install pipenv
 # TODO: Can I run the build script directly?
 python3 scripts/build.py build settings/release.json
