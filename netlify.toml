@@ -1,0 +1,10 @@
+# Settings in the [build] context are global and are applied to all contexts
+# unless otherwise overridden by more specific contexts.
+[build]
+
+  publish = "build/"
+  command = "scripts/netlify-build.sh"
+
+[context.deploy-preview]
+  publish = "dist/"
+  command = "scripts/netlify-build.sh"
