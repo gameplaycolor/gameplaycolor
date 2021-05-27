@@ -25,8 +25,9 @@ set -x
 set -u
 
 SCRIPTS_DIRECTORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-
 CHANGES_SCRIPT="${SCRIPTS_DIRECTORY}/changes/changes"
+
+TRY_RELEASE_BOUND=${TRY_RELEASE:-false}
 
 # Process the command line arguments.
 POSITIONAL=()
@@ -89,6 +90,6 @@ fi
 
 # Attempt to create a version tag and publish a GitHub release.
 # This fails quietly if there's no release to be made.
-if $RELEASE || $TRY_RELEASE ; then
+if $RELEASE || $TRY_RELEASE_BOUND ; then
     "$CHANGES_SCRIPT" release --skip-if-empty --push --command 'gh release create $CHANGES_TAG --title "$CHANGES_TITLE" --notes "$CHANGES_NOTES"' "$@"
 fi
