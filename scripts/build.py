@@ -338,27 +338,6 @@ def command_serve(parser):
     return inner
 
 
-def command_deploy(parser):
-  parser.add_argument("settings", help="settings file")
-  parser.add_argument("--debug", action="store_true", default=False, help="build without minification")
-
-  def inner(options):
-    build(options)
-    settings = load_settings(path=os.path.abspath(options.settings))
-
-    if (settings["deploy"]["confirm"]):
-      print("Deploy to '%s'? [y/N]" % settings["deploy"]["domain"])
-      choice = raw_input().lower()
-      if choice != "y":
-        exit("Abort.")
-
-    with Chdir(paths.ANSIBLE_DIR):
-      subprocess.check_call(["ansible-playbook", "gameplay.yml",
-                             "--extra-vars", json.dumps(settings["deploy"])])
-
-  return inner
-
-
 def add_command(subparsers, name, command, help=""):
   parser = subparsers.add_parser(name, help=help)
   fn = command(parser)
@@ -370,9 +349,9 @@ def main():
   subparsers = parser.add_subparsers(help="Command to run.")
   add_command(subparsers, name="build", command=command_build, help="Build the project.")
   add_command(subparsers, name="serve", command=command_serve, help="Run a local server.")
-  add_command(subparsers, name="deploy", command=command_deploy, help="Deploy the project.")
   options = parser.parse_args()
   options.fn(options)
+
 
 if __name__ == '__main__':
   main()
