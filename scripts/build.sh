@@ -43,6 +43,8 @@ do
 done
 
 # git ls-remote --tags
+git remote add origin https://github.com/gameplaycolor/gameplaycolor.git
+git fetch --prune --prune-tags
 git tag
 git submodule update --init --recursive
 pip install pipenv
