@@ -4,6 +4,7 @@
 /*.sublime-workspace
 
 /archives
+/build
 
 /ansible/gameplay.retry
 
