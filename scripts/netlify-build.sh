@@ -26,5 +26,6 @@ set -u
 
 git submodule update --init --recursive
 pip install pipenv
+export PIPENV_IGNORE_VIRTUALENVS=1
 scripts/install-dependencies.sh
 scripts/build build settings/release.json
