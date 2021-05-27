@@ -27,12 +27,17 @@ set -u
 # Process the command line arguments.
 POSITIONAL=()
 PREVIEW=false
+PRUNE_TAGS=false
 while [[ $# -gt 0 ]]
 do
     key="$1"
     case $key in
         --preview)
         PREVIEW=true
+        shift
+        ;;
+        --prune-tags)
+        PRUNE_TAGS=true
         shift
         ;;
         *)
@@ -42,15 +47,24 @@ do
     esac
 done
 
-# git ls-remote --tags
-git remote add origin https://github.com/gameplaycolor/gameplaycolor.git
-git fetch --prune --prune-tags
+# Since Netlify doesn't configure any remotes by default, reuses checkouts, and doesn't correctly prune tags, we have
+# to do some unpleasant things to 1) ensure there's a remote, and 2) prune the local tags to ensure changes always
+# reports the correct version number when the tags have changed.
+if $PRUNE_TAGS ; then
+    git config --get remote.origin.url || git remote add origin https://github.com/gameplaycolor/gameplaycolor.git
+    git fetch --prune --prune-tags
+fi
+
+# List the tags to assist with debugging.
 git tag
+
+# Install dependencies.
 git submodule update --init --recursive
 pip install pipenv
 export PIPENV_IGNORE_VIRTUALENVS=1
 scripts/install-dependencies.sh
 
+# Build.
 if $PREVIEW ; then
     scripts/gameplay build settings/preview.json
 else
