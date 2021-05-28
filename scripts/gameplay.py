@@ -21,6 +21,7 @@
 
 import argparse
 import datetime
+import glob
 import hashlib
 import http.server
 import json
@@ -297,11 +298,21 @@ def build(options):
   with Chdir(ROOT_DIRECTORY):
     archive_path = os.path.join(archives_dir, "build-%s-%s.tar.gz" % (build_checksum, settings_name))
     latest_archive_path = os.path.join(archives_dir, "build-latest-%s.tar.gz" % settings_name)
-    subprocess.check_call(["tar", "-zcf", archive_path, "build"])
+    release_path = os.path.join(archives_dir, f"Game-Play-Color-{version}.tar.gz")
+    with Chdir(BUILD_DIRECTORY):
+      subprocess.check_call(["tar", "-zcf", archive_path, "."])
     if os.path.exists(latest_archive_path):
       os.remove(latest_archive_path)
     os.symlink(archive_path, latest_archive_path)
 
+    with Chdir(archives_dir):
+      files = glob.glob("Game-Play-Color-*.tar.gz")
+      for f in files:
+        f_path = os.path.join(archives_dir, f)
+        print(f"Removing '{f_path}'...")
+        os.remove(f_path)
+    print(f"Creating '{release_path}'...")
+    shutil.copyfile(archive_path, release_path)
 
 def run(command):
   result = subprocess.run(command, capture_output=True)
