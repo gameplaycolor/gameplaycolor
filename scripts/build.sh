@@ -25,6 +25,7 @@ set -x
 set -u
 
 SCRIPTS_DIRECTORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+ROOT_DIRECTORY="${SCRIPTS_DIRECTORY}/.."
 CHANGES_SCRIPT="${SCRIPTS_DIRECTORY}/changes/changes"
 
 TRY_RELEASE_BOUND=${TRY_RELEASE:-false}
@@ -62,6 +63,8 @@ do
     esac
 done
 
+cd "$ROOT_DIRECTORY"
+
 # Since Netlify doesn't configure any remotes by default, reuses checkouts, and doesn't correctly prune tags, we have
 # to do some unpleasant things to 1) ensure there's a remote, and 2) prune the local tags to ensure changes always
 # reports the correct version number when the tags have changed.
@@ -91,5 +94,5 @@ fi
 # Attempt to create a version tag and publish a GitHub release.
 # This fails quietly if there's no release to be made.
 if $RELEASE || $TRY_RELEASE_BOUND ; then
-    "$CHANGES_SCRIPT" release --skip-if-empty --push --command 'gh release create $CHANGES_TAG --title "$CHANGES_TITLE" --notes "$CHANGES_NOTES"' "$@"
+    "$CHANGES_SCRIPT" release --skip-if-empty --push --command 'scripts/release.sh'
 fi
