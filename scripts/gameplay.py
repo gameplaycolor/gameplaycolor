@@ -25,16 +25,23 @@ import glob
 import hashlib
 import http.server
 import json
+import logging
 import os
 import os.path
 import shutil
 import socketserver
 import subprocess
+import sys
 import tempfile
 import urllib.parse
 
 import lxml.etree
 import lxml.html
+
+
+verbose = '--verbose' in sys.argv[1:] or '-v' in sys.argv[1:]
+logging.basicConfig(level=logging.DEBUG if verbose else logging.INFO, format="[%(levelname)s] %(message)s")
+
 
 HTMLCOMPRESSOR_URL = "https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/htmlcompressor/htmlcompressor-1.5.3.jar"
 YUICOMPRESSOR_URL = "https://github.com/yui/yuicompressor/releases/download/v2.4.8/yuicompressor-2.4.8.jar"
@@ -128,7 +135,7 @@ def download(url, directory):
   basename = os.path.basename(urllib.parse.urlparse(url).path)
   path = os.path.join(directory, basename)
   if not os.path.exists(path):
-    print("Downloading '%s'..." % basename)
+    logging.info("Downloading '%s'...", basename)
     subprocess.check_call(["curl", "-L", "-o", path, url])
   return path
 
@@ -185,11 +192,11 @@ def build(options):
   defaults_dir = os.path.join(SOURCE_DIRECTORY, "defaults")
   manifest_file = os.path.join(BUILD_DIRECTORY, "cache.manifest")
 
-  print("Getting version... ", end="")
+  logging.info("Getting version...")
   version = run([CHANGES_PATH, "current-version"]).strip()
-  print(version)
+  logging.info("Version %s", version)
 
-  print("Loading settings...")
+  logging.info("Loading settings...")
   settings = load_settings(path=os.path.abspath(options.settings), version=version)
 
   # Create/empty the build directory.
@@ -211,47 +218,47 @@ def build(options):
     contents = f.read()
   html = lxml.html.fromstring(contents)
 
-  print("Extracting JavaScript...")
+  logging.info("Extracting JavaScript...")
   script = "window.config = %s;\n" % json.dumps(settings, sort_keys=True)
   script += extract_tags(html, "//script[@type='text/javascript']", "src", SOURCE_DIRECTORY)
   if not settings["debug"] and not options.debug:
-    print("Minifying JavaScript...")
+    logging.info("Minifying JavaScript...")
     script = yuicompressor(script, '.js')
   append_javascript(html, script)
 
-  print("Exctracting CSS...")
+  logging.info("Exctracting CSS...")
   style = extract_tags(html, "//link[@type='text/css']", "href", SOURCE_DIRECTORY)
   if not settings["debug"] and not options.debug:
-    print("Minifying CSS...")
+    logging.info("Minifying CSS...")
     style = yuicompressor(style, '.css')
   append_style(html, style)
 
   contents = lxml.html.tostring(html).decode('utf-8')
   if not settings["debug"] and not options.debug:
-    print("Compressing HTML...")
+    logging.info("Compressing HTML...")
     contents = htmlcompressor(contents)
 
-  print("Writing HTML...")
+  logging.info("Writing HTML...")
   with open(output_file, 'w') as f:
     f.write("<!DOCTYPE html>\n")
     f.write(contents)
 
   # authorization.html
-  print("Copying authorization page...")
+  logging.info("Copying authorization page...")
   os.makedirs(os.path.join(BUILD_DIRECTORY, "authorization"))
   shutil.copy(os.path.join(SOURCE_DIRECTORY, "authorization/index.html"),
               os.path.join(BUILD_DIRECTORY, "authorization/index.html"))
 
   # images
-  print("Copying images...")
+  logging.info("Copying images...")
   copy_diretory(images_dir, BUILD_DIRECTORY)
 
   # images
-  print("Copying assets...")
+  logging.info("Copying assets...")
   copy_diretory(assets_dir, BUILD_DIRECTORY)
 
   # defaults
-  print("Copying defaults...")
+  logging.info("Copying defaults...")
   copy_diretory(defaults_dir, BUILD_DIRECTORY)
 
   # icon
@@ -259,11 +266,11 @@ def build(options):
   shutil.copy(icon_file, os.path.join(BUILD_DIRECTORY, "images", "icon.png"))
 
   # Generate a sha for the build.
-  print("Generating a checksum...")
+  logging.info("Generating a checksum...")
   build_checksum = checksum(BUILD_DIRECTORY)
 
   # Write the manifest.
-  print("Writing the manifest...")
+  logging.info("Writing the manifest...")
   build_files = find_files(BUILD_DIRECTORY)
   with open(manifest_file, 'w') as f:
     f.write("CACHE MANIFEST\n")
@@ -278,15 +285,15 @@ def build(options):
   copy_files(SOURCE_DIRECTORY, BUILD_DIRECTORY, ["sizes.html"])
 
   # Set the version number.
-  print("Writing version...")
+  logging.info("Writing version...")
   with open(os.path.join(BUILD_DIRECTORY, "version.txt"), "w") as fh:
     fh.write(version)
     fh.write("\n")
 
   # Get the release notes.
-  print("Getting release notes... ")
+  logging.info("Getting release notes... ")
   notes = run([CHANGES_PATH, "current-notes"]).strip()
-  print("Writing release notes... ")
+  logging.info("Writing release notes... ")
   with open(os.path.join(BUILD_DIRECTORY, "release.txt"), "w") as fh:
     fh.write(notes)
     fh.write("\n")
@@ -309,9 +316,9 @@ def build(options):
       files = glob.glob("Game-Play-Color-*.tar.gz")
       for f in files:
         f_path = os.path.join(archives_dir, f)
-        print(f"Removing '{f_path}'...")
+        logging.info("Removing '%s'...", f_path)
         os.remove(f_path)
-    print(f"Creating '{release_path}'...")
+    logging.info("Creating '%s'...", release_path)
     shutil.copyfile(archive_path, release_path)
 
 def run(command):
@@ -320,7 +327,7 @@ def run(command):
     result.check_returncode()
     return result.stdout.decode('utf-8')
   except subprocess.CalledProcessError as e:
-    print(e.stderr.decode("utf-8"))
+    logging.error(e.stderr.decode("utf-8"))
     raise
 
 
@@ -335,7 +342,7 @@ def command_serve(parser):
 
     def inner(options):
       httpd = SocketServer.TCPServer(("", options.port), SimpleHTTPServer.SimpleHTTPRequestHandler)
-      print("Serving on http://127.0.0.1:%d..." % options.port)
+      logging.info("Serving on http://127.0.0.1:%d...", options.port)
       os.chdir(BUILD_DIRECTORY)
       httpd.serve_forever()
 
@@ -350,6 +357,7 @@ def add_command(subparsers, name, command, help=""):
 
 def main():
   parser = argparse.ArgumentParser(description="Build script for Game Play.")
+  parser.add_argument('--verbose', '-v', action='store_true', default=False, help="show verbose output")
   subparsers = parser.add_subparsers(help="Command to run.")
   add_command(subparsers, name="build", command=command_build, help="Build the project.")
   add_command(subparsers, name="serve", command=command_serve, help="Run a local server.")
