@@ -66,6 +66,17 @@
 - "fix: Fixing early Google Drive session expiry."
 - "fix: Minor UI tweaks."
 
+"2.1.2":
+- "fix: Update the version number."
+
+"2.1.1":
+- "fix: Workaround for the scaling/rendering issues on iOS 9."
+
+"2.1.0":
+- "feat: Improved Google Drive authentication."
+- "feat: Increased local storage."
+- "fix: UI improvements for iPhone 6 and iPhone 6 Plus."
+
 "2.0.13":
 - "fix: Show release notes when informing users about updates."
 - "fix: Only display errors if no update is available."
@@ -100,6 +111,18 @@
 - "fix: Preventing application from running if the user cancels database creation."
 - "fix: Fixed crash when Google Drive returned an empty response."
 - "fix: Fixed crash due to incorrectly named logging call."
+
+"2.0.4":
+- "fix: Updating the Google Drive authentication callbacks."
+
+"2.0.3":
+- "fix: Update Google Analytics identifier."
+
+"2.0.2":
+- "fix: Clean up the thanks link."
+
+"2.0.1":
+- "feat: iPad Support."
 
 "2.0.0":
 - "feat!: Initial release of Game Play Color."

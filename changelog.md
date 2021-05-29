@@ -143,9 +143,26 @@
 
 # 2.1.2
 
+**Fixes**
+
+- Update the version number.
+
+# 2.1.1
+
+**Fixes**
+
+- Workaround for the scaling/rendering issues on iOS 9.
 
 # 2.1.0
 
+**Changes**
+
+- Improved Google Drive authentication.
+- Increased local storage.
+
+**Fixes**
+
+- UI improvements for iPhone 6 and iPhone 6 Plus.
 
 # 2.0.13
 
@@ -214,15 +231,27 @@
 
 # 2.0.4
 
+**Fixes**
+
+- Updating the Google Drive authentication callbacks.
 
 # 2.0.3
 
+**Fixes**
+
+- Update Google Analytics identifier.
 
 # 2.0.2
 
+**Fixes**
+
+- Clean up the thanks link.
 
 # 2.0.1
 
+**Changes**
+
+- iPad Support.
 
 # 2.0.0
 
