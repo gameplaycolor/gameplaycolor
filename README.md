@@ -36,6 +36,10 @@ scripts/gameplay build settings/release.json
 
 The build will be created in the `build` directory, and a corresponding *.tar.gz will be created in `archives`, tagged with the git sha and settings name (e.g., `build-168bd9d0d8d309a1efb1983bd61ec34ff22951b5-release.tar.gz`).
 
+## Releases
+
+The `main` branch is automatically deployed using continuous integration at [https://app.gameplaycolor.com](https://app.gameplaycolor.com). You can find an auto-gemerated changelog at [https://gameplaycolor.com/changelog/](https://gameplaycolor.com/changelog/).
+
 ## Thanks
 
 Many thanks to:
@@ -60,5 +64,5 @@ Game Play and its [dependencies](#third-party-sources) are licensed under the MI
 
 Game Play includes the following third party sources:
 
-- **jQuery** - Copyright (C) 2013 jQuery Foundation and other contributors
-- **GameBoy-Online** - Copyright (C) 2010-2016 Grant Galitz
+- [**jQuery**](https://jquery.com) - Copyright (C) 2013 jQuery Foundation and other contributors
+- [**GameBoy-Online**](https://github.com/taisel/GameBoy-Online) - Copyright (C) 2010-2016 Grant Galitz

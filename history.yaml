@@ -1,0 +1,131 @@
+"2.4.0":
+- "feat: Update from @nickydraz to use IndexedDB to support iOS 13."
+
+"2.3.8":
+- "fix: Fix audio playback on iOS 11."
+
+"2.3.7":
+- "fix: Updating Google Drive authentication."
+
+"2.3.6":
+- "fix: Improving the first run messaging."
+
+"2.3.5":
+- "fix: Fixing the icon on the sign in page."
+
+"2.3.4":
+- "fix: Fixing some crashes."
+
+"2.3.3":
+- "fix: Re-enable crash reporting."
+- "fix: Bug fixes."
+
+"2.3.2":
+- "fix: Fixing a small bug in artwork lookup."
+- "fix: Minor improvements to logging."
+
+"2.3.1":
+- "feat: Adding a mechanism to email logs."
+
+"2.3.0":
+- "feat: New improved game library."
+
+"2.2.3":
+- "feat: Catching up to upstream GameBoy-Online."
+- "feat: Some UI improvements."
+
+"2.2.2":
+- "fix: Don't animate the console when restoring games."
+- "fix: Temporarily disabling button animations to improve audio performance."
+
+"2.2.1":
+- "feat: New in-game menu."
+- "feat: Menu option for resetting the current game."
+- "feat: Menu option for Zelda fans: A + B + Select + Start."
+
+"2.2.0":
+- "feat: Support for diagonal directions using the d-pad."
+- "fix: Improved scrolling in the game library."
+
+"2.1.7":
+- "feat: Setting for console color."
+- "fix: Work-around for audio playback issues on iPhone 6."
+
+"2.1.6":
+- "feat: Adding support for different emulation speeds."
+
+"2.1.5":
+- "fix: Adding scrolling to the settings dialog on small screens."
+- "fix: Adding the version to the settings dialog."
+
+"2.1.4":
+- "fix: Moving the account sign out and 'Say Thanks' into a new settings dialog."
+- "fix: Adding the option to disable sound; use this to listen to your own music!"
+
+"2.1.3":
+- "fix: Fixing early Google Drive session expiry."
+- "fix: Minor UI tweaks."
+
+"2.1.2":
+- "fix: Update the version number."
+
+"2.1.1":
+- "fix: Workaround for the scaling/rendering issues on iOS 9."
+
+"2.1.0":
+- "feat: Improved Google Drive authentication."
+- "feat: Increased local storage."
+- "fix: UI improvements for iPhone 6 and iPhone 6 Plus."
+
+"2.0.13":
+- "fix: Show release notes when informing users about updates."
+- "fix: Only display errors if no update is available."
+
+"2.0.12":
+- "fix: Improving guards against loading corrupt ROMs."
+
+"2.0.11":
+- "fix: Correcting the characters used on the d-pad and in the 'Say Thanks' link on iOS 8.3."
+
+"2.0.10":
+- "feat: Adding the application version, screen size and the user agent string into the logs."
+
+"2.0.9":
+- "fix: Improved logging."
+- "fix: Better error handling of missing ROMs."
+
+"2.0.8":
+- "fix: Improving information available in crash log emails."
+- "fix: Fixing some bugs which resulted in an attmept to play and save ROMs that had failed to download."
+- "fix: Introduced a recovery mechanism for the above scenario."
+- "feat: Improved debugging tools."
+
+"2.0.7":
+- "feat: Layout support for iPhone 4 and 4S."
+
+"2.0.6":
+- "fix: Changing the default error handler to ignore errors from cross-origin scripts."
+
+"2.0.5":
+- "fix: Fixed crash when inspecting Google Drive files with no extension."
+- "fix: Preventing application from running if the user cancels database creation."
+- "fix: Fixed crash when Google Drive returned an empty response."
+- "fix: Fixed crash due to incorrectly named logging call."
+
+"2.0.4":
+- "fix: Updating the Google Drive authentication callbacks."
+
+"2.0.3":
+- "fix: Update Google Analytics identifier."
+
+"2.0.2":
+- "fix: Clean up the thanks link."
+
+"2.0.1":
+- "feat: iPad Support."
+
+"2.0.0":
+- "feat!: Initial release of Game Play Color."
+
+"1.0.0":
+- "feat!: Initial release of Game Play."
