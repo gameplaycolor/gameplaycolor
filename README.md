@@ -24,7 +24,7 @@ It may be necessary to install pipenv as follows:
 pip3 install pipenv
 ```
 
-## Building
+## Builds
 
 Game Play is built using a custom Python build script which inlines and minifies HTML, CSS and JavaScript, and binds in the settings for a given deployment.
 
