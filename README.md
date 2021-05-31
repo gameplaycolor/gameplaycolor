@@ -38,7 +38,7 @@ The build will be created in the `build` directory, and a corresponding *.tar.gz
 
 ## Releases
 
-- [Changelog](https://gameplaycolor.com/changelog/)
+The `main` branch is automatically deployed using continuous integration at [https://app.gameplaycolor.com](https://app.gameplaycolor.com). You can find an auto-gemerated changelog at [https://gameplaycolor.com/changelog/](https://gameplaycolor.com/changelog/).
 
 ## Thanks
 
