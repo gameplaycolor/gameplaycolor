@@ -46,6 +46,7 @@ logging.basicConfig(level=logging.DEBUG if verbose else logging.INFO, format="[%
 HTMLCOMPRESSOR_URL = "https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/htmlcompressor/htmlcompressor-1.5.3.jar"
 YUICOMPRESSOR_URL = "https://github.com/yui/yuicompressor/releases/download/v2.4.8/yuicompressor-2.4.8.jar"
 
+
 SCRIPTS_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
 ROOT_DIRECTORY = os.path.dirname(SCRIPTS_DIRECTORY)
 SOURCE_DIRECTORY = os.path.join(ROOT_DIRECTORY, "src")
@@ -193,6 +194,7 @@ def build(options):
   manifest_file = os.path.join(BUILD_DIRECTORY, "cache.manifest")
 
   logging.info("Getting version...")
+
   version = run([CHANGES_PATH, "current-version"]).strip()
   logging.info("Version %s", version)
 
@@ -341,7 +343,7 @@ def command_serve(parser):
     parser.add_argument("--port", default=8000, type=int, help="Listening port.")
 
     def inner(options):
-      httpd = SocketServer.TCPServer(("", options.port), SimpleHTTPServer.SimpleHTTPRequestHandler)
+      httpd = socketserver.TCPServer(("", options.port), http.server.SimpleHTTPRequestHandler)
       logging.info("Serving on http://127.0.0.1:%d...", options.port)
       os.chdir(BUILD_DIRECTORY)
       httpd.serve_forever()
