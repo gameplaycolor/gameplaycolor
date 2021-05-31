@@ -64,5 +64,5 @@ Game Play and its [dependencies](#third-party-sources) are licensed under the MI
 
 Game Play includes the following third party sources:
 
-- **jQuery** - Copyright (C) 2013 jQuery Foundation and other contributors
+- [**jQuery**](https://jquery.com) - Copyright (C) 2013 jQuery Foundation and other contributors
 - **GameBoy-Online** - Copyright (C) 2010-2016 Grant Galitz
