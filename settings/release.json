@@ -6,7 +6,7 @@
     "domain": "gameplaycolor.com",
     "redirect_uri": "https://app.gameplaycolor.com/authorization/",
     "icon": "icons/icon.png",
-    "debug": true,
+    "debug": false,
     "logging_level": 20,
     "deploy": {
         "domain": "app.gameplaycolor.com",
