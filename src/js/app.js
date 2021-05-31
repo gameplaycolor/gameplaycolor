@@ -303,7 +303,8 @@ Promise.prototype.always = function(onAlways) {
 
   $(document).ready(function() {
 
-    if (window.navigator.standalone === true) {
+    if (window.navigator.standalone === true ||
+        window.matchMedia('(display-mode: standalone)').matches) {
 
       bootstrap();
 
