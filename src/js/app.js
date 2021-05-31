@@ -303,9 +303,7 @@ Promise.prototype.always = function(onAlways) {
 
   $(document).ready(function() {
 
-    var isInWebAppiOS = (window.navigator.standalone === true);
-    var isInWebAppChrome = (window.matchMedia('(display-mode: standalone)').matches);
-    if (isInWebAppiOS || isInWebAppChrome) {
+    if (window.navigator.standalone === true) {
 
       bootstrap();
 
