@@ -30,7 +30,6 @@ import os
 import os.path
 import shutil
 import socketserver
-import ssl
 import subprocess
 import sys
 import tempfile
@@ -50,7 +49,6 @@ YUICOMPRESSOR_URL = "https://github.com/yui/yuicompressor/releases/download/v2.4
 
 SCRIPTS_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
 ROOT_DIRECTORY = os.path.dirname(SCRIPTS_DIRECTORY)
-CERTIFICATE_PATH = os.path.join(ROOT_DIRECTORY, "server.pem")
 SOURCE_DIRECTORY = os.path.join(ROOT_DIRECTORY, "src")
 CHANGES_DIRECTORY = os.path.join(SCRIPTS_DIRECTORY, "changes")
 BUILD_DIRECTORY = os.path.join(ROOT_DIRECTORY, "build")
@@ -179,7 +177,6 @@ def copy_files(source, destination, files):
 
 
 def load_settings(path, version):
-
   settings = None
   with open(path, 'r') as f:
     settings = json.load(f)
@@ -343,13 +340,11 @@ def command_build(parser):
 
 
 def command_serve(parser):
-    parser.add_argument("--port", default=4443, type=int, help="Listening port.")
+    parser.add_argument("--port", default=8000, type=int, help="Listening port.")
 
     def inner(options):
       httpd = socketserver.TCPServer(("", options.port), http.server.SimpleHTTPRequestHandler)
-      httpd.socket = ssl.wrap_socket(httpd.socket, certfile=CERTIFICATE_PATH, server_side=True)
       logging.info("Serving on http://127.0.0.1:%d...", options.port)
-
       os.chdir(BUILD_DIRECTORY)
       httpd.serve_forever()
 
