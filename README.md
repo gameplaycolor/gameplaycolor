@@ -36,7 +36,7 @@ scripts/gameplay build settings/release.json
 
 The build will be created in the `build` directory, and a corresponding *.tar.gz will be created in `archives`, tagged with the git sha and settings name (e.g., `build-168bd9d0d8d309a1efb1983bd61ec34ff22951b5-release.tar.gz`).
 
-## Changelog
+## Releases
 
 - [Changelog](https://gameplaycolor.com/changelog/)
 
