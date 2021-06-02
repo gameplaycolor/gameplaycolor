@@ -1,0 +1,19 @@
+name: Trigger changelog update
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  run:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Trigger changelog update
+      uses: peter-evans/repository-dispatch@v1
+      with:
+        token: ${{ secrets.CHANGELOG_UPDATE_TOKEN }}
+        repository: gameplaycolor/gameplaycolor.com
+        event-type: update-changelog
