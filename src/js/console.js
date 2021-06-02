@@ -140,9 +140,9 @@ KEYCODE_SHIFT_LEFT = 16;
         self.game.animate = false;
 
         var buttons = {}
+        var axes = {}
 
         function handleButton(index, state) {
-          console.log(index, state);
           let mapping = {
             1: Gameboy.Key.A,
             0: Gameboy.Key.B,
@@ -154,13 +154,9 @@ KEYCODE_SHIFT_LEFT = 16;
             15: Gameboy.Key.RIGHT,
           };
           var code = mapping[index];
-
-          // Ignore unsupported keys.
-          if (code === 'undefined') {
+          if (code === undefined) {
             return;
           }
-
-          // Set the key state.
           if (state) {
             self.core.keyDown(code);
           } else {
@@ -168,16 +164,59 @@ KEYCODE_SHIFT_LEFT = 16;
           }
         }
 
+        function handleAxis(index, oldState, newState) {
+          let mapping = {
+            0: [Gameboy.Key.LEFT, Gameboy.Key.RIGHT],
+            1: [Gameboy.Key.UP, Gameboy.Key.DOWN],
+          };
+          var codes = mapping[index];
+          if (codes === undefined) {
+            return;
+          }
+          if (oldState == -1) {
+            self.core.keyUp(codes[0]);
+          } else if (oldState == 1) {
+            self.core.keyUp(codes[1]);
+          }
+          if (newState == -1) {
+            self.core.keyDown(codes[0]);
+          } else if (newState == 1) {
+            self.core.keyDown(codes[1]);
+          }
+        }
+
+        function convertAxis(value) {
+          if (value <= -0.8) {
+            return -1;
+          } else if (value >= 0.8) {
+            return 1;
+          } else {
+            return 0;
+          }
+        }
+
         function updateHardwareButtons() {
           var gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads() : []);
           for (j in gamepads) {
             var controller = gamepads[j];
+            console.log(controller.axes.map(function(axis) { return convertAxis(axis).toString(); }).join(" "));
             for (i in controller.buttons) {
               var button = controller.buttons[i];
-              if (buttons[i] !== 'undefined' && buttons[i] != button.pressed) {
+              if (buttons[i] !== undefined && buttons[i] != button.pressed) {
                 handleButton(i, button.pressed);
               }
               buttons[i] = button.pressed;
+            }
+            for (i in controller.axes) {
+              var axis = controller.axes[i];
+              var newState = convertAxis(axis);
+              var oldState = (axes[i] !== undefined) ? axes[i] : 0;
+              if (oldState != newState) {
+                console.log(i);
+                console.log(newState);
+                handleAxis(i, oldState, newState);
+                axes[i] = newState;
+              }
             }
             requestAnimationFrame(updateHardwareButtons);
           }
