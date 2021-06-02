@@ -141,6 +141,7 @@ KEYCODE_SHIFT_LEFT = 16;
 
         var buttons = {}
         var axes = {}
+        var animationFrameIdentifier = 0;
 
         function handleButton(index, state) {
           let mapping = {
@@ -218,19 +219,19 @@ KEYCODE_SHIFT_LEFT = 16;
                 axes[i] = newState;
               }
             }
-            requestAnimationFrame(updateHardwareButtons);
+            animationFrameIdentifier = requestAnimationFrame(updateHardwareButtons);
           }
         }
 
         function connected(e) {
           self.controllers[e.gamepad.index] = e.gamepad;
-          requestAnimationFrame(updateHardwareButtons);
-          self.fullscreen();
-          // TODO: Enter fullscreen
+          animationFrameIdentifier = requestAnimationFrame(updateHardwareButtons);
+          self.showControls(false);
         }
 
         function disconnected(e) {
-          // TODO: Stop polling.
+          cancelAnimationFrame(animationFrameIdentifier);
+          self.showControls(true);
         }
 
         // Hardware controllers.
@@ -242,11 +243,17 @@ KEYCODE_SHIFT_LEFT = 16;
         }
       },
 
-      fullscreen: function() {
+      showControls: function(visible) {
         var self = this;
-        document.getElementById('element-dpad').style.display = "none";
-        document.getElementById('element-options').style.display = "none";
-        document.getElementById('element-buttons').style.display = "none";
+        if (visible) {
+          document.getElementById('element-dpad').style.display = "block";
+          document.getElementById('element-options').style.display = "block";
+          document.getElementById('element-buttons').style.display = "block";
+        } else {
+          document.getElementById('element-dpad').style.display = "none";
+          document.getElementById('element-options').style.display = "none";
+          document.getElementById('element-buttons').style.display = "none";
+        }
       },
 
       /**
