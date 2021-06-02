@@ -195,7 +195,7 @@ def build(options):
 
   logging.info("Getting version...")
 
-  version = run([CHANGES_PATH, "current-version"]).strip()
+  version = run([CHANGES_PATH, "version"]).strip()
   logging.info("Version %s", version)
 
   logging.info("Loading settings...")
@@ -294,7 +294,7 @@ def build(options):
 
   # Get the release notes.
   logging.info("Getting release notes... ")
-  notes = run([CHANGES_PATH, "current-notes"]).strip()
+  notes = run([CHANGES_PATH, "notes"]).strip()
   logging.info("Writing release notes... ")
   with open(os.path.join(BUILD_DIRECTORY, "release.txt"), "w") as fh:
     fh.write(notes)
