@@ -73,9 +73,6 @@ if $PRUNE_TAGS ; then
     git fetch --prune --prune-tags
 fi
 
-# List the tags to assist with debugging.
-git tag
-
 # Install dependencies.
 if $INSTALL_DEPENDENCIES ; then
     git submodule update --init --recursive
