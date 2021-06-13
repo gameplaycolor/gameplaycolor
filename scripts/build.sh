@@ -26,15 +26,15 @@ set -u
 
 SCRIPTS_DIRECTORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 ROOT_DIRECTORY="${SCRIPTS_DIRECTORY}/.."
-CHANGES_SCRIPT="${SCRIPTS_DIRECTORY}/changes/changes"
+CHANGES_DIRECTORY="${SCRIPTS_DIRECTORY}/changes"
 
-TRY_RELEASE_BOUND=${TRY_RELEASE:-false}
+PATH=$PATH:$CHANGES_DIRECTORY
 
 # Process the command line arguments.
 POSITIONAL=()
 PREVIEW=false
 PRUNE_TAGS=false
-RELEASE=false
+RELEASE=${TRY_RELEASE:-false}
 INSTALL_DEPENDENCIES=false
 while [[ $# -gt 0 ]]
 do
@@ -93,6 +93,10 @@ fi
 
 # Attempt to create a version tag and publish a GitHub release.
 # This fails quietly if there's no release to be made.
-if $RELEASE || $TRY_RELEASE_BOUND ; then
-    "$CHANGES_SCRIPT" release --skip-if-empty --push --command 'scripts/release.sh'
+if $RELEASE ; then
+    changes \
+        release \
+        --skip-if-empty \
+        --push \
+        --command 'scripts/release.sh'
 fi
