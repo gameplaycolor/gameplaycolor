@@ -28,6 +28,8 @@ SCRIPTS_DIRECTORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd 
 ROOT_DIRECTORY="${SCRIPTS_DIRECTORY}/.."
 CHANGES_DIRECTORY="${SCRIPTS_DIRECTORY}/changes"
 
+CHANGES_GITHUB_RELEASE_SCRIPT="${CHANGES_DIRECTORY}/examples/gh-release.sh"
+
 PATH=$PATH:$CHANGES_DIRECTORY
 
 # Process the command line arguments.
@@ -95,5 +97,6 @@ if $RELEASE ; then
         release \
         --skip-if-empty \
         --push \
-        --command 'scripts/release.sh'
+        --exec "${CHANGES_GITHUB_RELEASE_SCRIPT}" \
+        archives/Game-Play-Color-*.tar.gz
 fi
