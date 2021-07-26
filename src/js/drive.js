@@ -451,7 +451,7 @@
 
               var params = {
                 'maxResults': '100',
-                  'q': "(fullText contains '*.gb' or fullText contains '*.gbc') and trashed = false and mimeType = 'application/octet-stream'",
+                  'q': "(fullText contains '*.gb' or fullText contains '*.gbc') and trashed = false",
                   "access_token": token
               };
 
