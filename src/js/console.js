@@ -139,6 +139,121 @@ KEYCODE_SHIFT_LEFT = 16;
         }});
         self.game.animate = false;
 
+        var buttons = {}
+        var axes = {}
+        var animationFrameIdentifier = 0;
+
+        function handleButton(index, state) {
+          let mapping = {
+            1: Gameboy.Key.A,
+            0: Gameboy.Key.B,
+            9: Gameboy.Key.SELECT,
+            16: Gameboy.Key.START,
+            12: Gameboy.Key.UP,
+            13: Gameboy.Key.DOWN,
+            14: Gameboy.Key.LEFT,
+            15: Gameboy.Key.RIGHT,
+          };
+          var code = mapping[index];
+          if (code === undefined) {
+            return;
+          }
+          if (state) {
+            self.core.keyDown(code);
+          } else {
+            self.core.keyUp(code);
+          }
+        }
+
+        function handleAxis(index, oldState, newState) {
+          let mapping = {
+            0: [Gameboy.Key.LEFT, Gameboy.Key.RIGHT],
+            1: [Gameboy.Key.UP, Gameboy.Key.DOWN],
+          };
+          var codes = mapping[index];
+          if (codes === undefined) {
+            return;
+          }
+          if (oldState == -1) {
+            self.core.keyUp(codes[0]);
+          } else if (oldState == 1) {
+            self.core.keyUp(codes[1]);
+          }
+          if (newState == -1) {
+            self.core.keyDown(codes[0]);
+          } else if (newState == 1) {
+            self.core.keyDown(codes[1]);
+          }
+        }
+
+        function convertAxis(value) {
+          if (value <= -0.8) {
+            return -1;
+          } else if (value >= 0.8) {
+            return 1;
+          } else {
+            return 0;
+          }
+        }
+
+        function updateHardwareButtons() {
+          var gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads() : []);
+          for (j in gamepads) {
+            var controller = gamepads[j];
+            console.log(controller.axes.map(function(axis) { return convertAxis(axis).toString(); }).join(" "));
+            for (i in controller.buttons) {
+              var button = controller.buttons[i];
+              if (buttons[i] !== undefined && buttons[i] != button.pressed) {
+                handleButton(i, button.pressed);
+              }
+              buttons[i] = button.pressed;
+            }
+            for (i in controller.axes) {
+              var axis = controller.axes[i];
+              var newState = convertAxis(axis);
+              var oldState = (axes[i] !== undefined) ? axes[i] : 0;
+              if (oldState != newState) {
+                console.log(i);
+                console.log(newState);
+                handleAxis(i, oldState, newState);
+                axes[i] = newState;
+              }
+            }
+            animationFrameIdentifier = requestAnimationFrame(updateHardwareButtons);
+          }
+        }
+
+        function connected(e) {
+          self.controllers[e.gamepad.index] = e.gamepad;
+          animationFrameIdentifier = requestAnimationFrame(updateHardwareButtons);
+          self.showControls(false);
+        }
+
+        function disconnected(e) {
+          cancelAnimationFrame(animationFrameIdentifier);
+          self.showControls(true);
+        }
+
+        // Hardware controllers.
+        var haveEvents = 'GamepadEvent' in window;
+        self.controllers = {};
+        if (haveEvents) {
+          window.addEventListener("gamepadconnected", connected);
+          window.addEventListener("gamepaddisconnected", disconnected);
+        }
+      },
+
+      showControls: function(visible) {
+        var self = this;
+        if (visible) {
+          document.getElementById('element-dpad').style.display = "block";
+          document.getElementById('element-options').style.display = "block";
+          document.getElementById('element-buttons').style.display = "block";
+        } else {
+          document.getElementById('element-dpad').style.display = "none";
+          document.getElementById('element-options').style.display = "none";
+          document.getElementById('element-buttons').style.display = "none";
+        }
       },
 
       /**
