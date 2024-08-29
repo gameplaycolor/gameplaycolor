@@ -426,58 +426,55 @@
 
     },
 
+    addROM: function(filename, arrayBuffer) {
+      var self = this;
+      console.log("Adding ROM...");
+      var foo = crypto.subtle.digest('SHA-256', arrayBuffer).then(function(hashBuffer) {
+
+        // Data.
+        const binaryString = utilities.arrayBufferToBinaryString(arrayBuffer);
+
+        // Hash as string.
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        let identifier = window.btoa(utilities.arrayBufferToBinaryString(hashArray));
+
+        // Add.
+        self.items.push({
+          id: identifier,
+          title: filename,
+          fileExtension: utilities.getFileExtension(filename),
+        });
+        self.sort();
+
+        // Save.
+        self.save();
+        self.store.setProperty(App.Controller.Domain.GAMES, identifier, utilities.btoa(binaryString));
+        self.notifyChange();
+
+      });
+    },
+
+    addThumbnail: function(filename, arrayBuffer) {
+      var self = this;
+      console.log("Adding thumbnail...");
+    },
+
     add: function(file) {
       var self = this;
-
-      function arrayBufferToBinaryString(buffer) {
-        const byteArray = new Uint8Array(buffer);
-        let binaryString = '';
-        for (let i = 0; i < byteArray.length; i++) {
-          binaryString += String.fromCharCode(byteArray[i] & 0xFF);
-        }
-        return binaryString;
-      }
-
-      function getFileExtension(filename) {
-        const lastDotIndex = filename.lastIndexOf('.');
-        if (lastDotIndex !== -1) {
-          return filename.slice(lastDotIndex + 1).toLowerCase(); // Get extension and convert to lowercase
-        }
-        return ''; // Return an empty string if there's no extension
-      }
-
       const reader = new FileReader();
       reader.onload = function(e) {
         const arrayBuffer = e.target.result;
-
-        var foo = crypto.subtle.digest('SHA-256', arrayBuffer).then(function(hashBuffer) {
-
-          // Data.
-          const binaryString = arrayBufferToBinaryString(arrayBuffer);
-
-          // Hash as string.
-          const hashArray = Array.from(new Uint8Array(hashBuffer));
-          let identifier = window.btoa(arrayBufferToBinaryString(hashArray));
-
-          // Add.
-          self.items.push({
-            id: identifier,
-            title: file.name,
-            fileExtension: getFileExtension(file.name),
-          });
-          self.sort();
-
-          // Save.
-          self.save();
-          self.store.setProperty(App.Controller.Domain.GAMES, identifier, utilities.btoa(binaryString));
-          self.notifyChange()
-
-        });
-
+        const extension = utilities.getFileExtension(file.name);
+        if (extension === 'gb' || extension === 'gbc') {
+          self.addROM(file.name, e.target.result);
+        } else if (extension === 'jpg' || extension === 'jpeg' || extension === 'png') {
+          self.addThumbnail(file.name, e.target.result);
+        } else {
+          window.alert("Unsupported file type.");
+        }
       };
       reader.readAsArrayBuffer(file);
-    }
-
+    },
 
   });
 
