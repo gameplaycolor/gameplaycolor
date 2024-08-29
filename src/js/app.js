@@ -83,24 +83,17 @@ Promise.prototype.always = function(onAlways) {
 
         self.gameBoy = new App.GameBoy(self.store, self.library);
         self.games = new App.Games(self.device, self.gameBoy, self.library);
+        self.console = new App.Console(self.device, self.gameBoy, self.store);
+        self.settings = new App.Settings(self.store, self.gameBoy, self.console);
 
-        // TODO: Remove didHide?
-        self.console = new App.Console(self.device, self.gameBoy, { didHide: function() {} }, self.store);
+        self.settingsButton = new App.Controls.Button($("#button-account"), {
+          touchUpInside: function() {
+            self.settings.show();
+          }
+        });
 
-        self.settings = new App.Settings(
-          self.store,
-          self.gameBoy,
-          self.console
-        );
-
-        self.settingsButton = new App.Controls.Button(
-          $("#button-account"),
-          {
-            touchUpInside: function() {
-              self.settings.show();
-        }});
-
-        self.consoleButton = new App.Controls.Button($("#button-done"), { touchUp: function() {
+        self.consoleButton = new App.Controls.Button($("#button-done"), {
+          touchUp: function() {
             self.logging.info("Show console");
             self.console.show();
           }

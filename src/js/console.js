@@ -26,8 +26,8 @@ KEYCODE_SHIFT_LEFT = 16;
 
 (function($) {
 
-  App.Console = function(device, gameBoy, events, store) {
-    this.init(device, gameBoy, events, store);
+  App.Console = function(device, gameBoy, store) {
+    this.init(device, gameBoy, store);
   };
 
   App.Console.State = {
@@ -38,13 +38,12 @@ KEYCODE_SHIFT_LEFT = 16;
   jQuery.extend(
     App.Console.prototype, {
 
-      init: function(device, gameBoy, events, store) {
+      init: function(device, gameBoy, store) {
         var self = this;
 
         self.logging = new App.Logging(window.config.logging_level, "console");
         self.device = device;
         self.core = gameBoy;
-        self.events = events;
         self.store = store;
         self.state = App.Console.State.HIDDEN;
         self.element = $('#screen-console');
@@ -308,13 +307,6 @@ KEYCODE_SHIFT_LEFT = 16;
         self.core.clear();
       },
 
-      event: function(id) {
-        var self = this;
-        if (id in self.events) {
-          self.events[id]();
-        }
-      },
-
       hide: function() {
         var self = this;
         if (self.state != App.Console.State.HIDDEN) {
@@ -330,7 +322,6 @@ KEYCODE_SHIFT_LEFT = 16;
             self.element.addClass("hidden");
             setTimeout(function() {
               document.getElementsByTagName('body')[0].style.overflow = ''; // Allow scrolling.
-              self.event('didHide');
             }, self.animationDuration());
           }, 10);
 
