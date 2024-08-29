@@ -56,23 +56,11 @@
       <div class="screen-games-background" />
       <div id="screen-games">
         <div id="list-games" class="content" />
-        <div id="screen-loading" class="content screen" style="display: none">
-          <div class="placeholder">
-            <p>Loading&hellip;</p>
-          </div>
-        </div>
-        <div id="screen-empty" class="content screen" style="display: none">
-          <div class="placeholder">
-            <h1>No Games</h1>
-            <p>Add Game Boy ROMs to your Google Drive to see them here.</p>
-            <p><em>ROMs should be unzipped files with the .gb or .gbc extension.</em></p>
-            <p><em>Check out the <a href="https://gameplaycolor.com/faq/" target="_blank">FAQ</a> for help getting started.</em></p>
-          </div>
-        </div>
         <div id="library-navigation-bar" class="navigation-bar library-navigation-bar">
           <div id="button-account" class="navigation-button button-account">Settings</div>
           <div id="button-done" class="navigation-button button-done button-right">Console</div>
         </div>
+        <input type="file" id="fileInput" style="background-color: red; z-index: 100; position: absolute;" title="Fudge" />
       </div>
 
       <div id="screen-settings" class="settings screen hidden" style="display: none;">
@@ -85,10 +73,6 @@
             <div class="dialog-title">Settings</div>
             <div class="dialog-divider"></div>
             <div id="dialog-settings-body" class="dialog-body">
-              <div class="dialog-row">
-                <div class="dialog-row-label">Account</div>
-                <div id="account-details" class="dialog-row-detail-label"></div>
-              </div>
 
               <!-- Speed -->
               <div class="dialog-row">
@@ -122,14 +106,6 @@
                 <div class="dialog-row-label">Version</div>
                 <div id="application-version" class="dialog-row-detail-label">0.0.0</div>
               </div>
-
-              <!-- Sign out -->
-              <div class="dialog-divider"></div>
-              <div id="screen-settings-sign-out" class="dialog-button">Sign out</div>
-
-              <!-- Send feedback -->
-              <div class="dialog-divider"></div>
-              <div id="screen-settings-send-feedback" class="dialog-button">Send feedback</div>
 
             </div>
 
@@ -227,42 +203,6 @@
       <div id="DEBUGGER"></div>
 
     </div>
-    <div id="screen-splash" class="screen-splash"></div>
-    <div id="screen-instructions" class="screen-instructions" style="display: none">
-      <div class="placeholder">
-        <div class="appicon"></div>
-        <h1>Game Play Color</h1>
-        <ol class="install-instructions">
-          <li>Open in Mobile Safari on your iPhone or iPad</li>
-          <li>Tap the 'Share' button</li>
-          <li>Choose 'Add to Home Screen'</li>
-        </ol>
-      </div>
-    </div>
-
-    <div id="screen-account" class="screen-instructions" style="display: none">
-      <div class="placeholder-small">
-        <div class="appicon"></div>
-        <h1 class="apptitle">Game Play Color</h1>
-        <div class="instructions">
-          <p>
-            <a class="simple-button sign-in-button" id="google-drive-auth" href="" target="_blank">Sign In</a>
-          </p>
-          <hr>
-          Enter access code:<br>
-          <input id="redeem-code" class="input-code" type="text"></input><br>
-          <div class="simple-button" id="button-redeem">Continue</div>
-        </div>
-      </div>
-    </div>
-
-    <div id="screen-authorizing" class="screen-instructions" style="display: none">
-      <div class="placeholder">
-        <div class="appicon"></div>
-        <p>Copy and paste the access code into <strong>Game Play Color</strong> then click <strong>Continue</strong>.</p>
-        <textarea readonly="yes" rows="6" id="authorization-code" class="authorization-code" type="text" onFocus="this.selectionStart=0; this.selectionEnd=this.value.length;" onTouchEnd="this.selectionStart=0; this.selectionEnd=this.value.length;" onMouseUp="return false" />
-      </div>
-    </div>
 
     <audio id="silent">
       <source src="assets/silent.mp3" type="audio/mpeg">
@@ -299,8 +239,6 @@
     <script type="text/javascript" src="js/store.js"></script>
     <script type="text/javascript" src="js/touchlistener.js"></script>
     <script type="text/javascript" src="js/device.js"></script>
-    <script type="text/javascript" src="js/tracker.js"></script>
-    <script type="text/javascript" src="js/drive.js"></script>
 
   </body>
 </html>

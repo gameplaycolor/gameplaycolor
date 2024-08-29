@@ -34,36 +34,8 @@
       self.gameBoy = gameBoy;
       self.library = library;
       self.element = $('#screen-games');
-      self.empty = $('#screen-empty');
-      self.loading = $('#screen-loading');
       self.grid = new App.Grid();
       self.items = [];
-
-      self.library.onStateChange(function(state) {
-        if (state === App.Library.State.LOADING) {
-          self.empty.fadeOut();
-          if (self.library.count() < 1) {
-            self.loading.fadeIn();
-          }
-        } else if (state === App.Library.State.UNAUTHORIZED) {
-          window.tracker.track('games/unauthorized');
-          self.empty.fadeOut();
-          self.loading.fadeOut();
-        } else if (state === App.Library.State.UPDATING) {
-          window.tracker.track('games/update');
-          self.empty.fadeOut();
-          if (self.library.count() < 1) {
-            self.loading.fadeIn();
-          }
-        } else {
-          self.loading.fadeOut();
-          if (self.library.count() < 1) {
-            self.empty.fadeIn();
-          } else {
-            self.empty.fadeOut();
-          }
-        }
-      });
 
       self.library.onChange(function() {
         self.grid.reloadData();
@@ -73,11 +45,14 @@
       self.grid.delegate = self.library;
       self.grid.reloadData();
 
-    },
+      document.getElementById('fileInput').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+          self.library.add(file);
+        }
+      });
 
-    update: function() {
-      var self = this;
-      self.library.update();
+
     },
 
   });

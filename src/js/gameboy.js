@@ -105,9 +105,12 @@ function startWrapper(identifier, canvas, ROM) {
   var deferred = jQuery.Deferred();
   loadSaveStateContext("game-" + identifier).then(function() {
     try {
+      console.log("LOADING GAME!!!!")
       start(canvas, ROM, true);
       deferred.resolve();
     } catch (e) {
+      console.log("Failed?!");
+      console.log(e);
       deferred.reject(e);
     }
   });
@@ -259,15 +262,18 @@ function startWrapper(identifier, canvas, ROM) {
     },
 
     _insertCartridge: function(identifier, data) {
+      console.log("_insertCartridge");
       var self = this;
       var deferred = $.Deferred();
       self.identifier = identifier;
       self.data = data;
       startWrapper(identifier, document.getElementById('LCD'), data).then(function() {
+        console.log("Callback!");
         setTimeout(function() {
           if (gameboy) {
             gameboy.setSpeed(self.speed);
           }
+          console.log("Setting state to running...");
           self.setState(App.GameBoy.State.RUNNING);
           deferred.resolve();
         }, 100);

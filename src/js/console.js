@@ -35,9 +35,6 @@ KEYCODE_SHIFT_LEFT = 16;
     HIDDEN:  1,
   };
 
-  App.Console.SHAKE_THRESHOLD = 24;
-  App.Console.SHAKE_TIMEOUT_MS = 800;
-
   jQuery.extend(
     App.Console.prototype, {
 
@@ -100,7 +97,6 @@ KEYCODE_SHIFT_LEFT = 16;
 
         self.navigation_back = new App.Controls.Button($('#button-library'), { touchUpInside: function() {
           self.logging.info("Show library");
-          window.tracker.track('games');
           self.hide();
         }});
         self.navigation_back.animate = false;
@@ -134,7 +130,6 @@ KEYCODE_SHIFT_LEFT = 16;
 
         self.game = new App.Controls.Button($('#button-game'), { touchUpInside: function() {
           self.logging.info("Show game menu");
-          window.tracker.track('menu');
           self.menu.show();
         }});
         self.game.animate = false;
@@ -366,7 +361,6 @@ KEYCODE_SHIFT_LEFT = 16;
         return new Promise(function(resolve, reject) {
 
           if (self.state != App.Console.State.VISIBLE) {
-            window.tracker.track('console');
             self.state = App.Console.State.VISIBLE;
             self.element.removeClass("hidden");
             setTimeout(function() {

@@ -37,37 +37,24 @@
 
   jQuery.extend(
     App.Library.prototype, {
-    init: function(store, callback, postInitCallback) {
+    init: function(store, callback) {
       var self = this;
+      self.store = store;
+      self.callback = callback;
       self.state = App.Library.State.UNINITIALIZED;
-      self.items = [];
+      self.fetches = {};
       self.changeCallbacks = [];
       self.stateChangeCallbacks = [];
-        var driveCallback = function (drive) {
-        self.drive = drive;
-        self.store = store;
-        self.fetches = {};
-        self.callback = callback;
-        self.logging = new App.Logging(window.config.logging_level, "library");
 
-        // Load the library.
-        var library = localStorage.getItem('library');
-        if (library) {
-          self.items = jQuery.parseJSON(library);
-        }
+      var library = localStorage.getItem('library');
+      if (library) {
+        self.items = jQuery.parseJSON(library);
+      } else {
+        self.items = [];
+      }
+      self.sort();
 
-        self.sort();
-
-        postInitCallback();
-      };
-
-      const boundDriveCallback = driveCallback.bind(this);
-      self.drive = App.Drive.Instance(boundDriveCallback);
-    },
-
-    authorize: function() {
-      var self = this;
-      self.drive.authorize(false);
+      self.logging = new App.Logging(window.config.logging_level, "library");
     },
 
     onStateChange: function(callback) {
@@ -281,17 +268,6 @@
       });
     },
 
-    update: function() {
-      var self = this;
-      self.setState(App.Library.State.UPDATING);
-      self.drive.files().then(function(files) {
-        self.updateCallback(files);
-      }).fail(function(error) {
-        self.logging.error("Failed to list files with error " + error);
-        self.setState(App.Library.State.READY);
-      });
-    },
-
     fileForIdentifier: function(identifier) {
       var self = this;
       var index = self.indexForIdentifier(identifier);
@@ -303,10 +279,12 @@
     },
 
     indexForIdentifier: function(identifier) {
+      console.log("indexForIdentifier: " + identifier);
       var self = this;
       for (var i = 0; i < self.items.length; i++) {
         var file = self.items[i];
         if (file.id === identifier) {
+          console.log("indexForIdentifier: -> " + i);
           return i;
         }
       }
@@ -335,30 +313,7 @@
           self.store.deleteProperty(App.Controller.Domain.GAMES, identifier);
         }
 
-        if (data === undefined || data.length < 100) {
-
-          self.logging.info("Downloading game from Google Drive '" + identifier + "'");
-
-          var file = self.fileForIdentifier(identifier);
-          if (file === undefined) {
-            self.logging.warning("Unable to find file for identifier '" + identifier + "'");
-            delete self.fetches[identifier];
-            deferred.reject();
-          }
-
-          self.drive.downloadFile(file).then(function(data) {
-
-            self.store.setProperty(App.Controller.Domain.GAMES, identifier, utilities.btoa(data));
-            delete self.fetches[identifier];
-            deferred.resolve(data);
-
-          }).fail(function() {
-
-            delete self.fetches[identifier];
-            deferred.reject();
-
-          });
-        } else {
+        if (data !== undefined && data.length > 100) {
           self.logging.info("Using locally stored game for '" + identifier + "' with length " + data.length);
           delete self.fetches[identifier];
           deferred.resolve(utilities.atob(data));
@@ -402,19 +357,7 @@
 
         self.logging.info("Searching for thumbnail '" + title + "' ...");
 
-        self.drive.file(parent, title).then(function(file) {
-          self.drive.downloadFileBase64(file, function(data) {
-            try {
-              self.store.setProperty(App.Controller.Domain.THUMBNAILS, identifier, data);
-            } catch (e) {
-              self.logging.error("Unable to store thumbnail.");
-            }
-            callback(self.thumbnailDataUrl(data));
-          });
-        }).fail(function(error) {
-          self.logging.warning("Unable to find thumbnail '" + title + "'");
-          callback();
-        });
+        // TODO: Support storing the thumbnail!
 
       });
 
@@ -481,7 +424,60 @@
         self.notifyChange();
       }
 
+    },
+
+    add: function(file) {
+      var self = this;
+
+      function arrayBufferToBinaryString(buffer) {
+        const byteArray = new Uint8Array(buffer);
+        let binaryString = '';
+        for (let i = 0; i < byteArray.length; i++) {
+          binaryString += String.fromCharCode(byteArray[i] & 0xFF);
+        }
+        return binaryString;
+      }
+
+      function getFileExtension(filename) {
+        const lastDotIndex = filename.lastIndexOf('.');
+        if (lastDotIndex !== -1) {
+          return filename.slice(lastDotIndex + 1).toLowerCase(); // Get extension and convert to lowercase
+        }
+        return ''; // Return an empty string if there's no extension
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const arrayBuffer = e.target.result;
+
+        var foo = crypto.subtle.digest('SHA-256', arrayBuffer).then(function(hashBuffer) {
+
+          // Data.
+          const binaryString = arrayBufferToBinaryString(arrayBuffer);
+
+          // Hash as string.
+          const hashArray = Array.from(new Uint8Array(hashBuffer));
+          let identifier = window.btoa(arrayBufferToBinaryString(hashArray));
+
+          // Add.
+          self.items.push({
+            id: identifier,
+            title: file.name,
+            fileExtension: getFileExtension(file.name),
+          });
+          self.sort();
+
+          // Save.
+          self.save();
+          self.store.setProperty(App.Controller.Domain.GAMES, identifier, utilities.btoa(binaryString));
+          self.notifyChange()
+
+        });
+
+      };
+      reader.readAsArrayBuffer(file);
     }
+
 
   });
 
