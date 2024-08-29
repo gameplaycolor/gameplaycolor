@@ -246,12 +246,6 @@ def build(options):
     f.write("<!DOCTYPE html>\n")
     f.write(contents)
 
-  # authorization.html
-  logging.info("Copying authorization page...")
-  os.makedirs(os.path.join(BUILD_DIRECTORY, "authorization"))
-  shutil.copy(os.path.join(SOURCE_DIRECTORY, "authorization/index.html"),
-              os.path.join(BUILD_DIRECTORY, "authorization/index.html"))
-
   # images
   logging.info("Copying images...")
   copy_diretory(images_dir, BUILD_DIRECTORY)

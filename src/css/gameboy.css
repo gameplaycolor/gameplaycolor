@@ -648,14 +648,6 @@ hr {
     margin-bottom: 18px;
 }
 
-.sign-in-button {
-    background-size: 24px 24px;
-    background-image: url(images/drive.png);
-    background-repeat: no-repeat;
-    padding-left: 36px;
-    background-position: 20px center;
-}
-
 .body-grey {
     background-color: #222;
 }
@@ -940,29 +932,6 @@ hr {
 .input-code:focus {
     outline: none;
     background-color: #888;
-}
-
-.authorization-code {
-    font-size: 20px;
-    background-color: #666;
-    margin: 8px 0;
-    color: #fff;
-    padding: 8px;
-    border-radius: 6px;
-    font-family: Courier, fixed;
-    text-align: center;
-    word-wrap: break-word;
-    cursor: text;
-    -webkit-user-select: text;
-    -ms-user-select: text;
-    -moz-user-select: text;
-    user-select: text;
-    border: 0;
-    width: 200px;
-}
-
-.authorization-code:focus {
-    outline: none;
 }
 
 /* Large screen customizations */
