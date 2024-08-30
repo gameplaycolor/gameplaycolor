@@ -67,10 +67,20 @@ var utilities = {
       return u8_2;
     },
 
+    // TODO: Rename
     getFileExtension: function(filename) {
       const lastDotIndex = filename.lastIndexOf('.');
       if (lastDotIndex !== -1) {
         return filename.slice(lastDotIndex + 1).toLowerCase();
+      }
+      return '';
+    },
+
+    // TODO: Rename
+    getBasename: function(filename) {
+      const lastDotIndex = filename.lastIndexOf('.');
+      if (lastDotIndex !== -1) {
+        return filename.slice(0, lastDotIndex);
       }
       return '';
     },

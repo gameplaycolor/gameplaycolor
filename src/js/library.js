@@ -279,13 +279,22 @@
     },
 
     indexForIdentifier: function(identifier) {
-      console.log("indexForIdentifier: " + identifier);
       var self = this;
       for (var i = 0; i < self.items.length; i++) {
         var file = self.items[i];
         if (file.id === identifier) {
-          console.log("indexForIdentifier: -> " + i);
           return i;
+        }
+      }
+      return undefined;
+    },
+
+    identifierForBasename: function(basename) {
+      var self = this;
+      for (var i = 0; i < self.items.length; i++) {
+        var file = self.items[i];
+        if (utilities.getBasename(file.title) === basename) {
+          return file.id;
         }
       }
       return undefined;
@@ -456,7 +465,28 @@
 
     addThumbnail: function(filename, arrayBuffer) {
       var self = this;
-      console.log("Adding thumbnail...");
+      const basename = utilities.getBasename(filename);
+      const identifier = self.identifierForBasename(basename);
+
+      if (identifier === undefined) {
+        alert("Unable to find ROM named '" + basename + "'.");
+        return;
+      }
+
+      function arrayBufferToBase64(buffer) {
+        let binary = '';
+        const bytes = new Uint8Array(buffer);
+        const len = bytes.byteLength;
+        for (let i = 0; i < len; i++) {
+          binary += String.fromCharCode(bytes[i]);
+        }
+        return window.btoa(binary);
+      }
+
+      const base64String = arrayBufferToBase64(arrayBuffer);
+
+      self.store.setProperty(App.Controller.Domain.THUMBNAILS, identifier, base64String);
+      self.notifyChange();
     },
 
     add: function(file) {
