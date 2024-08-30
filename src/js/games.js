@@ -46,10 +46,7 @@
       self.grid.reloadData();
 
       document.getElementById('fileInput').addEventListener('change', function(event) {
-        const file = event.target.files[0];
-        if (file) {
-          self.library.add(file);
-        }
+        self.library.add(Array.from(event.target.files));
       });
 
 

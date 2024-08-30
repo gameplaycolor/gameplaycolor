@@ -258,14 +258,23 @@
       var self = this;
       var identifier = self.identifierForIndex(index);
       var title = self.titleForIndex(index);
-      self.store.hasProperty(App.Controller.Domain.GAMES, identifier).then(function(found) {
-        if (found) {
-          if (confirm("Remove '" + title + "' from your device?")) {
-            self.store.deleteProperty(App.Controller.Domain.GAMES, identifier);
-            element.addClass("unavailable");
-          }
-        }
-      });
+      if (confirm("Remove '" + title + "' from your device?")) {
+        self.store.deleteProperty(App.Controller.Domain.GAMES, identifier)
+          .then(self.store.deleteProperty(App.Controller.Domain.THUMBNAILS, identifier))
+          .then(function() {
+            console.log("Deleting game from store.");
+          })
+          .always(function() {
+            console.log("NOTIFY!!");
+            self.items = self.items.filter(function(item) {
+              return item.id !== identifier;
+            });
+            self.save();
+            self.notifyChange();
+          });
+
+        element.addClass("unavailable");
+      }
     },
 
     fileForIdentifier: function(identifier) {
@@ -335,117 +344,33 @@
     // Converts a base64 encoded thumbnail image into a suitable URL.
     thumbnailDataUrl: function(data) {
       var self = this;
-      return "data:image/" + App.Library.THUMBNAIL_TYPE + ";base64," + data;
+      if (data.startsWith("data:")) {
+        return data;
+      } else {
+        return "data:image/" + App.Library.THUMBNAIL_TYPE + ";base64," + data;
+      }
     },
 
     thumbnailForIndex: function(index, callback) {
       var self = this;
       var identifier = self.identifierForIndex(index);
-
       self.store.property(App.Controller.Domain.THUMBNAILS, identifier, function(value) {
-
         if (value !== undefined) {
           callback(self.thumbnailDataUrl(value));
           return;
         }
-
-        var file = self.fileForIdentifier(identifier);
-        if (file === undefined) {
-          callback();
-          return;
-        }
-
-        var parents = file.parents;
-        if (parents === undefined || parents.length < 1) {
-          callback();
-          return;
-        }
-
-        var parent = parents[0].id;
-        var title = self.stripExtension(file.title) + "." + App.Library.THUMBNAIL_TYPE;
-
-        self.logging.info("Searching for thumbnail '" + title + "' ...");
-
-        // TODO: Support storing the thumbnail!
-
+        callback();
       });
-
-    },
-
-    updateCallback: function(files) {
-      var self = this;
-      var i;
-
-      var identifiers = {};
-      $.each(self.items, function(index, value) {
-        identifiers[value.id] = value.title;
-      });
-
-      var deleted = identifiers;
-      var inserted = {};
-      var renamed = {};
-      var oldItems = self.items;
-      self.items = [];
-      for (i = 0; i < files.length; i++) {
-        var file = files[i];
-        if (file !== undefined &&
-            file.fileExtension !== undefined &&
-            (file.fileExtension.toLowerCase() === 'gb' ||
-             file.fileExtension.toLowerCase() === 'gbc')) {
-          self.items.push(file);
-          if (file.id in deleted) {
-            if (deleted[file.id] != file.title) {
-              renamed[file.id] = file.title;
-            }
-            delete deleted[file.id];
-          } else {
-            inserted[file.id] = file.title;
-          }
-        }
-      }
-      self.sort();
-      self.save();
-
-      var deletedCount = 0;
-      $.each(deleted, function(key, value) {
-        self.logging.info("Deleting game for " + key);
-        self.store.deleteProperty(App.Controller.Domain.GAMES, key);
-        self.logging.info("Deleting thumbnail for " + key);
-        self.store.deleteProperty(App.Controller.Domain.THUMBNAILS, key);
-        deletedCount++;
-      });
-
-      var insertedCount = 0;
-      $.each(inserted, function(key, value) {
-        insertedCount++;
-      });
-
-      var renamedCount = 0;
-      $.each(renamed, function(key, value) {
-        self.logging.info("Deleting thumbnail for " + key);
-        self.store.deleteProperty(App.Controller.Domain.THUMBNAILS, key);
-        renamedCount++;
-      });
-
-      self.setState(App.Library.State.READY);
-
-      if (deletedCount > 0 || insertedCount > 0 || renamedCount > 0) {
-        self.notifyChange();
-      }
-
     },
 
     addROM: function(filename, arrayBuffer) {
       var self = this;
       console.log("Adding ROM...");
-      var foo = crypto.subtle.digest('SHA-256', arrayBuffer).then(function(hashBuffer) {
+
+      self.sha256(arrayBuffer).then(function(identifier) {
 
         // Data.
         const binaryString = utilities.arrayBufferToBinaryString(arrayBuffer);
-
-        // Hash as string.
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        let identifier = window.btoa(utilities.arrayBufferToBinaryString(hashArray));
 
         // Add.
         self.items.push({
@@ -454,12 +379,11 @@
           fileExtension: utilities.getFileExtension(filename),
         });
         self.sort();
-
-        // Save.
         self.save();
-        self.store.setProperty(App.Controller.Domain.GAMES, identifier, utilities.btoa(binaryString));
         self.notifyChange();
 
+        // Store the ROM.
+        return self.store.setProperty(App.Controller.Domain.GAMES, identifier, utilities.btoa(binaryString));
       });
     },
 
@@ -484,26 +408,71 @@
       }
 
       const base64String = arrayBufferToBase64(arrayBuffer);
+      const url = "data:image/" + utilities.getFileExtension(filename) + ";base64," + base64String;
 
-      self.store.setProperty(App.Controller.Domain.THUMBNAILS, identifier, base64String);
-      self.notifyChange();
+      return self.store.setProperty(App.Controller.Domain.THUMBNAILS, identifier, url);
     },
 
-    add: function(file) {
-      var self = this;
+    sha256: function(arrayBuffer) {
+      var deferred = new jQuery.Deferred();
+      var foo = crypto.subtle.digest('SHA-256', arrayBuffer).then(function(hashBuffer) {
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        let sha = window.btoa(utilities.arrayBufferToBinaryString(hashArray));
+        deferred.resolve(sha);
+      });
+      return deferred.promise();
+    },
+
+    // TODO: Utilities?
+    readAsArrayBuffer: function(file) {
       const reader = new FileReader();
+      var deferred = new jQuery.Deferred();
       reader.onload = function(e) {
-        const arrayBuffer = e.target.result;
-        const extension = utilities.getFileExtension(file.name);
-        if (extension === 'gb' || extension === 'gbc') {
-          self.addROM(file.name, e.target.result);
-        } else if (extension === 'jpg' || extension === 'jpeg' || extension === 'png') {
-          self.addThumbnail(file.name, e.target.result);
-        } else {
-          window.alert("Unsupported file type.");
-        }
+        deferred.resolve(e.target.result);
+      };
+      reader.onerror = function(e) {
+        deferred.reject(e);
       };
       reader.readAsArrayBuffer(file);
+      return deferred.promise();
+    },
+
+    add: function(files) {
+      var self = this;
+
+      var roms = files.filter(function(file) {
+        var extension = utilities.getFileExtension(file.name);
+        return extension === 'gb' || extension === 'gbc';
+      });
+
+      var thumbnails = files.filter(function(file) {
+        var extension = utilities.getFileExtension(file.name);
+        return extension === 'jpg' || extension === 'jpeg' || extension === 'png' || extension === 'webp';
+      });
+
+      var romAdditions = roms.map(function(rom) {
+        const name = rom.name;
+        self.readAsArrayBuffer(rom)
+          .then(function(arrayBuffer) {
+            self.addROM(name, arrayBuffer);
+          });
+      });
+
+      jQuery.when(romAdditions)
+        .then(function() {
+          var thumbnailAdditions = thumbnails.map(function(thumbnail) {
+            const name = thumbnail.name;
+            self.readAsArrayBuffer(thumbnail)
+              .then(function(arrayBuffer) {
+                self.addThumbnail(name, arrayBuffer);
+              });
+          });
+          return jQuery.when(thumbnailAdditions);
+        })
+        .then(function() {
+          self.notifyChange();
+        });
+
     },
 
   });
