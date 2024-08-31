@@ -370,17 +370,7 @@
         return;
       }
 
-      function arrayBufferToBase64(buffer) {
-        let binary = '';
-        const bytes = new Uint8Array(buffer);
-        const len = bytes.byteLength;
-        for (let i = 0; i < len; i++) {
-          binary += String.fromCharCode(bytes[i]);
-        }
-        return window.btoa(binary);
-      }
-
-      const base64String = arrayBufferToBase64(arrayBuffer);
+      const base64String = utilities.arrayBufferToBase64(arrayBuffer);
       const url = "data:image/" + utilities.fileExtension(filename) + ";base64," + base64String;
 
       return self.store.setProperty(App.Controller.Domain.THUMBNAILS, identifier, url);

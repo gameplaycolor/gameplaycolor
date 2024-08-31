@@ -46,6 +46,16 @@ var utilities = {
       return binaryString;
     },
 
+    arrayBufferToBase64: function(buffer) {
+      let binary = '';
+      const bytes = new Uint8Array(buffer);
+      const len = bytes.byteLength;
+      for (let i = 0; i < len; i++) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      return window.btoa(binary);
+    },
+
     arrayToBase64: function(u8Arr) {
       var CHUNK_SIZE = 0x8000;
       var index = 0;
