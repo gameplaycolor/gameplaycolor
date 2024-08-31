@@ -12,7 +12,7 @@ jobs:
     steps:
 
     - name: Trigger changelog update
-      uses: peter-evans/repository-dispatch@v1
+      uses: peter-evans/repository-dispatch@v3
       with:
         token: ${{ secrets.CHANGELOG_UPDATE_TOKEN }}
         repository: gameplaycolor/gameplaycolor.com
