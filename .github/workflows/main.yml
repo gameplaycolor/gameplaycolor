@@ -16,8 +16,14 @@ jobs:
         submodules: recursive
         fetch-depth: 0
 
-    - name: Install Pipenv
-      uses: dschep/install-pipenv-action@v1
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.9"
+
+    - name: Install pipenv
+      run: |
+        python -m pip install --upgrade pipenv wheel
 
     - name: Install dependencies
       run: scripts/install-dependencies.sh
