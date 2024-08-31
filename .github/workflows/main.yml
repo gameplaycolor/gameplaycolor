@@ -4,8 +4,6 @@ on: [push]
 
 jobs:
   build:
-
-    name: Build
     runs-on: ubuntu-latest
 
     steps:
@@ -39,3 +37,16 @@ jobs:
       with:
         name: build-latest-release.tar.gz
         path: archives/build-latest-release.tar.gz
+
+  documentation-update:
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/main' }}
+
+    steps:
+
+    - name: Trigger changelog update
+      uses: peter-evans/repository-dispatch@v3
+      with:
+        token: ${{ secrets.CHANGELOG_UPDATE_TOKEN }}
+        repository: gameplaycolor/gameplaycolor.com
+        event-type: update-content
