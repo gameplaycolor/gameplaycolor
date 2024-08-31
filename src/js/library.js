@@ -272,7 +272,7 @@
       var self = this;
       for (var i = 0; i < self.items.length; i++) {
         var file = self.items[i];
-        if (utilities.getBasename(file.title) === basename) {
+        if (utilities.basename(file.title) === basename) {
           return file.id;
         }
       }
@@ -348,7 +348,7 @@
         self.items.push({
           id: identifier,
           title: filename,
-          fileExtension: utilities.getFileExtension(filename),
+          fileExtension: utilities.fileExtension(filename),
         });
         self.sort();
         self.save();
@@ -362,7 +362,7 @@
     addThumbnail: function(filename, arrayBuffer) {
       var self = this;
       console.log("Adding thumbnail...");
-      const basename = utilities.getBasename(filename);
+      const basename = utilities.basename(filename);
       const identifier = self.identifierForBasename(basename);
 
       if (identifier === undefined) {
@@ -381,7 +381,7 @@
       }
 
       const base64String = arrayBufferToBase64(arrayBuffer);
-      const url = "data:image/" + utilities.getFileExtension(filename) + ";base64," + base64String;
+      const url = "data:image/" + utilities.fileExtension(filename) + ";base64," + base64String;
 
       return self.store.setProperty(App.Controller.Domain.THUMBNAILS, identifier, url);
     },
@@ -414,12 +414,12 @@
       var self = this;
 
       var roms = files.filter(function(file) {
-        var extension = utilities.getFileExtension(file.name);
+        var extension = utilities.fileExtension(file.name);
         return extension === 'gb' || extension === 'gbc';
       });
 
       var thumbnails = files.filter(function(file) {
-        var extension = utilities.getFileExtension(file.name);
+        var extension = utilities.fileExtension(file.name);
         return extension === 'jpg' || extension === 'jpeg' || extension === 'png' || extension === 'webp';
       });
 

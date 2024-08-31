@@ -67,8 +67,7 @@ var utilities = {
       return u8_2;
     },
 
-    // TODO: Rename
-    getFileExtension: function(filename) {
+    fileExtension: function(filename) {
       const lastDotIndex = filename.lastIndexOf('.');
       if (lastDotIndex !== -1) {
         return filename.slice(lastDotIndex + 1).toLowerCase();
@@ -76,8 +75,7 @@ var utilities = {
       return '';
     },
 
-    // TODO: Rename
-    getBasename: function(filename) {
+    basename: function(filename) {
       const lastDotIndex = filename.lastIndexOf('.');
       if (lastDotIndex !== -1) {
         return filename.slice(0, lastDotIndex);
