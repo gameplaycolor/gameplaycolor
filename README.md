@@ -7,6 +7,8 @@ A JavaScript Game Boy and Game Boy Color emulator for iOS, based on the [GameBoy
 
 If you just want to play Game Play, you can find it online at [https://gameplaycolor.com](https://gameplaycolor.com).
 
+**Note:** Game Play Color is no longer under active feature development—now that emulators are permitted on the App Store, there are many more fully featured alternatives, including the fabulous [Delta](https://apps.apple.com/app/delta-game-emulator/id1048524688). Issues with the current functionality are still being tracked and I'll do my best to keep the lights on.
+
 ## Dependencies
 
 Check out the project, update the submodules, install the brew-based dependencies, and install the additional Python dependencies:
