@@ -198,8 +198,6 @@
         }
       });
 
-      element.spinner = false;
-
       self.store.hasProperty(App.Controller.Domain.GAMES, identifier).then(function(result) {
         if (result) {
           element.removeClass('unavailable');
@@ -222,34 +220,6 @@
       self.store.hasProperty(App.Controller.Domain.GAMES, identifier).then(function(found) {
         if (found) {
           self.callback(identifier);
-        } else if (window.navigator.onLine === true) {
-          var spinner;
-          if (element.spinner === false) {
-            var opts = {
-              color: '#fff',
-              zIndex: 0
-            };
-            spinner = new Spinner(opts).spin();
-            var spinnerElement = spinner.el;
-            element.append(spinnerElement);
-            element.spinner = true;
-          }
-
-          self.fetch(identifier).then(function(data) {
-
-            self.logging.info("Received identifier '" + identifier + "'");
-            element.removeClass("unavailable");
-          }).fail(function() {
-
-            alert("Unable to download file.");
-          }).always(function() {
-
-            if (spinner !== undefined) {
-              spinner.stop();
-              element.spinner = false;
-            }
-
-          });
         }
       });
     },
@@ -335,7 +305,10 @@
           self.logging.info("Using locally stored game for '" + identifier + "' with length " + data.length);
           delete self.fetches[identifier];
           deferred.resolve(utilities.atob(data));
+          return
         }
+
+        deferred.reject();
       });
 
       return deferred.promise();
