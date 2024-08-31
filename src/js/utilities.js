@@ -37,6 +37,19 @@ var utilities = {
       return utilities.decode_utf8(window.atob(input));
     },
 
+    arrayBufferToBinaryString: function(buffer) {
+      const byteArray = new Uint8Array(buffer);
+      let binaryString = '';
+      for (let i = 0; i < byteArray.length; i++) {
+        binaryString += String.fromCharCode(byteArray[i] & 0xFF);
+      }
+      return binaryString;
+    },
+
+    arrayBufferToBase64: function(buffer) {
+      return window.btoa(this.arrayBufferToBinaryString(buffer));
+    },
+
     arrayToBase64: function(u8Arr) {
       var CHUNK_SIZE = 0x8000;
       var index = 0;
@@ -56,6 +69,22 @@ var utilities = {
       var u8_2 = new Uint8Array(window.atob(b64encoded).split("").map(function(c) {
         return c.charCodeAt(0); }));
       return u8_2;
+    },
+
+    fileExtension: function(filename) {
+      const lastDotIndex = filename.lastIndexOf('.');
+      if (lastDotIndex !== -1) {
+        return filename.slice(lastDotIndex + 1).toLowerCase();
+      }
+      return '';
+    },
+
+    basename: function(filename) {
+      const lastDotIndex = filename.lastIndexOf('.');
+      if (lastDotIndex !== -1) {
+        return filename.slice(0, lastDotIndex);
+      }
+      return '';
     },
 
     /**

@@ -37,37 +37,24 @@
 
   jQuery.extend(
     App.Library.prototype, {
-    init: function(store, callback, postInitCallback) {
+    init: function(store, callback) {
       var self = this;
+      self.store = store;
+      self.callback = callback;
       self.state = App.Library.State.UNINITIALIZED;
-      self.items = [];
+      self.fetches = {};
       self.changeCallbacks = [];
       self.stateChangeCallbacks = [];
-        var driveCallback = function (drive) {
-        self.drive = drive;
-        self.store = store;
-        self.fetches = {};
-        self.callback = callback;
-        self.logging = new App.Logging(window.config.logging_level, "library");
 
-        // Load the library.
-        var library = localStorage.getItem('library');
-        if (library) {
-          self.items = jQuery.parseJSON(library);
-        }
+      var library = localStorage.getItem('library');
+      if (library) {
+        self.items = jQuery.parseJSON(library);
+      } else {
+        self.items = [];
+      }
+      self.sort();
 
-        self.sort();
-
-        postInitCallback();
-      };
-
-      const boundDriveCallback = driveCallback.bind(this);
-      self.drive = App.Drive.Instance(boundDriveCallback);
-    },
-
-    authorize: function() {
-      var self = this;
-      self.drive.authorize(false);
+      self.logging = new App.Logging(window.config.logging_level, "library");
     },
 
     onStateChange: function(callback) {
@@ -211,8 +198,6 @@
         }
       });
 
-      element.spinner = false;
-
       self.store.hasProperty(App.Controller.Domain.GAMES, identifier).then(function(result) {
         if (result) {
           element.removeClass('unavailable');
@@ -235,34 +220,6 @@
       self.store.hasProperty(App.Controller.Domain.GAMES, identifier).then(function(found) {
         if (found) {
           self.callback(identifier);
-        } else if (window.navigator.onLine === true) {
-          var spinner;
-          if (element.spinner === false) {
-            var opts = {
-              color: '#fff',
-              zIndex: 0
-            };
-            spinner = new Spinner(opts).spin();
-            var spinnerElement = spinner.el;
-            element.append(spinnerElement);
-            element.spinner = true;
-          }
-
-          self.fetch(identifier).then(function(data) {
-
-            self.logging.info("Received identifier '" + identifier + "'");
-            element.removeClass("unavailable");
-          }).fail(function() {
-
-            alert("Unable to download file.");
-          }).always(function() {
-
-            if (spinner !== undefined) {
-              spinner.stop();
-              element.spinner = false;
-            }
-
-          });
         }
       });
     },
@@ -271,25 +228,23 @@
       var self = this;
       var identifier = self.identifierForIndex(index);
       var title = self.titleForIndex(index);
-      self.store.hasProperty(App.Controller.Domain.GAMES, identifier).then(function(found) {
-        if (found) {
-          if (confirm("Remove '" + title + "' from your device?")) {
-            self.store.deleteProperty(App.Controller.Domain.GAMES, identifier);
-            element.addClass("unavailable");
-          }
-        }
-      });
-    },
+      if (confirm("Remove '" + title + "' from your device?")) {
+        self.store.deleteProperty(App.Controller.Domain.GAMES, identifier)
+          .then(self.store.deleteProperty(App.Controller.Domain.THUMBNAILS, identifier))
+          .then(function() {
+            console.log("Deleting game from store.");
+          })
+          .always(function() {
+            console.log("NOTIFY!!");
+            self.items = self.items.filter(function(item) {
+              return item.id !== identifier;
+            });
+            self.save();
+            self.notifyChange();
+          });
 
-    update: function() {
-      var self = this;
-      self.setState(App.Library.State.UPDATING);
-      self.drive.files().then(function(files) {
-        self.updateCallback(files);
-      }).fail(function(error) {
-        self.logging.error("Failed to list files with error " + error);
-        self.setState(App.Library.State.READY);
-      });
+        element.addClass("unavailable");
+      }
     },
 
     fileForIdentifier: function(identifier) {
@@ -308,6 +263,17 @@
         var file = self.items[i];
         if (file.id === identifier) {
           return i;
+        }
+      }
+      return undefined;
+    },
+
+    identifierForBasename: function(basename) {
+      var self = this;
+      for (var i = 0; i < self.items.length; i++) {
+        var file = self.items[i];
+        if (utilities.basename(file.title) === basename) {
+          return file.id;
         }
       }
       return undefined;
@@ -335,34 +301,14 @@
           self.store.deleteProperty(App.Controller.Domain.GAMES, identifier);
         }
 
-        if (data === undefined || data.length < 100) {
-
-          self.logging.info("Downloading game from Google Drive '" + identifier + "'");
-
-          var file = self.fileForIdentifier(identifier);
-          if (file === undefined) {
-            self.logging.warning("Unable to find file for identifier '" + identifier + "'");
-            delete self.fetches[identifier];
-            deferred.reject();
-          }
-
-          self.drive.downloadFile(file).then(function(data) {
-
-            self.store.setProperty(App.Controller.Domain.GAMES, identifier, utilities.btoa(data));
-            delete self.fetches[identifier];
-            deferred.resolve(data);
-
-          }).fail(function() {
-
-            delete self.fetches[identifier];
-            deferred.reject();
-
-          });
-        } else {
+        if (data !== undefined && data.length > 100) {
           self.logging.info("Using locally stored game for '" + identifier + "' with length " + data.length);
           delete self.fetches[identifier];
           deferred.resolve(utilities.atob(data));
+          return
         }
+
+        deferred.reject();
       });
 
       return deferred.promise();
@@ -371,117 +317,126 @@
     // Converts a base64 encoded thumbnail image into a suitable URL.
     thumbnailDataUrl: function(data) {
       var self = this;
-      return "data:image/" + App.Library.THUMBNAIL_TYPE + ";base64," + data;
+      if (data.startsWith("data:")) {
+        return data;
+      } else {
+        return "data:image/" + App.Library.THUMBNAIL_TYPE + ";base64," + data;
+      }
     },
 
     thumbnailForIndex: function(index, callback) {
       var self = this;
       var identifier = self.identifierForIndex(index);
-
       self.store.property(App.Controller.Domain.THUMBNAILS, identifier, function(value) {
-
         if (value !== undefined) {
           callback(self.thumbnailDataUrl(value));
           return;
         }
-
-        var file = self.fileForIdentifier(identifier);
-        if (file === undefined) {
-          callback();
-          return;
-        }
-
-        var parents = file.parents;
-        if (parents === undefined || parents.length < 1) {
-          callback();
-          return;
-        }
-
-        var parent = parents[0].id;
-        var title = self.stripExtension(file.title) + "." + App.Library.THUMBNAIL_TYPE;
-
-        self.logging.info("Searching for thumbnail '" + title + "' ...");
-
-        self.drive.file(parent, title).then(function(file) {
-          self.drive.downloadFileBase64(file, function(data) {
-            try {
-              self.store.setProperty(App.Controller.Domain.THUMBNAILS, identifier, data);
-            } catch (e) {
-              self.logging.error("Unable to store thumbnail.");
-            }
-            callback(self.thumbnailDataUrl(data));
-          });
-        }).fail(function(error) {
-          self.logging.warning("Unable to find thumbnail '" + title + "'");
-          callback();
-        });
-
+        callback();
       });
-
     },
 
-    updateCallback: function(files) {
+    addROM: function(filename, arrayBuffer) {
       var self = this;
-      var i;
+      console.log("Adding ROM...");
+      return self.sha256(arrayBuffer).then(function(identifier) {
 
-      var identifiers = {};
-      $.each(self.items, function(index, value) {
-        identifiers[value.id] = value.title;
-      });
+        // Data.
+        const binaryString = utilities.arrayBufferToBinaryString(arrayBuffer);
 
-      var deleted = identifiers;
-      var inserted = {};
-      var renamed = {};
-      var oldItems = self.items;
-      self.items = [];
-      for (i = 0; i < files.length; i++) {
-        var file = files[i];
-        if (file !== undefined &&
-            file.fileExtension !== undefined &&
-            (file.fileExtension.toLowerCase() === 'gb' ||
-             file.fileExtension.toLowerCase() === 'gbc')) {
-          self.items.push(file);
-          if (file.id in deleted) {
-            if (deleted[file.id] != file.title) {
-              renamed[file.id] = file.title;
-            }
-            delete deleted[file.id];
-          } else {
-            inserted[file.id] = file.title;
-          }
-        }
-      }
-      self.sort();
-      self.save();
-
-      var deletedCount = 0;
-      $.each(deleted, function(key, value) {
-        self.logging.info("Deleting game for " + key);
-        self.store.deleteProperty(App.Controller.Domain.GAMES, key);
-        self.logging.info("Deleting thumbnail for " + key);
-        self.store.deleteProperty(App.Controller.Domain.THUMBNAILS, key);
-        deletedCount++;
-      });
-
-      var insertedCount = 0;
-      $.each(inserted, function(key, value) {
-        insertedCount++;
-      });
-
-      var renamedCount = 0;
-      $.each(renamed, function(key, value) {
-        self.logging.info("Deleting thumbnail for " + key);
-        self.store.deleteProperty(App.Controller.Domain.THUMBNAILS, key);
-        renamedCount++;
-      });
-
-      self.setState(App.Library.State.READY);
-
-      if (deletedCount > 0 || insertedCount > 0 || renamedCount > 0) {
+        // Add.
+        self.items.push({
+          id: identifier,
+          title: filename,
+          fileExtension: utilities.fileExtension(filename),
+        });
+        self.sort();
+        self.save();
         self.notifyChange();
+
+        // Store the ROM.
+        return self.store.setProperty(App.Controller.Domain.GAMES, identifier, utilities.btoa(binaryString));
+      });
+    },
+
+    addThumbnail: function(filename, arrayBuffer) {
+      var self = this;
+      console.log("Adding thumbnail...");
+      const basename = utilities.basename(filename);
+      const identifier = self.identifierForBasename(basename);
+
+      if (identifier === undefined) {
+        alert("Unable to find ROM named '" + basename + "'.");
+        return;
       }
 
-    }
+      const base64String = utilities.arrayBufferToBase64(arrayBuffer);
+      const url = "data:image/" + utilities.fileExtension(filename) + ";base64," + base64String;
+
+      return self.store.setProperty(App.Controller.Domain.THUMBNAILS, identifier, url);
+    },
+
+    sha256: function(arrayBuffer) {
+      var deferred = new jQuery.Deferred();
+      var foo = crypto.subtle.digest('SHA-256', arrayBuffer).then(function(hashBuffer) {
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        let sha = window.btoa(utilities.arrayBufferToBinaryString(hashArray));
+        deferred.resolve(sha);
+      });
+      return deferred.promise();
+    },
+
+    // TODO: Utilities?
+    readAsArrayBuffer: function(file) {
+      const reader = new FileReader();
+      var deferred = new jQuery.Deferred();
+      reader.onload = function(e) {
+        deferred.resolve(e.target.result);
+      };
+      reader.onerror = function(e) {
+        deferred.reject(e);
+      };
+      reader.readAsArrayBuffer(file);
+      return deferred.promise();
+    },
+
+    add: function(files) {
+      var self = this;
+
+      var roms = files.filter(function(file) {
+        var extension = utilities.fileExtension(file.name);
+        return extension === 'gb' || extension === 'gbc';
+      });
+
+      var thumbnails = files.filter(function(file) {
+        var extension = utilities.fileExtension(file.name);
+        return extension === 'jpg' || extension === 'jpeg' || extension === 'png' || extension === 'webp';
+      });
+
+      var romAdditions = roms.map(function(rom) {
+        const name = rom.name;
+        return self.readAsArrayBuffer(rom)
+          .then(function(arrayBuffer) {
+            return self.addROM(name, arrayBuffer);
+          });
+      });
+
+      jQuery.when.apply(null, romAdditions)
+        .then(function() {
+          var thumbnailAdditions = thumbnails.map(function(thumbnail) {
+            const name = thumbnail.name;
+            return self.readAsArrayBuffer(thumbnail)
+              .then(function(arrayBuffer) {
+                return self.addThumbnail(name, arrayBuffer);
+              });
+          });
+          return jQuery.when.apply(null, thumbnailAdditions);
+        })
+        .then(function() {
+          self.notifyChange();
+        });
+
+    },
 
   });
 
