@@ -66,7 +66,7 @@ Many thanks to:
 
 1. Game Boy and Game Boy Color are trademarks of Nintendo Co., Ltd.. All rights reserved.
 2. Downloading copied ROMs is illegal: only use images you have created from ROMs you own yourself.
-3. InSeven Limited is an independent software company and is in no way affiliated with Nintendo Co., Ltd..
+3. Game Play and Jason Morley are in no way affiliated with Nintendo Co., Ltd..
 
 ## License
 
