@@ -253,34 +253,3 @@ function bootstrap() {
   window.app = new App.Controller(device);
   window.applicationRunning = true;
 }
-
-function sendLogs() {
-  window.location.href = 'mailto:support@inseven.co.uk?subject=Game Play Color Logs&body=Description:%0A%0APlease describe the issue you are seeing.%0A%0ALogs:%0A%0A' + encodeURIComponent(App.Logging.logs());
-}
-
-window.onerror = function(message, url, linenumber) {
-
-  var logging = new App.Logging(window.config.logging_level, "error");
-  logging.error(message + " " + message + " " + linenumber);
-
-  var handleError = function() {
-    if (confirm('Game Play encountered an error.\nSend crash report?')) {
-      window.location.href = 'mailto:crashes@inseven.co.uk?subject=Crash Report: Game Play Color&body=Description:%0A%0APlease describe what you were doing at the time.%0A%0AError:%0A%0A' + encodeURIComponent(message) + '%0A' + encodeURIComponent(url) + '%0A' + encodeURIComponent(linenumber) + '%0A%0ALogs:%0A%0A' + encodeURIComponent(App.Logging.logs());
-    }
-  };
-
-  if (window.applicationCache.status == window.applicationCache.IDLE &&
-      (window.navigator.standalone === true || window.applicationRunning === true)) {
-    handleError();
-  }
-
-  return false;
-};
-
-window.onmessage = function(message) {
-
-  if (message.data == "crash") {
-    boom();
-  }
-
-};
