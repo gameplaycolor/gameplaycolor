@@ -366,8 +366,7 @@
     addROM: function(filename, arrayBuffer) {
       var self = this;
       console.log("Adding ROM...");
-
-      self.sha256(arrayBuffer).then(function(identifier) {
+      return self.sha256(arrayBuffer).then(function(identifier) {
 
         // Data.
         const binaryString = utilities.arrayBufferToBinaryString(arrayBuffer);
@@ -389,6 +388,7 @@
 
     addThumbnail: function(filename, arrayBuffer) {
       var self = this;
+      console.log("Adding thumbnail...");
       const basename = utilities.getBasename(filename);
       const identifier = self.identifierForBasename(basename);
 
@@ -452,22 +452,22 @@
 
       var romAdditions = roms.map(function(rom) {
         const name = rom.name;
-        self.readAsArrayBuffer(rom)
+        return self.readAsArrayBuffer(rom)
           .then(function(arrayBuffer) {
-            self.addROM(name, arrayBuffer);
+            return self.addROM(name, arrayBuffer);
           });
       });
 
-      jQuery.when(romAdditions)
+      jQuery.when.apply(null, romAdditions)
         .then(function() {
           var thumbnailAdditions = thumbnails.map(function(thumbnail) {
             const name = thumbnail.name;
-            self.readAsArrayBuffer(thumbnail)
+            return self.readAsArrayBuffer(thumbnail)
               .then(function(arrayBuffer) {
-                self.addThumbnail(name, arrayBuffer);
+                return self.addThumbnail(name, arrayBuffer);
               });
           });
-          return jQuery.when(thumbnailAdditions);
+          return jQuery.when.apply(null, thumbnailAdditions);
         })
         .then(function() {
           self.notifyChange();

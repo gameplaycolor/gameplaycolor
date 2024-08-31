@@ -137,24 +137,6 @@
       return store;
     },
 
-//     setProperty: function(domain, key, value) {
-//       var self = this;
-//       var store = self.getStore("properties", "readwrite");
-//
-//       var data = {
-//         domain: domain,
-//         key: key,
-//         value: value
-//       };
-//
-//       var request = store.put(data, JSON.stringify({ domain: domain, key: key }));
-//
-//       request.onsuccess = function(e) {};
-//       request.onerror = function(e) {
-//         self.logging.error("Error Adding an item: ", e);
-//       };
-//     },
-
     setProperty: function(domain, key, value) {
       var self = this;
       var deferred = new jQuery.Deferred();
@@ -168,6 +150,7 @@
 
       var request = store.put(data, JSON.stringify({ domain: domain, key: key }));
       request.onsuccess = function(e) {
+        console.log("setProperty is complete!");
         deferred.resolve();
       };
       request.onerror = function(e) {

@@ -57,10 +57,11 @@
       <div id="screen-games">
         <div id="list-games" class="content" />
         <div id="library-navigation-bar" class="navigation-bar library-navigation-bar">
+          <div id="button-add" class="navigation-button" onclick="$('#fileInput').click();">Add</div>
           <div id="button-account" class="navigation-button button-account">Settings</div>
           <div id="button-done" class="navigation-button button-done button-right">Console</div>
         </div>
-        <input type="file" id="fileInput" multiple="multiple" style="position: absolute;" />
+        <input type="file" id="fileInput" multiple="multiple" style="display: hidden;" />
       </div>
 
       <div id="screen-settings" class="settings screen hidden" style="display: none;">

@@ -256,7 +256,6 @@ body {
     text-overflow: ellipsis;
     position: relative;
     margin: 0 12px;
-    flex-grow: 1;
 }
 
 .library-navigation-bar {
@@ -271,6 +270,7 @@ body {
 
 .button-right {
     text-align: right;
+    flex-grow: 1;
 }
 
 .button-library {
