@@ -147,8 +147,8 @@ KEYCODE_SHIFT_LEFT = 16;
           let mapping = {
             1: Gameboy.Key.A,
             0: Gameboy.Key.B,
-            9: Gameboy.Key.SELECT,
-            16: Gameboy.Key.START,
+            8: Gameboy.Key.SELECT,
+            9: Gameboy.Key.START,
             12: Gameboy.Key.UP,
             13: Gameboy.Key.DOWN,
             14: Gameboy.Key.LEFT,
