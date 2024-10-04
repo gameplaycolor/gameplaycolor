@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2021 InSeven Limited
+ * Copyright (c) 2012-2024 Jason Morley
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -74,118 +74,58 @@ Promise.prototype.always = function(onAlways) {
         self.logging.info("User Agent: " + navigator.userAgent);
 
         self.library = new App.Library(self.store, function(identifier) {
-            self.console.clear();
-            self.console.show();
-            setTimeout(function() {
-              self.load(identifier);
-            }, 400);
-          },
-          function() {
-            self.gameBoy = new App.GameBoy(self.store, self.library);
-            self.games = new App.Games(self.device, self.gameBoy, self.library);
+          self.console.clear();
+          self.console.show();
+          setTimeout(function() {
+            self.load(identifier);
+          }, 400);
+        });
 
-            self.console = new App.Console(self.device, self.gameBoy, { didHide: function() {
-                  self.games.update();
-                }
-              }, self.store);
-            var callback = function (drive) {
-              self.drive = drive;
-              self.settings = new App.Settings(
-                self.drive,
-                self.store,
-                self.gameBoy,
-                self.console
-              );
+        self.gameBoy = new App.GameBoy(self.store, self.library);
+        self.games = new App.Games(self.device, self.gameBoy, self.library);
+        self.console = new App.Console(self.device, self.gameBoy, self.store);
+        self.settings = new App.Settings(self.store, self.gameBoy, self.console);
 
-              self.settingsButton = new App.Controls.Button(
-                $("#button-account"),
-                {
-                  touchUpInside: function() {
-                    self.settings.show();
-              }});
-
-              self.consoleButton = new App.Controls.Button($("#button-done"), { touchUp: function() {
-                  self.logging.info("Show console");
-                  self.console.show();
-                }
-              });
-
-              self.redeem = new App.Controls.Button($("#button-redeem"), { touchUpInside: function() {
-                  $("#redeem-code").blur();
-                  var code = $("#redeem-code").val();
-                  drive.redeemToken(code).then(function() {
-                      self.drive.authorize();
-                    }).fail(function() {
-                      alert("Unable to sign in.");
-                    });
-              }});
-
-              self.drive.onStateChange(function (state) {
-                if (state == App.Drive.State.UNKNOWN) {
-
-                  self.logging.info("Google Drive state unknown.");
-                } else if (state == App.Drive.State.UNAUTHORIZED) {
-
-                  self.logging.info("Google Drive state unauthorized.");
-                  self.settingsButton.hide();
-                  self.consoleButton.hide();
-                  self.clear();
-                  self.console.hide();
-
-                  if (window.navigator.onLine === true) {
-                    self.drive.authURL().then(function(url) {
-                        $("#google-drive-auth").attr("href", url);
-                        $("#redeem-code").val("");
-                        $("#screen-account").show();
-                      }).fail(function() {
-                        alert("Unable to generate Google authentication URL.");
-                      });
-                  }
-                } else if (state == App.Drive.State.AUTHORIZED) {
-
-                  self.logging.info("Google Drive state authorized.");
-                  $("#screen-account").hide();
-                  self.settingsButton.show();
-                  self.drive.user().then(function(user) {
-                    $("#account-details").html(user.email);
-                  });
-                  self.games.update();
-
-                }
-              });
-              self.drive.authorize();
-
-              self.checkForUpdate();
-
-              // Ensure sound is enabled on a user interaction.
-
-              self.soundMenu = new App.SoundMenu(function() {
-                  self.gameBoy.pause();
-                }, function() {
-                  self.gameBoy.run();
-              });
-
-              self.gameBoy.setSoundEnabled(false);
-              self.soundMenu.onEnable = function() {
-                self.gameBoy.setSoundEnabled(true);
-              };
-
-              // Restore settings.
-              self.restorePrevious().always(function() {
-                self.console.setAnimationEnabled(true);
-                $("#screen-splash").css("display", "none");
-                self.soundMenu.show();
-              });
-
-              setInterval(function() {
-                autoSave();
-              }, 1000);
-
-            };
-            const boundCallback = callback.bind(self);
-            self.drive = App.Drive.Instance(boundCallback);
+        self.settingsButton = new App.Controls.Button($("#button-account"), {
+          touchUpInside: function() {
+            self.settings.show();
           }
-        );
+        });
+
+        self.consoleButton = new App.Controls.Button($("#button-done"), {
+          touchUp: function() {
+            self.logging.info("Show console");
+            self.console.show();
+          }
+        });
+
+        self.settingsButton.show();
+
+        self.checkForUpdate();
+
+        // Ensure sound is enabled on a user interaction.
+
+        self.soundMenu = new App.SoundMenu(function() {
+            self.gameBoy.pause();
+          }, function() {
+            self.gameBoy.run();
+        });
+
+        self.gameBoy.setSoundEnabled(false);
+        self.soundMenu.onEnable = function() {
+          self.gameBoy.setSoundEnabled(true);
+        };
+
+        // Restore settings.
+        self.restorePrevious().always(function() {
+          self.console.setAnimationEnabled(true);
+          self.soundMenu.show();
+        });
+
+        setInterval(function() {
+          autoSave();
+        }, 1000);
+
       } else {
         alert(
           "Unable to create database.\nPlease accept increased storage size when asked.",
@@ -302,73 +242,14 @@ Promise.prototype.always = function(onAlways) {
   });
 
   $(document).ready(function() {
-
-    if (window.navigator.standalone === true) {
-
-      bootstrap();
-
-    } else {
-
-      var self = this;
-      var callback = function() {
-        var drive = self.drive;
-        var code = drive.getParameters().code;
-        if (code !== undefined) {
-
-          self.logging.info("Received authentication token: " + code);
-          $("#screen-authorizing").show();
-          $("#authorization-code").val(code);
-
-        } else {
-
-          $("#screen-instructions").show();
-
-        }
-      };
-
-      self.drive = App.Drive.Instance(callback);
-    }
+    bootstrap();
+    console.log("Working...")
   });
 
 })(jQuery);
 
 function bootstrap() {
   var device = new App.Device();
-  window.tracker = new App.Tracker();
   window.app = new App.Controller(device);
   window.applicationRunning = true;
 }
-
-function sendLogs() {
-  window.location.href = 'mailto:support@inseven.co.uk?subject=Game Play Color Logs&body=Description:%0A%0APlease describe the issue you are seeing.%0A%0ALogs:%0A%0A' + encodeURIComponent(App.Logging.logs());
-}
-
-window.onerror = function(message, url, linenumber) {
-
-  var logging = new App.Logging(window.config.logging_level, "error");
-  logging.error(message + " " + message + " " + linenumber);
-
-  var handleError = function() {
-    if (confirm('Game Play encountered an error.\nSend crash report?')) {
-      window.location.href = 'mailto:crashes@inseven.co.uk?subject=Crash Report: Game Play Color&body=Description:%0A%0APlease describe what you were doing at the time.%0A%0AError:%0A%0A' + encodeURIComponent(message) + '%0A' + encodeURIComponent(url) + '%0A' + encodeURIComponent(linenumber) + '%0A%0ALogs:%0A%0A' + encodeURIComponent(App.Logging.logs());
-    }
-  };
-
-  if (window.applicationCache.status == window.applicationCache.IDLE &&
-      (window.navigator.standalone === true || window.applicationRunning === true)) {
-    handleError();
-  }
-
-  return false;
-};
-
-window.onmessage = function(message) {
-
-  if (message.data === "debug") {
-    $("#screen-instructions").hide();
-    bootstrap();
-  } else if (message.data == "crash") {
-    boom();
-  }
-
-};

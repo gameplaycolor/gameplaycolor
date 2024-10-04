@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2021 InSeven Limited
+ * Copyright (c) 2012-2024 Jason Morley
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -139,6 +139,7 @@
 
     setProperty: function(domain, key, value) {
       var self = this;
+      var deferred = new jQuery.Deferred();
       var store = self.getStore("properties", "readwrite");
 
       var data = {
@@ -148,11 +149,15 @@
       };
 
       var request = store.put(data, JSON.stringify({ domain: domain, key: key }));
-
-      request.onsuccess = function(e) {};
+      request.onsuccess = function(e) {
+        console.log("setProperty is complete!");
+        deferred.resolve();
+      };
       request.onerror = function(e) {
         self.logging.error("Error Adding an item: ", e);
+        deferred.reject(e);
       };
+      return deferred.promise();
     },
 
     property: function(domain, key, callback) {
@@ -194,15 +199,22 @@
 
     deleteProperty: function(domain, key) {
       var self = this;
+      var deferred = new jQuery.Deferred();
       var store = self.getStore("properties", "readwrite");
 
-      var request = store["delete"]([key, domain]);
+      // Yes. I know this looks deeply deeply wrong. This is a work around for YUICompressor which can't treat `delete`
+      // as anything but a keyword so we can't call `.delete(...)`. This manages to work around that because JavaScript.
+      // Kill me now.
+      var request = store["delete"](JSON.stringify({ domain: domain, key: key }));
 
-      request.onsuccess = function(e) {};
-
-      request.onerror = function(e) {
-        self.logging.error("Error deleting item: ", e);
+      request.onsuccess = function(e) {
+        deferred.resolve();
       };
+      request.onerror = function(e) {
+        deferred.reject(e);
+      };
+
+      return deferred.promise();
     },
 
     hasProperty: function(domain, key) {

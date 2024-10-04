@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2021 InSeven Limited
+ * Copyright (c) 2012-2024 Jason Morley
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -21,16 +21,15 @@
 
 (function($) {
 
-  App.Settings = function(drive, store, gameBoy, console) {
-    this.init(drive, store, gameBoy, console);
+  App.Settings = function(store, gameBoy, console) {
+    this.init(store, gameBoy, console);
   };
 
   jQuery.extend(
     App.Settings.prototype, {
 
-      init: function(drive, store, gameBoy, console) {
+      init: function(store, gameBoy, console) {
         var self = this;
-        self.drive = drive;
         self.store = store;
         self.gameBoy = gameBoy;
         self.console = console;
@@ -82,27 +81,6 @@
         // Version
 
         $('#application-version').text(window.config.version);
-
-        // Sign out
-
-        self.signOut = new App.Controls.Button($('#screen-settings-sign-out'), { touchUpInside: function() {
-          utilities.dispatch(function() {
-            if (confirm("Sign out of Google Drive?")) {
-              self.drive.signOut().fail(function(e) {
-                alert("Unable to sign out of Google Drive.\n" + e);
-              });
-              self.hide();
-            }
-          });
-        }});
-
-        // Logs
-
-        self.feedback = new App.Controls.Button($('#screen-settings-send-feedback'), { touchUpInside: function() {
-          setTimeout(function() {
-            sendLogs();
-          }, 0);
-        }});
 
         // Done
 
