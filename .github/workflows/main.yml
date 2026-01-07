@@ -45,6 +45,11 @@ jobs:
         name: build-latest-release.tar.gz
         path: archives/build-latest-release.tar.gz
 
+    - name: Upload Pages artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: ./build
+
   documentation-update:
     runs-on: ubuntu-latest
     if: ${{ github.ref == 'refs/heads/main' }}
