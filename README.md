@@ -8,7 +8,7 @@ If you just want to play Game Play, you can find it online at [https://gameplayc
 
 > [!IMPORTANT]
 >
-> Game Play Color is no longer under active feature development—now that emulators are permitted on the App Store, there are many more fully featured alternatives, including the fabulous [Delta](https://apps.apple.com/app/delta-game-emulator/id1048524688).
+> Game Play Color is no longer under active development—now that emulators are permitted on the App Store, there are many more fully featured alternatives, including the fabulous [Delta](https://apps.apple.com/app/delta-game-emulator/id1048524688).
 
 ## Dependencies
 
