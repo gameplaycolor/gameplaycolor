@@ -12,6 +12,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+
+      MISE_CACHE_DIR: ${{ github.workspace }}/.mise/cache
+      MISE_CONFIG_DIR: ${{ github.workspace }}/.mise/config
+      MISE_DATA_DIR: ${{ github.workspace }}/.mise/data
+      MISE_STATE_DIR: ${{ github.workspace }}/.mise/state
 
     steps:
 
@@ -21,10 +27,17 @@ jobs:
         submodules: recursive
         fetch-depth: 0
 
-    - name: Setup Python
-      uses: actions/setup-python@v5
+    - name: Install mise
+      uses: jdx/mise-action@v4.3.0
       with:
-        python-version: "3.9"
+        version: 2026.9.10
+        cache: false
+
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pipenv wheel
+        pipenv install
+        pipenv install --dev
 
     - name: Install pipenv
       run: |
